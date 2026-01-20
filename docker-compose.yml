@@ -1,0 +1,170 @@
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: citypaj-postgres
+    environment:
+      POSTGRES_DB: citypaj
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: citypaj123
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    networks:
+      - citypaj-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis para caché y rate limiting
+  redis:
+    image: redis:7-alpine
+    container_name: citypaj-redis
+    command: redis-server --appendonly yes --requirepass citypaj123
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - citypaj-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: citypaj-backend
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: citypaj
+      DB_USER: postgres
+      DB_PASSWORD: citypaj123
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: citypaj123
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      CORS_ORIGINS: http://localhost:3000,http://localhost:3001
+      LOG_LEVEL: info
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - citypaj-network
+    restart: unless-stopped
+    command: npm run dev
+
+  # Frontend (Next.js)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: citypaj-frontend
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:3001/api
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    networks:
+      - citypaj-network
+    restart: unless-stopped
+    command: npm run dev
+
+  # Nginx (opcional, para producción)
+  nginx:
+    image: nginx:alpine
+    container_name: citypaj-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - citypaj-network
+    restart: unless-stopped
+    profiles:
+      - production
+
+  # Elasticsearch (opcional, para búsqueda avanzada)
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    container_name: citypaj-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - citypaj-network
+    restart: unless-stopped
+    profiles:
+      - search
+
+  # Kibana (opcional, para visualización de logs)
+  kibana:
+    image: kibana:8.11.0
+    container_name: citypaj-kibana
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - citypaj-network
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+
+networks:
+  citypaj-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
