@@ -4,7 +4,7 @@ dotenv.config();
 
 export const config = {
   env: process.env.NODE_ENV || 'development',
-  port: parseInt(process.env.PORT || '3001'),
+  port: parseInt(process.env.PORT || '3002'),
   
   database: {
     host: process.env.DB_HOST || 'localhost',
@@ -67,7 +67,7 @@ export const config = {
   },
   
   cors: {
-    origins: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000'],
+    origins: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000', 'http://localhost:3001'],
   },
   
   rateLimit: {

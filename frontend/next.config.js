@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const fs = require('fs');
+
 const nextConfig = {
   // appDir ya no es experimental en Next.js 14
   images: {
@@ -13,11 +15,20 @@ const nextConfig = {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
   async rewrites() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const apiUrlRaw = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
+    const apiUrlCandidate = apiUrlRaw.replace(/\/api\/?$/, '');
+    const isDocker = fs.existsSync('/.dockerenv');
+    let apiUrl = apiUrlCandidate;
+    if (!isDocker && /\bbackend:3002\b/.test(apiUrl)) {
+      apiUrl = 'http://localhost:3002';
+    }
+    if (/(:3001\b|localhost:3001\b|127\.0\.0\.1:3001\b)/.test(apiUrl)) {
+      apiUrl = 'http://localhost:3002';
+    }
     return [
       {
         source: '/api/:path*',
-        destination: `${apiUrl}/:path*`,
+        destination: `${apiUrl}/api/:path*`,
       },
     ];
   },
