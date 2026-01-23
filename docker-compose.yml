@@ -48,9 +48,10 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      target: production
     container_name: citypaj-backend
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 3001
       DB_HOST: postgres
       DB_PORT: 5432
@@ -65,9 +66,6 @@ services:
       LOG_LEVEL: info
     ports:
       - "3001:3001"
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
     depends_on:
       postgres:
         condition: service_healthy
@@ -76,7 +74,6 @@ services:
     networks:
       - citypaj-network
     restart: unless-stopped
-    command: npm run dev
 
   # Frontend (Next.js)
   frontend:
