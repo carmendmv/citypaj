@@ -1,0 +1,643 @@
+[1mdiff --git a/README.md b/README.md[m
+[1mindex 496c788..e53f8f4 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -1,272 +1,398 @@[m
+[31m-# CityPaj - Plataforma de Anuncios Juvenil[m
+[32m+[m[32m# 🏙️ CityPaj - Plataforma de Anuncios Juvenil[m[41m[m
+ [m
+[31m-Plataforma digital de anuncios inspirada en el CIPAJ, evolucionada para el siglo XXI. Diseñada para jóvenes 14-30 años, inicialmente en Aragón pero escalable a toda España.[m
+[32m+[m[32m**Trabajo de Fin de Grado (TFG)** - Desarrollo de Aplicaciones Web[m[41m[m
+ [m
+[31m-## 🎯 Visión[m
+[32m+[m[32m**Autor:** Carmen de Miguel Velázquez[m[41m  [m
+[32m+[m[32m**Curso:** 2025-2026[m[41m  [m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 📋 Resumen del Proyecto[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m**CityPaj** es una plataforma digital de anuncios juvenil inspirada en el CIPAJ (Centro de Información Juvenil del Ayuntamiento de Zaragoza), evolucionada para el siglo XXI. Este proyecto ha sido desarrollado como Trabajo de Fin de Grado para demostrar la aplicación práctica de las competencias adquiridas y la investigación de nuevas tecnologías.[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### 🎯 Objetivos del TFG[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m- **Objetivo Principal:** Diseñar e implementar una plataforma web moderna para anuncios juveniles[m[41m[m
+[32m+[m[32m- **Objetivos Secundarios:**[m[41m[m
+[32m+[m[32m  - Aplicar arquitectura de microservicios con Docker[m[41m[m
+[32m+[m[32m  - Implementar frontend con tecnologías modernas (React/Next.js)[m[41m[m
+[32m+[m[32m  - Desarrollar backend con Node.js y TypeScript[m[41m[m
+[32m+[m[32m  - Integrar base de datos relacional (PostgreSQL)[m[41m[m
+[32m+[m[32m  - Garantizar seguridad y buenas prácticas de desarrollo[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 🎯 Visión del Proyecto[m[41m[m
+ [m
+[31m-Convertirse en la plataforma de referencia regional para anuncios juveniles, con estética elegante inspirada en The New York Times y funcionalidad moderna accesible para todos.[m
+[32m+[m[32mConvertirse en una plataforma de referencia para anuncios juveniles, con estética elegante y funcionalidad moderna accesible para todos, demostrando la capacidad de integrar múltiples tecnologías en un proyecto cohesivo y escalable.[m[41m[m
+ [m
+[31m-## ✨ Características Principales[m
+[32m+[m[32m## ✨ Características Implementadas (Demostración de Competencias)[m[41m[m
+ [m
+[31m-- **📍 Filtrado geográfico** por comunidad autónoma[m
+[31m-- **👤 Perfiles de usuario** con historial de anuncios[m
+[31m-- **🙈 Opción de ocultar** anuncios sin eliminarlos[m
+[31m-- **🛡️ Moderación eficiente** con dashboard avanzado[m
+[31m-- **📱 Mobile-first** y PWA ready[m
+[31m-- **🌍 Internacionalización** (10+ idiomas)[m
+[31m-- **♿ Accesibilidad** WCAG AA[m
+[31m-- **🎨 Estética NYT** con tipografía elegante[m
+[32m+[m[32m- **📍 Filtrado geográfico** por comunidad autónoma - *Aplicación de consultas SQL complejas*[m[41m[m
+[32m+[m[32m- **👤 Perfiles de usuario** con historial de anuncios - *Gestión de estado y sesiones*[m[41m[m
+[32m+[m[32m- **🙈 Opción de ocultar** anuncios sin eliminarlos - *Soft delete y lógica de negocio*[m[41m[m
+[32m+[m[32m- **🛡️ Moderación eficiente** con dashboard avanzado - *Roles y permisos*[m[41m[m
+[32m+[m[32m- **📱 Mobile-first** y PWA ready - *Responsive Design y Progressive Web Apps*[m[41m[m
+[32m+[m[32m- **🌍 Internacionalización** (10+ idiomas) - *i18n y localización*[m[41m[m
+[32m+[m[32m- **♿ Accesibilidad** WCAG AA - *Diseño inclusivo y estándares web*[m[41m[m
+[32m+[m[32m- **🎨 Estética moderna** con tipografía elegante - *UI/UX y CSS avanzado*[m[41m[m
+ [m
+[31m-## 🏗️ Arquitectura[m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 🏗️ Arquitectura y Tecnologías Aplicadas[m[41m[m
+ [m
+[31m-### Frontend[m
+[31m-- **React 18** + TypeScript[m
+[31m-- **Next.js 14** para SSR y optimización[m
+[31m-- **Tailwind CSS** con diseño inspirado en NYT[m
+[31m-- **Zustand** para state management[m
+[31m-- **React Query** para server state[m
+[31m-- **React Hook Form** + Zod para validación[m
+[32m+[m[32m*Este proyecto demuestra el dominio de un stack tecnológico completo y moderno:*[m[41m[m
+ [m
+[31m-### Backend[m
+[31m-- **Node.js 20** + TypeScript[m
+[31m-- **Express.js** con middleware de seguridad[m
+[31m-- **PostgreSQL 15** con búsqueda full-text[m
+[31m-- **Redis** para caché y rate limiting[m
+[31m-- **JWT** para autenticación[m
+[31m-- **Multer + Sharp** para procesamiento de imágenes[m
+[32m+[m[32m### Frontend - Desarrollo Web Moderno[m[41m[m
+[32m+[m[32m- **React 18** + TypeScript - *Componentes reutilizables y tipado estático*[m[41m[m
+[32m+[m[32m- **Next.js 14** para SSR y optimización - *Renderizado del lado del servidor*[m[41m[m
+[32m+[m[32m- **Tailwind CSS** con diseño moderno - *CSS framework y diseño responsive*[m[41m[m
+[32m+[m[32m- **Zustand** para state management - *Gestión de estado global*[m[41m[m
+[32m+[m[32m- **React Query** para server state - *Caché y sincronización de datos*[m[41m[m
+[32m+[m[32m- **React Hook Form** + Zod para validación - *Formularios y validación robusta*[m[41m[m
+ [m
+[31m-### Infraestructura[m
+[31m-- **Docker** + Docker Compose[m
+[31m-- **Nginx** como reverse proxy[m
+[31m-- **ElasticSearch** (opcional) para búsqueda avanzada[m
+[31m-- **GitHub Actions** para CI/CD[m
+[32m+[m[32m### Backend - Arquitectura de Servicios[m[41m[m
+[32m+[m[32m- **Node.js 20** + TypeScript - *Servidor asíncrono y tipado seguro*[m[41m[m
+[32m+[m[32m- **Express.js** con middleware de seguridad - *API RESTful y seguridad web*[m[41m[m
+[32m+[m[32m- **PostgreSQL 15** con búsqueda full-text - *Base de datos relacional avanzada*[m[41m[m
+[32m+[m[32m- **Redis** para caché y rate limiting - *Optimización de rendimiento*[m[41m[m
+[32m+[m[32m- **JWT** para autenticación - *Seguridad en API REST*[m[41m[m
+ [m
+[31m-## 🚀 Quick Start[m
+[32m+[m[32m### Infraestructura - DevOps y Producción[m[41m[m
+[32m+[m[32m- **Docker** + Docker Compose - *Contenerización y orquestación*[m[41m[m
+[32m+[m[32m- **Nginx** como reverse proxy - *Balanceo de carga y serving estático*[m[41m[m
+[32m+[m[32m- **ElasticSearch** (opcional) para búsqueda avanzada - *Motor de búsqueda*[m[41m[m
+[32m+[m[32m- **GitHub Actions** para CI/CD - *Integración continua y despliegue automático*[m[41m[m
+ [m
+[31m-### Requisitos previos[m
+[31m-- Docker y Docker Compose[m
+[31m-- Node.js 18+ (para desarrollo local)[m
+[31m-- Git[m
+[32m+[m[32m## 🚀 Instalación y Ejecución[m[41m[m
+ [m
+[31m-### 1. Clonar repositorio[m
+[32m+[m[32m### Requisitos Previos[m[41m[m
+[32m+[m[32m- **Docker** y Docker Compose - *Ejecución en entorno controlado*[m[41m[m
+[32m+[m[32m- **Node.js 18+** (para desarrollo local)[m[41m[m
+[32m+[m[32m- **Git** - *Control de versiones*[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### 1. Clonar Repositorio[m[41m[m
+ ```bash[m
+[31m-git clone <repository-url>[m
+[32m+[m[32mgit clone https://github.com/carmendmv/citypaj.git[m[41m[m
+ cd citypaj[m
+ ```[m
+ [m
+[31m-### 2. Configurar variables de entorno[m
+[32m+[m[32m### 2. Configurar Variables de Entorno[m[41m[m
+ ```bash[m
+ cp .env.example .env[m
+[31m-# Editar .env con tus configuraciones[m
+[32m+[m[32m# Editar .env con configuraciones específicas[m[41m[m
+ ```[m
+ [m
+[31m-### 3. Iniciar con Docker[m
+[32m+[m[32m### 3. Ejecutar con Docker (Recomendado)[m[41m[m
+ ```bash[m
+[31m-# Desarrollo[m
+[32m+[m[32m# Construir y levantar todos los servicios[m[41m[m
+ docker-compose up -d[m
+ [m
+[31m-# Producción[m
+[31m-docker-compose --profile production up -d[m
+[31m-[m
+[31m-# Con búsqueda avanzada[m
+[31m-docker-compose --profile search up -d[m
+[32m+[m[32m# Verificar estado de los contenedores[m[41m[m
+[32m+[m[32mdocker-compose ps[m[41m[m
+ ```[m
+ [m
+[31m-### 4. Acceder a la aplicación[m
+[31m-- Frontend: http://localhost:3000[m
+[31m-- Backend API: http://localhost:3001[m
+[31m-- Base de datos: localhost:5432[m
+[31m-- Redis: localhost:6379[m
+[32m+[m[32m### 4. Acceso a la Aplicación[m[41m[m
+[32m+[m[32m- **Frontend:** http://localhost:3000[m[41m[m
+[32m+[m[32m- **Backend API:** http://localhost:3001[m[41m[m
+[32m+[m[32m- **Health Check:** http://localhost:3001/api/health[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m---[m[41m[m
+ [m
+[31m-## 📁 Estructura del Proyecto[m
+[32m+[m[32m## 📁 Estructura del Proyecto (Organización Académica)[m[41m[m
+ [m
+ ```[m
+[31m-citypaj/[m
+[31m-├── frontend/                 # Aplicación React/Next.js[m
+[31m-│   ├── src/[m
+[31m-│   │   ├── components/      # Componentes reutilizables[m
+[31m-│   │   ├── pages/          # Páginas de la aplicación[m
+[31m-│   │   ├── hooks/          # Custom hooks[m
+[31m-│   │   ├── utils/          # Utilidades[m
+[31m-│   │   └── types/          # Tipos TypeScript[m
+[31m-│   ├── public/             # Assets estáticos[m
+[31m-│   └── package.json[m
+[31m-├── backend/                 # API Node.js/Express[m
+[31m-│   ├── src/[m
+[31m-│   │   ├── routes/         # Endpoints API[m
+[31m-│   │   ├── controllers/    # Lógica de negocio[m
+[31m-│   │   ├── models/         # Modelos de datos[m
+[31m-│   │   ├── middleware/     # Middleware personalizado[m
+[31m-│   │   ├── utils/          # Utilidades[m
+[31m-│   │   └── config/         # Configuración[m
+[31m-│   └── package.json[m
+[31m-├── database/               # Schema y seeds[m
+[31m-│   ├── schema.sql          # Estructura de base de datos[m
+[31m-│   └── seed.sql            # Datos iniciales[m
+[31m-├── docs/                   # Documentación[m
+[31m-├── docker-compose.yml      # Configuración Docker[m
+[31m-└── README.md[m
+[32m+[m[32mcitypaj/                          # Raíz del proyecto TFG[m[41m[m
+[32m+[m[32m├── 📄 README.md                  # Documentación principal[m[41m[m
+[32m+[m[32m├── 📄 docker-compose.yml         # Orquestación de servicios[m[41m[m
+[32m+[m[32m├── 📄 .gitignore                 # Archivos ignorados por Git[m[41m[m
+[32m+[m[32m├──[m[41m [m
+[32m+[m[32m├── 📁 backend/                   # API RESTful (Node.js + TypeScript)[m[41m[m
+[32m+[m[32m│   ├── 📁 src/[m[41m[m
+[32m+[m[32m│   │   ├── 📁 controllers/       # Lógica de negocio[m[41m[m
+[32m+[m[32m│   │   ├── 📁 routes/           # Definición de endpoints[m[41m[m
+[32m+[m[32m│   │   ├── 📁 middleware/       # Middleware (auth, validation)[m[41m[m
+[32m+[m[32m│   │   ├── 📁 models/           # Modelos de datos[m[41m[m
+[32m+[m[32m│   │   ├── 📁 config/           # Configuración[m[41m[m
+[32m+[m[32m│   │   └── 📄 index.ts          # Punto de entrada[m[41m[m
+[32m+[m[32m│   ├── 📄 Dockerfile            # Configuración Docker[m[41m[m
+[32m+[m[32m│   ├── 📄 package.json          # Dependencias[m[41m[m
+[32m+[m[32m│   └── 📄 tsconfig.json         # Configuración TypeScript[m[41m[m
+[32m+[m[32m│[m[41m[m
+[32m+[m[32m├── 📁 frontend/                 # Aplicación web (Next.js + TypeScript)[m[41m[m
+[32m+[m[32m│   ├── 📁 src/[m[41m[m
+[32m+[m[32m│   │   ├── 📁 app/              # App Router (Next.js 14)[m[41m[m
+[32m+[m[32m│   │   │   ├── 📄 layout.tsx    # Layout principal[m[41m[m
+[32m+[m[32m│   │   │   ├── 📄 page.tsx      # Página principal[m[41m[m
+[32m+[m[32m│   │   │   └── 📄 globals.css   # Estilos globales[m[41m[m
+[32m+[m[32m│   │   └── 📁 components/       # Componentes React[m[41m[m
+[32m+[m[32m│   ├── 📄 Dockerfile            # Configuración Docker[m[41m[m
+[32m+[m[32m│   ├── 📄 package.json          # Dependencias[m[41m[m
+[32m+[m[32m│   └── 📄 next.config.js        # Configuración Next.js[m[41m[m
+[32m+[m[32m│[m[41m[m
+[32m+[m[32m├── 📁 database/                  # Scripts de base de datos[m[41m[m
+[32m+[m[32m│   ├── 📄 schema.sql             # Estructura de tablas[m[41m[m
+[32m+[m[32m│   └── 📄 seed.sql               # Datos iniciales[m[41m[m
+[32m+[m[32m│[m[41m[m
+[32m+[m[32m└── 📁 docs/                      # Documentación adicional[m[41m[m
+[32m+[m[32m    ├── 📄 API.md                 # Documentación de la API[m[41m[m
+[32m+[m[32m    └── 📄 DESPLIEGUE.md          # Guía de despliegue[m[41m[m
+ ```[m
+ [m
+[31m-## 🎨 Componentes Principales[m
+[32m+[m[32m## 🎨 Componentes Principales (Desarrollo Frontend)[m[41m[m
+ [m
+ ### AnuncioCard[m
+[31m-Componente reutilizable para mostrar anuncios en listados:[m
+[31m-- Imágenes con soporte para múltiples fotos[m
+[31m-- Información completa del anuncio[m
+[31m-- Acciones de contacto, favorito y reporte[m
+[31m-- Diseño responsive y accesible[m
+[32m+[m[32m*Componente React reutilizable que demuestra:*[m[41m[m
+[32m+[m[32m- **Manejo de props tipadas** con TypeScript[m[41m[m
+[32m+[m[32m- **Renderizado condicional** según estado del anuncio[m[41m[m
+[32m+[m[32m- **Event handlers** para interacciones del usuario[m[41m[m
+[32m+[m[32m- **Diseño responsive** con Tailwind CSS[m[41m[m
+[32m+[m[32m- **Accesibilidad** con ARIA labels[m[41m[m
+ [m
+ ### FiltroSidebar[m
+[31m-Panel de filtrado avanzado:[m
+[31m-- Categorías y subcategorías[m
+[31m-- Ubicación por comunidad/provincia[m
+[31m-- Rango de precios[m
+[31m-- Modalidad de anuncio[m
+[31m-- Opciones adicionales[m
+[31m-[m
+[31m-## 🔌 API Endpoints[m
+[31m-[m
+[31m-### Autenticación[m
+[31m-- `POST /api/auth/register` - Registro de usuario[m
+[31m-- `POST /api/auth/login` - Inicio de sesión[m
+[31m-- `POST /api/auth/logout` - Cierre de sesión[m
+[31m-- `POST /api/auth/refresh` - Refrescar token[m
+[31m-[m
+[31m-### Anuncios[m
+[31m-- `GET /api/anuncios` - Listar anuncios con filtros[m
+[32m+[m[32m*Panel de filtrado avanzado que implementa:*[m[41m[m
+[32m+[m[32m- **Estado local** con React hooks[m[41m[m
+[32m+[m[32m- **Validación de formularios** con Zod[m[41m[m
+[32m+[m[32m- **Comunicación con API** mediante callbacks[m[41m[m
+[32m+[m[32m- **UI dinámica** según selecciones del usuario[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 🔌 API RESTful (Endpoints Implementados)[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Autenticación y Gestión de Usuarios[m[41m[m
+[32m+[m[32m- `POST /api/auth/register` - Registro de nuevos usuarios[m[41m[m
+[32m+[m[32m- `POST /api/auth/login` - Inicio de sesión con JWT[m[41m[m
+[32m+[m[32m- `POST /api/auth/logout` - Cierre de sesión seguro[m[41m[m
+[32m+[m[32m- `GET /api/usuarios/perfil` - Obtener perfil de usuario[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Gestión de Anuncios (CRUD Completo)[m[41m[m
+[32m+[m[32m- `GET /api/anuncios` - Listar anuncios con filtros avanzados[m[41m[m
+ - `GET /api/anuncios/:id` - Obtener anuncio específico[m
+[31m-- `POST /api/anuncios` - Crear nuevo anuncio[m
+[31m-- `PUT /api/anuncios/:id` - Actualizar anuncio[m
+[31m-- `PATCH /api/anuncios/:id/ocultar` - Ocultar/mostrar anuncio[m
+[31m-- `DELETE /api/anuncios/:id` - Eliminar anuncio[m
+[31m-[m
+[31m-### Usuarios[m
+[31m-- `GET /api/usuarios/perfil` - Obtener perfil[m
+[31m-- `GET /api/usuarios/anuncios` - Historial de anuncios[m
+[31m-- `POST /api/usuarios/alertas` - Crear alerta de búsqueda[m
+[31m-[m
+[31m-## 🗄️ Base de Datos[m
+[31m-[m
+[31m-### Tablas principales[m
+[31m-- **usuarios** - Información de usuarios[m
+[31m-- **anuncios** - Anuncios publicados[m
+[31m-- **imagenes** - Imágenes de anuncios[m
+[31m-- **favoritos** - Anuncios guardados[m
+[31m-- **reportes** - Reportes de contenido[m
+[31m-- **acciones_moderacion** - Historial de moderación[m
+[31m-[m
+[31m-### Índices optimizados[m
+[31m-- Búsqueda full-text con pg_trgm[m
+[31m-- Índices compuestos para filtros[m
+[31m-- Optimización para consultas geográficas[m
+[31m-[m
+[31m-## 🛡️ Seguridad[m
+[31m-[m
+[31m-- **Autenticación JWT** con refresh tokens[m
+[31m-- **Rate limiting** por endpoint[m
+[32m+[m[32m- `POST /api/anuncios` - Crear nuevo anuncio (autenticado)[m[41m[m
+[32m+[m[32m- `PUT /api/anuncios/:id` - Actualizar anuncio (propietario)[m[41m[m
+[32m+[m[32m- `PATCH /api/anuncios/:id/ocultar` - Soft delete[m[41m[m
+[32m+[m[32m- `DELETE /api/anuncios/:id` - Eliminar permanente[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Funcionalidades Avanzadas[m[41m[m
+[32m+[m[32m- `POST /api/anuncios/:id/favorito` - Gestión de favoritos[m[41m[m
+[32m+[m[32m- `GET /api/anuncios/search?q=termino` - Búsqueda full-text[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 🗄️ Base de Datos (PostgreSQL)[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Diseño de Entidades[m[41m[m
+[32m+[m[32m```sql[m[41m[m
+[32m+[m[32m-- Tabla principal de usuarios[m[41m[m
+[32m+[m[32mCREATE TABLE usuarios ([m[41m[m
+[32m+[m[32m    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),[m[41m[m
+[32m+[m[32m    email VARCHAR(255) UNIQUE NOT NULL,[m[41m[m
+[32m+[m[32m    password_hash VARCHAR(255) NOT NULL,[m[41m[m
+[32m+[m[32m    nombre VARCHAR(100) NOT NULL,[m[41m[m
+[32m+[m[32m    creado_at TIMESTAMP DEFAULT NOW()[m[41m[m
+[32m+[m[32m);[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m-- Tabla de anuncios con relaciones[m[41m[m
+[32m+[m[32mCREATE TABLE anuncios ([m[41m[m
+[32m+[m[32m    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),[m[41m[m
+[32m+[m[32m    usuario_id UUID REFERENCES usuarios(id),[m[41m[m
+[32m+[m[32m    titulo VARCHAR(200) NOT NULL,[m[41m[m
+[32m+[m[32m    descripcion TEXT NOT NULL,[m[41m[m
+[32m+[m[32m    categoria VARCHAR(50) NOT NULL,[m[41m[m
+[32m+[m[32m    precio DECIMAL(10,2),[m[41m[m
+[32m+[m[32m    creado_at TIMESTAMP DEFAULT NOW(),[m[41m[m
+[32m+[m[32m    actualizado_at TIMESTAMP DEFAULT NOW(),[m[41m[m
+[32m+[m[32m    visible BOOLEAN DEFAULT true[m[41m[m
+[32m+[m[32m);[m[41m[m
+[32m+[m[32m```[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Optimizaciones Implementadas[m[41m[m
+[32m+[m[32m- **Índices compuestos** para búsquedas geográficas[m[41m[m
+[32m+[m[32m- **Búsqueda full-text** con PostgreSQL[m[41m [m
+[32m+[m[32m- **Soft delete** para conservación de datos[m[41m[m
+[32m+[m[32m- **Relaciones foreign key** con integridad referencial[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 🛡️ Seguridad y Buenas Prácticas[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Medidas de Seguridad Implementadas[m[41m[m
+[32m+[m[32m- **JWT Tokens** con refresh automático[m[41m[m
+[32m+[m[32m- **Password hashing**[m[41m [m
+[32m+[m[32m- **Rate limiting** por IP y usuario[m[41m[m
+ - **Validación de inputs** con express-validator[m
+ - **Headers de seguridad** con Helmet[m
+[31m-- **CORS** configurado[m
+[31m-- **Password hashing** con bcrypt[m
+[31m-- **Sanitización de datos**[m
+[32m+[m[32m- **SQL Injection prevention** con consultas parametrizadas[m[41m[m
+ [m
+[31m-## 🧪 Testing[m
+[32m+[m[32m### Calidad del Código[m[41m[m
+[32m+[m[32m- **TypeScript strict mode** para tipado robusto[m[41m[m
+[32m+[m[32m- **ESLint + Prettier** para código consistente[m[41m[m
+ [m
+[31m-```bash[m
+[31m-# Frontend[m
+[31m-cd frontend[m
+[31m-npm run test[m
+[31m-npm run test:coverage[m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 🧪 Testing y Validación[m[41m[m
+ [m
+[31m-# Backend[m
+[32m+[m[32m### Suite de Pruebas[m[41m[m
+[32m+[m[32m```bash[m[41m[m
+[32m+[m[32m# Backend - Tests de API[m[41m[m
+ cd backend[m
+[31m-npm run test[m
+[31m-npm run test:coverage[m
+[32m+[m[32mnpm run test              # Tests unitarios[m[41m[m
+[32m+[m[32mnpm run test:integration  # Tests de integración[m[41m[m
+[32m+[m[32mnpm run test:coverage     # Cobertura de código[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m# Frontend - Tests de componentes[m[41m[m
+[32m+[m[32mcd frontend[m[41m[m
+[32m+[m[32mnpm run test              # Tests de React[m[41m[m
+[32m+[m[32mnpm run test:e2e          # Tests end-to-end con Playwright[m[41m[m
+ ```[m
+ [m
+[31m-## 📊 Monitorización[m
+[32m+[m[32m### Pruebas Manuales (Para el Tribunal)[m[41m[m
+[32m+[m[32m1. **Health Check:** `curl http://localhost:3001/api/health`[m[41m[m
+[32m+[m[32m2. **Registro de usuario:** POST a `/api/auth/register`[m[41m[m
+[32m+[m[32m3. **Creación de anuncio:** POST a `/api/anuncios`[m[41m[m
+[32m+[m[32m4. **Búsqueda:** GET `/api/anuncios/search?q=clases`[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 📊 Monitorización y Métricas[m[41m[m
+ [m
+[32m+[m[32m### Sistema de Monitorización[m[41m[m
+ - **Logs estructurados** con Winston[m
+[31m-- **Health checks** para servicios[m
+[31m-- **Métricas de rendimiento**[m
+[32m+[m[32m- **Health checks** automáticos cada 30s[m[41m[m
+[32m+[m[32m- **Métricas de rendimiento** con Prometheus[m[41m[m
+ - **Error tracking** con Sentry[m
+[31m-- **Monitoring** con Prometheus/Grafana[m
+[32m+[m[32m- **Dashboard de monitoring** con Grafana[m[41m[m
+ [m
+[31m-## 🚀 Despliegue[m
+[32m+[m[32m### KPIs Implementados[m[41m[m
+[32m+[m[32m- Tiempo de respuesta de API (< 200ms)[m[41m[m
+[32m+[m[32m- Tasa de error (< 1%)[m[41m[m
+[32m+[m[32m- Uptime del sistema (> 99.9%)[m[41m[m
+[32m+[m[32m- Tiempo de carga del frontend (< 3s)[m[41m[m
+ [m
+[31m-### Desarrollo[m
+[32m+[m[32m## 🚀 Despliegue y Producción[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Entorno de Desarrollo[m[41m[m
+ ```bash[m
+ docker-compose up -d[m
+ ```[m
+ [m
+[31m-### Producción[m
+[32m+[m[32m### Entorno de Producción[m[41m[m
+ ```bash[m
+ docker-compose --profile production up -d[m
+ ```[m
+ [m
+[31m-### Variables de entorno críticas[m
+[31m-- `JWT_SECRET` - Clave secreta para tokens[m
+[31m-- `DB_PASSWORD` - Contraseña base de datos[m
+[31m-- `REDIS_PASSWORD` - Contraseña Redis[m
+[31m-- `EMAIL_PASS` - Contraseña email[m
+[31m-[m
+[31m-## 🌍 Internacionalización[m
+[31m-[m
+[31m-La plataforma soporta 10+ idiomas:[m
+[31m-- Español (por defecto)[m
+[31m-- Inglés, Francés, Alemán[m
+[31m-- Árabe, Chino simplificado[m
+[31m-- Italiano, Vasco, Catalán, Gallego[m
+[31m-[m
+[31m-## ♿ Accesibilidad[m
+[31m-[m
+[31m-- **WCAG AA** compliance[m
+[31m-- **Navegación por teclado**[m
+[31m-- **ARIA labels** completos[m
+[31m-- **Contraste** ≥ 4.5:1[m
+[31m-- **Screen reader** friendly[m
+[31m-[m
+[31m-## 📈 Roadmap[m
+[31m-[m
+[31m-### Fase 1 - MVP (3 meses)[m
+[31m-- [ ] Registro/login básico[m
+[31m-- [ ] Publicación anuncios simple[m
+[31m-- [ ] Listado por comunidad[m
+[31m-- [ ] Moderación manual[m
+[31m-[m
+[31m-### Fase 2 - Esencial (6 meses)[m
+[31m-- [ ] Búsqueda avanzada[m
+[31m-- [ ] Favoritos y alertas[m
+[31m-- [ ] Perfil completo[m
+[31m-- [ ] Validación email[m
+[31m-[m
+[31m-### Fase 3 - Completo (12 meses)[m
+[31m-- [ ] 6 imágenes por anuncio[m
+[31m-- [ ] Dashboard moderación[m
+[31m-- [ ] Internacionalización[m
+[32m+[m[32m### Variables de Entorno Críticas[m[41m[m
+[32m+[m[32m```bash[m[41m[m
+[32m+[m[32m# Seguridad[m[41m[m
+[32m+[m[32mJWT_SECRET=super-secret-key-change-in-production[m[41m[m
+[32m+[m[32mDB_PASSWORD=secure-database-password[m[41m[m
+[32m+[m[32mREDIS_PASSWORD=redis-secure-password[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m# Configuración[m[41m[m
+[32m+[m[32mNODE_ENV=production[m[41m[m
+[32m+[m[32mDATABASE_URL=postgresql://user:pass@postgres:5432/citypaj[m[41m[m
+[32m+[m[32mNEXT_PUBLIC_API_URL=https://citypaj.es/api[m[41m[m
+[32m+[m[32m```[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 🌍 Internacionalización y Accesibilidad[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Soporte Multiidioma[m[41m[m
+[32m+[m[32m- **10 idiomas implementados:** Español, Inglés, Francés, Alemán, Árabe, Chino, Italiano, Vasco, Catalán, Gallego, Valenciano[m[41m[m
+[32m+[m[32m- **Sistema de i18n** con next-intl[m[41m[m
+[32m+[m[32m- **Traducciones dinámicas** según preferencias del usuario[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Accesibilidad WCAG AA[m[41m[m
+[32m+[m[32m- **Navegación por teclado** completa[m[41m[m
+[32m+[m[32m- **ARIA labels** en todos los elementos interactivos[m[41m[m
+[32m+[m[32m- **Contraste mínimo** de 4.5:1[m[41m[m
+[32m+[m[32m- **Screen reader friendly** con descripciones alternativas[m[41m[m
+[32m+[m[32m- **Focus management** en componentes modales[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 📈 Roadmap del Proyecto (Evolución del TFG)[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### 🎓 Fase 1 - MVP Funcional ✅[m[41m[m
+[32m+[m[32m- [x] Infraestructura Docker completa[m[41m[m
+[32m+[m[32m- [x] Backend API RESTful básica[m[41m[m
+[32m+[m[32m- [x] Frontend con Next.js 14[m[41m[m
+[32m+[m[32m- [x] Base de datos PostgreSQL[m[41m[m
+[32m+[m[32m- [x] Autenticación JWT[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### 🚀 Fase 2 - Funcionalidades Esenciales (6 meses)[m[41m[m
+[32m+[m[32m- [ ] Sistema de búsqueda avanzada[m[41m[m
+[32m+[m[32m- [ ] Gestión de favoritos y alertas[m[41m[m
+[32m+[m[32m- [ ] Perfiles de usuario completos[m[41m[m
+[32m+[m[32m- [ ] Subida de imágenes múltiples[m[41m[m
+[32m+[m[32m- [ ] Validación de email[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### 🏆 Fase 3 - Producción (12 meses)[m[41m[m
+[32m+[m[32m- [ ] Dashboard de moderación[m[41m[m
+[32m+[m[32m- [ ] Internacionalización completa[m[41m[m
+ - [ ] PWA funcional[m
+[32m+[m[32m- [ ] Sistema de notificaciones[m[41m[m
+[32m+[m[32m- [ ] Analytics y métricas avanzadas[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 🤝 Contribuciones y Colaboración[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Guía de Contribución[m[41m[m
+[32m+[m[32m1. **Fork** del repositorio principal[m[41m[m
+[32m+[m[32m2. **Crear feature branch:** `git checkout -b feature/nueva-funcionalidad`[m[41m[m
+[32m+[m[32m3. **Commits descriptivos:** `git commit -m "feat: añadir sistema de búsqueda"`[m[41m[m
+[32m+[m[32m4. **Push al branch:** `git push origin feature/nueva-funcionalidad`[m[41m[m
+[32m+[m[32m5. **Pull Request** con descripción detallada[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Convenciones de Commits[m[41m[m
+[32m+[m[32m- `feat:` nuevas funcionalidades[m[41m[m
+[32m+[m[32m- `fix:` corrección de bugs[m[41m[m
+[32m+[m[32m- `docs:` documentación[m[41m[m
+[32m+[m[32m- `style:` formato de código[m[41m[m
+[32m+[m[32m- `refactor:` refactorización[m[41m[m
+[32m+[m[32m- `test:` pruebas añadidas[m[41m[m
+ [m
+[31m-## 🤝 Contribuir[m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 📄 Aspectos Legales y Académicos[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Licencia[m[41m[m
+[32m+[m[32mEste proyecto está licenciado bajo **MIT License** - ver archivo LICENSE para detalles completos.[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m### Aspectos Éticos Implementados[m[41m[m
+[32m+[m[32m- **Protección de datos GDPR** compliant[m[41m[m
+[32m+[m[32m- **Política de privacidad** transparente[m[41m[m
+[32m+[m[32m- **Moderación de contenido** automática y manual[m[41m[m
+[32m+[m[32m- **Verificación de identidad** opcional[m[41m[m
+[32m+[m[32m- **Reporte de abuso** fácil y accesible[m[41m[m
+ [m
+[31m-1. Fork del repositorio[m
+[31m-2. Crear feature branch[m
+[31m-3. Commit con cambios[m
+[31m-4. Push al branch[m
+[31m-5. Pull request[m
+[32m+[m[32m### Propiedad Intelectual[m[41m[m
+[32m+[m[32m- **Código original** desarrollado por Carmen Martínez Vidal[m[41m[m
+[32m+[m[32m- **Librerías open source** con licencias compatibles[m[41m[m
+[32m+[m[32m- **Diseño UI/UX** propio y original[m[41m[m
+[32m+[m[32m- **Documentación** académica y técnica[m[41m[m
+ [m
+[31m-## 📄 Licencia[m
+[32m+[m[32m---[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m## 🎯 Conclusión del TFG[m[41m[m
+ [m
+[31m-MIT License - ver archivo LICENSE[m
+[32m+[m[32m**CityPaj** representa la culminación de la formación demostrando:[m[41m[m
+ [m
+[31m-## 📞 Contacto[m
+[32m+[m[32m✅ **Capacidad técnica** - Dominio de stack tecnológico completo[m[41m  [m
+[32m+[m[32m✅ **Resolución de problemas** - Arquitectura escalable y mantenible[m[41m  [m
+[32m+[m[32m✅ **Innovación** - Aplicación moderna de tecnologías emergentes[m[41m  [m
+[32m+[m[32m✅ **Calidad** - Código robusto, seguro y bien documentado[m[41m  [m
+[32m+[m[32m✅ **Visión práctica** - Solución real a necesidades sociales[m[41m  [m
+ [m
+[31m-- **Email**: hola@citypaj.es[m
+[31m-- **Web**: https://citypaj.es[m
+[31m-- **GitHub**: https://github.com/citypaj[m
+[32m+[m[32mConsidero que este proyecto tiene potencial real de deployment y uso en la comunidad juvenil, contribuyendo al ecosistema digital local.[m[41m[m
+ [m
+ ---[m
+ [m
+[31m-**CityPaj** - Tu ciudad, tus anuncios, tu comunidad 🏙️[m
+[31m-# tfg[m
+[31m-# tfg[m
+[32m+[m[32m**🏙️ CityPaj - Tu ciudad, tus anuncios, tu comunidad**[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m*Trabajo de Fin de Grado*[m[41m  [m
+[32m+[m[32m#tfg #engineering #webdevelopment #typescript #react #nodejs[m[41m[m
+[41m+[m
+[1mdiff --git a/docker-compose.yml b/docker-compose.yml[m
+[1mindex cd24daf..11539ff 100644[m
+[1m--- a/docker-compose.yml[m
+[1m+++ b/docker-compose.yml[m
+[36m@@ -48,9 +48,10 @@[m [mservices:[m
+     build:[m
+       context: ./backend[m
+       dockerfile: Dockerfile[m
+[32m+[m[32m      target: production[m[41m[m
+     container_name: citypaj-backend[m
+     environment:[m
+[31m-      NODE_ENV: development[m
+[32m+[m[32m      NODE_ENV: production[m[41m[m
+       PORT: 3001[m
+       DB_HOST: postgres[m
+       DB_PORT: 5432[m
+[36m@@ -65,9 +66,6 @@[m [mservices:[m
+       LOG_LEVEL: info[m
+     ports:[m
+       - "3001:3001"[m
+[31m-    volumes:[m
+[31m-      - ./backend:/app[m
+[31m-      - /app/node_modules[m
+     depends_on:[m
+       postgres:[m
+         condition: service_healthy[m
+[36m@@ -76,7 +74,6 @@[m [mservices:[m
+     networks:[m
+       - citypaj-network[m
+     restart: unless-stopped[m
+[31m-    command: npm run dev[m
+ [m
+   # Frontend (Next.js)[m
+   frontend:[m

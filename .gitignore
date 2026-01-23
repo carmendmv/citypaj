@@ -53,3 +53,7 @@ Thumbs.db
 # Temporary files
 tmp/
 temp/
+anuncios-juvenil/
+target: production en Dockerfile
+anuncios-juvenil/
+target: production en Dockerfile

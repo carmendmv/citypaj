@@ -16,6 +16,7 @@ const nextConfig = {
   },
   async rewrites() {
     const apiUrlRaw = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
+<<<<<<< HEAD
     const apiUrlCandidate = apiUrlRaw.replace(/\/api\/?$/, '');
     const isDocker = fs.existsSync('/.dockerenv');
     let apiUrl = apiUrlCandidate;
@@ -25,6 +26,9 @@ const nextConfig = {
     if (/(:3001\b|localhost:3001\b|127\.0\.0\.1:3001\b)/.test(apiUrl)) {
       apiUrl = 'http://localhost:3002';
     }
+=======
+    const apiUrl = apiUrlRaw.replace(/\/api\/?$/, '');
+>>>>>>> 887dc43 (Añadidos cambios de frontend, backend y configs, excluyendo Dockerfile)
     return [
       {
         source: '/api/:path*',

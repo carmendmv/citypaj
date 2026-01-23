@@ -7,6 +7,7 @@ import {
   getAnuncios,
   getAnuncioById,
   createAnuncio,
+  createAnuncioPublico,
   updateAnuncio,
   deleteAnuncio,
   hideAnuncio,
@@ -175,9 +176,45 @@ const searchValidation = [
   ...queryValidation,
 ];
 
+const createAnuncioPublicoValidation = [
+  body('titulo')
+    .isLength({ min: 5, max: 200 })
+    .withMessage('El título debe tener entre 5 y 200 caracteres')
+    .trim()
+    .escape(),
+  body('descripcion')
+    .isLength({ min: 20, max: 2000 })
+    .withMessage('La descripción debe tener entre 20 y 2000 caracteres')
+    .trim(),
+  body('categoria')
+    .isIn(['educacion', 'empleo', 'vivienda', 'ocio', 'servicios', 'intercambios'])
+    .withMessage('Categoría no válida'),
+  body('subcategoria')
+    .optional()
+    .isString()
+    .trim(),
+  body('comunidad_autonoma')
+    .isString()
+    .isLength({ min: 2 })
+    .withMessage('La comunidad autónoma es obligatoria'),
+  body('provincia')
+    .isString()
+    .isLength({ min: 2 })
+    .withMessage('La provincia es obligatoria'),
+  body('email')
+    .isEmail()
+    .withMessage('Email no válido')
+    .normalizeEmail(),
+  body('telefono')
+    .optional()
+    .isString()
+    .trim(),
+];
+
 // Rutas públicas
 router.get('/', validate(queryValidation), getAnuncios);
 router.get('/search', validate(searchValidation), searchAnuncios);
+router.post('/publico', validate(createAnuncioPublicoValidation), createAnuncioPublico);
 router.get('/:id', validate([
   param('id').isUUID().withMessage('ID de anuncio no válido'),
 ]), getAnuncioById);
