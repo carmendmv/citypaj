@@ -77,8 +77,18 @@ app.use((_req: Request, res: Response, next: NextFunction) => {
 app.use('/api', limiter);
 app.use('/api/auth', authLimiter);
 
-// Health check
+// Health check endpoints
 app.get('/health', (_req: Request, res: Response) => {
+  res.status(200).json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: config.env,
+    version: process.env.npm_package_version || '1.0.0',
+  });
+});
+
+app.get('/api/health', (_req: Request, res: Response) => {
   res.status(200).json({
     status: 'ok',
     timestamp: new Date().toISOString(),
