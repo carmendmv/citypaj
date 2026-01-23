@@ -157,7 +157,7 @@ const Header: React.FC<HeaderProps> = memo(({
             {/* Logo y branding */}
             <div className="flex items-center">
               <Link
-                className="text-xl md:text-5xl font-serif tracking-tight text-black hover:text-orange-500 no-underline hover:no-underline transition-colors"
+                className="logo-link text-xl md:text-5xl font-serif tracking-tight text-black hover:text-orange-500 transition-colors"
                 href="/"
               >
                 CityPaj
