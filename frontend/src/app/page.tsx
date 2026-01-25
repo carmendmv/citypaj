@@ -317,7 +317,7 @@ export default function HomePage() {
                       localStorage.removeItem('comunidadAutonoma');
                     }
                   }}
-                  className="h-14 px-6 bg-white/90 backdrop-blur-md border-2 border-white/30 text-black font-medium text-base focus:outline-none focus:border-white/60 transition-all duration-300 cursor-pointer shadow-xl min-w-[280px]"
+                  className="h-12 px-6 bg-white/90 backdrop-blur-md border-2 border-white/30 text-black font-medium text-base focus:outline-none focus:border-white/60 transition-all duration-300 cursor-pointer shadow-xl min-w-[280px]"
                 >
                   <option value="">Selecciona tu comunidad</option>
                   {comunidades.map((c) => (
@@ -336,7 +336,7 @@ export default function HomePage() {
                     console.log('Buscando en:', comunidadAutonoma);
                   }
                 }}
-                className="h-14 px-8 bg-black text-white font-semibold text-base border-2 border-black hover:bg-orange-500 hover:border-orange-500 hover:text-black transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 min-w-[140px]"
+                className="h-12 px-8 bg-black text-white font-semibold text-base border-2 border-black hover:bg-orange-500 hover:border-orange-500 hover:text-black transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 min-w-[140px]"
               >
                 Buscar
               </button>
@@ -421,7 +421,14 @@ export default function HomePage() {
                 ? (categoria === 'intercambios' 
                     ? `Noticias comunitarias de ${comunidadAutonoma || 'España'}`
                     : `${categoriaInfo[categoria]?.label} en ${comunidadAutonoma || 'España'}`)
-                : `Últimos anuncios de ${comunidadAutonoma || 'España'}`
+                : (
+                    <Link 
+                      href={comunidadAutonoma ? `/anuncios/comunidad/${encodeURIComponent(comunidadAutonoma)}` : "/anuncios"}
+                      className="hover:text-orange-500 transition-colors"
+                    >
+                      Últimos anuncios de {comunidadAutonoma || 'España'}
+                    </Link>
+                  )
               }
             </h2>
           </div>

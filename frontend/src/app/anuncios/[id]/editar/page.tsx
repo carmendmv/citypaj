@@ -127,7 +127,7 @@ export default function ModificacionAnuncioPage() {
     <div className="min-h-screen bg-white">
       <Header />
 
-      <main className="w-[80%] max-w-6xl mx-auto px-6 py-14">
+      <main className="w-[65%] max-w-6xl mx-auto px-6 py-14">
         <div className="border-b border-black pb-6">
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-black">Modificar anuncio</h1>
           <p className="mt-2 font-sans text-sm text-[#666666]">Actualiza la información de tu anuncio</p>
