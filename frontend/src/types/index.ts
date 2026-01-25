@@ -213,6 +213,13 @@ export interface PaginatedResponse<T> extends ApiResponse<T[]> {
   };
 }
 
+export interface PaginationMeta {
+  pagina: number;
+  limite: number;
+  total: number;
+  total_paginas: number;
+}
+
 // Utilidades
 export type ModalidadAnuncio = 'venta' | 'regalo' | 'intercambio' | 'servicio';
 export type EstadoModeracion = 'pending' | 'approved' | 'rejected' | 'flagged';

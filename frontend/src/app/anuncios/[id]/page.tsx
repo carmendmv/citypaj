@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 
 interface AnuncioDetalle {
   id: string;
@@ -81,7 +83,9 @@ export default function AnuncioDetailPage({ params }: { params: { id: string } }
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-3xl mx-auto px-6 py-10">
+      <Header />
+
+      <div className="w-[80%] max-w-6xl mx-auto px-6 py-10">
         <div className="border-b border-black pb-6">
           <Link
             href="/"
@@ -150,6 +154,8 @@ export default function AnuncioDetailPage({ params }: { params: { id: string } }
           </div>
         ) : null}
       </div>
+
+      <Footer />
     </div>
   );
 }

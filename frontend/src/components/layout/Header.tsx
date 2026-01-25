@@ -1,20 +1,12 @@
 'use client';
 
-/**
- * Header Component - Componente principal de navegación
- * 
- * Propósito: Proporcionar navegación principal y branding de CityPaj
- * Arquitectura: Componente funcional con hooks de estado para interactividad
- * Optimización: Memoizado para evitar re-renders innecesarios
- * Accesibilidad: Navegación semántica con ARIA labels
- */
-
-import React, { useState, memo, useCallback } from 'react';
+import React, { useState, memo, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useAITranslation } from '@/lib/ai-translation';
 import { Search, Menu, X, User } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
-// Constantes para comunidades autónomas - optimización de rendimiento
 const COMUNIDADES_AUTONOMAS = [
   'Andalucía', 'Aragón', 'Asturias', 'Baleares', 'Canarias',
   'Cantabria', 'Castilla-La Mancha', 'Castilla y León', 'Cataluña',
@@ -22,7 +14,21 @@ const COMUNIDADES_AUTONOMAS = [
   'Murcia', 'Navarra', 'País Vasco', 'La Rioja'
 ];
 
-// Interfaces TypeScript para tipado estricto
+const IDIOMAS = [
+  { code: 'es', name: 'Español' },
+  { code: 'ca', name: 'Catalán' },
+  { code: 'va', name: 'Valenciano' },
+  { code: 'gl', name: 'Gallego' },
+  { code: 'eu', name: 'Euskera (vasco)' },
+  { code: 'oc', name: 'Aranés (occitano)' },
+  { code: 'ar', name: 'Árabe' },
+  { code: 'ro', name: 'Rumano' },
+  { code: 'en', name: 'Inglés' },
+  { code: 'fr', name: 'Francés' },
+  { code: 'zh', name: 'Chino' },
+  { code: 'ja', name: 'Japonés' }
+];
+
 interface HeaderProps {
   onComunidadChange?: (comunidad: string) => void;
   onSearch?: (codigo: string) => void;
@@ -32,9 +38,39 @@ interface HeaderProps {
   onLogout?: () => void;
 }
 
-/**
- * Componente Header - Navegación principal con funcionalidades avanzadas
- */
+const MENU_PRINCIPAL = [
+  {
+    categoria: 'ocio',
+    label: 'Ocio',
+    descripcion: 'Eventos, conciertos y cultura',
+    href: '/ocio'
+  },
+  {
+    categoria: 'servicios',
+    label: 'Servicios',
+    descripcion: 'Transporte, salud y vivienda',
+    href: '/servicios'
+  },
+  {
+    categoria: 'educacion',
+    label: 'Formación',
+    descripcion: 'Cursos, talleres y becas',
+    href: '/formacion'
+  },
+  {
+    categoria: 'empleo',
+    label: 'Empleo',
+    descripcion: 'Ofertas laborales y prácticas',
+    href: '/empleo'
+  },
+  {
+    categoria: 'intercambios',
+    label: 'Comunidad',
+    descripcion: 'Noticias y participación',
+    href: '/comunidad'
+  }
+];
+
 const Header: React.FC<HeaderProps> = memo(({
   onComunidadChange,
   onSearch,
@@ -44,76 +80,31 @@ const Header: React.FC<HeaderProps> = memo(({
   onLogout
 }) => {
   const router = useRouter();
+  const { t, currentLanguage, changeLanguage, getAvailableLanguages } = useAITranslation();
+  const { user, logout } = useAuth();
 
-  // Estados locales para controlar interactividad
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchCodigo, setSearchCodigo] = useState('');
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const MENU_PRINCIPAL = [
-    {
-      label: 'Ocio',
-      categoria: 'ocio',
-      href: '/ocio',
-      descripcion: 'Eventos, conciertos, cultura y planes juveniles en tu comunidad.',
-    },
-    {
-      label: 'Servicios',
-      categoria: 'servicios',
-      href: '/servicios',
-      descripcion: 'Transporte, salud juvenil, vivienda, ayudas y trámites.',
-    },
-    {
-      label: 'Formación',
-      categoria: 'educacion',
-      href: '/formacion',
-      descripcion: 'Cursos, talleres, becas y recursos educativos.',
-    },
-    {
-      label: 'Empleo',
-      categoria: 'empleo',
-      href: '/empleo',
-      descripcion: 'Ofertas, prácticas, voluntariado y oportunidades laborales.',
-    },
-    {
-      label: 'Comunidad',
-      categoria: 'intercambios',
-      href: '/comunidad',
-      descripcion: 'Espacio participativo: intercambio, propuestas y colaboración.',
-    },
-  ] as const;
-
-  /**
-   * Manejador de búsqueda de anuncios por código
-   */
   const handleSearch = useCallback(() => {
     if (searchCodigo.trim()) {
       if (onSearch) {
         onSearch(searchCodigo.trim());
       } else {
-        router.push(`/buscar?q=${encodeURIComponent(searchCodigo.trim())}`);
+        router.push(`/?buscar=${encodeURIComponent(searchCodigo.trim())}`);
         setIsMobileMenuOpen(false);
       }
     }
   }, [searchCodigo, onSearch, router]);
 
-  /**
-   * Manejador de selección de comunidad autónoma
-   */
-  const handleComunidadSelect = useCallback((comunidad: string) => {
-    onComunidadChange?.(comunidad);
-  }, [onComunidadChange]);
-
-  /**
-   * Manejador de menú móvil
-   */
-  const toggleMobileMenu = useCallback(() => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  }, [isMobileMenuOpen]);
-
-  const toggleUserMenu = useCallback(() => {
-    setIsUserMenuOpen((v) => !v);
-  }, []);
+  const handleComunidadSelect = useCallback(
+    (comunidad: string) => {
+      onComunidadChange?.(comunidad);
+      setIsMobileMenuOpen(false);
+    },
+    [onComunidadChange]
+  );
 
   const handleCategoriaSelect = useCallback(
     (categoria: string) => {
@@ -126,8 +117,36 @@ const Header: React.FC<HeaderProps> = memo(({
   const handleLogout = useCallback(() => {
     setIsUserMenuOpen(false);
     setIsMobileMenuOpen(false);
-    onLogout?.();
-  }, [onLogout]);
+    if (onLogout) {
+      onLogout();
+    } else {
+      void logout();
+    }
+  }, [onLogout, logout]);
+
+  
+  const dateLocale = useMemo(() => {
+    const lng = (currentLanguage || 'es').toLowerCase();
+    if (lng.startsWith('en')) return 'en-GB';
+    if (lng.startsWith('fr')) return 'fr-FR';
+    if (lng.startsWith('de')) return 'de-DE';
+    if (lng.startsWith('it')) return 'it-IT';
+    if (lng.startsWith('pt')) return 'pt-PT';
+    if (lng.startsWith('pl')) return 'pl-PL';
+    if (lng.startsWith('ru')) return 'ru-RU';
+    if (lng.startsWith('zh')) return 'zh-CN';
+    if (lng.startsWith('hi')) return 'hi-IN';
+    if (lng.startsWith('ar')) return 'ar';
+    return 'es-ES';
+  }, [currentLanguage]);
+
+  const toggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  }, [isMobileMenuOpen]);
+
+  const toggleUserMenu = useCallback(() => {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  }, [isUserMenuOpen]);
 
   return (
     <header 
@@ -136,25 +155,22 @@ const Header: React.FC<HeaderProps> = memo(({
       aria-label="Navegación principal"
     >
       <div className="max-w-7xl mx-auto px-6">
-        {/* Barra superior con información contextual */}
         <div className="hidden md:block py-2">
           <div className="flex justify-between items-center text-xs font-sans text-gray-600">
             <time dateTime={new Date().toISOString()}>
-              {new Date().toLocaleDateString('es-ES', {
+              {new Date().toLocaleDateString(dateLocale, {
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
               }).toUpperCase()}
             </time>
-            <span className="text-gray-600">EDICION ESPANA</span>
+            <span className="text-gray-600">LISTADO DE ANUNCIOS</span>
           </div>
         </div>
 
-        {/* Navegación principal */}
         <nav className="py-4" role="navigation" aria-label="Menú principal">
           <div className="flex items-center justify-between gap-6">
-            {/* Logo y branding */}
             <div className="flex items-center">
               <Link
                 className="logo-link text-xl md:text-5xl font-serif tracking-tight text-black hover:text-orange-500 transition-colors"
@@ -164,7 +180,6 @@ const Header: React.FC<HeaderProps> = memo(({
               </Link>
             </div>
 
-            {/* Navegación desktop - Links estilo NYT */}
             <div className="hidden lg:flex items-center gap-6">
               {MENU_PRINCIPAL.map((item) => (
                 <Link
@@ -179,9 +194,7 @@ const Header: React.FC<HeaderProps> = memo(({
               ))}
             </div>
 
-            {/* Acciones derecha */}
             <div className="flex items-center gap-3">
-              {/* Búsqueda */}
               <div className="hidden md:flex items-center">
                 <div className="relative">
                   <input
@@ -203,16 +216,36 @@ const Header: React.FC<HeaderProps> = memo(({
                 </div>
               </div>
 
-              {/* Publicar */}
               <Link
                 href="/publicar"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="hidden md:inline-flex items-center justify-center border border-black bg-black text-white px-3 py-2 text-sm font-sans hover:bg-orange-500 hover:border-orange-500 transition-colors"
+                className="hidden md:inline-flex items-center justify-center border border-black bg-black text-white px-3 py-2 text-sm font-sans hover:bg-orange-500 hover:border-orange-500 hover:text-black transition-colors"
               >
                 Publicar
               </Link>
 
-              {/* Perfil */}
+              <div className="hidden md:block">
+                <select
+                  value={currentLanguage}
+                  onChange={(e) => {
+                    const newLang = e.target.value;
+                    changeLanguage(newLang);
+                    // Forzar actualización inmediata
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 50);
+                  }}
+                  className="w-40 border border-black bg-white px-2 py-2 text-sm font-sans text-black focus:outline-none cursor-pointer"
+                  aria-label="Idioma"
+                >
+                  {getAvailableLanguages().map(idioma => (
+                    <option key={idioma.code} value={idioma.code}>
+                      {idioma.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <div className="relative hidden md:block">
                 <button
                   onClick={toggleUserMenu}
@@ -230,13 +263,15 @@ const Header: React.FC<HeaderProps> = memo(({
                     </div>
 
                     <div className="py-1">
-                      <Link
-                        href="/acceder"
-                        className="block px-4 py-2 font-sans text-sm text-black hover:bg-orange-50"
-                        onClick={() => setIsUserMenuOpen(false)}
-                      >
-                        Acceder / Registrarse
-                      </Link>
+                      {!user ? (
+                        <Link
+                          href="/acceder"
+                          className="block px-4 py-2 font-sans text-sm text-black hover:bg-orange-50"
+                          onClick={() => setIsUserMenuOpen(false)}
+                        >
+                          Acceder / Registrarse
+                        </Link>
+                      ) : null}
 
                       <Link
                         href="/mi-perfil"
@@ -254,19 +289,20 @@ const Header: React.FC<HeaderProps> = memo(({
                         Mis anuncios
                       </Link>
 
-                      <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="w-full text-left px-4 py-2 font-sans text-sm text-black hover:bg-orange-50"
-                      >
-                        Cerrar sesión
-                      </button>
+                      {user ? (
+                        <button
+                          type="button"
+                          onClick={handleLogout}
+                          className="w-full text-left px-4 py-2 font-sans text-sm text-black hover:bg-orange-50"
+                        >
+                          Cerrar sesión
+                        </button>
+                      ) : null}
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Botón menú móvil */}
               <button
                 onClick={toggleMobileMenu}
                 className="lg:hidden inline-flex items-center justify-center w-10 h-10 border border-black text-black"
@@ -278,32 +314,79 @@ const Header: React.FC<HeaderProps> = memo(({
             </div>
           </div>
 
-          {/* Menú móvil */}
           {isMobileMenuOpen && (
             <div className="lg:hidden mt-4 border-t border-black pt-4">
-              <div className="space-y-3">
-                {MENU_PRINCIPAL.map((item) => (
-                  <Link
-                    key={item.categoria}
-                    href={item.href}
-                    className="block w-full text-left"
-                    onClick={() => handleCategoriaSelect(item.categoria)}
+              <div className="space-y-4">
+                <div>
+                  <div className="font-sans text-xs text-gray-600 mb-2">COMUNIDAD AUTÓNOMA</div>
+                  <div className="flex items-center gap-2">
+                    <select
+                      id="comunidad-mobile"
+                      className="flex-1 px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none"
+                      defaultValue="Todas"
+                      onChange={(e) => handleComunidadSelect(e.target.value)}
+                    >
+                      <option value="Todas">Todas</option>
+                      {COMUNIDADES_AUTONOMAS.map((comunidad) => (
+                        <option key={comunidad} value={comunidad}>
+                          {comunidad}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <button
+                    onClick={() => {
+                      handleComunidadSelect('Todas');
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="mt-2 w-full bg-black text-white border border-black px-4 py-2 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors"
                   >
-                    <div className="text-base font-serif text-black hover:text-orange-500">{item.label}</div>
-                    <div className="mt-1 font-sans text-xs text-gray-600">{item.descripcion}</div>
+                    Buscar
+                  </button>
+                </div>
+
+                <div className="pt-3 border-t border-black">
+                  <Link
+                    href="/publicar"
+                    onClick={() => {
+                      handleComunidadSelect('Todas');
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="block w-full bg-black text-white border border-black px-4 py-3 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors text-center"
+                  >
+                    Publicar anuncio
                   </Link>
-                ))}
+                </div>
+
+                <div className="pt-3 border-t border-black">
+                  <div className="font-sans text-xs text-gray-600 mb-2">SECCIONES</div>
+                  <div className="space-y-2">
+                    {MENU_PRINCIPAL.map((item) => (
+                      <Link
+                        key={item.categoria}
+                        href={item.href}
+                        className="block w-full text-left"
+                        onClick={() => handleCategoriaSelect(item.categoria)}
+                      >
+                        <div className="text-base font-serif text-black hover:text-orange-500">{item.label}</div>
+                        <div className="mt-1 font-sans text-xs text-gray-600">{item.descripcion}</div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
 
                 <div className="pt-3 border-t border-black">
                   <div className="font-sans text-xs text-gray-600 mb-2">ZONA DE USUARIO</div>
                   <div className="space-y-2">
-                    <Link
-                      href="/acceder"
-                      className="block font-sans text-sm text-black hover:text-orange-500"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Acceder / Registrarse
-                    </Link>
+                    {!user ? (
+                      <Link
+                        href="/acceder"
+                        className="block font-sans text-sm text-black hover:text-orange-500"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Acceder / Registrarse
+                      </Link>
+                    ) : null}
 
                     <Link
                       href="/mi-perfil"
@@ -321,68 +404,40 @@ const Header: React.FC<HeaderProps> = memo(({
                       Mis anuncios
                     </Link>
 
-                    <button
-                      type="button"
-                      onClick={handleLogout}
-                      className="w-full text-left font-sans text-sm text-black hover:text-orange-500"
-                    >
-                      Cerrar sesión
-                    </button>
+                    {user ? (
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="w-full text-left font-sans text-sm text-black hover:text-orange-500"
+                      >
+                        Cerrar sesión
+                      </button>
+                    ) : null}
                   </div>
                 </div>
 
                 <div className="pt-3 border-t border-black">
-                  <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="comunidad-mobile">
-                    Comunidad autónoma
-                  </label>
+                  <div className="font-sans text-xs text-gray-600 mb-2">IDIOMA</div>
                   <select
-                    id="comunidad-mobile"
-                    className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none"
-                    defaultValue="Todas"
-                    onChange={(e) => handleComunidadSelect(e.target.value)}
+                    id="idioma-mobile"
+                    className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none cursor-pointer"
+                    value={currentLanguage}
+                    onChange={(e) => {
+                      const lang = e.target.value;
+                      changeLanguage(lang);
+                      setIsMobileMenuOpen(false);
+                      // Forzar actualización inmediata
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 50);
+                    }}
                   >
-                    <option value="Todas">Todas</option>
-                    {COMUNIDADES_AUTONOMAS.map((comunidad) => (
-                      <option key={comunidad} value={comunidad}>
-                        {comunidad}
+                    {getAvailableLanguages().map(idioma => (
+                      <option key={idioma.code} value={idioma.code}>
+                        {idioma.name}
                       </option>
                     ))}
                   </select>
-                </div>
-
-                <div className="pt-3 border-t border-black">
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      placeholder="Buscar..."
-                      value={searchCodigo}
-                      onChange={(e) => setSearchCodigo(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                      className="flex-1 px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none"
-                      aria-label="Buscar"
-                    />
-                    <button
-                      onClick={handleSearch}
-                      className="inline-flex items-center justify-center w-10 h-10 border border-black text-black"
-                      aria-label="Buscar"
-                    >
-                      <Search className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="pt-3">
-                  <Link
-                    href="/publicar"
-                    onClick={() => {
-                      handleComunidadSelect('Todas');
-                      onPublicar?.();
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="block text-center w-full border border-black bg-black text-white py-2 text-sm font-sans hover:bg-orange-500 hover:border-orange-500"
-                  >
-                    Publicar
-                  </Link>
                 </div>
               </div>
             </div>
@@ -391,9 +446,8 @@ const Header: React.FC<HeaderProps> = memo(({
       </div>
     </header>
   );
- });
+});
 
-// DisplayName para debugging
 Header.displayName = 'Header';
 
 export default Header;

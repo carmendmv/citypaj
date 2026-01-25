@@ -1,5 +1,8 @@
-import './globals.css';
-import type { Metadata } from 'next';
+import { Inter } from 'next/font/google'
+import type { Metadata } from 'next'
+import './globals.css'
+import { AuthProvider } from '@/context/AuthContext'
+import Providers from './providers';
 
 export const metadata: Metadata = {
   title: 'CityPaj - Tu ciudad, tus anuncios, tu comunidad',
@@ -64,7 +67,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <div id="root">
-          {children}
+          <Providers>{children}</Providers>
         </div>
       </body>
     </html>

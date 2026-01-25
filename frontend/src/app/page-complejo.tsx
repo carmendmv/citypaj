@@ -216,7 +216,7 @@ const useAnuncios = () => {
         orden: 'fecha_desc'
       });
 
-      const url = `http://localhost:3002/api/anuncios?${params.toString()}`;
+      const url = `/api/anuncios?${params.toString()}`;
 
       const response = await fetch(url, {
         method: 'GET',

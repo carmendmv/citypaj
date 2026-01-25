@@ -26,20 +26,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
-<<<<<<< HEAD
-=======
-    "@hookform/resolvers": "^3.3.0",
-    "zod": "^3.22.0",
-    "axios": "^1.5.0",
-    "react-query": "^3.39.0",
-    "zustand": "^4.4.0",
-    "react-router-dom": "^6.16.0",
-    "clsx": "^2.0.0",
-    "lucide-react": "^0.562.0",
-    "react-i18next": "^13.3.0",
-    "i18next": "^23.5.0",
-    "date-fns": "^2.30.0",
->>>>>>> 887dc43 (Añadidos cambios de frontend, backend y configs, excluyendo Dockerfile)
     "react-hot-toast": "^2.4.0",
     "react-i18next": "^13.3.0",
     "react-intersection-observer": "^9.5.0",
