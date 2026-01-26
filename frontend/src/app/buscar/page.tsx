@@ -45,7 +45,7 @@ export default function BuscarPage() {
     <div className="min-h-screen bg-white">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-6 py-14">
+      <main className="w-[90%] sm:max-w-7xl mx-auto px-6 py-14">
         <div className="border-b border-black pb-6">
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-black">Buscar</h1>
           <p className="mt-2 font-sans text-sm text-[#666666]">

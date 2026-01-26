@@ -18,21 +18,11 @@ export default function PublicarPage() {
 
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
-  const [categoria, setCategoria] = useState<Categoria>('servicios');
-  const [tipoAnuncio, setTipoAnuncio] = useState<'oferta' | 'demanda'>('oferta');
+  const [categoria, setCategoria] = useState<Categoria>('ocio');
 
-  // Lógica para redirigir según tipo de anuncio
-  useEffect(() => {
-    if (tipoAnuncio === 'oferta') {
-      setCategoria('servicios');
-    } else if (tipoAnuncio === 'demanda') {
-      setCategoria('empleo');
-    }
-  }, [tipoAnuncio]);
-
+  
   const [nombre, setNombre] = useState('');
   const [comunidadAutonoma, setComunidadAutonoma] = useState('');
-  const [provincia, setProvincia] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
   const [acceptedRules, setAcceptedRules] = useState(false);
@@ -55,7 +45,7 @@ export default function PublicarPage() {
   const onSubmit = async () => {
     setError(null);
 
-    if (!titulo.trim() || !descripcion.trim() || !nombre.trim() || !comunidadAutonoma.trim() || !provincia.trim() || !email.trim()) {
+    if (!titulo.trim() || !descripcion.trim() || !categoria || !nombre.trim() || !comunidadAutonoma.trim() || !email.trim()) {
       setError(t('publish_form.api_error'));
       return;
     }
@@ -79,7 +69,6 @@ export default function PublicarPage() {
           categoria,
           nombre,
           comunidad_autonoma: comunidadAutonoma,
-          provincia,
           email,
           telefono: telefono || undefined,
           turnstile_token: turnstileToken || undefined,
@@ -110,7 +99,7 @@ export default function PublicarPage() {
     <div className="min-h-screen bg-white">
       <Header />
 
-      <main className="w-[65%] max-w-6xl mx-auto px-6 py-14">
+      <main className="w-[90%] sm:w-[65%] max-w-6xl mx-auto px-6 py-14">
         <div className="border-b border-black pb-6">
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-black">{t('publish_form.title')}</h1>
           <p className="mt-2 font-sans text-sm text-[#666666]">{t('publish_form.subtitle')}</p>
@@ -147,26 +136,28 @@ export default function PublicarPage() {
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
+            
+            <div className="space-y-4">
               <div>
-                <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="tipo-anuncio">
-                  {t('publish_form.fields.offer_demand')}
+                <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="categoria">
+                  Categoría *
                 </label>
                 <select
-                  id="tipo-anuncio"
-                  value={tipoAnuncio}
-                  onChange={(e) => setTipoAnuncio(e.target.value as 'oferta' | 'demanda')}
+                  id="categoria"
+                  value={categoria}
+                  onChange={(e) => setCategoria(e.target.value as Categoria)}
                   className={`w-full px-3 py-2 text-sm font-sans border bg-white focus:outline-none transition-all ${
-                    error && !tipoAnuncio ? 'border-red-500' : 'border-black focus:border-orange-500 hover:bg-gray-100'
+                    error && !categoria ? 'border-red-500' : 'border-black focus:border-orange-500 hover:bg-gray-100'
                   }`}
                 >
-                  <option value="oferta">{t('publish_form.categories.oferta')}</option>
-                  <option value="demanda">{t('publish_form.categories.demanda')}</option>
+                  <option value="ocio">Ocio</option>
+                  <option value="servicios">Servicios</option>
+                  <option value="educacion">Formación</option>
+                  <option value="empleo">Empleo</option>
+                  <option value="intercambios">Comunidad</option>
                 </select>
               </div>
-            </div>
 
-            <div className="space-y-4">
               <div>
                 <label className="block font-sans text-xs text-gray-600 mb-2 sm:hidden" htmlFor="nombre-movil">
                   Nombre completo *
@@ -223,23 +214,7 @@ export default function PublicarPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
-              <div>
-                <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="provincia">
-                  Provincia *
-                </label>
-                <input
-                  id="provincia"
-                  value={provincia}
-                  onChange={(e) => setProvincia(e.target.value)}
-                  className={`w-full px-3 py-2 text-sm font-sans border bg-white focus:outline-none transition-all ${
-                    error && !provincia.trim() ? 'border-red-500' : 'border-black focus:border-orange-500 hover:border-orange-500'
-                  }`}
-                  placeholder="Tu provincia"
-                />
-              </div>
-            </div>
-
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="email">

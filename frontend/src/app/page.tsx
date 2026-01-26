@@ -1,508 +1,1001 @@
 'use client';
 
+
+
 import { useCallback, useEffect, useMemo, useState } from 'react';
+
 import Link from 'next/link';
+
 import { useSearchParams } from 'next/navigation';
+
 import Header from '@/components/layout/Header';
+
 import Footer from '@/components/layout/Footer';
+
 import Pagination from '@/components/ui/Pagination';
+
 import { generarAnunciosMasivos } from '@/data/anunciosMasivos';
+
 import { useComunidad } from '@/hooks/useComunidad';
+
 import { useAITranslation } from '@/lib/ai-translation';
 
+
+
 interface Anuncio {
+
   id: string;
+
   usuario_id: string;
+
   titulo: string;
+
   descripcion: string;
+
   categoria: string;
+
   subcategoria?: string;
+
   comunidad_autonoma: string;
+
   provincia: string;
+
   barrio?: string;
+
   precio?: number;
+
   modalidad: 'venta' | 'regalo' | 'intercambio' | 'servicio' | 'compra';
+
   contacto_email: boolean;
+
   contacto_telefono: boolean;
+
   contacto_anonimo: boolean;
+
   visible: boolean;
+
   estado_moderacion: 'pending' | 'approved' | 'rejected' | 'flagged';
+
   motivo_rechazo?: string;
+
   vistas: number;
+
   creado: string;
+
   actualizado: string;
+
   // Campos adicionales de joins
+
   usuario_nombre?: string;
+
   usuario_verificado?: boolean;
+
   numero_imagenes?: number;
+
   imagenes?: any[];
+
   es_favorito?: boolean;
+
 }
 
+
+
 interface PaginationMeta {
+
   pagina: number;
+
   limite: number;
+
   total: number;
+
   total_paginas: number;
+
 }
+
+
 
 type Categoria = 'ocio' | 'servicios' | 'educacion' | 'empleo' | 'intercambios' | 'vivienda' | null;
 
+
+
 export default function HomePage() {
+
   const { t } = useAITranslation();
+
   const searchParams = useSearchParams();
+
   const { comunidadAutonoma, setComunidadAutonoma } = useComunidad();
 
+
+
   useEffect(() => {
+
     const savedComunidad = localStorage.getItem('comunidadAutonoma');
+
     if (savedComunidad) {
+
       setComunidadAutonoma(savedComunidad);
+
     }
+
   }, []);
+
+
 
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
+
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
+
   const [apiError, setApiError] = useState<string | null>(null);
+
   const [categoria, setCategoria] = useState<Categoria | null>(null);
+
   const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(null);
+
   const [currentPage, setCurrentPage] = useState(1);
+
   const [anunciosPorComunidad, setAnunciosPorComunidad] = useState<{comunidad: string; anuncios: Anuncio[]}[]>([]);
+
   const [terminoBusqueda, setTerminoBusqueda] = useState<string>('');
 
+
+
   // Leer página actual y término de búsqueda de URL
+
   useEffect(() => {
+
     const pageFromUrl = searchParams.get('pagina');
+
     if (pageFromUrl) {
+
       const page = parseInt(pageFromUrl, 10);
+
       if (!isNaN(page) && page > 0) {
+
         setCurrentPage(page);
+
       }
+
     }
+
     
+
     const buscarFromUrl = searchParams.get('buscar');
+
     if (buscarFromUrl) {
+
       setTerminoBusqueda(buscarFromUrl);
+
     }
+
   }, [searchParams]);
 
+
+
   const categoriaInfo = useMemo(() => {
+
     return {
+
       ocio: {
+
         label: 'Ocio',
+
         intro: 'Contenido relacionado con el tiempo libre juvenil:',
+
         bullets: ['Eventos y actividades', 'Conciertos y cultura', 'Planes de ocio para jóvenes'],
+
         cierre: 'Incluye anuncios vinculados al ocio dentro de la comunidad autónoma.',
+
       },
+
       servicios: {
+
         label: 'Servicios',
+
         intro: 'Información útil para la vida diaria:',
+
         bullets: ['Transporte', 'Salud juvenil', 'Vivienda', 'Ayudas públicas', 'Trámites administrativos'],
+
         cierre: 'Se muestran anuncios relacionados con servicios disponibles en la comunidad.',
+
       },
+
       vivienda: {
+
         label: 'Vivienda',
+
         intro: 'Alojamiento y opciones residenciales vinculadas a oportunidades:',
+
         bullets: ['Habitaciones y pisos compartidos', 'Alojamiento para prácticas', 'Vivienda temporal cerca del trabajo'],
+
         cierre: 'Anuncios de vivienda filtrados por comunidad autónoma.',
+
       },
+
       educacion: {
+
         label: 'Formación',
+
         intro: 'Recursos educativos y formativos:',
+
         bullets: ['Cursos y talleres', 'Becas', 'Centros educativos'],
+
         cierre: 'Anuncios relacionados con formación dentro de la comunidad autónoma.',
+
       },
+
       empleo: {
+
         label: 'Empleo',
+
         intro: 'Oportunidades laborales para jóvenes:',
+
         bullets: ['Ofertas de empleo', 'Prácticas', 'Voluntariado'],
+
         cierre: 'Anuncios de empleo filtrados por comunidad autónoma.',
+
       },
+
       intercambios: {
+
         label: 'Comunidad',
+
         intro: 'Espacio participativo de la plataforma:',
+
         bullets: ['Blog comunitario', 'Publicación de propuestas por parte de los usuarios', 'Debate y comentarios entre jóvenes'],
+
         cierre: 'Favorece la participación activa y la creación de comunidad juvenil.',
+
       },
+
     } as const;
+
   }, []);
+
+
 
   const comunidades = useMemo(
+
     () => [
+
       'Andalucía',
+
       'Aragón',
+
       'Asturias',
+
       'Baleares',
+
       'Canarias',
+
       'Cantabria',
+
       'Castilla-La Mancha',
+
       'Castilla y León',
+
       'Cataluña',
+
       'Comunidad Valenciana',
+
       'Extremadura',
+
       'Galicia',
+
       'Madrid',
+
       'Murcia',
+
       'Navarra',
+
       'País Vasco',
+
       'La Rioja',
+
     ],
+
     []
+
   );
+
+
 
   const fetchAnunciosPaginated = useCallback(async (comunidad: string | null, categoriaFilter: Categoria, page: number = 1, retryCount: number = 0, busqueda: string = '') => {
+
     if (!comunidad) return { data: [], meta: { pagina: 1, limite: 15, total: 0, total_paginas: 0 } };
+
     // Usar directamente los anuncios masivos para demostración
+
     const allAnuncios = generarAnunciosMasivos(comunidad);
+
     
+
     // Ordenar por fecha (más reciente a más antiguo)
+
     const sortedAnuncios = [...allAnuncios].sort((a, b) => 
+
       new Date(b.creado).getTime() - new Date(a.creado).getTime()
+
     );
+
     
+
     // Filtrar por búsqueda si es necesario
+
     let filteredAnuncios = sortedAnuncios;
+
     if (busqueda.trim()) {
+
       const termino = busqueda.toLowerCase().trim();
+
       filteredAnuncios = sortedAnuncios.filter(anuncio => 
+
         anuncio.titulo.toLowerCase().includes(termino) ||
+
         anuncio.descripcion.toLowerCase().includes(termino) ||
+
         anuncio.usuario_nombre?.toLowerCase().includes(termino)
+
       );
+
     }
+
     
+
     // Filtrar por categoría si es necesario
+
     if (categoriaFilter) {
+
       filteredAnuncios = filteredAnuncios.filter(anuncio => anuncio.categoria === categoriaFilter);
+
     }
+
     
+
     const limit = 15;
+
     const start = (page - 1) * limit;
+
     const end = start + limit;
+
     const paginatedData = filteredAnuncios.slice(start, end);
 
+
+
     return {
+
       data: paginatedData,
+
       meta: {
+
         pagina: page,
+
         limite: limit,
+
         total: filteredAnuncios.length,
+
         total_paginas: Math.ceil(filteredAnuncios.length / limit),
+
       },
+
     };
+
   }, []);
+
+
 
   // Datos demo fallback para cuando la API falla
+
   const getDemoDataFallback = useCallback((comunidad: string | null, categoriaFilter: Categoria, page: number = 1) => {
+
     if (!comunidad) return { data: [], meta: { pagina: 1, limite: 15, total: 0, total_paginas: 0 } };
+
     const allAnuncios = generarAnunciosMasivos(comunidad);
+
     
+
     // Filtrar por categoría si es necesario
+
     const filteredAnuncios = categoriaFilter 
+
       ? allAnuncios.filter(anuncio => anuncio.categoria === categoriaFilter)
+
       : allAnuncios;
+
     
+
     const limit = 15;
+
     const start = (page - 1) * limit;
+
     const end = start + limit;
+
     const paginatedData = filteredAnuncios.slice(start, end);
 
+
+
     return {
+
       data: paginatedData,
+
       meta: {
+
         pagina: page,
+
         limite: limit,
+
         total: filteredAnuncios.length,
+
         total_paginas: Math.ceil(filteredAnuncios.length / limit),
+
       },
+
     };
+
   }, []);
 
+
+
   const fetchAnuncios = useCallback(
+
     async (comunidad: string | null, categoriaFilter: Categoria, page: number = 1) => {
+
       setLoading(true);
+
       setApiError(null);
+
       setAnuncios([]);
+
       setAnunciosPorComunidad([]);
+
       setPaginationMeta(null);
 
+
+
       try {
+
         if (!comunidad) {
+
           // Mostrar anuncios masivos para todas las comunidades
+
           const results = comunidades.map((c) => ({
+
             comunidad: c,
+
             anuncios: generarAnunciosMasivos(c).slice(0, 5),
+
           }));
+
           setAnunciosPorComunidad(results);
+
         } else if (comunidad) {
+
           // Usar paginación para comunidad específica con búsqueda
+
           const result = await fetchAnunciosPaginated(comunidad, categoriaFilter, page, 0, terminoBusqueda);
+
           setAnuncios(result.data);
+
           setPaginationMeta(result.meta);
+
         }
+
       } catch {
+
         setAnuncios([]);
+
         setAnunciosPorComunidad([]);
+
         setPaginationMeta(null);
+
       } finally {
+
         setLoading(false);
+
       }
+
     },
+
     [comunidades, fetchAnunciosPaginated, terminoBusqueda]
+
   );
 
+
+
   useEffect(() => {
+
     if (comunidadAutonoma) {
+
       void fetchAnuncios(comunidadAutonoma, categoria, currentPage);
+
     }
+
   }, [fetchAnuncios, comunidadAutonoma, categoria, currentPage]);
 
+
+
   const formatFecha = (iso: string) => {
+
     const d = new Date(iso);
+
     if (Number.isNaN(d.getTime())) return '';
+
     return d.toLocaleDateString('es-ES', {
+
       year: 'numeric',
+
       month: 'short',
+
       day: 'numeric',
+
     });
+
   };
+
+
 
   const resumen100 = (text: string) => {
+
     const trimmed = (text || '').trim();
+
     if (trimmed.length <= 100) return trimmed;
+
     return `${trimmed.slice(0, 97)}...`;
+
   };
 
+
+
   return (
+
     <div className="min-h-screen bg-white">
+
       <Header
+
         onCategoriaChange={(cat: string) => setCategoria(cat as Categoria)}
+
       />
 
+
+
       {/* Hero Section - Foto de fondo colaboración */}
+
       <section className="relative h-[70vh] overflow-hidden mb-16">
+
         {/* Fondo de imagen con overlay */}
+
         <div className="absolute inset-0">
+
           <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/30 to-black/60"></div>
+
           <img 
+
             src="/fondo-hero.jpg"
+
             alt="Colaboración en equipo"
+
             className="w-full h-full object-cover"
+
           />
+
         </div>
+
+
 
         <div className="relative z-10 h-full flex items-center justify-center px-6">
+
           <div className="text-center max-w-5xl mx-auto">
+
             {/* Título más fino y elegante */}
+
             <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-light text-white mb-8 leading-tight tracking-wide drop-shadow-2xl">
+
               CityPaj
+
             </h1>
+
             
+
             {/* Subtítulo elegante */}
+
             <p className="font-sans text-xl sm:text-2xl text-white/90 mb-16 max-w-3xl mx-auto leading-relaxed drop-shadow-lg font-light">
+
               Tu ciudad, tus anuncios, tu comunidad
+
             </p>
 
+
+
             {/* Selectores elegantes con fondo cristal */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+
               <div className="relative group">
+
                 <select
+
                   value={comunidadAutonoma || ''}
+
                   onChange={(e) => {
+
                     const comunidad = e.target.value || '';
+
                     setComunidadAutonoma(comunidad);
+
                     if (comunidad) {
+
                       localStorage.setItem('comunidadAutonoma', comunidad);
+
                     } else {
+
                       localStorage.removeItem('comunidadAutonoma');
+
                     }
+
                   }}
-                  className="h-12 px-6 bg-white/90 backdrop-blur-md border-2 border-white/30 text-black font-medium text-base focus:outline-none focus:border-white/60 transition-all duration-300 cursor-pointer shadow-xl min-w-[280px]"
+
+                  className="h-12 px-4 sm:px-6 bg-white/90 backdrop-blur-md border-2 border-white/30 text-black font-medium text-sm sm:text-base focus:outline-none focus:border-white/60 transition-all duration-300 cursor-pointer shadow-xl min-w-[240px] sm:min-w-[280px]"
+
                 >
+
                   <option value="">Selecciona tu comunidad</option>
+
                   {comunidades.map((c) => (
+
                     <option key={c} value={c}>
+
                       {c}
+
                     </option>
+
                   ))}
+
                 </select>
+
                 <div className="absolute inset-0 bg-white/20 backdrop-blur-sm border-2 border-white/30 rounded-lg -z-10 group-hover:border-white/50 transition-colors duration-300"></div>
+
               </div>
+
+
 
               <button
+
                 onClick={() => {
+
                   // Lógica de búsqueda
+
                   if (comunidadAutonoma) {
+
                     console.log('Buscando en:', comunidadAutonoma);
+
                   }
+
                 }}
-                className="h-12 px-8 bg-black text-white font-semibold text-base border-2 border-black hover:bg-orange-500 hover:border-orange-500 hover:text-black transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 min-w-[140px]"
+
+                className="h-12 px-6 sm:px-8 bg-black text-white font-semibold text-sm sm:text-base border-2 border-black hover:bg-orange-500 hover:border-orange-500 hover:text-black transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 min-w-[120px] sm:min-w-[140px]"
+
               >
+
                 Buscar
+
               </button>
+
             </div>
+
           </div>
+
         </div>
+
       </section>
 
-      <main className="w-[80%] max-w-6xl mx-auto px-6 py-16">
+
+
+      <main className="w-[90%] sm:w-[80%] max-w-6xl mx-auto px-6 py-16">
+
         {/* Cómo funciona - Diseño Elegante */}
+
         <section className="mb-20 border border-solid border-black p-8">
+
           <div className="text-center mb-16">
+
             <h2 className="font-serif text-4xl sm:text-5xl font-bold text-black mb-4">Cómo funciona CityPaj</h2>
+
             <p className="font-sans text-lg text-gray-600 max-w-2xl mx-auto">Descubre cómo nuestra plataforma conecta gente de tu comunidad</p>
+
           </div>
+
           
+
           <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-start">
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12 items-start">
+
               {/* Paso 1 */}
+
               <div className="text-center">
+
                 <div className="flex flex-col items-center">
+
                   <div className="w-12 h-12 bg-orange-200 text-orange-800 rounded-full flex items-center justify-center font-bold text-lg mb-4 border border-orange-300">
+
                     1
+
                   </div>
+
                   <h3 className="font-serif text-xl font-bold text-black mb-4">Explora por Categoría</h3>
+
                   <p className="font-light text-gray-700 text-sm leading-relaxed mb-6">
+
                     Navega por nuestras secciones especializadas:
+
                   </p>
+
                   <div className="flex flex-wrap gap-2 justify-center">
+
                     <Link href="/ocio" className="px-3 py-1 border border-black text-black hover:bg-orange-100 transition-all font-light text-xs text-center">
+
                       Ocio
+
                     </Link>
+
                     <Link href="/servicios" className="px-3 py-1 border border-black text-black hover:bg-orange-100 transition-all font-light text-xs text-center">
+
                       Servicios
+
                     </Link>
+
                     <Link href="/formacion" className="px-3 py-1 border border-black text-black hover:bg-orange-100 transition-all font-light text-xs text-center">
+
                       Formación
+
                     </Link>
+
                     <Link href="/empleo" className="px-3 py-1 border border-black text-black hover:bg-orange-100 transition-all font-light text-xs text-center">
+
                       Empleo
+
                     </Link>
+
                     <Link href="/comunidad" className="px-3 py-1 border border-black text-black hover:bg-orange-100 transition-all font-light text-xs text-center">
+
                       Comunidad
+
                     </Link>
+
                   </div>
+
                 </div>
+
               </div>
+
+
 
               {/* Paso 2 */}
+
               <div className="text-center">
+
                 <div className="flex flex-col items-center">
+
                   <div className="w-12 h-12 bg-blue-200 text-blue-800 rounded-full flex items-center justify-center font-bold text-lg mb-4 border border-blue-300">
+
                     2
+
                   </div>
+
                   <h3 className="font-serif text-xl font-bold text-black mb-4">Filtra por Ubicación</h3>
+
                   <p className="font-light text-gray-700 text-sm leading-relaxed">
+
                     Selecciona tu comunidad autónoma para encontrar oportunidades cerca de ti. Contenido local y relevante.
+
                   </p>
+
                 </div>
+
               </div>
+
+
 
               {/* Paso 3 */}
+
               <div className="text-center">
+
                 <div className="flex flex-col items-center">
+
                   <div className="w-12 h-12 bg-green-200 text-green-800 rounded-full flex items-center justify-center font-bold text-lg mb-4 border border-green-300">
+
                     3
+
                   </div>
+
                   <h3 className="font-serif text-xl font-bold text-black mb-4">Conecta y Participa</h3>
+
                   <p className="font-light text-gray-700 text-sm leading-relaxed">
+
                     Contacta directamente con los anunciantes, publica tus propios anuncios y únete a la comunidad juvenil.
+
                   </p>
+
                 </div>
+
               </div>
+
             </div>
+
           </div>
+
         </section>
 
-        <div className="flex items-end justify-between gap-6 border-b border-black pb-6 mt-10">
+
+
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 border-b border-black pb-4 sm:pb-6 mt-10">
+
           <div>
+
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-black">
+
               {categoria 
+
                 ? (categoria === 'intercambios' 
+
                     ? `Noticias comunitarias de ${comunidadAutonoma || 'España'}`
+
                     : `${categoriaInfo[categoria]?.label} en ${comunidadAutonoma || 'España'}`)
+
                 : (
+
                     <Link 
                       href={comunidadAutonoma ? `/anuncios/comunidad/${encodeURIComponent(comunidadAutonoma)}` : "/anuncios"}
-                      className="hover:text-orange-500 transition-colors"
+                      className="hover:text-orange-500 transition-colors flex items-center gap-2"
                     >
                       Últimos anuncios de {comunidadAutonoma || 'España'}
+                      <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                      </svg>
                     </Link>
+
                   )
+
               }
+
             </h2>
+
           </div>
+
           <div className="hidden sm:block font-sans text-sm text-[#666666]">
+
             {new Date().toLocaleDateString('es-ES', {
+
               weekday: 'long',
+
               year: 'numeric',
+
               month: 'long',
+
               day: 'numeric',
+
             })}
+
           </div>
+
         </div>
 
+
+
         {categoria ? (
+
           <section className="mt-8 border border-black p-6">
+
             <div className="font-sans text-sm text-black/80 leading-relaxed">
+
               <div className="font-medium text-black">{categoriaInfo[categoria]?.intro}</div>
+
               <ul className="mt-3 list-disc pl-5 space-y-1">
+
                 {categoriaInfo[categoria]?.bullets.map((b: string) => (
+
                   <li key={b}>{b}</li>
+
                 ))}
+
               </ul>
+
               <div className="mt-3">{categoriaInfo[categoria]?.cierre}</div>
+
             </div>
+
           </section>
+
         ) : null}
 
+
+
         {loading ? (
+
           <div className="mt-10 border border-black px-6 py-4 font-sans text-sm text-gray-700 inline-block">{t('common.loading')}</div>
+
         ) : comunidadAutonoma ? (
+
           <>
+
             {apiError ? (
+
               <div className="mt-10 border border-black p-6">
+
                 <p className="font-sans text-sm text-black">{apiError}</p>
+
                 <p className="mt-2 font-sans text-sm text-[#666666]">
+
                   Asegúrate de que el backend esté arrancado en <span className="font-mono">http://localhost:3002</span>.
+
                 </p>
+
               </div>
+
             ) : null}
 
+
+
             <div className="mt-10 border border-black bg-white">
+
               {anuncios.length === 0 ? (
+
                 <div className="p-8 text-center">
+
                   <div className="text-gray-500 mb-4">
+
                     <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+
                     </svg>
+
                     <p className="text-lg font-medium">No hay anuncios disponibles</p>
+
                     <p className="text-sm text-gray-500 mt-2">
+
                       En {comunidadAutonoma}
+
                       {categoria ? ` en la categoría ${categoriaInfo[categoria]?.label}` : ''}
+
                     </p>
+
                   </div>
+
                 </div>
+
               ) : (
+
                 <>
+
                   {/* Lista de anuncios en filas - más estrechos y elegantes */}
+
                   <div className="divide-y divide-black">
+
                     {anuncios.map((anuncio) => (
+
                       <Link
+
                         key={anuncio.id}
+
                         href={`/anuncios/${anuncio.id}`}
+
                         className="block py-2 px-4 hover:bg-gray-50 transition-colors"
+
                       >
-                        <div className="flex items-center justify-between">
+
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
                           <div className="flex-1">
-                            <h3 className="font-serif text-lg font-bold text-black mb-1 hover:text-orange-500 transition-colors">
+                            <h3 className="font-serif text-base sm:text-lg font-bold text-black mb-1 hover:text-orange-500 transition-colors">
                               {anuncio.titulo}
                             </h3>
-                            <p className="font-light text-gray-600 line-clamp-1 text-sm">
-                              {resumen100(anuncio.descripcion)}
+                            <p className="font-light text-gray-600 text-xs sm:text-sm">
+                              {anuncio.descripcion}
                             </p>
                           </div>
-                          <div className="flex items-center space-x-4 text-xs text-gray-500 ml-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs text-gray-500 sm:ml-4">
                             <span className="font-medium">
                               {anuncio.usuario_nombre || 'Anónimo'}
                             </span>
@@ -511,111 +1004,213 @@ export default function HomePage() {
                             </span>
                           </div>
                         </div>
+
                       </Link>
+
                     ))}
+
                   </div>
 
+
+
                   {/* Paginación elegante - números más grandes, negros, serifa, sin fondo */}
+
                   {paginationMeta && (
+
                     <div className="border-t border-black p-6">
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm text-gray-600">
+
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
+
+                        <div className="text-xs sm:text-sm text-gray-600">
+
                           Mostrando {anuncios.length} de {paginationMeta.total} anuncios
+
                         </div>
-                        <div className="flex items-center space-x-2">
+
+                        <div className="flex items-center justify-center sm:justify-end space-x-1 sm:space-x-2">
+
                           {/* Números de página del 1 al 7 */}
+
                           {Array.from({ length: Math.min(7, paginationMeta.total_paginas) }, (_, i) => i + 1).map((pageNum) => (
+
                             <button
+
                               key={pageNum}
+
                               onClick={() => {
+
                                 setCurrentPage(pageNum);
+
                                 const params = new URLSearchParams(window.location.search);
+
                                 params.set('pagina', pageNum.toString());
+
                                 window.history.pushState(null, '', `?${params.toString()}`);
+
                               }}
-                              className={`px-3 py-1 text-lg font-serif font-bold transition-all hover:text-orange-500 ${
+
+                              className={`px-2 sm:px-3 py-1 text-base sm:text-lg font-serif font-bold transition-all hover:text-orange-500 ${
                                 paginationMeta.pagina === pageNum
-                                  ? 'text-black text-xl'
+                                  ? 'text-black text-lg sm:text-xl'
                                   : 'text-black hover:text-orange-500'
                               }`}
+
                             >
+
                               {pageNum}
+
                             </button>
+
                           ))}
+
                           
+
                           {paginationMeta.total_paginas > 7 && (
+
                             <>
-                              <span className="px-2 text-gray-500 font-serif text-lg">...</span>
+
+                              <span className="px-1 sm:px-2 text-gray-500 font-serif text-base sm:text-lg">...</span>
+
                               <button
+
                                 onClick={() => {
+
                                   setCurrentPage(paginationMeta.total_paginas);
+
                                   const params = new URLSearchParams(window.location.search);
+
                                   params.set('pagina', paginationMeta.total_paginas.toString());
+
                                   window.history.pushState(null, '', `?${params.toString()}`);
+
                                 }}
-                                className="px-3 py-1 text-lg font-serif font-bold text-black hover:text-orange-500 transition-all"
+
+                                className="px-2 sm:px-3 py-1 text-base sm:text-lg font-serif font-bold text-black hover:text-orange-500 transition-all"
+
                               >
+
                                 {paginationMeta.total_paginas}
+
                               </button>
+
                             </>
+
                           )}
+
                         </div>
+
                       </div>
+
                     </div>
+
                   )}
+
                 </>
+
               )}
+
             </div>
+
           </>
+
         ) : (
+
           <div className="mt-10 space-y-14">
+
             {apiError ? (
+
               <div className="border border-black p-6">
+
                 <p className="font-sans text-sm text-black">{apiError}</p>
+
                 <p className="mt-2 font-sans text-sm text-[#666666]">
+
                   Asegúrate de que el backend esté arrancado en <span className="font-mono">http://localhost:3002</span>.
+
                 </p>
+
               </div>
+
             ) : null}
 
+
+
             {anunciosPorComunidad.map((grupo) => (
+
               <section key={grupo.comunidad}>
-                <div className="flex items-end justify-between gap-6 border-b border-black pb-4">
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-black">{grupo.comunidad}</h3>
+
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-6 border-b border-black pb-3 sm:pb-4">
+                  <h3 className="font-serif text-lg sm:text-xl sm:text-2xl font-bold text-black">{grupo.comunidad}</h3>
                   <div className="hidden sm:block font-sans text-xs text-[#666666]">{t('home.spain')}</div>
                 </div>
 
+
+
                 {grupo.anuncios.length === 0 ? (
+
                   <div className="mt-6 border border-black p-5">
+
                     <p className="font-sans text-sm text-[#666666]">{t('home.no_ads')}</p>
+
                   </div>
+
                 ) : (
-                  <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                  <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+
                     {grupo.anuncios.map((anuncio) => (
+
                       <Link
+
                         key={anuncio.id}
+
                         href={`/anuncios/${anuncio.id}`}
-                        className="group block border border-black p-4 hover:border-orange-500 transition-colors h-full min-h-[160px] flex flex-col"
+
+                        className="group block border border-black p-3 sm:p-4 hover:border-orange-500 transition-colors h-full min-h-[140px] sm:min-h-[160px] flex flex-col"
+
                       >
-                        <h4 className="font-serif text-lg font-bold text-black leading-tight group-hover:text-orange-500 transition-colors cp-clamp-2">
+
+                        <h4 className="font-serif text-base sm:text-lg font-bold text-black leading-tight group-hover:text-orange-500 transition-colors">
+
                           {anuncio.titulo}
+
                         </h4>
-                        <p className="mt-2 font-sans text-sm text-black/80 leading-relaxed cp-clamp-2">{resumen100(anuncio.descripcion)}</p>
-                        <div className="mt-auto pt-3 font-sans text-xs text-[#666666] flex justify-between">
+
+                        <p className="mt-2 font-sans text-xs sm:text-sm text-black/80 leading-relaxed">{anuncio.descripcion}</p>
+
+                        <div className="mt-auto pt-2 sm:pt-3 font-sans text-xs text-[#666666] flex flex-col sm:flex-row sm:justify-between gap-1">
+
                           <span>{formatFecha(anuncio.creado)}</span>
+
                           {anuncio.usuario_nombre && <span>{anuncio.usuario_nombre}</span>}
+
                         </div>
+
                       </Link>
+
                     ))}
+
                   </div>
+
                 )}
+
               </section>
+
             ))}
+
           </div>
+
         )}
+
       </main>
 
+
+
       <Footer />
+
     </div>
+
   );
+
 }
+

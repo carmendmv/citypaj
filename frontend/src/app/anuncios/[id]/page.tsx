@@ -85,7 +85,7 @@ export default function AnuncioDetailPage({ params }: { params: { id: string } }
     <div className="min-h-screen bg-white">
       <Header />
 
-      <div className="w-[80%] max-w-6xl mx-auto px-6 py-10">
+      <div className="w-[90%] sm:w-[80%] max-w-6xl mx-auto px-6 py-10">
         <div className="border-b border-black pb-6">
           <Link
             href="/"

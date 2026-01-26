@@ -136,7 +136,7 @@ export default function AnunciosPage() {
     <div className="min-h-screen bg-white">
       <Header />
 
-      <main className="w-[80%] max-w-6xl mx-auto px-6 py-16">
+      <main className="w-[90%] sm:w-[80%] max-w-6xl mx-auto px-6 py-16">
         <div className="flex items-end justify-between gap-6 border-b border-black pb-6 mt-10">
           <div>
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-black">
@@ -180,16 +180,16 @@ export default function AnunciosPage() {
                         href={`/anuncios/${anuncio.id}`}
                         className="block py-2 px-4 hover:bg-gray-50 transition-colors"
                       >
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
                           <div className="flex-1">
-                            <h3 className="font-serif text-lg font-bold text-black mb-1 hover:text-orange-500 transition-colors">
+                            <h3 className="font-serif text-base sm:text-lg font-bold text-black mb-1 hover:text-orange-500 transition-colors">
                               {anuncio.titulo}
                             </h3>
-                            <p className="font-light text-gray-600 line-clamp-1 text-sm">
-                              {resumen100(anuncio.descripcion)}
+                            <p className="font-light text-gray-600 text-xs sm:text-sm">
+                              {anuncio.descripcion}
                             </p>
                           </div>
-                          <div className="flex items-center space-x-4 text-xs text-gray-500 ml-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs text-gray-500 sm:ml-4">
                             <span className="font-medium">
                               {anuncio.usuario_nombre || 'Anónimo'}
                             </span>
@@ -208,11 +208,11 @@ export default function AnunciosPage() {
                   {/* Paginación elegante */}
                   {paginationMeta && (
                     <div className="border-t border-black p-6">
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm text-gray-600">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
+                        <div className="text-xs sm:text-sm text-gray-600">
                           Mostrando {anuncios.length} de {paginationMeta.total} anuncios
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center justify-center sm:justify-end space-x-1 sm:space-x-2">
                           {/* Números de página del 1 al 7 */}
                           {Array.from({ length: Math.min(7, paginationMeta.total_paginas) }, (_, i) => i + 1).map((pageNum) => (
                             <button
@@ -223,9 +223,9 @@ export default function AnunciosPage() {
                                 params.set('pagina', pageNum.toString());
                                 window.history.pushState(null, '', `?${params.toString()}`);
                               }}
-                              className={`px-3 py-1 text-lg font-serif font-bold transition-all hover:text-orange-500 ${
+                              className={`px-2 sm:px-3 py-1 text-base sm:text-lg font-serif font-bold transition-all hover:text-orange-500 ${
                                 paginationMeta.pagina === pageNum
-                                  ? 'text-black text-xl'
+                                  ? 'text-black text-lg sm:text-xl'
                                   : 'text-black hover:text-orange-500'
                               }`}
                             >
@@ -235,7 +235,7 @@ export default function AnunciosPage() {
                           
                           {paginationMeta.total_paginas > 7 && (
                             <>
-                              <span className="px-2 text-gray-500 font-serif text-lg">...</span>
+                              <span className="px-1 sm:px-2 text-gray-500 font-serif text-base sm:text-lg">...</span>
                               <button
                                 onClick={() => {
                                   setCurrentPage(paginationMeta.total_paginas);
@@ -243,7 +243,7 @@ export default function AnunciosPage() {
                                   params.set('pagina', paginationMeta.total_paginas.toString());
                                   window.history.pushState(null, '', `?${params.toString()}`);
                                 }}
-                                className="px-3 py-1 text-lg font-serif font-bold text-black hover:text-orange-500 transition-all"
+                                className="px-2 sm:px-3 py-1 text-base sm:text-lg font-serif font-bold text-black hover:text-orange-500 transition-all"
                               >
                                 {paginationMeta.total_paginas}
                               </button>

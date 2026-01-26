@@ -176,6 +176,14 @@ img {
     padding-bottom: env(safe-area-inset-bottom);
   }
 
+  .cp-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+  }
+
   .cp-clamp-2 {
     overflow: hidden;
     display: -webkit-box;
