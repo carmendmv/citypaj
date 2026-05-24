@@ -66,8 +66,8 @@ const Footer: React.FC = memo(() => {
                 <Link href="/formacion" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
                   Formación
                 </Link>
-                <Link href="/comunidad" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
-                  Comunidad
+                <Link href="/buzon-sugerencias" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
+                  Buzón de Sugerencias
                 </Link>
               </div>
             </nav>

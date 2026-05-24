@@ -137,22 +137,28 @@ export default function AdminSugerencias() {
             <h3 className="text-sm font-medium text-gray-600 mb-2">Prioridad Alta/Crítica</h3>
             <p className="text-3xl font-bold text-red-600">
               {estadisticas.porPrioridad
-                .filter(p => p.prioridad === 'alta' || p.prioridad === 'critica')
-                .reduce((sum, p) => sum + p.count, 0)}
+                ? estadisticas.porPrioridad
+                    .filter(p => p.prioridad === 'alta' || p.prioridad === 'critica')
+                    .reduce((sum, p) => sum + p.count, 0)
+                : 0}
             </p>
           </div>
           
           <div className="bg-white border border-black p-6">
             <h3 className="text-sm font-medium text-gray-600 mb-2">Pendientes</h3>
             <p className="text-3xl font-bold text-yellow-600">
-              {estadisticas.porEstado.find(e => e.estado === 'pendiente')?.count || 0}
+              {estadisticas.porEstado
+                ? estadisticas.porEstado.find(e => e.estado === 'pendiente')?.count || 0
+                : 0}
             </p>
           </div>
           
           <div className="bg-white border border-black p-6">
             <h3 className="text-sm font-medium text-gray-600 mb-2">En Progreso</h3>
             <p className="text-3xl font-bold text-blue-600">
-              {estadisticas.porEstado.find(e => e.estado === 'en_progreso')?.count || 0}
+              {estadisticas.porEstado
+                ? estadisticas.porEstado.find(e => e.estado === 'en_progreso')?.count || 0
+                : 0}
             </p>
           </div>
         </div>
@@ -163,7 +169,7 @@ export default function AdminSugerencias() {
           <div className="bg-white border border-black p-6">
             <h3 className="text-lg font-semibold text-black mb-4">Sugerencias por Categoría</h3>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={estadisticas.porCategoria}>
+              <BarChart data={estadisticas.porCategoria || []}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="categoria" />
                 <YAxis />
@@ -179,7 +185,7 @@ export default function AdminSugerencias() {
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
-                  data={estadisticas.porPrioridad}
+                  data={estadisticas.porPrioridad || []}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
@@ -188,7 +194,7 @@ export default function AdminSugerencias() {
                   fill="#8884d8"
                   dataKey="count"
                 >
-                  {estadisticas.porPrioridad.map((entry, index) => (
+                  {(estadisticas.porPrioridad || []).map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={PRIORIDAD_COLORS[entry.prioridad as keyof typeof PRIORIDAD_COLORS]} />
                   ))}
                 </Pie>
@@ -215,7 +221,7 @@ export default function AdminSugerencias() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {estadisticas.recientes.map((sugerencia) => (
+                {(estadisticas.recientes || []).map((sugerencia) => (
                   <tr key={sugerencia.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">{sugerencia.titulo}</div>
@@ -263,15 +269,21 @@ export default function AdminSugerencias() {
             <div className="p-4 bg-red-50 border border-red-200">
               <h4 className="font-medium text-red-800 mb-2">⚠️ Prioridades Críticas</h4>
               <p className="text-sm text-red-700">
-                {estadisticas.porPrioridad.find(p => p.prioridad === 'critica')?.count || 0} sugerencias requieren atención urgente.
+                {estadisticas.porPrioridad
+                  ? estadisticas.porPrioridad.find(p => p.prioridad === 'critica')?.count || 0
+                  : 0} sugerencias requieren atención urgente.
               </p>
             </div>
             
             <div className="p-4 bg-blue-50 border border-blue-200">
               <h4 className="font-medium text-blue-800 mb-2">🎯 Categoría más Demandada</h4>
               <p className="text-sm text-blue-700">
-                {estadisticas.porCategoria.length > 0 ? estadisticas.porCategoria.reduce((max, curr) => curr.count > max.count ? curr : max).categoria : 'N/A'} 
-                {' '}con {estadisticas.porCategoria.length > 0 ? Math.max(...estadisticas.porCategoria.map(c => c.count)) : 0} solicitudes.
+                {estadisticas.porCategoria && estadisticas.porCategoria.length > 0 
+                  ? estadisticas.porCategoria.reduce((max, curr) => curr.count > max.count ? curr : max).categoria 
+                  : 'N/A'} 
+                {' '}con {estadisticas.porCategoria && estadisticas.porCategoria.length > 0 
+                  ? Math.max(...estadisticas.porCategoria.map(c => c.count)) 
+                  : 0} solicitudes.
               </p>
             </div>
           </div>
