@@ -8,7 +8,6 @@ import Footer from '@/components/layout/Footer';
 import Pagination from '@/components/ui/Pagination';
 import { generarAnunciosMasivos } from '@/data/anunciosMasivos';
 import { useComunidad } from '@/hooks/useComunidad';
-import { useAITranslation } from '@/lib/ai-translation';
 
 interface Anuncio {
   id: string;
@@ -48,8 +47,7 @@ interface PaginationMeta {
 
 export default function AnunciosComunidadPage({ params }: { params: { comunidad: string } }) {
   const { comunidad } = params;
-  const { t } = useAITranslation();
-  const searchParams = useSearchParams();
+    const searchParams = useSearchParams();
   const { comunidadAutonoma, setComunidadAutonoma } = useComunidad();
 
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
@@ -205,7 +203,7 @@ export default function AnunciosComunidadPage({ params }: { params: { comunidad:
         </div>
 
         {loading ? (
-          <div className="mt-10 border border-black px-6 py-4 font-sans text-sm text-gray-700 inline-block">{t('common.loading')}</div>
+          <div className="mt-10 border border-black px-6 py-4 font-sans text-sm text-gray-700 inline-block">Cargando...</div>
         ) : (
           <>
             <div className="mt-10 border border-black bg-white">

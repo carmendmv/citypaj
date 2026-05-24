@@ -8,7 +8,6 @@ import Footer from '@/components/layout/Footer';
 import Pagination from '@/components/ui/Pagination';
 import { generarAnunciosMasivos } from '@/data/anunciosMasivos';
 import { useComunidad } from '@/hooks/useComunidad';
-import { useAITranslation } from '@/lib/ai-translation';
 
 interface Anuncio {
   id: string;
@@ -47,8 +46,7 @@ interface PaginationMeta {
 }
 
 export default function AnunciosPage() {
-  const { t } = useAITranslation();
-  const searchParams = useSearchParams();
+    const searchParams = useSearchParams();
   const { comunidadAutonoma, setComunidadAutonoma } = useComunidad();
 
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);

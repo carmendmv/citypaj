@@ -7,14 +7,12 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import HumanVerification from '@/components/forms/HumanVerification';
 import { useAuth } from '@/context/AuthContext';
-import { useAITranslation } from '@/lib/ai-translation';
 
 type Categoria = 'ocio' | 'servicios' | 'educacion' | 'empleo' | 'intercambios';
 
 export default function PublicarPage() {
   const router = useRouter();
-  const { t } = useAITranslation();
-  const { user } = useAuth();
+    const { user } = useAuth();
 
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
@@ -46,12 +44,12 @@ export default function PublicarPage() {
     setError(null);
 
     if (!titulo.trim() || !descripcion.trim() || !categoria || !nombre.trim() || !comunidadAutonoma.trim() || !email.trim()) {
-      setError(t('publish_form.api_error'));
+      setError('Error al publicar el anuncio. Por favor, inténtalo de nuevo.');
       return;
     }
 
     if (!acceptedRules) {
-      setError(t('publish_form.rules.required'));
+      setError('Debes aceptar las normas para publicar un anuncio.');
       return;
     }
 
@@ -78,7 +76,7 @@ export default function PublicarPage() {
       const json = await res.json();
 
       if (!res.ok || !json?.success) {
-        setError(json?.error || t('publish_form.failed'));
+        setError(json?.error || 'Error al publicar el anuncio.');
         return;
       }
 
@@ -89,7 +87,7 @@ export default function PublicarPage() {
         router.push('/');
       }
     } catch {
-      setError(t('publish_form.api_error'));
+      setError('Error al publicar el anuncio. Por favor, inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -101,15 +99,15 @@ export default function PublicarPage() {
 
       <main className="w-[90%] sm:w-[65%] max-w-6xl mx-auto px-6 py-14">
         <div className="border-b border-black pb-6">
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-black">{t('publish_form.title')}</h1>
-          <p className="mt-2 font-sans text-sm text-[#666666]">{t('publish_form.subtitle')}</p>
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-black">Publicar anuncio</h1>
+          <p className="mt-2 font-sans text-sm text-[#666666]">Comparte tu anuncio con la comunidad juvenil</p>
         </div>
 
         <section className="mt-10 border border-black p-6">
           <div className="space-y-4">
             <div>
               <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="titulo">
-                {t('publish_form.fields.title')}
+                Título del anuncio
               </label>
               <input
                 id="titulo"
@@ -123,7 +121,7 @@ export default function PublicarPage() {
 
             <div>
               <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="descripcion">
-                {t('publish_form.fields.description')}
+                Descripción detallada
               </label>
               <textarea
                 id="descripcion"
@@ -218,7 +216,7 @@ export default function PublicarPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="email">
-                  {t('publish_form.fields.email_required')}
+                  Correo electrónico (requerido)
                 </label>
                 <input
                   id="email"
@@ -232,7 +230,7 @@ export default function PublicarPage() {
               </div>
               <div>
                 <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="telefono">
-                  {t('publish_form.fields.phone_optional')}
+                  Teléfono (opcional)
                 </label>
                 <input
                   id="telefono"
@@ -246,8 +244,8 @@ export default function PublicarPage() {
             </div>
 
             <div className="border border-black p-4">
-              <div className="font-serif text-base font-bold text-black">{t('publish_form.rules.title')}</div>
-              <p className="mt-2 font-sans text-sm text-black/80 leading-relaxed">{t('publish_form.rules.text')}</p>
+              <div className="font-serif text-base font-bold text-black">Normas de publicación</div>
+              <p className="mt-2 font-sans text-sm text-black/80 leading-relaxed">Al publicar un anuncio, aceptas que el contenido sea apropiado y cumpla con las normas de la comunidad. Nos reservamos el derecho de eliminar contenido inapropiado.</p>
 
               <label className="mt-3 flex items-start gap-3" htmlFor="rules">
                 <input
@@ -259,7 +257,7 @@ export default function PublicarPage() {
                     error && !acceptedRules ? 'border-red-500' : ''
                   }`}
                 />
-                <span className="font-sans text-sm text-black">{t('publish_form.rules.accept')}</span>
+                <span className="font-sans text-sm text-black">Acepto las normas de publicación</span>
               </label>
             </div>
 
@@ -276,13 +274,13 @@ export default function PublicarPage() {
                 disabled={loading || !acceptedRules || (requiresCaptcha && !turnstileToken)}
                 className="flex-1 bg-black text-white border border-black px-6 py-3 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors disabled:opacity-50"
               >
-                {loading ? t('publish_form.posting') : t('publish_form.post')}
+                {loading ? 'Publicando...' : 'Publicar anuncio'}
               </button>
               <Link
                 href="/"
                 className="flex-1 text-center bg-white text-black border border-black px-6 py-3 font-sans text-sm hover:border-orange-500 hover:text-orange-500 transition-colors"
               >
-                {t('common.cancel')}
+                Cancelar
               </Link>
             </div>
           </div>

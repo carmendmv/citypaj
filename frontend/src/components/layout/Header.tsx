@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, memo, useCallback, useMemo } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAITranslation } from '@/lib/ai-translation';
 import { Search, Menu, X, User } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import LanguageSelector from '@/components/ui/LanguageSelector';
 
 const COMUNIDADES_AUTONOMAS = [
   'Andalucía', 'Aragón', 'Asturias', 'Baleares', 'Canarias',
@@ -14,20 +14,6 @@ const COMUNIDADES_AUTONOMAS = [
   'Murcia', 'Navarra', 'País Vasco', 'La Rioja'
 ];
 
-const IDIOMAS = [
-  { code: 'es', name: 'Español' },
-  { code: 'ca', name: 'Catalán' },
-  { code: 'va', name: 'Valenciano' },
-  { code: 'gl', name: 'Gallego' },
-  { code: 'eu', name: 'Euskera (vasco)' },
-  { code: 'oc', name: 'Aranés (occitano)' },
-  { code: 'ar', name: 'Árabe' },
-  { code: 'ro', name: 'Rumano' },
-  { code: 'en', name: 'Inglés' },
-  { code: 'fr', name: 'Francés' },
-  { code: 'zh', name: 'Chino' },
-  { code: 'ja', name: 'Japonés' }
-];
 
 interface HeaderProps {
   onComunidadChange?: (comunidad: string) => void;
@@ -74,7 +60,6 @@ const Header: React.FC<HeaderProps> = memo(({
   onLogout
 }) => {
   const router = useRouter();
-  const { t, currentLanguage, changeLanguage, getAvailableLanguages } = useAITranslation();
   const { user, logout } = useAuth();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -119,21 +104,7 @@ const Header: React.FC<HeaderProps> = memo(({
   }, [onLogout, logout]);
 
   
-  const dateLocale = useMemo(() => {
-    const lng = (currentLanguage || 'es').toLowerCase();
-    if (lng.startsWith('en')) return 'en-GB';
-    if (lng.startsWith('fr')) return 'fr-FR';
-    if (lng.startsWith('de')) return 'de-DE';
-    if (lng.startsWith('it')) return 'it-IT';
-    if (lng.startsWith('pt')) return 'pt-PT';
-    if (lng.startsWith('pl')) return 'pl-PL';
-    if (lng.startsWith('ru')) return 'ru-RU';
-    if (lng.startsWith('zh')) return 'zh-CN';
-    if (lng.startsWith('hi')) return 'hi-IN';
-    if (lng.startsWith('ar')) return 'ar';
-    return 'es-ES';
-  }, [currentLanguage]);
-
+  
   const toggleMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   }, [isMobileMenuOpen]);
@@ -152,7 +123,7 @@ const Header: React.FC<HeaderProps> = memo(({
         <div className="hidden md:block py-2">
           <div className="flex justify-between items-center text-xs font-sans text-gray-600">
             <time dateTime={new Date().toISOString()}>
-              {new Date().toLocaleDateString(dateLocale, {
+              {new Date().toLocaleDateString('es-ES', {
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',
@@ -225,25 +196,7 @@ const Header: React.FC<HeaderProps> = memo(({
               </Link>
 
               <div className="hidden md:block">
-                <select
-                  value={currentLanguage}
-                  onChange={(e) => {
-                    const newLang = e.target.value;
-                    changeLanguage(newLang);
-                    // Forzar actualización inmediata
-                    setTimeout(() => {
-                      window.location.reload();
-                    }, 50);
-                  }}
-                  className="w-40 border border-black bg-white px-2 py-2 text-sm font-sans text-black focus:outline-none cursor-pointer"
-                  aria-label="Idioma"
-                >
-                  {getAvailableLanguages().map(idioma => (
-                    <option key={idioma.code} value={idioma.code}>
-                      {idioma.name}
-                    </option>
-                  ))}
-                </select>
+                <LanguageSelector />
               </div>
 
               <div className="relative hidden md:block">
@@ -418,28 +371,10 @@ const Header: React.FC<HeaderProps> = memo(({
 
                 <div className="pt-3 border-t border-black">
                   <div className="font-sans text-xs text-gray-600 mb-2">IDIOMA</div>
-                  <select
-                    id="idioma-mobile"
-                    className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none cursor-pointer"
-                    value={currentLanguage}
-                    onChange={(e) => {
-                      const lang = e.target.value;
-                      changeLanguage(lang);
-                      setIsMobileMenuOpen(false);
-                      // Forzar actualización inmediata
-                      setTimeout(() => {
-                        window.location.reload();
-                      }, 50);
-                    }}
-                  >
-                    {getAvailableLanguages().map(idioma => (
-                      <option key={idioma.code} value={idioma.code}>
-                        {idioma.name}
-                      </option>
-                    ))}
-                  </select>
+                  <LanguageSelector isMobile={true} />
                 </div>
-              </div>
+
+                              </div>
             </div>
           )}
         </nav>

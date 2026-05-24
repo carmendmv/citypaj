@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/context/AuthContext';
-import { useAITranslation } from '@/lib/ai-translation';
 
 type Anuncio = {
   id: string;
@@ -19,8 +18,7 @@ type Anuncio = {
 
 export default function MisAnunciosPage() {
   const router = useRouter();
-  const { t } = useAITranslation();
-  const { user } = useAuth();
+    const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
 
