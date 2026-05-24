@@ -62,12 +62,6 @@ const MENU_PRINCIPAL = [
     label: 'Empleo',
     descripcion: 'Ofertas laborales y prácticas',
     href: '/empleo'
-  },
-  {
-    categoria: 'intercambios',
-    label: 'Comunidad',
-    descripcion: 'Noticias y participación',
-    href: '/comunidad'
   }
 ];
 
@@ -192,6 +186,12 @@ const Header: React.FC<HeaderProps> = memo(({
                   {item.label}
                 </Link>
               ))}
+              <Link
+                href="/buzon-sugerencias"
+                className="text-base font-serif text-black hover:text-orange-500 hover:underline underline-offset-8 decoration-2"
+              >
+                Buzón de Sugerencias
+              </Link>
             </div>
 
             <div className="flex items-center gap-3">

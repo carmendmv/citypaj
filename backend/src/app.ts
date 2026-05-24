@@ -12,6 +12,7 @@ import { anunciosRoutes } from './routes/anuncios';
 import { usuariosRoutes } from './routes/usuarios';
 import { moderacionRoutes } from './routes/moderacion';
 import { reportesRoutes } from './routes/reportes';
+import sugerenciasRoutes from './routes/sugerencias';
 
 const app = express();
 
@@ -104,6 +105,7 @@ app.use('/api/anuncios', anunciosRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/moderacion', moderacionRoutes);
 app.use('/api/reportes', reportesRoutes);
+app.use('/api/sugerencias', sugerenciasRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {

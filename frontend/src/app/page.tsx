@@ -1204,7 +1204,147 @@ export default function HomePage() {
 
       </main>
 
+      {/* Grid de Enlaces de Interés por Comunidad Autónoma */}
+      {comunidadAutonoma && (
+        <section className="w-full bg-white py-12 border-t border-gray-200">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-center text-black mb-10">
+              Enlaces de Interés - {comunidadAutonoma}
+            </h2>
+            
+            <div className="grid grid-cols-3 gap-4 max-w-4xl mx-auto">
+              {/* Fila 1: Juventud */}
+              <div className="text-center">
+                <div className="aspect-square mb-2">
+                  <img 
+                    src="/images/juventud-placeholder.jpg" 
+                    alt="Juventud"
+                    className="w-full h-full object-cover border border-black"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZjdmNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SnV2ZW50dWQ8L3RleHQ+PC9zdmc+';
+                    }}
+                  />
+                </div>
+                <p className="text-xs font-medium text-gray-700">Juventud</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="aspect-square mb-2">
+                  <img 
+                    src="/images/juventud-placeholder.jpg" 
+                    alt="Juventud"
+                    className="w-full h-full object-cover border border-black"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZjdmNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SnV2ZW50dWQ8L3RleHQ+PC9zdmc+';
+                    }}
+                  />
+                </div>
+                <p className="text-xs font-medium text-gray-700">Juventud</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="aspect-square mb-2">
+                  <img 
+                    src="/images/juventud-placeholder.jpg" 
+                    alt="Juventud"
+                    className="w-full h-full object-cover border border-black"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZjdmNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SnV2ZW50dWQ8L3RleHQ+PC9zdmc+';
+                    }}
+                  />
+                </div>
+                <p className="text-xs font-medium text-gray-700">Juventud</p>
+              </div>
 
+              {/* Fila 2: Extranjería */}
+              <div className="text-center">
+                <div className="aspect-square mb-2">
+                  <img 
+                    src="/images/extranjeria-placeholder.jpg" 
+                    alt="Extranjería"
+                    className="w-full h-full object-cover border border-black"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZjdmNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+RXh0cmFuamVyw61hPC90ZXh0Pjwvc3ZnPg==';
+                    }}
+                  />
+                </div>
+                <p className="text-xs font-medium text-gray-700">Extranjería</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="aspect-square mb-2">
+                  <img 
+                    src="/images/extranjeria-placeholder.jpg" 
+                    alt="Extranjería"
+                    className="w-full h-full object-cover border border-black"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZjdmNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+RXh0cmFuamVyw61hPC90ZXh0Pjwvc3ZnPg==';
+                    }}
+                  />
+                </div>
+                <p className="text-xs font-medium text-gray-700">Extranjería</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="aspect-square mb-2">
+                  <img 
+                    src="/images/extranjeria-placeholder.jpg" 
+                    alt="Extranjería"
+                    className="w-full h-full object-cover border border-black"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZjdmNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+RXh0cmFuamVyw61hPC90ZXh0Pjwvc3ZnPg==';
+                    }}
+                  />
+                </div>
+                <p className="text-xs font-medium text-gray-700">Extranjería</p>
+              </div>
+
+              {/* Fila 3: Comunidad (Buzón de Sugerencias) */}
+              <div className="text-center">
+                <div className="aspect-square mb-2">
+                  <img 
+                    src="/images/comunidad-placeholder.jpg" 
+                    alt="Comunidad"
+                    className="w-full h-full object-cover border border-black"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZjdmNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q29tdW5pZGFkPC90ZXh0Pjwvc3ZnPg==';
+                    }}
+                  />
+                </div>
+                <p className="text-xs font-medium text-gray-700">Comunidad</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="aspect-square mb-2">
+                  <img 
+                    src="/images/comunidad-placeholder.jpg" 
+                    alt="Comunidad"
+                    className="w-full h-full object-cover border border-black"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZjdmNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q29tdW5pZGFkPC90ZXh0Pjwvc3ZnPg==';
+                    }}
+                  />
+                </div>
+                <p className="text-xs font-medium text-gray-700">Comunidad</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="aspect-square mb-2">
+                  <img 
+                    src="/images/comunidad-placeholder.jpg" 
+                    alt="Comunidad"
+                    className="w-full h-full object-cover border border-black"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZjdmNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q29tdW5pZGFkPC90ZXh0Pjwvc3ZnPg==';
+                    }}
+                  />
+                </div>
+                <p className="text-xs font-medium text-gray-700">Comunidad</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <Footer />
 
