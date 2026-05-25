@@ -10,7 +10,7 @@ interface ComunidadContextType {
 
 const ComunidadContext = createContext<ComunidadContextType | undefined>(undefined);
 
-export function ComunidadProvider({ children }: { children: ReactNode }) {
+export const ComunidadProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [comunidadAutonoma, setComunidadState] = useState<string>('');
 
   useEffect(() => {

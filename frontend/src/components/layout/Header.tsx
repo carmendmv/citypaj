@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, Menu, X, User } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import LanguageSelector from '@/components/ui/LanguageSelector';
+import { ProfessionalLanguageSelector } from '@/components/ui/ProfessionalLanguageSelector';
 
 const COMUNIDADES_AUTONOMAS = [
   'Andalucía', 'Aragón', 'Asturias', 'Baleares', 'Canarias',
@@ -122,7 +122,7 @@ const Header: React.FC<HeaderProps> = memo(({
       <div className="max-w-7xl mx-auto px-6">
         <div className="hidden md:block py-2">
           <div className="flex justify-between items-center text-xs font-sans text-gray-600">
-            <time dateTime={new Date().toISOString()}>
+            <time suppressHydrationWarning={true}>
               {new Date().toLocaleDateString('es-ES', {
                 weekday: 'long',
                 year: 'numeric',
@@ -196,7 +196,7 @@ const Header: React.FC<HeaderProps> = memo(({
               </Link>
 
               <div className="hidden md:block">
-                <LanguageSelector />
+                <ProfessionalLanguageSelector />
               </div>
 
               <div className="relative hidden md:block">
@@ -222,7 +222,7 @@ const Header: React.FC<HeaderProps> = memo(({
                           className="block px-4 py-2 font-sans text-sm text-black hover:bg-orange-50"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
-                          Acceder / Registrarse
+                      Acceder / Registrarse
                         </Link>
                       ) : null}
 
@@ -248,7 +248,7 @@ const Header: React.FC<HeaderProps> = memo(({
                           onClick={handleLogout}
                           className="w-full text-left px-4 py-2 font-sans text-sm text-black hover:bg-orange-50"
                         >
-                          Cerrar sesión
+                        Cerrar sesión
                         </button>
                       ) : null}
                     </div>
@@ -371,7 +371,7 @@ const Header: React.FC<HeaderProps> = memo(({
 
                 <div className="pt-3 border-t border-black">
                   <div className="font-sans text-xs text-gray-600 mb-2">IDIOMA</div>
-                  <LanguageSelector isMobile={true} />
+                  <ProfessionalLanguageSelector />
                 </div>
 
                               </div>
