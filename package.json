@@ -1,0 +1,40 @@
+{
+  "name": "citypaj",
+  "version": "1.0.0",
+  "description": "Plataforma de voluntariado y servicios juveniles",
+  "scripts": {
+    "dev": "npm run dev:docker",
+    "dev:docker": "docker-compose up -d postgres && npm run dev:backend & npm run dev:frontend",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:local": "start-dev.bat",
+    "start": "docker-compose up -d",
+    "stop": "docker-compose down",
+    "clean": "docker-compose down -v && docker system prune -f",
+    "logs": "docker-compose logs -f",
+    "db:reset": "docker-compose down -v && docker-compose up -d postgres",
+    "db:shell": "docker exec -it citypaj-postgres psql -U postgres -d citypaj",
+    "db:init": "cd backend && npx ts-node src/scripts/initDatabase.ts",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "build": "cd backend && npm run build && cd ../frontend && npm run build",
+    "test": "cd backend && npm test && cd ../frontend && npm test"
+  },
+  "keywords": [
+    "voluntariado",
+    "juvenil",
+    "servicios",
+    "comunidad"
+  ],
+  "author": "CityPaj Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "uuid": "^14.0.0"
+  }
+}
