@@ -7,6 +7,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import HumanVerification from '@/components/forms/HumanVerification';
 import TerminosModal from '@/components/ui/TerminosModal';
+import PasswordInput from '@/components/ui/PasswordInput';
 import { useAuth } from '@/context/AuthContext';
 
 export default function AccederPage() {
@@ -175,9 +176,8 @@ export default function AccederPage() {
                 <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="password">
                   Contraseña
                 </label>
-                <input
+                <PasswordInput
                   id="password"
-                  type="password"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
                   className={`w-full px-3 py-2 text-sm font-sans border bg-white focus:outline-none transition-all ${
@@ -259,9 +259,8 @@ export default function AccederPage() {
                 <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="reg-password">
                   Contraseña *
                 </label>
-                <input
+                <PasswordInput
                   id="reg-password"
-                  type="password"
                   value={regPassword}
                   onChange={(e) => setRegPassword(e.target.value)}
                   className={`w-full px-3 py-2 text-sm font-sans border bg-white focus:outline-none transition-all ${
@@ -284,9 +283,8 @@ export default function AccederPage() {
                 <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="reg-confirm-password">
                   Confirmar contraseña *
                 </label>
-                <input
+                <PasswordInput
                   id="reg-confirm-password"
-                  type="password"
                   value={regConfirmPassword}
                   onChange={(e) => setRegConfirmPassword(e.target.value)}
                   className={`w-full px-3 py-2 text-sm font-sans border bg-white focus:outline-none transition-all ${

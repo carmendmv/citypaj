@@ -51,6 +51,8 @@ export interface Anuncio {
   actualizado: string;
   // Campos adicionales de joins
   usuario_nombre?: string;
+  email?: string;
+  telefono?: string;
   usuario_verificado?: boolean;
   numero_imagenes?: number;
   imagenes?: Imagen[];

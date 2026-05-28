@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import HeartButton from '@/components/ui/HeartButton';
 
 interface AnuncioDetalle {
   id: string;
@@ -104,9 +105,12 @@ export default function AnuncioDetailPage({ params }: { params: { id: string } }
             </div>
           ) : anuncio ? (
             <>
-              <h1 className="mt-6 font-serif text-3xl sm:text-4xl font-bold text-black leading-tight">
-                {anuncio.titulo}
-              </h1>
+              <div className="mt-6 flex items-start justify-between gap-4">
+                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-black leading-tight flex-1">
+                  {anuncio.titulo}
+                </h1>
+                <HeartButton anuncioId={anuncio.id} size="lg" className="flex-shrink-0" />
+              </div>
 
               <div className="mt-3 font-sans text-sm text-[#666666]">
                 <span>{formatFecha(anuncio.creado)}</span>

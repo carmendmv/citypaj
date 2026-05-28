@@ -17,6 +17,8 @@ import Pagination from '@/components/ui/Pagination';
 import { generarAnunciosMasivos } from '@/data/anunciosMasivos';
 
 import { useComunidad } from '@/hooks/useComunidad';
+import { useGuardados } from '@/hooks/useGuardados';
+import HeartButton from '@/components/ui/HeartButton';
 
 
 
@@ -103,6 +105,9 @@ export default function HomePage() {
   const searchParams = useSearchParams();
 
   const { comunidadAutonoma, setComunidadAutonoma } = useComunidad();
+  
+  // Inicializar useGuardados para que los corazones funcionen
+  useGuardados();
 
 
 
@@ -606,40 +611,7 @@ export default function HomePage() {
 
             <div className="flex flex-col items-center justify-center gap-4 max-w-2xl mx-auto">
 
-              {/* Campo de búsqueda */}
-
-              <div className="relative group w-full max-w-md">
-
-                <input
-
-                  type="text"
-
-                  value={terminoBusqueda}
-
-                  onChange={(e) => setTerminoBusqueda(e.target.value)}
-
-                  placeholder="¿Qué estás buscando?"
-
-                  className="w-full h-12 px-4 sm:px-6 bg-white/90 backdrop-blur-md border-2 border-white/30 text-black font-medium text-sm sm:text-base focus:outline-none focus:border-white/60 transition-all duration-300 shadow-xl"
-
-                  onKeyPress={(e) => {
-
-                    if (e.key === 'Enter' && comunidadAutonoma) {
-
-                      setCurrentPage(1);
-
-                      void fetchAnuncios(comunidadAutonoma, categoria, 1);
-
-                    }
-
-                  }}
-
-                />
-
-                <div className="absolute inset-0 bg-white/20 backdrop-blur-sm border-2 border-white/30 rounded-lg -z-10 group-hover:border-white/50 transition-colors duration-300"></div>
-
-              </div>
-
+              
               {/* Selectores de comunidad y botón buscar */}
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full max-w-md">
@@ -1032,9 +1004,12 @@ export default function HomePage() {
                             </p>
                           </div>
                           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs text-gray-500 sm:ml-4">
-                            <span className="font-medium">
-                              {anuncio.usuario_nombre || 'Anónimo'}
-                            </span>
+                            <div className="flex items-center gap-2">
+                              <HeartButton anuncioId={anuncio.id} size="sm" showLabel={false} />
+                              <span className="font-medium">
+                                {anuncio.usuario_nombre || 'Anónimo'}
+                              </span>
+                            </div>
                             <span>
                               {formatFecha(anuncio.creado)}
                             </span>

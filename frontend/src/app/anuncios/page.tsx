@@ -8,6 +8,7 @@ import Footer from '@/components/layout/Footer';
 import Pagination from '@/components/ui/Pagination';
 import { generarAnunciosMasivos } from '@/data/anunciosMasivos';
 import { useComunidad } from '@/hooks/useComunidad';
+import { useGuardados } from '@/hooks/useGuardados';
 
 interface Anuncio {
   id: string;
@@ -48,6 +49,9 @@ interface PaginationMeta {
 export default function AnunciosPage() {
     const searchParams = useSearchParams();
   const { comunidadAutonoma, setComunidadAutonoma } = useComunidad();
+  
+  // Inicializar useGuardados para que los corazones funcionen
+  useGuardados();
 
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
   const [loading, setLoading] = useState(false);

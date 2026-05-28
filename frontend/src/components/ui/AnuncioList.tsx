@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Anuncio, PaginationMeta } from '@/types';
+import HeartButton from '@/components/ui/HeartButton';
 
 interface AnuncioListProps {
   anuncios: Anuncio[];
@@ -106,9 +107,12 @@ const AnuncioList: React.FC<AnuncioListProps> = ({
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs text-gray-500 sm:ml-4">
-                <span className="font-medium">
-                  {anuncio.usuario_nombre || 'Anónimo'}
-                </span>
+                <div className="flex items-center gap-2">
+                  <HeartButton anuncioId={anuncio.id} size="sm" showLabel={false} />
+                  <span className="font-medium">
+                    {anuncio.usuario_nombre || 'Anónimo'}
+                  </span>
+                </div>
                 <span>
                   {formatFecha(anuncio.creado)}
                 </span>

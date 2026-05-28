@@ -15,13 +15,13 @@ const nextConfig = {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
   async rewrites() {
-    const apiUrlRaw = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const apiUrlRaw = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
     const apiUrlCandidate = apiUrlRaw.replace(/\/api\/?$/, '');
     const isDocker = fs.existsSync('/.dockerenv');
     let apiUrl = apiUrlCandidate;
     
-    // En desarrollo local, si detecta backend:3002, cambiar a localhost:3002
-    if (!isDocker && /\bbackend:3002\b/.test(apiUrl)) {
+    // En desarrollo local, usar siempre localhost:3002
+    if (!isDocker) {
       apiUrl = 'http://localhost:3002';
     }
     

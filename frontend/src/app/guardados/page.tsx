@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { useGuardados } from '@/hooks/useGuardados';
 import { useComunidad } from '@/hooks/useComunidad';
+import HeartButton from '@/components/ui/HeartButton';
 import { Anuncio } from '@/types';
 
 export default function GuardadosPage() {
@@ -23,19 +24,47 @@ export default function GuardadosPage() {
         return;
       }
 
+      setCargandoAnuncios(true);
       try {
-        // Aquí iría la lógica para cargar los anuncios desde el backend
-        // Por ahora, simulamos con datos de ejemplo
+        // Cargar los anuncios guardados desde el backend
         const ids = guardados.map(g => g.anuncioId);
-        console.log('Anuncios guardados:', ids);
         
-        // Simulación de carga
-        setTimeout(() => {
-          setAnunciosGuardados([]); // Vacío por ahora
-          setCargandoAnuncios(false);
-        }, 500);
+        // Hacer petición para obtener los anuncios completos
+        const response = await fetch('http://localhost:3002/api/anuncios/guardados', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ids })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.data) {
+            setAnunciosGuardados(data.data);
+          } else {
+            setAnunciosGuardados([]);
+          }
+        } else {
+          // Si el endpoint no existe, cargar anuncios individuales
+          const anunciosCompletos = [];
+          for (const id of ids) {
+            try {
+              const res = await fetch(`/api/anuncios/${id}`);
+              if (res.ok) {
+                const anuncioData = await res.json();
+                if (anuncioData.success && anuncioData.data) {
+                  anunciosCompletos.push(anuncioData.data);
+                }
+              }
+            } catch (error) {
+              console.error(`Error al cargar anuncio ${id}:`, error);
+            }
+          }
+          setAnunciosGuardados(anunciosCompletos);
+        }
       } catch (error) {
         console.error('Error al cargar anuncios guardados:', error);
+        setAnunciosGuardados([]);
+      } finally {
         setCargandoAnuncios(false);
       }
     };
@@ -99,25 +128,61 @@ export default function GuardadosPage() {
               </Link>
             </div>
           ) : (
-            <div className="mt-8 space-y-4">
+            <div className="mt-8 space-y-6">
               {anunciosGuardados.map((anuncio) => (
-                <div key={anuncio.id} className="border border-black p-6">
-                  <div className="flex justify-between items-start">
+                <div key={anuncio.id} className="border border-black p-6 hover:shadow-lg transition-shadow">
+                  <div className="flex justify-between items-start mb-4">
                     <div className="flex-1">
-                      <h3 className="font-serif text-xl font-bold text-black mb-2">
-                        {anuncio.titulo}
-                      </h3>
-                      <p className="font-sans text-sm text-gray-600 mb-3">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="font-serif text-xl font-bold text-black hover:text-orange-500 transition-colors">
+                          <Link href={`/anuncios/${anuncio.id}`}>
+                            {anuncio.titulo}
+                          </Link>
+                        </h3>
+                        <HeartButton anuncioId={anuncio.id} size="sm" showLabel={false} />
+                      </div>
+                      <p className="font-sans text-sm text-gray-600 mb-4 leading-relaxed">
                         {anuncio.descripcion}
                       </p>
-                      <div className="flex flex-wrap gap-2 text-xs font-sans text-gray-500">
-                        <span className="border border-gray-300 px-2 py-1">
-                          {anuncio.categoria}
-                        </span>
-                        <span className="border border-gray-300 px-2 py-1">
-                          {anuncio.comunidad_autonoma}
-                        </span>
-                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                    <div>
+                      <p className="font-sans text-xs text-gray-500 mb-1">Categoría</p>
+                      <span className="inline-block border border-black px-2 py-1 font-sans text-xs">
+                        {anuncio.categoria}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-sans text-xs text-gray-500 mb-1">Ubicación</p>
+                      <p className="font-sans text-sm text-black">
+                        {anuncio.provincia}, {anuncio.comunidad_autonoma}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-sans text-xs text-gray-500 mb-1">Publicado</p>
+                      <p className="font-sans text-sm text-black">
+                        {new Date(anuncio.creado).toLocaleDateString('es-ES', {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric'
+                        })}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-3 items-center border-t border-gray-200 pt-4">
+                    <div className="flex items-center gap-4 text-sm text-gray-600">
+                      <span>Por: {anuncio.usuario_nombre || 'Anónimo'}</span>
+                      {anuncio.email && (
+                        <a 
+                          href={`mailto:${anuncio.email}`}
+                          className="hover:text-orange-500 transition-colors"
+                        >
+                          Contactar
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
