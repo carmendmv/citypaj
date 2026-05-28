@@ -3,9 +3,14 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { randomUUID } = require('crypto');
+const knex = require('knex');
+const knexConfig = require('../knexfile');
 
 const app = express();
 const PORT = process.env.PORT || 3002;
+
+// Conexión a la base de datos
+const db = knex(knexConfig.development);
 
 // Middleware
 app.use(cors({
@@ -17,63 +22,7 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Mock database
-const mockUsers = [];
-// Generar anuncios masivos para coincidir con el frontend
-function generarAnunciosBackend() {
-  const anuncios = [];
-  const categorias = ['ocio', 'servicios', 'educacion', 'empleo', 'intercambios', 'noticias'];
-  const comunidades = ['Andalucía', 'Aragón', 'Asturias', 'Baleares', 'Canarias', 'Cantabria', 'Castilla-La Mancha', 'Castilla y León', 'Cataluña', 'Comunidad Valenciana', 'Extremadura', 'Galicia', 'Madrid', 'Murcia', 'Navarra', 'País Vasco', 'La Rioja'];
-  const provincias = ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Murcia', 'Palma', 'Las Palmas', 'Zaragoza', 'Alicante', 'Córdoba', 'Valladolid', 'Vigo', 'Gijón', 'Hospitalet', 'La Coruña', 'Granada', 'Vitoria', 'Elche'];
-  const nombres = ['Ana Martínez', 'Carlos Rodríguez', 'María López', 'Juan García', 'Laura Sánchez', 'David Fernández', 'Carmen Pérez', 'José Martín', 'Sofía Gómez', 'Miguel Díaz'];
-  const titulos = [
-    'Clases particulares', 'Busco compañero para', 'Se regala', 'Vendo', 'Necesito ayuda con', 'Ofrezco servicios de',
-    'Busco trabajo como', 'Intercambio de', 'Noticia importante sobre', 'Actividad deportiva', 'Evento cultural',
-    'Curso de', 'Taller de', 'Reparación de', 'Mudanza', 'Transporte', 'Cuidado de', 'Asesoría legal',
-    'Diseño gráfico', 'Programación', 'Traducciones', 'Fotografía', 'Música', 'Cocina', 'Limpieza'
-  ];
-
-  // Generar 420 anuncios para cubrir todos los IDs posibles del frontend
-  for (let i = 1; i <= 420; i++) {
-    const categoria = categorias[Math.floor(Math.random() * categorias.length)];
-    const comunidad = comunidades[Math.floor(Math.random() * comunidades.length)];
-    const provincia = provincias[Math.floor(Math.random() * provincias.length)];
-    const nombre = nombres[Math.floor(Math.random() * nombres.length)];
-    const titulo = titulos[Math.floor(Math.random() * titulos.length)];
-    const diasAtras = Math.floor(Math.random() * 30) + 1;
-    const vistas = Math.floor(Math.random() * 500) + 10;
-    const precio = Math.random() > 0.5 ? Math.floor(Math.random() * 200) + 10 : 0;
-
-    anuncios.push({
-      id: `demo-${i}`,
-      usuario_id: `user-${i}`,
-      titulo: `${titulo} - Anuncio ${i}`,
-      descripcion: `Descripción detallada del anuncio ${i}. Este es un anuncio de ${categoria} en ${comunidad}. Ofrezco/busco servicios de calidad con experiencia garantizada. Para más información, contactar directamente. Disponibilidad inmediata.`,
-      categoria: categoria,
-      subcategoria: 'general',
-      comunidad_autonoma: comunidad,
-      provincia: provincia,
-      precio: precio,
-      modalidad: precio > 0 ? 'venta' : 'servicio',
-      autor: nombre,
-      usuario_nombre: nombre,
-      email: `${nombre.toLowerCase().replace(' ', '.')}${i}@citypaj.es`,
-      telefono: `600${String(Math.floor(Math.random() * 1000000)).padStart(6, '0')}`,
-      contacto_email: true,
-      contacto_telefono: Math.random() > 0.3,
-      contacto_anonimo: false,
-      visible: true,
-      estado_moderacion: 'approved',
-      creado: new Date(Date.now() - diasAtras * 24 * 60 * 60 * 1000).toISOString(),
-      actualizado: new Date(Date.now() - diasAtras * 24 * 60 * 60 * 1000).toISOString(),
-      vistas: vistas,
-    });
-  }
-
-  return anuncios;
-}
-
-const mockAnuncios = generarAnunciosBackend();
+// No hay simulación de datos - se usa base de datos real
 
 // JWT Secret
 const JWT_SECRET = 'your-super-secret-jwt-key-change-in-production';
@@ -307,8 +256,8 @@ app.post('/api/auth/logout', (req, res) => {
   });
 });
 
-// Anuncios routes con filtrado avanzado
-app.get('/api/anuncios', (req, res) => {
+// Anuncios routes con filtrado avanzado desde base de datos
+app.get('/api/anuncios', async (req, res) => {
   try {
     const {
       categoria,
@@ -323,85 +272,114 @@ app.get('/api/anuncios', (req, res) => {
       buscar
     } = req.query;
 
-    let filtrados = [...mockAnuncios];
+    // Construir consulta base
+    let query = db('anuncios')
+      .select([
+        'anuncios.*',
+        'usuarios.nombre as usuario_nombre',
+        'usuarios.email as email',
+        'usuarios.telefono as telefono'
+      ])
+      .leftJoin('usuarios', 'anuncios.usuario_id', 'usuarios.id')
+      .where('anuncios.visible', 1)
+      .where('anuncios.estado_moderacion', 'approved');
 
-    // Filtrar por categoría
+    // Aplicar filtros
     if (categoria) {
-      filtrados = filtrados.filter(a => a.categoria === categoria);
+      query = query.where('anuncios.categoria', categoria);
     }
 
-    // Filtrar por comunidad autónoma
     if (comunidad_autonoma) {
-      filtrados = filtrados.filter(a => a.comunidad_autonoma === comunidad_autonoma);
+      query = query.where('anuncios.comunidad_autonoma', comunidad_autonoma);
     }
 
-    // Filtrar por provincia
     if (provincia) {
-      filtrados = filtrados.filter(a => a.provincia === provincia);
+      query = query.where('anuncios.provincia', provincia);
     }
 
-    // Filtrar por modalidad
     if (modalidad) {
-      filtrados = filtrados.filter(a => a.modalidad === modalidad);
+      query = query.where('anuncios.modalidad', modalidad);
     }
 
-    // Filtrar por precio mínimo
     if (precio_min) {
-      const min = parseFloat(precio_min);
-      filtrados = filtrados.filter(a => a.precio && a.precio >= min);
+      query = query.where('anuncios.precio', '>=', parseFloat(precio_min));
     }
 
-    // Filtrar por precio máximo
     if (precio_max) {
-      const max = parseFloat(precio_max);
-      filtrados = filtrados.filter(a => !a.precio || a.precio <= max);
+      query = query.where('anuncios.precio', '<=', parseFloat(precio_max));
     }
 
-    // Búsqueda por texto en título y descripción
     if (buscar) {
-      const termino = buscar.toLowerCase();
-      filtrados = filtrados.filter(a => 
-        a.titulo.toLowerCase().includes(termino) || 
-        a.descripcion.toLowerCase().includes(termino)
-      );
+      query = query.where(function() {
+        this.where('anuncios.titulo', 'like', `%${buscar}%`)
+            .orWhere('anuncios.descripcion', 'like', `%${buscar}%`);
+      });
     }
 
-    // Ordenamiento
+    // Aplicar ordenamiento
     switch (orden) {
       case 'fecha_asc':
-        filtrados.sort((a, b) => new Date(a.creado).getTime() - new Date(b.creado).getTime());
+        query = query.orderBy('anuncios.creado_at', 'asc');
         break;
       case 'fecha_desc':
-        filtrados.sort((a, b) => new Date(b.creado).getTime() - new Date(a.creado).getTime());
+        query = query.orderBy('anuncios.creado_at', 'desc');
         break;
       case 'precio_asc':
-        filtrados.sort((a, b) => (a.precio || 0) - (b.precio || 0));
+        query = query.orderBy('anuncios.precio', 'asc');
         break;
       case 'precio_desc':
-        filtrados.sort((a, b) => (b.precio || 0) - (a.precio || 0));
+        query = query.orderBy('anuncios.precio', 'desc');
         break;
       default:
-        filtrados.sort((a, b) => new Date(b.creado).getTime() - new Date(a.creado).getTime());
+        query = query.orderBy('anuncios.creado_at', 'desc');
     }
 
-    // Paginación
+    // Obtener total para paginación
+    const countQuery = query.clone().clearSelect().clearOrder().count('* as total');
+    const [{ total }] = await countQuery;
+
+    // Aplicar paginación
     const page = parseInt(pagina);
     const limit = parseInt(limite);
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const paginados = filtrados.slice(startIndex, endIndex);
+    const offset = (page - 1) * limit;
+
+    const anuncios = await query.limit(limit).offset(offset);
+
+    // Formatear datos para el frontend
+    const formattedAnuncios = anuncios.map(anuncio => ({
+      id: anuncio.id,
+      titulo: anuncio.titulo,
+      descripcion: anuncio.descripcion,
+      categoria: anuncio.categoria,
+      subcategoria: anuncio.subcategoria,
+      comunidad_autonoma: anuncio.comunidad_id, // Mapear a ID
+      provincia: anuncio.provincia_id, // Mapear a ID
+      barrio: anuncio.barrio,
+      precio: anuncio.precio,
+      modalidad: anuncio.modalidad,
+      contacto_email: anuncio.contacto_email,
+      contacto_telefono: anuncio.contacto_telefono,
+      contacto_anonimo: anuncio.contacto_anonimo,
+      usuario_id: anuncio.usuario_id,
+      usuario_nombre: anuncio.usuario_nombre,
+      email: anuncio.email,
+      telefono: anuncio.telefono,
+      creado: anuncio.creado_at, // Usar campo real
+      actualizado: anuncio.actualizado_at // Usar campo real
+    }));
 
     res.json({
       success: true,
-      data: paginados,
+      data: formattedAnuncios,
       meta: {
         pagina: page,
         limite: limit,
-        total: filtrados.length,
-        total_paginas: Math.ceil(filtrados.length / limit),
+        total: parseInt(total),
+        total_paginas: Math.ceil(total / limit),
       },
     });
   } catch (error) {
+    console.error('Error al obtener anuncios:', error);
     res.status(500).json({
       success: false,
       error: 'Error al obtener anuncios',
@@ -409,21 +387,64 @@ app.get('/api/anuncios', (req, res) => {
   }
 });
 
-app.get('/api/anuncios/:id', (req, res) => {
-  const { id } = req.params;
-  const anuncio = mockAnuncios.find(a => a.id === id);
-  
-  if (!anuncio) {
-    return res.status(404).json({
+app.get('/api/anuncios/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const anuncio = await db('anuncios')
+      .select([
+        'anuncios.*',
+        'usuarios.nombre as usuario_nombre',
+        'usuarios.email as email',
+        'usuarios.telefono as telefono'
+      ])
+      .leftJoin('usuarios', 'anuncios.usuario_id', 'usuarios.id')
+      .where('anuncios.id', id)
+      .where('anuncios.visible', 1)
+      .where('anuncios.estado_moderacion', 'approved')
+      .first();
+    
+    if (!anuncio) {
+      return res.status(404).json({
+        success: false,
+        error: 'Anuncio no encontrado',
+      });
+    }
+
+    // Formatear datos para el frontend
+    const formattedAnuncio = {
+      id: anuncio.id,
+      titulo: anuncio.titulo,
+      descripcion: anuncio.descripcion,
+      categoria: anuncio.categoria,
+      subcategoria: anuncio.subcategoria,
+      comunidad_autonoma: anuncio.comunidad_id, // Mapear a ID
+      provincia: anuncio.provincia_id, // Mapear a ID
+      barrio: anuncio.barrio,
+      precio: anuncio.precio,
+      modalidad: anuncio.modalidad,
+      contacto_email: anuncio.contacto_email,
+      contacto_telefono: anuncio.contacto_telefono,
+      contacto_anonimo: anuncio.contacto_anonimo,
+      usuario_id: anuncio.usuario_id,
+      usuario_nombre: anuncio.usuario_nombre,
+      email: anuncio.email,
+      telefono: anuncio.telefono,
+      creado: anuncio.creado_at, // Usar campo real
+      actualizado: anuncio.actualizado_at // Usar campo real
+    };
+
+    res.json({
+      success: true,
+      data: formattedAnuncio,
+    });
+  } catch (error) {
+    console.error('Error al obtener anuncio:', error);
+    res.status(500).json({
       success: false,
-      error: 'Anuncio no encontrado',
+      error: 'Error al obtener anuncio',
     });
   }
-
-  res.json({
-    success: true,
-    data: anuncio,
-  });
 });
 
 app.post('/api/anuncios/guardados', (req, res) => {
