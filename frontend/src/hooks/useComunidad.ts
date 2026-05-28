@@ -12,10 +12,9 @@ interface ComunidadProviderProps {
   children: ReactNode;
 }
 
-export const ComunidadProvider = ({ children }: ComunidadProviderProps) => {
+export const ComunidadProvider: React.FC<ComunidadProviderProps> = ({ children }) => {
   const [comunidadAutonoma, setComunidadAutonomaState] = useState<string | null>(null);
 
-  // Cargar comunidad desde localStorage al montar
   useEffect(() => {
     const stored = localStorage.getItem('comunidadAutonoma');
     if (stored) {
@@ -23,7 +22,6 @@ export const ComunidadProvider = ({ children }: ComunidadProviderProps) => {
     }
   }, []);
 
-  // Guardar en localStorage cuando cambia
   useEffect(() => {
     if (comunidadAutonoma) {
       localStorage.setItem('comunidadAutonoma', comunidadAutonoma);
@@ -41,20 +39,20 @@ export const ComunidadProvider = ({ children }: ComunidadProviderProps) => {
     localStorage.removeItem('comunidadAutonoma');
   };
 
+  const value: ComunidadContextType = {
+    comunidadAutonoma,
+    setComunidadAutonoma,
+    clearComunidadAutonoma,
+  };
+
   return (
-    <ComunidadContext.Provider
-      value={{
-        comunidadAutonoma,
-        setComunidadAutonoma,
-        clearComunidadAutonoma,
-      }}
-    >
+    <ComunidadContext.Provider value={value}>
       {children}
     </ComunidadContext.Provider>
   );
 };
 
-export const useComunidad = () => {
+export const useComunidad = (): ComunidadContextType => {
   const context = useContext(ComunidadContext);
   if (context === undefined) {
     throw new Error('useComunidad debe ser usado dentro de un ComunidadProvider');

@@ -135,7 +135,6 @@ export default function HomePage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [anunciosPorComunidad, setAnunciosPorComunidad] = useState<{comunidad: string; anuncios: Anuncio[]}[]>([]);
-
   const [terminoBusqueda, setTerminoBusqueda] = useState<string>('');
 
 
@@ -302,7 +301,7 @@ export default function HomePage() {
 
   const fetchAnunciosPaginated = useCallback(async (comunidad: string | null, categoriaFilter: Categoria, page: number = 1, retryCount: number = 0, busqueda: string = '') => {
 
-    if (!comunidad) return { data: [], meta: { pagina: 1, limite: 15, total: 0, total_paginas: 0 } };
+    if (!comunidad) return { data: [], meta: { pagina: 1, limite: 10, total: 0, total_paginas: 0 } };
 
     // Usar directamente los anuncios masivos para demostración
 
@@ -352,7 +351,7 @@ export default function HomePage() {
 
     
 
-    const limit = 15;
+    const limit = 10;
 
     const start = (page - 1) * limit;
 
@@ -388,7 +387,7 @@ export default function HomePage() {
 
   const getDemoDataFallback = useCallback((comunidad: string | null, categoriaFilter: Categoria, page: number = 1) => {
 
-    if (!comunidad) return { data: [], meta: { pagina: 1, limite: 15, total: 0, total_paginas: 0 } };
+    if (!comunidad) return { data: [], meta: { pagina: 1, limite: 10, total: 0, total_paginas: 0 } };
 
     const allAnuncios = generarAnunciosMasivos(comunidad);
 
@@ -404,7 +403,7 @@ export default function HomePage() {
 
     
 
-    const limit = 15;
+    const limit = 10;
 
     const start = (page - 1) * limit;
 
@@ -544,10 +543,7 @@ export default function HomePage() {
 
   };
 
-
-
   return (
-
     <div className="min-h-screen bg-white">
 
       <Header
@@ -608,9 +604,47 @@ export default function HomePage() {
 
             {/* Selectores elegantes con fondo cristal */}
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            <div className="flex flex-col items-center justify-center gap-4 max-w-2xl mx-auto">
 
-              <div className="relative group">
+              {/* Campo de búsqueda */}
+
+              <div className="relative group w-full max-w-md">
+
+                <input
+
+                  type="text"
+
+                  value={terminoBusqueda}
+
+                  onChange={(e) => setTerminoBusqueda(e.target.value)}
+
+                  placeholder="¿Qué estás buscando?"
+
+                  className="w-full h-12 px-4 sm:px-6 bg-white/90 backdrop-blur-md border-2 border-white/30 text-black font-medium text-sm sm:text-base focus:outline-none focus:border-white/60 transition-all duration-300 shadow-xl"
+
+                  onKeyPress={(e) => {
+
+                    if (e.key === 'Enter' && comunidadAutonoma) {
+
+                      setCurrentPage(1);
+
+                      void fetchAnuncios(comunidadAutonoma, categoria, 1);
+
+                    }
+
+                  }}
+
+                />
+
+                <div className="absolute inset-0 bg-white/20 backdrop-blur-sm border-2 border-white/30 rounded-lg -z-10 group-hover:border-white/50 transition-colors duration-300"></div>
+
+              </div>
+
+              {/* Selectores de comunidad y botón buscar */}
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full max-w-md">
+
+                <div className="relative group">
 
                 <select
 
@@ -634,7 +668,7 @@ export default function HomePage() {
 
                   }}
 
-                  className="h-12 px-4 sm:px-6 bg-white/90 backdrop-blur-md border-2 border-white/30 text-black font-medium text-sm sm:text-base focus:outline-none focus:border-white/60 transition-all duration-300 cursor-pointer shadow-xl min-w-[240px] sm:min-w-[280px]"
+                  className="h-12 px-4 sm:px-6 bg-white/90 backdrop-blur-md border-2 border-white/30 text-black font-medium text-sm sm:text-base focus:outline-none focus:border-white/60 transition-all duration-300 cursor-pointer shadow-xl w-full"
 
                 >
 
@@ -666,7 +700,9 @@ export default function HomePage() {
 
                   if (comunidadAutonoma) {
 
-                    console.log('Buscando en:', comunidadAutonoma);
+                    setCurrentPage(1);
+
+                    void fetchAnuncios(comunidadAutonoma, categoria, 1);
 
                   }
 
@@ -683,6 +719,8 @@ export default function HomePage() {
             </div>
 
           </div>
+
+        </div>
 
         </div>
 
@@ -1139,7 +1177,7 @@ export default function HomePage() {
 
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-6 border-b border-black pb-3 sm:pb-4">
                   <h3 className="font-serif text-lg sm:text-xl sm:text-2xl font-bold text-black">{grupo.comunidad}</h3>
-                  <div className="hidden sm:block font-sans text-xs text-[#666666]">{t('home.spain')}</div>
+                  <div className="hidden sm:block font-sans text-xs text-[#666666]">España</div>
                 </div>
 
 
@@ -1148,7 +1186,7 @@ export default function HomePage() {
 
                   <div className="mt-6 border border-black p-5">
 
-                    <p className="font-sans text-sm text-[#666666]">{t('home.no_ads')}</p>
+                    <p className="font-sans text-sm text-[#666666]">No hay anuncios disponibles</p>
 
                   </div>
 

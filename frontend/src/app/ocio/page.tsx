@@ -60,7 +60,7 @@ export default function OcioPage() {
           anuncios={anuncios}
           loading={loading}
           paginationMeta={paginationMeta}
-          comunidadAutonoma={comunidadAutonoma}
+          comunidadAutonoma={comunidadAutonoma || undefined}
           categoria="ocio"
           onPageChange={(page) => {
             setCurrentPage(page);

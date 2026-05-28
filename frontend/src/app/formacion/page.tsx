@@ -58,7 +58,7 @@ export default function FormacionPage() {
           anuncios={anuncios}
           loading={loading}
           paginationMeta={paginationMeta}
-          comunidadAutonoma={comunidadAutonoma}
+          comunidadAutonoma={comunidadAutonoma || undefined}
           categoria="educacion"
           onPageChange={(page) => {
             setCurrentPage(page);

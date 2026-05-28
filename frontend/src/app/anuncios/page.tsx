@@ -152,7 +152,7 @@ export default function AnunciosPage() {
         </div>
 
         {loading ? (
-          <div className="mt-10 border border-black px-6 py-4 font-sans text-sm text-gray-700 inline-block">{t('common.loading')}</div>
+          <div className="mt-10 border border-black px-6 py-4 font-sans text-sm text-gray-700 inline-block">Cargando...</div>
         ) : (
           <>
             <div className="mt-10 border border-black bg-white">

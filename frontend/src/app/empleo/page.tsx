@@ -58,7 +58,7 @@ export default function EmpleoPage() {
           anuncios={anuncios}
           loading={loading}
           paginationMeta={paginationMeta}
-          comunidadAutonoma={comunidadAutonoma}
+          comunidadAutonoma={comunidadAutonoma || undefined}
           categoria="empleo"
           onPageChange={(page) => {
             setCurrentPage(page);

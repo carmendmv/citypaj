@@ -60,7 +60,7 @@ export default function ServiciosPage() {
           anuncios={anuncios}
           loading={loading}
           paginationMeta={paginationMeta}
-          comunidadAutonoma={comunidadAutonoma}
+          comunidadAutonoma={comunidadAutonoma || undefined}
           categoria="servicios"
           onPageChange={(page) => {
             setCurrentPage(page);

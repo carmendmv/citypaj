@@ -67,7 +67,7 @@ export default function MisAnunciosPage() {
 
       <main className="w-[80%] max-w-6xl mx-auto px-6 py-14">
         <div className="border-b border-black pb-6">
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-black">{t('my_ads.title')}</h1>
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-black">Mis Anuncios</h1>
           <p className="mt-2 font-sans text-sm text-[#666666]">Gestión de tus publicaciones</p>
         </div>
 
@@ -83,11 +83,11 @@ export default function MisAnunciosPage() {
           </div>
 
           {loading ? (
-            <div className="mt-6 border border-black px-6 py-4 font-sans text-sm text-gray-700 inline-block">{t('common.loading')}</div>
+            <div className="mt-6 border border-black px-6 py-4 font-sans text-sm text-gray-700 inline-block">Cargando...</div>
           ) : anuncios.length === 0 ? (
             <div className="mt-6">
               <p className="font-sans text-sm text-black/80">
-                {t('my_ads.no_ads')}
+                No tienes anuncios publicados todavía.
               </p>
             </div>
           ) : (
@@ -119,7 +119,7 @@ export default function MisAnunciosPage() {
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
-                        {t('my_ads.edit')}
+                        Editar
                       </Link>
                       
                       <button
@@ -129,11 +129,11 @@ export default function MisAnunciosPage() {
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
-                        {t('my_ads.delete')}
+                        Eliminar
                       </button>
                       
                       <div className="text-xs text-gray-500 mt-2 pt-2 border-t border-gray-200">
-                        {t('my_ads.code')} {anuncio.id.slice(-8)}
+                        Código {anuncio.id.slice(-8)}
                       </div>
                     </div>
                   </div>

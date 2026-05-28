@@ -3,7 +3,7 @@
 import React, { useState, memo, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, Menu, X, User } from 'lucide-react';
+import { Search, Menu, X, User, LogOut, Trash2, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { ProfessionalLanguageSelector } from '@/components/ui/ProfessionalLanguageSelector';
 
@@ -65,6 +65,8 @@ const Header: React.FC<HeaderProps> = memo(({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchCodigo, setSearchCodigo] = useState('');
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleSearch = useCallback(() => {
     if (searchCodigo.trim()) {
@@ -94,8 +96,30 @@ const Header: React.FC<HeaderProps> = memo(({
   );
 
   const handleLogout = useCallback(() => {
+    setIsLogoutModalOpen(true);
     setIsUserMenuOpen(false);
+  }, []);
+
+  const confirmLogout = useCallback(() => {
+    setIsLogoutModalOpen(false);
     setIsMobileMenuOpen(false);
+    if (onLogout) {
+      onLogout();
+    } else {
+      void logout();
+    }
+  }, [onLogout, logout]);
+
+  const handleDeleteAccount = useCallback(() => {
+    setIsDeleteModalOpen(true);
+    setIsUserMenuOpen(false);
+  }, []);
+
+  const confirmDeleteAccount = useCallback(async () => {
+    // Aquí iría la lógica para eliminar la cuenta
+    setIsDeleteModalOpen(false);
+    setIsMobileMenuOpen(false);
+    // Por ahora, solo cerramos sesión
     if (onLogout) {
       onLogout();
     } else {
@@ -243,13 +267,24 @@ const Header: React.FC<HeaderProps> = memo(({
                       </Link>
 
                       {user ? (
-                        <button
-                          type="button"
-                          onClick={handleLogout}
-                          className="w-full text-left px-4 py-2 font-sans text-sm text-black hover:bg-orange-50"
-                        >
-                        Cerrar sesión
-                        </button>
+                        <>
+                          <button
+                            type="button"
+                            onClick={handleLogout}
+                            className="w-full text-left px-4 py-2 font-sans text-sm text-black hover:bg-orange-50 flex items-center gap-2"
+                          >
+                            <LogOut className="w-4 h-4" />
+                            Cerrar sesión
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleDeleteAccount}
+                            className="w-full text-left px-4 py-2 font-sans text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Eliminar cuenta
+                          </button>
+                        </>
                       ) : null}
                     </div>
                   </div>
@@ -358,14 +393,25 @@ const Header: React.FC<HeaderProps> = memo(({
                     </Link>
 
                     {user ? (
-                      <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="w-full text-left font-sans text-sm text-black hover:text-orange-500"
-                      >
-                        Cerrar sesión
-                      </button>
-                    ) : null}
+                        <>
+                          <button
+                            type="button"
+                            onClick={handleLogout}
+                            className="w-full text-left font-sans text-sm text-black hover:text-orange-500 flex items-center gap-2"
+                          >
+                            <LogOut className="w-4 h-4" />
+                            Cerrar sesión
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleDeleteAccount}
+                            className="w-full text-left font-sans text-sm text-red-600 hover:text-red-700 flex items-center gap-2"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Eliminar cuenta
+                          </button>
+                        </>
+                      ) : null}
                   </div>
                 </div>
 
@@ -379,6 +425,67 @@ const Header: React.FC<HeaderProps> = memo(({
           )}
         </nav>
       </div>
+
+      {/* Modal de confirmación para cerrar sesión */}
+      {isLogoutModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white border border-black p-6 max-w-md mx-4">
+            <div className="flex items-center gap-3 mb-4">
+              <AlertCircle className="w-5 h-5 text-orange-500" />
+              <h3 className="font-serif text-lg font-bold text-black">Cerrar sesión</h3>
+            </div>
+            <p className="font-sans text-sm text-gray-700 mb-6">
+              ¿Estás seguro de que quieres cerrar sesión?
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setIsLogoutModalOpen(false)}
+                className="px-4 py-2 font-sans text-sm border border-black text-black hover:bg-gray-50 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmLogout}
+                className="px-4 py-2 font-sans text-sm bg-black text-white border border-black hover:bg-orange-500 hover:border-orange-500 transition-colors"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de confirmación para eliminar cuenta */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white border border-black p-6 max-w-md mx-4">
+            <div className="flex items-center gap-3 mb-4">
+              <AlertCircle className="w-5 h-5 text-red-500" />
+              <h3 className="font-serif text-lg font-bold text-black">Eliminar cuenta</h3>
+            </div>
+            <p className="font-sans text-sm text-gray-700 mb-4">
+              ¿Estás seguro de que quieres eliminar tu cuenta?
+            </p>
+            <p className="font-sans text-xs text-red-600 mb-6">
+              Esta acción es permanente y no se puede deshacer. Todos tus anuncios y datos serán eliminados.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setIsDeleteModalOpen(false)}
+                className="px-4 py-2 font-sans text-sm border border-black text-black hover:bg-gray-50 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmDeleteAccount}
+                className="px-4 py-2 font-sans text-sm bg-red-600 text-white border border-red-600 hover:bg-red-700 transition-colors"
+              >
+                Eliminar cuenta
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 });
