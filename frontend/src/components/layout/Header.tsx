@@ -266,6 +266,14 @@ const Header: React.FC<HeaderProps> = memo(({
                         Mis anuncios
                       </Link>
 
+                      <Link
+                        href="/guardados"
+                        className="block px-4 py-2 font-sans text-sm text-black hover:bg-orange-50"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        Mis guardados
+                      </Link>
+
                       {user ? (
                         <>
                           <button
@@ -390,6 +398,14 @@ const Header: React.FC<HeaderProps> = memo(({
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Mis anuncios
+                    </Link>
+
+                    <Link
+                      href="/guardados"
+                      className="block font-sans text-sm text-black hover:text-orange-500"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Mis guardados
                     </Link>
 
                     {user ? (
