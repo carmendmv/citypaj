@@ -290,11 +290,11 @@ app.get('/api/anuncios', async (req, res) => {
     }
 
     if (comunidad_autonoma) {
-      query = query.where('anuncios.comunidad_autonoma', comunidad_autonoma);
+      query = query.where('anuncios.comunidad_id', comunidad_autonoma);
     }
 
     if (provincia) {
-      query = query.where('anuncios.provincia', provincia);
+      query = query.where('anuncios.provincia_id', provincia);
     }
 
     if (modalidad) {
