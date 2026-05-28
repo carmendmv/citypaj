@@ -5,29 +5,57 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AnuncioList from '@/components/ui/AnuncioList';
+import FiltroAvanzado from '@/components/ui/FiltroAvanzado';
 import { useComunidad } from '@/hooks/useComunidad';
 import { Anuncio, PaginationMeta } from '@/types';
+
+interface FiltrosAvanzados {
+  categoria: string;
+  comunidad_autonoma: string;
+  provincia: string;
+  modalidad: string;
+  precio_min: string;
+  precio_max: string;
+  orden: string;
+  buscar: string;
+}
 
 export default function EmpleoPage() {
   const [loading, setLoading] = useState(true);
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
   const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filtros, setFiltros] = useState<FiltrosAvanzados>({
+    categoria: 'empleo',
+    comunidad_autonoma: '',
+    provincia: '',
+    modalidad: '',
+    precio_min: '',
+    precio_max: '',
+    orden: 'fecha_desc',
+    buscar: ''
+  });
   const { comunidadAutonoma, setComunidadAutonoma } = useComunidad();
 
   const fetchListado = async (pagina: number = 1) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
-        categoria: 'empleo',
-        orden: 'fecha_desc',
-        limite: '30',
         pagina: pagina.toString(),
+        limite: '20',
       });
 
-      if (comunidadAutonoma) params.set('comunidad_autonoma', comunidadAutonoma);
+      // Añadir filtros activos
+      Object.entries(filtros).forEach(([key, value]) => {
+        if (value) {
+          params.set(key, value);
+        }
+      });
 
-      const res = await fetch(`/api/anuncios?${params.toString()}`);
+      const res = await fetch(`http://localhost:3002/api/anuncios?${params.toString()}`, {
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
+      });
       const json = await res.json();
       setAnuncios(json?.data || []);
       setPaginationMeta(json?.meta || null);
@@ -39,9 +67,14 @@ export default function EmpleoPage() {
     }
   };
 
+  const handleFiltroChange = (nuevosFiltros: FiltrosAvanzados) => {
+    setFiltros(nuevosFiltros);
+    setCurrentPage(1); // Resetear a primera página cuando cambian filtros
+  };
+
   useEffect(() => {
     void fetchListado(currentPage);
-  }, [comunidadAutonoma, currentPage]);
+  }, [filtros, currentPage]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -53,6 +86,10 @@ export default function EmpleoPage() {
           <p className="mt-2 font-sans text-sm text-[#666666]">Ofertas de empleo, prácticas y voluntariado.</p>
         </div>
 
+        <FiltroAvanzado 
+          onFiltroChange={handleFiltroChange}
+          categoriaInicial="empleo"
+        />
 
         <AnuncioList 
           anuncios={anuncios}

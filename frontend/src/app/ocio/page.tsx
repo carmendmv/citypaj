@@ -52,7 +52,10 @@ export default function OcioPage() {
         }
       });
 
-      const res = await fetch(`/api/anuncios?${params.toString()}`);
+      const res = await fetch(`http://localhost:3002/api/anuncios?${params.toString()}`, {
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
+      });
       const json = await res.json();
       setAnuncios(json?.data || []);
       setPaginationMeta(json?.meta || null);

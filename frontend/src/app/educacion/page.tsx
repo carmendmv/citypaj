@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AnuncioList from '@/components/ui/AnuncioList';
-import FiltrosAvanzados from '@/components/ui/FiltrosAvanzados';
+import FiltroAvanzado from '@/components/ui/FiltroAvanzado';
 import { useComunidad } from '@/hooks/useComunidad';
 import { Anuncio, PaginationMeta } from '@/types';
 
@@ -16,33 +16,47 @@ export default function EducacionPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const { comunidadAutonoma, setComunidadAutonoma } = useComunidad();
 
-  const [filtros, setFiltros] = useState<{
-    comunidad_autonoma?: string;
-    provincia?: string;
-    orden?: string;
-    destacados?: boolean;
-  }>({
-    comunidad_autonoma: comunidadAutonoma || '',
+  interface FiltrosAvanzados {
+  categoria: string;
+  comunidad_autonoma: string;
+  provincia: string;
+  modalidad: string;
+  precio_min: string;
+  precio_max: string;
+  orden: string;
+  buscar: string;
+}
+
+const [filtros, setFiltros] = useState<FiltrosAvanzados>({
+    categoria: 'educacion',
+    comunidad_autonoma: '',
     provincia: '',
+    modalidad: '',
+    precio_min: '',
+    precio_max: '',
     orden: 'fecha_desc',
-    destacados: false
+    buscar: ''
   });
 
   const fetchListado = async (pagina: number = 1) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
-        categoria: 'educacion',
-        orden: filtros.orden || 'fecha_desc',
-        limite: '30',
         pagina: pagina.toString(),
+        limite: '20',
       });
 
-      if (filtros.comunidad_autonoma) params.set('comunidad_autonoma', filtros.comunidad_autonoma);
-      if (filtros.provincia) params.set('provincia', filtros.provincia);
-      if (filtros.destacados) params.set('destacados', 'true');
+      // Añadir filtros activos
+      Object.entries(filtros).forEach(([key, value]) => {
+        if (value) {
+          params.set(key, value);
+        }
+      });
 
-      const res = await fetch(`/api/anuncios?${params.toString()}`);
+      const res = await fetch(`http://localhost:3002/api/anuncios?${params.toString()}`, {
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
+      });
       const json = await res.json();
       setAnuncios(json?.data || []);
       setPaginationMeta(json?.meta || null);
@@ -52,6 +66,11 @@ export default function EducacionPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleFiltroChange = (nuevosFiltros: FiltrosAvanzados) => {
+    setFiltros(nuevosFiltros);
+    setCurrentPage(1); // Resetear a primera página cuando cambian filtros
   };
 
   useEffect(() => {
@@ -70,12 +89,10 @@ export default function EducacionPage() {
           </p>
         </div>
 
-        <FiltrosAvanzados
-          categoria="educacion"
-          onFiltrosChange={(nuevosFiltros) => {
-            setFiltros(nuevosFiltros);
-            setCurrentPage(1); // Resetear a la primera página cuando cambian los filtros
-          }}
+        <FiltroAvanzado 
+          onFiltroChange={handleFiltroChange}
+          categoriaInicial="educacion"
+          ocultarPrecio={true}
         />
 
         <AnuncioList
