@@ -36,8 +36,9 @@ export const config = {
   
   jwt: {
     secret: process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production',
-    accessTokenExpiry: process.env.JWT_ACCESS_EXPIRY || '15m',
-    refreshTokenExpiry: process.env.JWT_REFRESH_EXPIRY || '7d',
+    refreshSecret: process.env.JWT_REFRESH_SECRET || 'your-super-secret-refresh-key-change-in-production',
+    expiresIn: process.env.JWT_ACCESS_EXPIRY || '15m',
+    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRY || '7d',
     issuer: process.env.JWT_ISSUER || 'citypaj',
     audience: process.env.JWT_AUDIENCE || 'citypaj-users',
   },

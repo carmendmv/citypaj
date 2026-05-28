@@ -1,6 +1,13 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
 import { validate } from '../middleware/validation';
+import { 
+  register, 
+  login, 
+  logout, 
+  refreshToken, 
+  getProfile 
+} from '../controllers/auth';
 
 const router = Router();
 
@@ -8,47 +15,34 @@ const router = Router();
 router.post('/register',
   validate([
     body('email').isEmail().normalizeEmail(),
-    body('password').isLength({ min: 6 }),
-    body('nombre').isLength({ min: 2, max: 100 }).trim(),
+    body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
+    body('nombre').isLength({ min: 2, max: 100 }).trim().withMessage('El nombre debe tener entre 2 y 100 caracteres'),
+    body('turnstileToken').optional().isString(),
   ]),
-  async (_req, res) => {
-    // TODO: Implementar registro real
-    res.json({
-      success: true,
-      message: 'Usuario registrado correctamente',
-    });
-  }
+  register
 );
 
 // Login
 router.post('/login',
   validate([
     body('email').isEmail().normalizeEmail(),
-    body('password').notEmpty(),
+    body('password').notEmpty().withMessage('La contraseña es obligatoria'),
   ]),
-  async (req, res) => {
-    // TODO: Implementar login real
-    res.json({
-      success: true,
-      data: {
-        access_token: 'mock-token',
-        refresh_token: 'mock-refresh-token',
-        usuario: {
-          id: '1',
-          email: req.body.email,
-          nombre: 'Usuario Test',
-        },
-      },
-    });
-  }
+  login
 );
 
 // Logout
-router.post('/logout', (_req, res) => {
-  res.json({
-    success: true,
-    message: 'Sesión cerrada correctamente',
-  });
-});
+router.post('/logout', logout);
+
+// Refresh token
+router.post('/refresh',
+  validate([
+    body('refresh_token').notEmpty().withMessage('Refresh token es obligatorio'),
+  ]),
+  refreshToken
+);
+
+// Obtener perfil (requiere autenticación)
+router.get('/profile', getProfile);
 
 export { router as authRoutes };

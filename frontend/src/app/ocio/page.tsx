@@ -5,27 +5,52 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AnuncioList from '@/components/ui/AnuncioList';
+import FiltroAvanzado from '@/components/ui/FiltroAvanzado';
 import { useComunidad } from '@/hooks/useComunidad';
 import { Anuncio, PaginationMeta } from '@/types';
+
+interface FiltrosAvanzados {
+  categoria: string;
+  comunidad_autonoma: string;
+  provincia: string;
+  modalidad: string;
+  precio_min: string;
+  precio_max: string;
+  orden: string;
+  buscar: string;
+}
 
 export default function OcioPage() {
   const [loading, setLoading] = useState(true);
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
   const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filtros, setFiltros] = useState<FiltrosAvanzados>({
+    categoria: 'ocio',
+    comunidad_autonoma: '',
+    provincia: '',
+    modalidad: '',
+    precio_min: '',
+    precio_max: '',
+    orden: 'fecha_desc',
+    buscar: ''
+  });
   const { comunidadAutonoma, setComunidadAutonoma } = useComunidad();
 
   const fetchListado = async (pagina: number = 1) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
-        categoria: 'ocio',
-        orden: 'fecha_desc',
-        limite: '30',
         pagina: pagina.toString(),
+        limite: '20',
       });
 
-      if (comunidadAutonoma) params.set('comunidad_autonoma', comunidadAutonoma);
+      // Añadir filtros activos
+      Object.entries(filtros).forEach(([key, value]) => {
+        if (value) {
+          params.set(key, value);
+        }
+      });
 
       const res = await fetch(`/api/anuncios?${params.toString()}`);
       const json = await res.json();
@@ -39,9 +64,14 @@ export default function OcioPage() {
     }
   };
 
+  const handleFiltroChange = (nuevosFiltros: FiltrosAvanzados) => {
+    setFiltros(nuevosFiltros);
+    setCurrentPage(1); // Resetear a primera página cuando cambian filtros
+  };
+
   useEffect(() => {
     void fetchListado(currentPage);
-  }, [comunidadAutonoma, currentPage]);
+  }, [filtros, currentPage]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -55,6 +85,10 @@ export default function OcioPage() {
           </p>
         </div>
 
+        <FiltroAvanzado 
+          onFiltroChange={handleFiltroChange}
+          categoriaInicial="ocio"
+        />
         
         <AnuncioList 
           anuncios={anuncios}

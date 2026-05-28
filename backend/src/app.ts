@@ -69,7 +69,7 @@ app.use((_req: Request, res: Response, next: NextFunction) => {
   const requestId = Array.isArray(_req.headers['x-request-id']) 
     ? _req.headers['x-request-id'][0] 
     : _req.headers['x-request-id'] || generateRequestId();
-  _req.requestId = requestId;
+  (_req as any).requestId = requestId;
   res.setHeader('X-Request-ID', requestId);
   next();
 });
@@ -112,7 +112,7 @@ app.use('*', (req, res) => {
   res.status(404).json({
     error: 'Not Found',
     message: `Route ${req.originalUrl} not found`,
-    requestId: req.requestId,
+    requestId: (req as any).requestId,
   });
 });
 

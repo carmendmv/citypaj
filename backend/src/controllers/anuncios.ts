@@ -380,6 +380,35 @@ export const toggleFavorito = async (_req: AuthRequest, res: Response): Promise<
   }
 };
 
+export const getAnunciosGuardados = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { ids } = req.body;
+    
+    if (!ids || !Array.isArray(ids)) {
+      res.status(400).json({
+        success: false,
+        error: 'Se requiere un array de IDs',
+      });
+      return;
+    }
+
+    // Filtrar anuncios mock por los IDs proporcionados
+    const anunciosFiltrados = mockAnuncios.filter(anuncio => 
+      ids.includes(anuncio.id)
+    );
+
+    res.json({
+      success: true,
+      data: anunciosFiltrados,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error al obtener anuncios guardados',
+    });
+  }
+};
+
 export const incrementarVistas = async (_req: Request, res: Response): Promise<void> => {
   try {
     // TODO: Implementar lógica real con base de datos

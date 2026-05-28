@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header'; 
 import Footer from '@/components/layout/Footer';
-import HumanVerification from '@/components/forms/HumanVerification';
 import TerminosModal from '@/components/ui/TerminosModal';
 import PasswordInput from '@/components/ui/PasswordInput';
 import { useAuth } from '@/context/AuthContext';
@@ -31,8 +30,7 @@ export default function AccederPage() {
   const [errorRegister, setErrorRegister] = useState<string | null>(null);
   const [showTerminosModal, setShowTerminosModal] = useState(false);
 
-  const requiresCaptcha = useMemo(() => Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY), []);
-
+  
   const validatePassword = (password: string): { isValid: boolean; errors: string[] } => {
     const errors: string[] = [];
     
@@ -105,8 +103,7 @@ export default function AccederPage() {
       return;
     }
     
-    if (requiresCaptcha && !turnstileToken) return;
-    setLoadingRegister(true);
+        setLoadingRegister(true);
     try {
       await register({
         nombre: regNombre,
@@ -293,8 +290,7 @@ export default function AccederPage() {
                 />
               </div>
 
-              <HumanVerification token={turnstileToken} onToken={(tok) => setTurnstileToken(tok)} />
-              
+                            
               {/* Checkbox de términos y condiciones */}
               <div className="flex items-start space-x-2">
                 <input
@@ -325,7 +321,7 @@ export default function AccederPage() {
               <button
                 type="button"
                 onClick={() => void onSubmitRegister()}
-                disabled={loadingRegister || (requiresCaptcha && !turnstileToken)}
+                disabled={loadingRegister}
                 className="w-full bg-black text-white border border-black px-6 py-3 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors"
               >
                 {loadingRegister ? 'Creando cuenta...' : 'Crear cuenta'}

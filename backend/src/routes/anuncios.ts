@@ -13,6 +13,7 @@ import {
   hideAnuncio,
   searchAnuncios,
   toggleFavorito,
+  getAnunciosGuardados,
   incrementarVistas,
 } from '../controllers/anuncios';
 
@@ -215,6 +216,7 @@ const createAnuncioPublicoValidation = [
 router.get('/', validate(queryValidation), getAnuncios);
 router.get('/search', validate(searchValidation), searchAnuncios);
 router.post('/publico', validate(createAnuncioPublicoValidation), createAnuncioPublico);
+router.post('/guardados', getAnunciosGuardados);
 router.get('/:id', validate([
   param('id').isUUID().withMessage('ID de anuncio no válido'),
 ]), getAnuncioById);
