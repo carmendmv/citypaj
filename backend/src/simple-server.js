@@ -307,18 +307,106 @@ app.post('/api/auth/logout', (req, res) => {
   });
 });
 
-// Anuncios routes
+// Anuncios routes con filtrado avanzado
 app.get('/api/anuncios', (req, res) => {
-  res.json({
-    success: true,
-    data: mockAnuncios,
-    meta: {
-      pagina: 1,
-      limite: 20,
-      total: mockAnuncios.length,
-      total_paginas: 1,
-    },
-  });
+  try {
+    const {
+      categoria,
+      comunidad_autonoma,
+      provincia,
+      modalidad,
+      precio_min,
+      precio_max,
+      orden = 'fecha_desc',
+      pagina = '1',
+      limite = '20',
+      buscar
+    } = req.query;
+
+    let filtrados = [...mockAnuncios];
+
+    // Filtrar por categoría
+    if (categoria) {
+      filtrados = filtrados.filter(a => a.categoria === categoria);
+    }
+
+    // Filtrar por comunidad autónoma
+    if (comunidad_autonoma) {
+      filtrados = filtrados.filter(a => a.comunidad_autonoma === comunidad_autonoma);
+    }
+
+    // Filtrar por provincia
+    if (provincia) {
+      filtrados = filtrados.filter(a => a.provincia === provincia);
+    }
+
+    // Filtrar por modalidad
+    if (modalidad) {
+      filtrados = filtrados.filter(a => a.modalidad === modalidad);
+    }
+
+    // Filtrar por precio mínimo
+    if (precio_min) {
+      const min = parseFloat(precio_min);
+      filtrados = filtrados.filter(a => a.precio && a.precio >= min);
+    }
+
+    // Filtrar por precio máximo
+    if (precio_max) {
+      const max = parseFloat(precio_max);
+      filtrados = filtrados.filter(a => !a.precio || a.precio <= max);
+    }
+
+    // Búsqueda por texto en título y descripción
+    if (buscar) {
+      const termino = buscar.toLowerCase();
+      filtrados = filtrados.filter(a => 
+        a.titulo.toLowerCase().includes(termino) || 
+        a.descripcion.toLowerCase().includes(termino)
+      );
+    }
+
+    // Ordenamiento
+    switch (orden) {
+      case 'fecha_asc':
+        filtrados.sort((a, b) => new Date(a.creado).getTime() - new Date(b.creado).getTime());
+        break;
+      case 'fecha_desc':
+        filtrados.sort((a, b) => new Date(b.creado).getTime() - new Date(a.creado).getTime());
+        break;
+      case 'precio_asc':
+        filtrados.sort((a, b) => (a.precio || 0) - (b.precio || 0));
+        break;
+      case 'precio_desc':
+        filtrados.sort((a, b) => (b.precio || 0) - (a.precio || 0));
+        break;
+      default:
+        filtrados.sort((a, b) => new Date(b.creado).getTime() - new Date(a.creado).getTime());
+    }
+
+    // Paginación
+    const page = parseInt(pagina);
+    const limit = parseInt(limite);
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginados = filtrados.slice(startIndex, endIndex);
+
+    res.json({
+      success: true,
+      data: paginados,
+      meta: {
+        pagina: page,
+        limite: limit,
+        total: filtrados.length,
+        total_paginas: Math.ceil(filtrados.length / limit),
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error al obtener anuncios',
+    });
+  }
 });
 
 app.get('/api/anuncios/:id', (req, res) => {
