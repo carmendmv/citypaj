@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Pagination from '@/components/ui/Pagination';
-import { generarAnunciosMasivos } from '@/data/anunciosMasivos';
+// No hay datos hardcodeados - se usa API real
 import { useComunidad } from '@/hooks/useComunidad';
 
 interface Anuncio {
@@ -77,8 +77,23 @@ export default function AnunciosComunidadPage({ params }: { params: { comunidad:
   const fetchAnunciosPaginated = useCallback(async (comunidadNombre: string, page: number = 1, categoria: string = '') => {
     setLoading(true);
     try {
-      // Usar directamente los anuncios masivos para demostración
-      const allAnuncios = generarAnunciosMasivos(comunidadNombre);
+      // Obtener datos de la API real - no hay datos hardcodeados
+      let allAnuncios: any[] = [];
+      try {
+        const params = new URLSearchParams({
+          ...(categoria && { categoria })
+        });
+        const response = await fetch(`http://localhost:3002/api/anuncios?${params}`, {
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include'
+        });
+        if (response.ok) {
+          const data = await response.json();
+          allAnuncios = data.data || [];
+        }
+      } catch (error) {
+        console.error('Error al obtener anuncios:', error);
+      }
       
       // Filtrar por categoría si está seleccionada
       let filteredAnuncios = allAnuncios;

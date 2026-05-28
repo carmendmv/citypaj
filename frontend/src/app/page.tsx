@@ -14,7 +14,7 @@ import Footer from '@/components/layout/Footer';
 
 import Pagination from '@/components/ui/Pagination';
 
-import { generarAnunciosMasivos } from '@/data/anunciosMasivos';
+// No hay datos hardcodeados - se usa API real
 
 import { useComunidad } from '@/hooks/useComunidad';
 import { useGuardados } from '@/hooks/useGuardados';
@@ -95,7 +95,7 @@ interface PaginationMeta {
 
 
 
-type Categoria = 'ocio' | 'servicios' | 'educacion' | 'empleo' | 'intercambios' | 'vivienda' | null;
+type Categoria = 'todos' | 'ocio' | 'servicios' | 'educacion' | 'empleo' | 'intercambios' | 'vivienda' | null;
 
 
 
@@ -179,6 +179,13 @@ export default function HomePage() {
   const categoriaInfo = useMemo(() => {
 
     return {
+
+      todos: {
+        label: 'Todas las categorías',
+        intro: 'Todos los anuncios disponibles:',
+        bullets: ['Ocio y entretenimiento', 'Servicios útiles', 'Educación y formación', 'Empleo y oportunidades', 'Intercambios y vivienda'],
+        cierre: 'Se muestran anuncios de todas las categorías disponibles en la comunidad.',
+      },
 
       ocio: {
 
@@ -308,135 +315,49 @@ export default function HomePage() {
 
     if (!comunidad) return { data: [], meta: { pagina: 1, limite: 10, total: 0, total_paginas: 0 } };
 
-    // Usar directamente los anuncios masivos para demostración
+    // Usar API real - no hay datos hardcodeados
 
-    const allAnuncios = generarAnunciosMasivos(comunidad);
+    try {
 
-    
+      const params: Record<string, string> = {
+        pagina: page.toString(),
+        limite: '10'
+      };
+      
+      if (categoriaFilter && categoriaFilter !== 'todos') {
+        params.categoria = categoriaFilter;
+      }
+      
+      if (busqueda) {
+        params.buscar = busqueda;
+      }
 
-    // Ordenar por fecha (más reciente a más antiguo)
+      const queryString = new URLSearchParams(params).toString();
+      const response = await fetch(`http://localhost:3002/api/anuncios?${queryString}`, {
 
-    const sortedAnuncios = [...allAnuncios].sort((a, b) => 
+        headers: { 'Content-Type': 'application/json' },
 
-      new Date(b.creado).getTime() - new Date(a.creado).getTime()
+        credentials: 'include'
 
-    );
+      });
 
-    
+      if (!response.ok) throw new Error('Error en API');
 
-    // Filtrar por búsqueda si es necesario
+      const data = await response.json();
 
-    let filteredAnuncios = sortedAnuncios;
+      return data;
 
-    if (busqueda.trim()) {
+    } catch (error) {
 
-      const termino = busqueda.toLowerCase().trim();
+      console.error('Error al obtener anuncios:', error);
 
-      filteredAnuncios = sortedAnuncios.filter(anuncio => 
-
-        anuncio.titulo.toLowerCase().includes(termino) ||
-
-        anuncio.descripcion.toLowerCase().includes(termino) ||
-
-        anuncio.usuario_nombre?.toLowerCase().includes(termino)
-
-      );
-
-    }
-
-    
-
-    // Filtrar por categoría si es necesario
-
-    if (categoriaFilter) {
-
-      filteredAnuncios = filteredAnuncios.filter(anuncio => anuncio.categoria === categoriaFilter);
+      return { data: [], meta: { pagina: 1, limite: 10, total: 0, total_paginas: 0 } };
 
     }
 
     
 
-    const limit = 10;
-
-    const start = (page - 1) * limit;
-
-    const end = start + limit;
-
-    const paginatedData = filteredAnuncios.slice(start, end);
-
-
-
-    return {
-
-      data: paginatedData,
-
-      meta: {
-
-        pagina: page,
-
-        limite: limit,
-
-        total: filteredAnuncios.length,
-
-        total_paginas: Math.ceil(filteredAnuncios.length / limit),
-
-      },
-
-    };
-
-  }, []);
-
-
-
-  // Datos demo fallback para cuando la API falla
-
-  const getDemoDataFallback = useCallback((comunidad: string | null, categoriaFilter: Categoria, page: number = 1) => {
-
-    if (!comunidad) return { data: [], meta: { pagina: 1, limite: 10, total: 0, total_paginas: 0 } };
-
-    const allAnuncios = generarAnunciosMasivos(comunidad);
-
-    
-
-    // Filtrar por categoría si es necesario
-
-    const filteredAnuncios = categoriaFilter 
-
-      ? allAnuncios.filter(anuncio => anuncio.categoria === categoriaFilter)
-
-      : allAnuncios;
-
-    
-
-    const limit = 10;
-
-    const start = (page - 1) * limit;
-
-    const end = start + limit;
-
-    const paginatedData = filteredAnuncios.slice(start, end);
-
-
-
-    return {
-
-      data: paginatedData,
-
-      meta: {
-
-        pagina: page,
-
-        limite: limit,
-
-        total: filteredAnuncios.length,
-
-        total_paginas: Math.ceil(filteredAnuncios.length / limit),
-
-      },
-
-    };
-
-  }, []);
+    }, []);
 
 
 
@@ -466,7 +387,7 @@ export default function HomePage() {
 
             comunidad: c,
 
-            anuncios: generarAnunciosMasivos(c).slice(0, 5),
+            anuncios: [], // Se obtendrán de la API real
 
           }));
 

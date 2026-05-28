@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Pagination from '@/components/ui/Pagination';
-import { generarAnunciosMasivos } from '@/data/anunciosMasivos';
+// No hay datos hardcodeados - se usa API real
 import { useComunidad } from '@/hooks/useComunidad';
 import { useGuardados } from '@/hooks/useGuardados';
 
@@ -80,10 +80,20 @@ export default function AnunciosPage() {
         'Extremadura', 'Galicia', 'Madrid', 'Murcia', 'Navarra', 'País Vasco', 'La Rioja'
       ];
       
+      // Obtener datos de la API real - no hay datos hardcodeados
       let allAnuncios: Anuncio[] = [];
-      comunidades.forEach(comunidad => {
-        allAnuncios = [...allAnuncios, ...generarAnunciosMasivos(comunidad)];
-      });
+      try {
+        const response = await fetch('http://localhost:3002/api/anuncios', {
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include'
+        });
+        if (response.ok) {
+          const data = await response.json();
+          allAnuncios = data.data || [];
+        }
+      } catch (error) {
+        console.error('Error al obtener anuncios:', error);
+      }
       
       // Ordenar por fecha (más reciente a más antiguo)
       const sortedAnuncios = [...allAnuncios].sort((a, b) => 
