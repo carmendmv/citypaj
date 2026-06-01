@@ -492,7 +492,7 @@ export default function HomePage() {
 
           <img 
 
-            src="/fondo-hero3.jpg"
+            src="/fondo-hero1.jpeg"
 
             alt="Colaboración en equipo"
 
