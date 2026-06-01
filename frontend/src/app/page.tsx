@@ -1229,49 +1229,7 @@ export default function HomePage() {
                 <p className="text-xs font-medium text-gray-700">Extranjería</p>
               </div>
 
-              {/* Fila 3: Comunidad (Buzón de Sugerencias) */}
-              <div className="text-center">
-                <div className="aspect-square mb-2">
-                  <img 
-                    src="/images/comunidad-placeholder.jpg" 
-                    alt="Comunidad"
-                    className="w-full h-full object-cover border border-black"
-                    onError={(e) => {
-                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZjdmNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q29tdW5pZGFkPC90ZXh0Pjwvc3ZnPg==';
-                    }}
-                  />
-                </div>
-                <p className="text-xs font-medium text-gray-700">Comunidad</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="aspect-square mb-2">
-                  <img 
-                    src="/images/comunidad-placeholder.jpg" 
-                    alt="Comunidad"
-                    className="w-full h-full object-cover border border-black"
-                    onError={(e) => {
-                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZjdmNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q29tdW5pZGFkPC90ZXh0Pjwvc3ZnPg==';
-                    }}
-                  />
-                </div>
-                <p className="text-xs font-medium text-gray-700">Comunidad</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="aspect-square mb-2">
-                  <img 
-                    src="/images/comunidad-placeholder.jpg" 
-                    alt="Comunidad"
-                    className="w-full h-full object-cover border border-black"
-                    onError={(e) => {
-                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y3ZjdmNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q29tdW5pZGFkPC90ZXh0Pjwvc3ZnPg==';
-                    }}
-                  />
-                </div>
-                <p className="text-xs font-medium text-gray-700">Comunidad</p>
-              </div>
-            </div>
+                          </div>
           </div>
         </section>
       )}
