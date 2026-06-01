@@ -604,6 +604,134 @@ app.post('/api/auth/logout', async (req, res) => {
   }
 });
 
+// Endpoint para solicitar recuperación de contraseña
+app.post('/api/auth/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email es requerido'
+      });
+    }
+
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email inválido'
+      });
+    }
+
+    // Verificar si el usuario existe
+    const userQuery = 'SELECT * FROM usuarios WHERE email = $1';
+    const userResult = await pool.query(userQuery, [email.toLowerCase()]);
+
+    if (userResult.rows.length === 0) {
+      // Por seguridad, no revelamos si el email existe o no
+      return res.json({
+        success: true,
+        message: 'Si el email está registrado, recibirás instrucciones para recuperar tu contraseña'
+      });
+    }
+
+    // Generar token de recuperación (válido por 1 hora)
+    const crypto = require('crypto');
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hora
+
+    // Guardar token en la base de datos
+    const updateQuery = `
+      UPDATE usuarios 
+      SET reset_token = $1, reset_token_expiry = $2 
+      WHERE email = $3
+    `;
+    await pool.query(updateQuery, [resetToken, resetTokenExpiry, email.toLowerCase()]);
+
+    // En desarrollo, devolver el token para testing
+    const debugToken = process.env.NODE_ENV === 'development' ? resetToken : undefined;
+
+    // TODO: En producción, aquí se enviaría el email real
+    console.log('🔑 Token de recuperación (desarrollo):', resetToken);
+    console.log('📧 Email de recuperación enviado a:', email);
+
+    res.json({
+      success: true,
+      message: 'Si el email está registrado, recibirás instrucciones para recuperar tu contraseña',
+      debugToken
+    });
+
+  } catch (error) {
+    console.error('Error en forgot-password:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+});
+
+// Endpoint para restablecer contraseña
+app.post('/api/auth/reset-password', async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        error: 'Token y nueva contraseña son requeridos'
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        error: 'La contraseña debe tener al menos 6 caracteres'
+      });
+    }
+
+    // Verificar token y encontrar usuario
+    const userQuery = `
+      SELECT id FROM usuarios 
+      WHERE reset_token = $1 AND reset_token_expiry > NOW()
+    `;
+    const userResult = await pool.query(userQuery, [token]);
+
+    if (userResult.rows.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Token inválido o expirado'
+      });
+    }
+
+    // Hashear nueva contraseña
+    const bcrypt = require('bcrypt');
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+    // Actualizar contraseña y limpiar token
+    const updateQuery = `
+      UPDATE usuarios 
+      SET password_hash = $1, reset_token = NULL, reset_token_expiry = NULL 
+      WHERE id = $2
+    `;
+    await pool.query(updateQuery, [hashedPassword, userResult.rows[0].id]);
+
+    res.json({
+      success: true,
+      message: 'Contraseña restablecida exitosamente'
+    });
+
+  } catch (error) {
+    console.error('Error en reset-password:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+});
+
 // Middleware de autenticación
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -868,6 +996,8 @@ app.post('/api/init-database', async (req, res) => {
         email_verificado BOOLEAN DEFAULT false,
         telefono_verificado BOOLEAN DEFAULT false,
         usuario_verificado BOOLEAN DEFAULT false,
+        reset_token VARCHAR(255),
+        reset_token_expiry TIMESTAMP,
         creado TIMESTAMP DEFAULT NOW(),
         actualizado TIMESTAMP DEFAULT NOW()
       )

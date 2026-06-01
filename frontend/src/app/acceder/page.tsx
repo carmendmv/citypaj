@@ -217,6 +217,16 @@ export default function AccederPage() {
               >
                 {loadingLogin ? 'Iniciando sesión...' : 'Iniciar sesión'}
               </button>
+              
+              {/* Enlace de recuperación de contraseña */}
+              <div className="mt-4 text-center">
+                <Link 
+                  href="/recuperar-contrasena"
+                  className="text-sm text-gray-600 hover:text-black underline transition-colors"
+                >
+                  ¿Has olvidado tu contraseña?
+                </Link>
+              </div>
             </form>
           </section>
 
