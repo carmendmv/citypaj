@@ -50,7 +50,7 @@ const AnuncioItem = memo(({ anuncio, index }: { anuncio: Anuncio; index: number 
    */
   const handleAnuncioClick = useCallback(() => {
     // Navegación real al detalle del anuncio
-    window.location.href = `/anuncio/${anuncio.id}`;
+    window.location.href = `/anuncios/${anuncio.id}`;
   }, [anuncio.id]);
 
   /**

@@ -1,63 +1,49 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { FilterBar } from '@/components/filters/FilterBar';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import Pagination from '@/components/ui/Pagination';
-// No hay datos hardcodeados - se usa API real
-import { useComunidad } from '@/hooks/useComunidad';
-import { useGuardados } from '@/hooks/useGuardados';
 
 interface Anuncio {
   id: string;
-  usuario_id: string;
   titulo: string;
   descripcion: string;
   categoria: string;
-  subcategoria?: string;
   comunidad_autonoma: string;
   provincia: string;
-  barrio?: string;
   precio?: number;
-  modalidad: 'venta' | 'regalo' | 'intercambio' | 'servicio' | 'compra';
-  contacto_email: boolean;
-  contacto_telefono: boolean;
-  contacto_anonimo: boolean;
-  visible: boolean;
-  estado_moderacion: 'pending' | 'approved' | 'rejected' | 'flagged';
-  motivo_rechazo?: string;
-  vistas: number;
   creado: string;
-  actualizado: string;
-  // Campos adicionales de joins
-  usuario_nombre?: string;
-  usuario_verificado?: boolean;
-  numero_imagenes?: number;
-  imagenes?: any[];
-  es_favorito?: boolean;
+  vistas: number;
+  usuario_nombre: string;
+  usuario_email: string;
+  usuario_telefono?: string;
 }
 
-interface PaginationMeta {
-  pagina: number;
-  limite: number;
-  total: number;
-  total_paginas: number;
+interface Filters {
+  categoria?: string;
+  comunidad?: string;
+  provincia?: string;
+  ordenar?: string;
+  busqueda?: string;
 }
 
 export default function AnunciosPage() {
-    const searchParams = useSearchParams();
-  const { comunidadAutonoma, setComunidadAutonoma } = useComunidad();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   
-  // Inicializar useGuardados para que los corazones funcionen
-  useGuardados();
-
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+
+  // Estado de filtros
+  const [filters, setFilters] = useState<Filters>({});
+  const [paginationMeta, setPaginationMeta] = useState<any | null>(null);
 
   // Leer página actual de URL
   useEffect(() => {
@@ -80,38 +66,35 @@ export default function AnunciosPage() {
         'Extremadura', 'Galicia', 'Madrid', 'Murcia', 'Navarra', 'País Vasco', 'La Rioja'
       ];
       
-      // Obtener datos de la API real - no hay datos hardcodeados
+      // Obtener datos desde las API routes del backend
       let allAnuncios: Anuncio[] = [];
       try {
-        const response = await fetch('http://localhost:3002/api/anuncios', {
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include'
+        const params = new URLSearchParams({
+          page: page.toString(),
+          limit: '15',
+          ordenar: 'creado-desc'
         });
-        if (response.ok) {
-          const data = await response.json();
-          allAnuncios = data.data || [];
+        
+        const response = await fetch(`/api/anuncios?${params}`);
+        const result = await response.json();
+        
+        if (result.success) {
+          allAnuncios = result.data || [];
         }
       } catch (error) {
         console.error('Error al obtener anuncios:', error);
       }
       
-      // Ordenar por fecha (más reciente a más antiguo)
-      const sortedAnuncios = [...allAnuncios].sort((a, b) => 
-        new Date(b.creado).getTime() - new Date(a.creado).getTime()
-      );
-      
       const limit = 15;
-      const start = (page - 1) * limit;
-      const end = start + limit;
-      const paginatedData = sortedAnuncios.slice(start, end);
+      const paginatedData = allAnuncios;
 
       return {
         data: paginatedData,
         meta: {
           pagina: page,
           limite: limit,
-          total: sortedAnuncios.length,
-          total_paginas: Math.ceil(sortedAnuncios.length / limit),
+          total: allAnuncios.length,
+          total_paginas: Math.ceil(allAnuncios.length / limit),
         },
       };
     } catch {

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, Menu, X, User, LogOut, Trash2, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import { ProfessionalLanguageSelector } from '@/components/ui/ProfessionalLanguageSelector';
+import LanguageSelector from '@/components/ui/LanguageSelector';
 
 const COMUNIDADES_AUTONOMAS = [
   'Andalucía', 'Aragón', 'Asturias', 'Baleares', 'Canarias',
@@ -41,7 +41,7 @@ const MENU_PRINCIPAL = [
     categoria: 'educacion',
     label: 'Formación',
     descripcion: 'Cursos, talleres y becas',
-    href: '/formacion'
+    href: '/educacion'
   },
   {
     categoria: 'empleo',
@@ -162,7 +162,7 @@ const Header: React.FC<HeaderProps> = memo(({
           <div className="flex items-center justify-between gap-6">
             <div className="flex items-center">
               <Link
-                className="logo-link text-xl md:text-5xl font-serif tracking-tight text-black hover:text-orange-500 transition-colors"
+                className="logo-link text-3xl md:text-5xl font-serif tracking-tight text-black hover:text-orange-500 transition-colors"
                 href="/"
               >
                 CityPaj
@@ -220,7 +220,7 @@ const Header: React.FC<HeaderProps> = memo(({
               </Link>
 
               <div className="hidden md:block">
-                <ProfessionalLanguageSelector />
+                <LanguageSelector isMobile={false} />
               </div>
 
               <div className="relative hidden md:block">
@@ -433,7 +433,7 @@ const Header: React.FC<HeaderProps> = memo(({
 
                 <div className="pt-3 border-t border-black">
                   <div className="font-sans text-xs text-gray-600 mb-2">IDIOMA</div>
-                  <ProfessionalLanguageSelector />
+                  <LanguageSelector isMobile={false} />
                 </div>
 
                               </div>

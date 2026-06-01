@@ -40,14 +40,15 @@ export const ProfessionalLanguageSelector: React.FC<LanguageSelectorProps> = ({ 
       <select
         value={currentLanguage}
         onChange={(e) => handleLanguageChange(e.target.value)}
-        className="appearance-none bg-white border border-gray-300 rounded-md px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+        className="appearance-none bg-white border border-black px-3 py-2 pr-8 text-sm focus:outline-none cursor-pointer"
         disabled={isLoading}
       >
-        {supportedLanguages.map((lang) => (
-          <option key={lang} value={lang}>
-            {languageFlags[lang]} {languageNames[lang]}
-          </option>
-        ))}
+        <option value="es">ES Español</option>
+        <option value="en">GB English</option>
+        <option value="fr">FR Français</option>
+        <option value="de">DE Deutsch</option>
+        <option value="it">IT Italiano</option>
+        <option value="pt">PT Português</option>
       </select>
       
       {/* Flecha personalizada */}

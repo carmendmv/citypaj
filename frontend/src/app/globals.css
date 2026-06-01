@@ -275,3 +275,22 @@ img {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-text-secondary);
 }
+
+/* Favicon circular */
+.link[rel="icon"] {
+  border-radius: 50%;
+}
+
+/* Estilos para favicon en diferentes tamaños */
+favicon.ico,
+favicon-16x16.png,
+favicon-32x32.png {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Para navegadores que soportan mask-icon */
+mask-icon {
+  mask: url('/favicon.svg') no-repeat center;
+  -webkit-mask: url('/favicon.svg') no-repeat center;
+}

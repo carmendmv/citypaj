@@ -53,7 +53,7 @@ const [filtros, setFiltros] = useState<FiltrosAvanzados>({
         }
       });
 
-      const res = await fetch(`http://localhost:3002/api/anuncios?${params.toString()}`, {
+      const res = await fetch(`/api/anuncios?${params.toString()}`, {
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
       });

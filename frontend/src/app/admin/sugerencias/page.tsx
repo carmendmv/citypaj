@@ -59,7 +59,7 @@ export default function AdminSugerencias() {
   const fetchEstadisticas = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:3002/api/sugerencias/estadisticas${comunidadSeleccionada !== 'Todas' ? `?comunidad_autonoma=${comunidadSeleccionada}` : ''}`);
+      const response = await fetch(`/api/sugerencias/estadisticas${comunidadSeleccionada !== 'Todas' ? `?comunidad_autonoma=${comunidadSeleccionada}` : ''}`);
       const data = await response.json();
       setEstadisticas(data);
     } catch (error) {

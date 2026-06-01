@@ -30,7 +30,7 @@ export default function GuardadosPage() {
         const ids = guardados.map(g => g.anuncioId);
         
         // Hacer petición para obtener los anuncios completos
-        const response = await fetch('http://localhost:3002/api/anuncios/guardados', {
+        const response = await fetch('/api/anuncios/guardados', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ids })

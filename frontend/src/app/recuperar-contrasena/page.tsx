@@ -40,7 +40,7 @@ export default function RecuperarContrasenaPage() {
     setSuccess('');
 
     try {
-      const response = await fetch('http://localhost:3002/api/auth/forgot-password', {
+      const response = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -86,7 +86,7 @@ export default function RecuperarContrasenaPage() {
         return;
       }
 
-      const response = await fetch('http://localhost:3002/api/auth/reset-password', {
+      const response = await fetch('/api/auth/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

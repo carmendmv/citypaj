@@ -62,8 +62,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const json = await res.json();
-    const nextUser = json?.data?.usuario as AuthUser | undefined;
-    const token = json?.data?.access_token as string | undefined;
+    const nextUser = json?.data?.user as AuthUser | undefined;
+    const token = json?.data?.token as string | undefined;
 
     if (!nextUser || !token) {
       throw new Error('Login fallido');

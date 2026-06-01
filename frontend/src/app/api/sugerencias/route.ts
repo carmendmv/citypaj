@@ -23,24 +23,26 @@ export async function POST(request: NextRequest) {
       estado: 'pendiente'
     };
 
-    // Simular API call al backend
-    console.log('Sugerencia recibida:', sugerencia);
-    
-    // En un entorno real, aquí harías:
-    // const response = await fetch('http://localhost:3002/api/sugerencias', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(sugerencia)
-    // });
-
-    return NextResponse.json(
-      { 
-        success: true, 
-        message: 'Sugerencia guardada correctamente',
-        id: sugerencia.id 
+    // Enviar sugerencia al backend
+    const backendResponse = await fetch('http://localhost:3002/api/sugerencias', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      { status: 201 }
-    );
+      body: JSON.stringify({
+        nombre: body.nombre.trim(),
+        email: body.email.trim(),
+        titulo: body.titulo.trim(),
+        descripcion: body.descripcion.trim(),
+        tipo: body.tipo || 'sugerencia',
+        categoria: body.categoria || 'general',
+        prioridad: body.prioridad || 'media'
+      })
+    });
+
+    const result = await backendResponse.json();
+
+    return NextResponse.json(result, { status: 201 });
 
   } catch (error) {
     console.error('Error al procesar sugerencia:', error);

@@ -1,41 +1,176 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Bookmark, Share2, Flag, ArrowLeft, Mail, Phone, MapPin, Calendar, Eye } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import HeartButton from '@/components/ui/HeartButton';
 
-interface AnuncioDetalle {
+interface Anuncio {
   id: string;
   titulo: string;
   descripcion: string;
+  categoria: string;
   comunidad_autonoma: string;
   provincia: string;
+  precio?: number;
   creado: string;
-  autor?: string;
-  email?: string;
-  telefono?: string;
+  actualizado: string;
+  vistas: number;
+  usuario_nombre: string;
+  usuario_email: string;
+  usuario_telefono?: string;
+  imagenes?: Array<{
+    id: string;
+    url: string;
+    url_thumbnail?: string;
+    orden: number;
+  }>;
 }
 
-export default function AnuncioDetailPage({ params }: { params: { id: string } }) {
+interface ReportForm {
+  motivo: string;
+  descripcion: string;
+}
+
+export default function AnuncioDetallePage({ params }: { params: { id: string } }) {
+  const router = useRouter();
   const { id } = params;
 
-  const [anuncio, setAnuncio] = useState<AnuncioDetalle | null>(null);
+  const [anuncio, setAnuncio] = useState<Anuncio | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportForm, setReportForm] = useState<ReportForm>({ motivo: '', descripcion: '' });
+  const [isSaved, setIsSaved] = useState(false);
+  const [shareMessage, setShareMessage] = useState('');
 
-  const formatFecha = useMemo(() => {
-    return (iso: string) => {
-      const d = new Date(iso);
-      if (Number.isNaN(d.getTime())) return '';
-      return d.toLocaleDateString('es-ES', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
+  useEffect(() => {
+    fetchAnuncio();
+  }, [id]);
+
+  const fetchAnuncio = async () => {
+    try {
+      const response = await fetch(`/api/anuncios/${id}`);
+      const result = await response.json();
+      
+      if (result.success) {
+        setAnuncio(result.data);
+      } else {
+        setError(result.message || 'Anuncio no encontrado');
+      }
+    } catch (err) {
+      console.error('Error fetching anuncio:', err);
+      setError(err instanceof Error ? err.message : 'Error desconocido');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      // Obtener token del localStorage
+      const authData = localStorage.getItem('citypaj_auth');
+      if (!authData) {
+        setShareMessage('Debes iniciar sesión para guardar anuncios');
+        setTimeout(() => setShareMessage(''), 3000);
+        return;
+      }
+
+      const { accessToken } = JSON.parse(authData);
+      
+      const response = await fetch('/api/anuncios/guardar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({ anuncio_id: id })
       });
-    };
-  }, []);
+
+      if (response.ok) {
+        setIsSaved(!isSaved);
+        setShareMessage(isSaved ? 'Anuncio eliminado de guardados' : 'Anuncio guardado correctamente');
+      } else {
+        const error = await response.json();
+        setShareMessage(error.error || 'Error al guardar anuncio');
+      }
+    } catch (error) {
+      console.error('Error guardando anuncio:', error);
+      setShareMessage('Error al guardar anuncio');
+    }
+    setTimeout(() => setShareMessage(''), 3000);
+  };
+
+  const handleShare = async () => {
+    try {
+      const url = window.location.href;
+      
+      if (navigator.share) {
+        // Usar Web Share API si está disponible
+        await navigator.share({
+          title: anuncio?.titulo || 'Anuncio en CityPaj',
+          text: anuncio?.descripcion || 'Echa un vistazo a este anuncio',
+          url: url
+        });
+        setShareMessage('Anuncio compartido correctamente');
+      } else {
+        // Copiar al portapapeles como fallback
+        await navigator.clipboard.writeText(url);
+        setShareMessage('Enlace copiado al portapapeles');
+      }
+    } catch (error) {
+      console.error('Error compartiendo anuncio:', error);
+      setShareMessage('Error al compartir anuncio');
+    }
+    setTimeout(() => setShareMessage(''), 3000);
+  };
+
+  const handleReport = async () => {
+    if (!reportForm.motivo.trim()) {
+      setShareMessage('Debes indicar un motivo para el reporte');
+      setTimeout(() => setShareMessage(''), 3000);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/anuncios/reportar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          anuncio_id: id,
+          motivo: reportForm.motivo.trim(),
+          descripcion: reportForm.descripcion.trim()
+        })
+      });
+
+      if (response.ok) {
+        setShareMessage('Anuncio reportado correctamente');
+        setShowReportModal(false);
+        setReportForm({ motivo: '', descripcion: '' });
+      } else {
+        const error = await response.json();
+        setShareMessage(error.error || 'Error al reportar anuncio');
+      }
+    } catch (error) {
+      console.error('Error reportando anuncio:', error);
+      setShareMessage('Error al reportar anuncio');
+    }
+    setTimeout(() => setShareMessage(''), 3000);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('es-ES', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -59,7 +194,7 @@ export default function AnuncioDetailPage({ params }: { params: { id: string } }
         }
 
         const json = await response.json();
-        const data = json?.data as AnuncioDetalle | undefined;
+        const data = json?.data as Anuncio | undefined;
 
         if (!cancelled) {
           setAnuncio(data || null);
@@ -109,11 +244,35 @@ export default function AnuncioDetailPage({ params }: { params: { id: string } }
                 <h1 className="font-serif text-3xl sm:text-4xl font-bold text-black leading-tight flex-1">
                   {anuncio.titulo}
                 </h1>
-                <HeartButton anuncioId={anuncio.id} size="lg" className="flex-shrink-0" />
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleShare}
+                    className="p-2 border border-black hover:bg-gray-100 transition-colors bg-white"
+                    title="Compartir anuncio"
+                  >
+                    <Share2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => setShowReportModal(true)}
+                    className="p-2 border border-black hover:bg-gray-100 transition-colors bg-white"
+                    title="Reportar anuncio"
+                  >
+                    <Flag className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={handleSave}
+                    className={`p-2 border border-black hover:bg-gray-100 transition-colors ${
+                      isSaved ? 'bg-orange-100' : 'bg-white'
+                    }`}
+                    title={isSaved ? 'Eliminar de guardados' : 'Guardar anuncio'}
+                  >
+                    <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-orange-500 text-orange-500' : ''}`} />
+                  </button>
+                </div>
               </div>
 
               <div className="mt-3 font-sans text-sm text-[#666666]">
-                <span>{formatFecha(anuncio.creado)}</span>
+                <span>{formatDate(anuncio.creado)}</span>
                 {anuncio.comunidad_autonoma ? <span> · {anuncio.comunidad_autonoma}</span> : null}
                 {anuncio.provincia ? <span> · {anuncio.provincia}</span> : null}
               </div>
@@ -140,16 +299,16 @@ export default function AnuncioDetailPage({ params }: { params: { id: string } }
               <div className="mt-4 space-y-2 font-sans text-sm text-black">
                 <div>
                   <span className="font-medium">Email:</span>{' '}
-                  <a href={`mailto:${anuncio.email || ''}`} className="hover:text-orange-500">
-                    {anuncio.email || 'No disponible'}
+                  <a href={`mailto:${anuncio.usuario_email || ''}`} className="hover:text-orange-500">
+                    {anuncio.usuario_email || 'No disponible'}
                   </a>
                 </div>
 
-                {anuncio.telefono ? (
+                {anuncio.usuario_telefono ? (
                   <div>
                     <span className="font-medium">Teléfono:</span>{' '}
-                    <a href={`tel:${anuncio.telefono}`} className="hover:text-orange-500">
-                      {anuncio.telefono}
+                    <a href={`tel:${anuncio.usuario_telefono}`} className="hover:text-orange-500">
+                      {anuncio.usuario_telefono}
                     </a>
                   </div>
                 ) : null}
@@ -157,6 +316,73 @@ export default function AnuncioDetailPage({ params }: { params: { id: string } }
             </section>
           </div>
         ) : null}
+
+        {/* Mensajes de acción */}
+        {shareMessage && (
+          <div className="fixed bottom-4 right-4 bg-black text-white px-4 py-2 text-sm font-sans z-50">
+            {shareMessage}
+          </div>
+        )}
+
+        {/* Modal de reportar */}
+        {showReportModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white border border-black p-6 w-full max-w-md">
+              <h3 className="font-serif text-lg font-bold text-black mb-4">Reportar anuncio</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block font-sans text-sm text-gray-700 mb-2">
+                    Motivo del reporte *
+                  </label>
+                  <select
+                    value={reportForm.motivo}
+                    onChange={(e) => setReportForm({ ...reportForm, motivo: e.target.value })}
+                    className="w-full px-3 py-2 font-sans text-sm border border-black bg-white focus:outline-none focus:border-orange-500"
+                  >
+                    <option value="">Selecciona un motivo</option>
+                    <option value="spam">Spam</option>
+                    <option value="inapropiado">Contenido inapropiado</option>
+                    <option value="fraude">Fraude o estafa</option>
+                    <option value="duplicado">Anuncio duplicado</option>
+                    <option value="otro">Otro</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-sans text-sm text-gray-700 mb-2">
+                    Descripción adicional
+                  </label>
+                  <textarea
+                    value={reportForm.descripcion}
+                    onChange={(e) => setReportForm({ ...reportForm, descripcion: e.target.value })}
+                    className="w-full px-3 py-2 font-sans text-sm border border-black bg-white focus:outline-none focus:border-orange-500"
+                    rows={3}
+                    placeholder="Describe el motivo del reporte..."
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={handleReport}
+                  className="flex-1 bg-black text-white border border-black px-4 py-2 text-sm font-sans hover:bg-white hover:text-black transition-colors"
+                >
+                  Enviar reporte
+                </button>
+                <button
+                  onClick={() => {
+                    setShowReportModal(false);
+                    setReportForm({ motivo: '', descripcion: '' });
+                  }}
+                  className="flex-1 bg-white text-black border border-black px-4 py-2 text-sm font-sans hover:bg-gray-100 transition-colors"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <Footer />

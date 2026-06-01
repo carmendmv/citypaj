@@ -83,7 +83,7 @@ export default function AnunciosComunidadPage({ params }: { params: { comunidad:
         const params = new URLSearchParams({
           ...(categoria && { categoria })
         });
-        const response = await fetch(`http://localhost:3002/api/anuncios?${params}`, {
+        const response = await fetch(`/api/anuncios?${params}`, {
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include'
         });

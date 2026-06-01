@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AnuncioList from '@/components/ui/AnuncioList';
-import FiltrosAvanzados from '@/components/ui/FiltrosAvanzados';
+import FiltroAvanzado from '@/components/ui/FiltroAvanzado';
 import { useComunidad } from '@/hooks/useComunidad';
 import { Anuncio, PaginationMeta } from '@/types';
 
@@ -70,12 +70,12 @@ export default function ViviendaPage() {
           </p>
         </div>
 
-        <FiltrosAvanzados
-          categoria="vivienda"
-          onFiltrosChange={(nuevosFiltros) => {
-            setFiltros(nuevosFiltros);
+        <FiltroAvanzado
+          onFiltroChange={(nuevosFiltros) => {
+            setComunidadAutonoma(nuevosFiltros.comunidad);
             setCurrentPage(1); // Resetear a la primera página cuando cambian los filtros
           }}
+          categoriaInicial="vivienda"
         />
 
         <AnuncioList

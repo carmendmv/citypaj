@@ -333,7 +333,7 @@ export default function HomePage() {
       }
 
       const queryString = new URLSearchParams(params).toString();
-      const response = await fetch(`http://localhost:3002/api/anuncios?${queryString}`, {
+      const response = await fetch(`/api/anuncios?${queryString}`, {
 
         headers: { 'Content-Type': 'application/json' },
 
@@ -492,7 +492,7 @@ export default function HomePage() {
 
           <img 
 
-            src="/fondo-hero.jpg"
+            src="/fondo-hero3.jpg"
 
             alt="Colaboración en equipo"
 
@@ -588,17 +588,15 @@ export default function HomePage() {
               <button
 
                 onClick={() => {
-
-                  // Lógica de búsqueda
-
+                  // Lógica de búsqueda - redirigir al listado con filtros
                   if (comunidadAutonoma) {
-
-                    setCurrentPage(1);
-
-                    void fetchAnuncios(comunidadAutonoma, categoria, 1);
-
+                    const params = new URLSearchParams();
+                    params.set('comunidad', comunidadAutonoma);
+                    if (categoria && categoria !== 'todos') {
+                      params.set('categoria', categoria);
+                    }
+                    window.location.href = `/anuncios?${params.toString()}`;
                   }
-
                 }}
 
                 className="h-12 px-6 sm:px-8 bg-black text-white font-semibold text-sm sm:text-base border-2 border-black hover:bg-orange-500 hover:border-orange-500 hover:text-black transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 min-w-[120px] sm:min-w-[140px]"
