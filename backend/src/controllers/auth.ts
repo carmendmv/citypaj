@@ -88,13 +88,13 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       // Generar tokens
       const accessToken = jwt.sign(
         { userId, email: email.toLowerCase(), rol: 'usuario' },
-        config.jwtSecret,
+        config.jwt.secret,
         { expiresIn: '1h' }
       );
 
       const refreshToken = jwt.sign(
         { userId, email: email.toLowerCase() },
-        config.jwtSecret,
+        config.jwt.secret,
         { expiresIn: '7d' }
       );
 
@@ -174,7 +174,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
           email: user.email,
           rol: user.rol 
         },
-        config.jwtSecret,
+        config.jwt.secret,
         { expiresIn: '1h' }
       );
 
@@ -183,7 +183,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
           userId: user.id, 
           email: user.email 
         },
-        config.jwtSecret,
+        config.jwt.secret,
         { expiresIn: '7d' }
       );
 
@@ -223,7 +223,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const logout = async (req: Request, res: Response): Promise<void> => {
+export const logout = async (_req: Request, res: Response): Promise<void> => {
   try {
     // En una implementación real, aquí se invalidaría el token
     // Por ahora, simplemente respondemos con éxito
@@ -253,7 +253,7 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
     }
 
     // Verificar refresh token
-    const decoded = jwt.verify(refresh_token, config.jwtSecret) as any;
+    const decoded = jwt.verify(refresh_token, config.jwt.secret) as any;
     
     // Generar nuevo access token
     const newAccessToken = jwt.sign(
@@ -261,7 +261,7 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
         userId: decoded.userId, 
         email: decoded.email 
       },
-      config.jwtSecret,
+      config.jwt.secret,
       { expiresIn: '1h' }
     );
 
@@ -281,7 +281,7 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const getProfile = async (req: Request, res: Response): Promise<void> => {
+export const getProfile = async (_req: Request, res: Response): Promise<void> => {
   try {
     // Aquí se obtendría el usuario desde el token JWT
     // Por ahora, respondemos con un perfil de ejemplo

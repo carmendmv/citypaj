@@ -1,0 +1,727 @@
+import { Request, Response } from 'express';
+import { randomUUID } from 'crypto';
+import { AuthRequest } from '../middleware/auth';
+import { executeQuery } from '../config/database';
+
+export const getAnuncios = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const {
+      page = '1',
+      limit = '12',
+      categoria,
+      comunidad_autonoma,
+      provincia,
+      ordenar = 'creado-desc',
+      busqueda
+    } = req.query;
+
+    const offset = (parseInt(page as string) - 1) * parseInt(limit as string);
+    const limitNum = parseInt(limit as string);
+
+    // Construir WHERE clause
+    const whereConditions = ['a.visible = true', 'a.estado_moderacion = \'approved\''];
+    const queryParams: any[] = [];
+
+    if (categoria) {
+      whereConditions.push('a.categoria = ?');
+      queryParams.push(categoria);
+    }
+
+    if (comunidad_autonoma) {
+      whereConditions.push('a.comunidad_autonoma = ?');
+      queryParams.push(comunidad_autonoma);
+    }
+
+    if (provincia) {
+      whereConditions.push('a.provincia = ?');
+      queryParams.push(provincia);
+    }
+
+    if (busqueda) {
+      whereConditions.push('(a.titulo LIKE ? OR a.descripcion LIKE ?)');
+      queryParams.push(`%${busqueda}%`, `%${busqueda}%`);
+    }
+
+    // Construir ORDER BY
+    let orderBy = 'a.creado DESC';
+    if (ordenar) {
+      const [field, direction] = (ordenar as string).split('-');
+      const directionSQL = direction === 'asc' ? 'ASC' : 'DESC';
+      
+      switch (field) {
+        case 'titulo':
+          orderBy = `a.titulo ${directionSQL}`;
+          break;
+        case 'precio':
+          orderBy = `a.precio ${directionSQL} NULLS LAST`;
+          break;
+        case 'vistas':
+          orderBy = `a.vistas ${directionSQL}`;
+          break;
+        case 'creado':
+        default:
+          orderBy = `a.creado ${directionSQL}`;
+          break;
+      }
+    }
+
+    const whereClause = whereConditions.join(' AND ');
+
+    // Query principal
+    const query = `
+      SELECT 
+        a.id,
+        a.titulo,
+        a.descripcion,
+        a.categoria,
+        a.comunidad_autonoma,
+        a.provincia,
+        a.precio,
+        a.modalidad,
+        a.creado,
+        a.actualizado,
+        a.vistas,
+        u.nombre as autor,
+        u.email as email,
+        u.telefono as telefono
+      FROM anuncios a
+      JOIN usuarios u ON a.usuario_id = u.id
+      WHERE ${whereClause}
+      ORDER BY ${orderBy}
+      LIMIT ? OFFSET ?
+    `;
+
+    queryParams.push(limitNum, offset);
+
+    // Query para contar total
+    const countQuery = `
+      SELECT COUNT(*) as total
+      FROM anuncios a
+      JOIN usuarios u ON a.usuario_id = u.id
+      WHERE ${whereClause}
+    `;
+
+    try {
+      const [result, countResult] = await Promise.all([
+        executeQuery(query, queryParams),
+        executeQuery(countQuery, queryParams.slice(0, -2))
+      ]);
+
+      const total = parseInt(countResult[0].total);
+      const totalPages = Math.ceil(total / limitNum);
+
+      res.status(200).json({
+        success: true,
+        data: result,
+        meta: {
+          page: parseInt(page as string),
+          limit: limitNum,
+          total,
+          totalPages,
+          hasNext: parseInt(page as string) < totalPages,
+          hasPrev: parseInt(page as string) > 1
+        }
+      });
+
+    } catch (error) {
+      console.error('Error ejecutando consultas:', error);
+      throw error;
+    }
+
+  } catch (error) {
+    console.error('Error obteniendo anuncios:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const getAnuncioById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    const query = `
+      SELECT 
+        a.id,
+        a.titulo,
+        a.descripcion,
+        a.categoria,
+        a.comunidad_autonoma,
+        a.provincia,
+        a.precio,
+        a.modalidad,
+        a.creado,
+        a.actualizado,
+        a.vistas,
+        u.nombre as autor,
+        u.email as email,
+        u.telefono as telefono
+      FROM anuncios a
+      JOIN usuarios u ON a.usuario_id = u.id
+      WHERE a.id = ? AND a.visible = true AND a.estado_moderacion = 'approved'
+    `;
+
+    try {
+      const result = await executeQuery(query, [id]);
+
+      if (result.length === 0) {
+        res.status(404).json({
+          success: false,
+          error: 'Anuncio no encontrado'
+        });
+        return;
+      }
+
+      // Incrementar vistas
+      await executeQuery('UPDATE anuncios SET vistas = vistas + 1 WHERE id = ?', [id]);
+
+      res.status(200).json({
+        success: true,
+        data: result[0]
+      });
+
+    } catch (error) {
+      console.error('Error ejecutando consultas:', error);
+      throw error;
+    }
+
+  } catch (error) {
+    console.error('Error obteniendo anuncio:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const createAnuncio = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const {
+      titulo,
+      descripcion,
+      categoria,
+      comunidad_autonoma,
+      provincia,
+      precio,
+      modalidad
+    } = req.body;
+
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        error: 'Usuario no autenticado'
+      });
+      return;
+    }
+
+    // Validaciones básicas
+    if (!titulo || !descripcion || !categoria || !comunidad_autonoma || !provincia) {
+      res.status(400).json({
+        success: false,
+        error: 'Faltan campos obligatorios'
+      });
+      return;
+    }
+
+    try {
+      const anuncioId = randomUUID();
+      const now = new Date().toISOString();
+
+      await executeQuery(
+        `INSERT INTO anuncios (
+          id, usuario_id, titulo, descripcion, categoria, comunidad_autonoma, 
+          provincia, precio, modalidad, visible, estado_moderacion, creado, actualizado, vistas
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          anuncioId, userId, titulo.trim(), descripcion.trim(), categoria,
+          comunidad_autonoma, provincia, precio || null, modalidad || 'servicio',
+          true, 'approved', now, now, 0
+        ]
+      );
+
+      // Obtener el anuncio creado para devolverlo completo
+      const result = await executeQuery(
+        `SELECT 
+          a.id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
+          a.provincia, a.precio, a.modalidad, a.creado, a.actualizado, a.vistas,
+          u.nombre as autor, u.email as email, u.telefono as telefono
+        FROM anuncios a
+        JOIN usuarios u ON a.usuario_id = u.id
+        WHERE a.id = ?`,
+        [anuncioId]
+      );
+
+      res.status(201).json({
+        success: true,
+        message: 'Anuncio creado exitosamente',
+        data: result[0]
+      });
+
+    } catch (error) {
+      console.error('Error ejecutando consultas:', error);
+      throw error;
+    }
+
+  } catch (error) {
+    console.error('Error creando anuncio:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const updateAnuncio = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const {
+      titulo,
+      descripcion,
+      categoria,
+      comunidad_autonoma,
+      provincia,
+      precio,
+      modalidad
+    } = req.body;
+
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        error: 'Usuario no autenticado'
+      });
+      return;
+    }
+
+    const client = await pool.connect();
+    try {
+      // Verificar que el anuncio pertenece al usuario
+      const ownershipCheck = await client.query(
+        'SELECT usuario_id FROM anuncios WHERE id = $1',
+        [id]
+      );
+
+      if (ownershipCheck.rows.length === 0) {
+        res.status(404).json({
+          success: false,
+          error: 'Anuncio no encontrado'
+        });
+        return;
+      }
+
+      if (ownershipCheck.rows[0].usuario_id !== userId) {
+        res.status(403).json({
+          success: false,
+          error: 'No tienes permiso para editar este anuncio'
+        });
+        return;
+      }
+
+      // Actualizar anuncio
+      const now = new Date().toISOString();
+      await client.query(
+        `UPDATE anuncios SET 
+          titulo = $1, descripcion = $2, categoria = $3, comunidad_autonoma = $4,
+          provincia = $5, precio = $6, modalidad = $7, actualizado = $8
+        WHERE id = $9`,
+        [titulo, descripcion, categoria, comunidad_autonoma, provincia, precio, modalidad, now, id]
+      );
+
+      // Obtener el anuncio actualizado
+      const result = await client.query(
+        `SELECT 
+          a.id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
+          a.provincia, a.precio, a.modalidad, a.creado, a.actualizado, a.vistas,
+          u.nombre as autor, u.email as email, u.telefono as telefono
+        FROM anuncios a
+        JOIN usuarios u ON a.usuario_id = u.id
+        WHERE a.id = $1`,
+        [id]
+      );
+
+      res.status(200).json({
+        success: true,
+        message: 'Anuncio actualizado exitosamente',
+        data: result.rows[0]
+      });
+
+    } finally {
+      client.release();
+    }
+
+  } catch (error) {
+    console.error('Error actualizando anuncio:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const deleteAnuncio = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        error: 'Usuario no autenticado'
+      });
+      return;
+    }
+
+    const client = await pool.connect();
+    try {
+      // Verificar que el anuncio pertenece al usuario
+      const ownershipCheck = await client.query(
+        'SELECT usuario_id FROM anuncios WHERE id = $1',
+        [id]
+      );
+
+      if (ownershipCheck.rows.length === 0) {
+        res.status(404).json({
+          success: false,
+          error: 'Anuncio no encontrado'
+        });
+        return;
+      }
+
+      if (ownershipCheck.rows[0].usuario_id !== userId) {
+        res.status(403).json({
+          success: false,
+          error: 'No tienes permiso para eliminar este anuncio'
+        });
+        return;
+      }
+
+      // Marcar como no visible (borrado lógico)
+      await client.query(
+        'UPDATE anuncios SET visible = false, actualizado = $1 WHERE id = $2',
+        [new Date().toISOString(), id]
+      );
+
+      res.status(200).json({
+        success: true,
+        message: 'Anuncio eliminado exitosamente'
+      });
+
+    } finally {
+      client.release();
+    }
+
+  } catch (error) {
+    console.error('Error eliminando anuncio:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const getAnunciosByUser = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        error: 'Usuario no autenticado'
+      });
+      return;
+    }
+
+    const query = `
+      SELECT 
+        a.id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
+        a.provincia, a.precio, a.modalidad, a.visible, a.estado_moderacion,
+        a.creado, a.actualizado, a.vistas,
+        u.nombre as autor, u.email as email, u.telefono as telefono
+      FROM anuncios a
+      JOIN usuarios u ON a.usuario_id = u.id
+      WHERE a.usuario_id = $1
+      ORDER BY a.creado DESC
+    `;
+
+    const client = await pool.connect();
+    try {
+      const result = await client.query(query, [userId]);
+
+      res.status(200).json({
+        success: true,
+        data: result.rows
+      });
+
+    } finally {
+      client.release();
+    }
+
+  } catch (error) {
+    console.error('Error obteniendo anuncios del usuario:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+// Funciones faltantes requeridas por las rutas
+export const createAnuncioPublico = async (req: Request, res: Response): Promise<void> => {
+  try {
+    // Similar a createAnuncio pero sin autenticación
+    const { titulo, descripcion, categoria, precio, comunidad_autonoma, provincia } = req.body;
+    
+    // Validación básica
+    if (!titulo || !descripcion || !categoria) {
+      res.status(400).json({
+        success: false,
+        error: 'Faltan campos obligatorios'
+      });
+      return;
+    }
+
+    const anuncioId = randomUUID();
+    const now = new Date().toISOString();
+
+    const query = `
+      INSERT INTO anuncios (
+        id, titulo, descripcion, categoria, precio, 
+        comunidad_autonoma, provincia, creado, actualizado, visible
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const values = [
+      anuncioId,
+      titulo.trim(),
+      descripcion.trim(),
+      categoria,
+      precio || 0,
+      comunidad_autonoma || 'Madrid',
+      provincia || 'Madrid',
+      now,
+      now,
+      true
+    ];
+
+    try {
+      await executeQuery(query, values);
+      
+      res.status(201).json({
+        success: true,
+        data: { id: anuncioId }
+      });
+    } catch (error) {
+      console.error('Error ejecutando consulta:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('Error creando anuncio público:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const hideAnuncio = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    
+    const query = `
+      UPDATE anuncios 
+      SET visible = false, actualizado = ? 
+      WHERE id = ?
+    `;
+    
+    try {
+      await executeQuery(query, [new Date().toISOString(), id]);
+      
+      res.status(200).json({
+        success: true,
+        message: 'Anuncio ocultado correctamente'
+      });
+    } catch (error) {
+      console.error('Error ejecutando consulta:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('Error ocultando anuncio:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const searchAnuncios = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { q, categoria, comunidad_autonoma } = req.query;
+    
+    let query = `
+      SELECT a.*, u.nombre as usuario_nombre 
+      FROM anuncios a 
+      LEFT JOIN usuarios u ON a.usuario_id = u.id 
+      WHERE a.visible = true
+    `;
+    
+    const params: any[] = [];
+    let paramIndex = 1;
+    
+    if (q) {
+      query += ` AND (a.titulo ILIKE $${paramIndex} OR a.descripcion ILIKE $${paramIndex})`;
+      params.push(`%${q}%`);
+      paramIndex++;
+    }
+    
+    if (categoria) {
+      query += ` AND a.categoria = $${paramIndex}`;
+      params.push(categoria);
+      paramIndex++;
+    }
+    
+    if (comunidad_autonoma) {
+      query += ` AND a.comunidad_autonoma = $${paramIndex}`;
+      params.push(comunidad_autonoma);
+    }
+    
+    query += ` ORDER BY a.creado DESC LIMIT 50`;
+    
+    const client = await pool.connect();
+    try {
+      const result = await client.query(query, params);
+      
+      res.status(200).json({
+        success: true,
+        data: result.rows
+      });
+    } finally {
+      client.release();
+    }
+  } catch (error) {
+    console.error('Error buscando anuncios:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const toggleFavorito = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { anuncioId } = req.body;
+    const userId = (req as AuthRequest).user?.id;
+    
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        error: 'No autorizado'
+      });
+      return;
+    }
+    
+    // Verificar si ya es favorito
+    const checkQuery = `SELECT * FROM favoritos WHERE usuario_id = $1 AND anuncio_id = $2`;
+    
+    const client = await pool.connect();
+    try {
+      const checkResult = await client.query(checkQuery, [userId, anuncioId]);
+      
+      if (checkResult.rows.length > 0) {
+        // Eliminar de favoritos
+        await client.query(`DELETE FROM favoritos WHERE usuario_id = $1 AND anuncio_id = $2`, [userId, anuncioId]);
+      } else {
+        // Agregar a favoritos
+        await client.query(`INSERT INTO favoritos (usuario_id, anuncio_id, creado) VALUES ($1, $2, $3)`, 
+          [userId, anuncioId, new Date().toISOString()]);
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: 'Favorito actualizado correctamente'
+      });
+    } finally {
+      client.release();
+    }
+  } catch (error) {
+    console.error('Error toggling favorito:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const getAnunciosGuardados = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = (req as AuthRequest).user?.id;
+    
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        error: 'No autorizado'
+      });
+      return;
+    }
+    
+    const query = `
+      SELECT a.*, u.nombre as usuario_nombre 
+      FROM anuncios a 
+      LEFT JOIN usuarios u ON a.usuario_id = u.id 
+      INNER JOIN favoritos f ON a.id = f.anuncio_id 
+      WHERE f.usuario_id = $1 AND a.visible = true 
+      ORDER BY f.creado DESC
+    `;
+    
+    const client = await pool.connect();
+    try {
+      const result = await client.query(query, [userId]);
+      
+      res.status(200).json({
+        success: true,
+        data: result.rows
+      });
+    } finally {
+      client.release();
+    }
+  } catch (error) {
+    console.error('Error obteniendo anuncios guardados:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const incrementarVistas = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    
+    const query = `
+      UPDATE anuncios 
+      SET vistas = vistas + 1 
+      WHERE id = $1
+    `;
+    
+    const client = await pool.connect();
+    try {
+      await client.query(query, [id]);
+      
+      res.status(200).json({
+        success: true,
+        message: 'Vistas incrementadas correctamente'
+      });
+    } finally {
+      client.release();
+    }
+  } catch (error) {
+    console.error('Error incrementando vistas:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};

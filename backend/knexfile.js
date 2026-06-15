@@ -6,9 +6,9 @@ module.exports = {
     connection: {
       host: 'localhost',
       port: 3306,
-      database: 'citypaj_db',
-      user: 'root',
-      password: 'noalumno'
+      database: 'citypaj',
+      user: 'citypaj_user',
+      password: 'citypaj123'
     },
     pool: {
       min: 2,

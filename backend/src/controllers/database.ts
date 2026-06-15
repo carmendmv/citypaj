@@ -354,6 +354,95 @@ export const getDatabaseView = async (req: Request, res: Response): Promise<void
   }
 };
 
+// Endpoint para obtener todos los datos en tiempo real
+export const getAllDataRealtime = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { categoria, comunidad, format = 'json' } = req.query;
+
+    let data = [...mockAnuncios];
+    let filteredData = data;
+
+    // Aplicar filtros
+    if (comunidad && typeof comunidad === 'string') {
+      const normalizeText = (value: string) =>
+        value
+          .normalize('NFD')
+          .replace(/\p{Diacritic}/gu, '')
+          .toLowerCase()
+          .replace(/\s+/g, ' ')
+          .trim();
+      
+      filteredData = filteredData.filter((a) => 
+        normalizeText(a.comunidad_autonoma) === normalizeText(comunidad)
+      );
+    }
+
+    if (categoria && typeof categoria === 'string') {
+      filteredData = filteredData.filter((a) => a.categoria === categoria);
+    }
+
+    // Agrupar por categorías
+    const dataByCategory = filteredData.reduce((acc, anuncio) => {
+      if (!acc[anuncio.categoria]) {
+        acc[anuncio.categoria] = [];
+      }
+      acc[anuncio.categoria].push(anuncio);
+      return acc;
+    }, {} as Record<string, typeof mockAnuncios>);
+
+    // Agrupar por comunidades
+    const dataByCommunity = filteredData.reduce((acc, anuncio) => {
+      if (!acc[anuncio.comunidad_autonoma]) {
+        acc[anuncio.comunidad_autonoma] = [];
+      }
+      acc[anuncio.comunidad_autonoma].push(anuncio);
+      return acc;
+    }, {} as Record<string, typeof mockAnuncios>);
+
+    // Estadísticas en tiempo real
+    const stats = {
+      total: filteredData.length,
+      categories: Object.keys(dataByCategory).length,
+      communities: Object.keys(dataByCommunity).length,
+      lastUpdated: new Date().toISOString(),
+      byCategory: Object.fromEntries(
+        Object.entries(dataByCategory).map(([cat, items]) => [cat, (items as any[]).length])
+      ),
+      byCommunity: Object.fromEntries(
+        Object.entries(dataByCommunity).map(([com, items]) => [com, (items as any[]).length])
+      ),
+    };
+
+    const response = {
+      success: true,
+      timestamp: new Date().toISOString(),
+      data: format === 'categorized' ? {
+        byCategory: dataByCategory,
+        byCommunity: dataByCommunity,
+        stats
+      } : {
+        all: filteredData,
+        stats
+      }
+    };
+
+    // Configurar headers para tiempo real
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    
+    res.json(response);
+
+  } catch (error) {
+    console.error('Error en getAllDataRealtime:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error obteniendo datos en tiempo real'
+    });
+  }
+};
+
 // Endpoint para ejecutar consultas SQL simuladas
 export const executeQuery = async (req: Request, res: Response): Promise<void> => {
   try {

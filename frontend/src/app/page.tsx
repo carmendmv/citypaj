@@ -106,6 +106,9 @@ export default function HomePage() {
 
   const { comunidadAutonoma, setComunidadAutonoma } = useComunidad();
   
+  // Estado para controlar si la web está girando en torno a una CCAA específica
+  const [focusedComunidad, setFocusedComunidad] = useState<string | null>(null);
+  
   // Inicializar useGuardados para que los corazones funcionen
   useGuardados();
 
@@ -123,7 +126,14 @@ export default function HomePage() {
 
   }, []);
 
-
+  // Sincronizar la CCAA focalizada con la comunidad autónoma actual
+  useEffect(() => {
+    if (comunidadAutonoma) {
+      setFocusedComunidad(comunidadAutonoma);
+    } else {
+      setFocusedComunidad(null);
+    }
+  }, [comunidadAutonoma]);
 
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
 
@@ -141,7 +151,7 @@ export default function HomePage() {
 
   const [anunciosPorComunidad, setAnunciosPorComunidad] = useState<{comunidad: string; anuncios: Anuncio[]}[]>([]);
   const [terminoBusqueda, setTerminoBusqueda] = useState<string>('');
-
+    
 
 
   // Leer página actual y término de búsqueda de URL
@@ -359,8 +369,7 @@ export default function HomePage() {
 
     }, []);
 
-
-
+  
   const fetchAnuncios = useCallback(
 
     async (comunidad: string | null, categoriaFilter: Categoria, page: number = 1) => {
@@ -474,7 +483,15 @@ export default function HomePage() {
 
       <Header
 
-        onCategoriaChange={(cat: string) => setCategoria(cat as Categoria)}
+        onCategoriaChange={(cat: string) => {
+          setCategoria(cat as Categoria);
+          // Al cambiar categoría, si hay una CCAA focalizada, mantenerla
+          if (focusedComunidad) {
+            setComunidadAutonoma(focusedComunidad);
+            localStorage.setItem('comunidadAutonoma', focusedComunidad);
+          }
+          setCurrentPage(1);
+        }}
 
       />
 
@@ -548,10 +565,14 @@ export default function HomePage() {
                     const comunidad = e.target.value || '';
 
                     setComunidadAutonoma(comunidad);
+                    setFocusedComunidad(comunidad || null);
 
                     if (comunidad) {
 
                       localStorage.setItem('comunidadAutonoma', comunidad);
+                      // Al seleccionar CCAA, resetear la categoría a 'todos' para mostrar todo el contenido
+                      setCategoria('todos');
+                      setCurrentPage(1);
 
                     } else {
 
@@ -607,6 +628,7 @@ export default function HomePage() {
 
               </button>
 
+              
             </div>
 
           </div>
@@ -837,8 +859,7 @@ export default function HomePage() {
 
         ) : null}
 
-
-
+        
         {loading ? (
 
           <div className="mt-10 border border-black px-6 py-4 font-sans text-sm text-gray-700 inline-block">Cargando...</div>

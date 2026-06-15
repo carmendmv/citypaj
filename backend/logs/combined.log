@@ -1,0 +1,553 @@
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T15:21:58.257Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T15:21:58.265Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T15:21:58.266Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T15:22:22.656Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T15:22:46.451Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T15:22:46.453Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T15:22:46.453Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:15:23:35 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T15:23:35.104Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:15:23:46 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T15:23:46.299Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:15:23:46 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T15:23:46.425Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:15:23:49 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T15:23:49.981Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:15:23:50 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T15:23:50.159Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:15:23:52 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=servicios&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T15:23:52.523Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:15:23:52 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=servicios&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T15:23:52.693Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:15:30:26 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T15:30:26.357Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:15:30:26 +0000] \"GET /api/anuncios?pagina=1&limite=10&buscar=formaci%C3%B3n HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T15:30:26.378Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:15:30:26 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T15:30:26.537Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:15:32:13 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T15:32:13.070Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:15:32:13 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T15:32:13.249Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T15:46:50.970Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T15:49:15.305Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T15:49:15.310Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T15:49:15.310Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:15:49:30 +0000] \"GET /health HTTP/1.1\" 200 120 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T15:49:30.973Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:15:50:29 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T15:50:29.745Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T15:51:15.880Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T15:51:15.884Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T15:51:15.884Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:15:51:26 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T15:51:26.570Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T15:55:52.661Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T15:55:52.667Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T15:55:52.668Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:15:56:10 +0000] \"GET /api/test-db HTTP/1.1\" 500 102 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T15:56:10.170Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:15:56:13 +0000] \"GET /api/anuncios-simple HTTP/1.1\" 200 690 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T15:56:13.679Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:15:56:55 +0000] \"GET /api/test-db HTTP/1.1\" 200 82 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T15:56:55.768Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T15:58:38.466Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T15:58:38.471Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T15:58:38.471Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:15:58:47 +0000] \"GET /api/anuncios HTTP/1.1\" 200 6669 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T15:58:47.362Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:15:58:52 +0000] \"GET /api/anuncios?categoria=educacion HTTP/1.1\" 200 1484 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T15:58:52.536Z"}
+{"level":"info","message":"::ffff:172.26.16.1 - - [10/Jun/2026:16:01:37 +0000] \"GET /api/anuncios HTTP/1.1\" 200 6669 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:01:37.701Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T16:02:22.725Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T16:02:52.422Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T16:02:52.425Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T16:02:52.425Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:03:00 +0000] \"GET / HTTP/1.1\" 404 86 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:03:00.829Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:03:02 +0000] \"GET /favicon.ico HTTP/1.1\" 404 98 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:03:02.346Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:03:24 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T16:03:24.427Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:05:01 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:05:01.358Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T16:05:41.639Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T16:06:28.142Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T16:06:28.144Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T16:06:28.145Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:07:13 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T16:07:13.803Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:07:26 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T16:07:26.211Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:07:26 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T16:07:26.340Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:09:09 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:09:09.458Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:09:19 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:09:19.135Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:09:25 +0000] \"GET /api/test-db HTTP/1.1\" 500 117 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:09:25.677Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:10:15 +0000] \"GET /api/test-db HTTP/1.1\" 500 117 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:10:15.783Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:10:52 +0000] \"GET /api/test-db HTTP/1.1\" 500 117 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:10:52.181Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:10:56 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:10:56.405Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:11:13 +0000] \"GET /api/anuncios?pagina=1 HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:11:13.363Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:12:00 +0000] \"GET /api/test-db HTTP/1.1\" 500 117 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:12:00.835Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:13:01 +0000] \"GET /api/test-db HTTP/1.1\" 500 117 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:13:01.463Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:13:11 +0000] \"GET /health HTTP/1.1\" 200 123 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:13:11.570Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:13:17 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:13:17.794Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:14:08 +0000] \"GET /api/test-db HTTP/1.1\" 500 117 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:14:08.719Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:14:13 +0000] \"GET /api/anuncios?pagina=1 HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:14:13.370Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:14:59 +0000] \"GET /api/test-db HTTP/1.1\" 500 117 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:14:59.235Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:15:08 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:15:08.555Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:16:50 +0000] \"GET /api/test-db HTTP/1.1\" 500 117 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:16:50.379Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:16:58 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:16:58.778Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:19:17 +0000] \"GET /api/test-db HTTP/1.1\" 500 117 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:19:17.564Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:20:00 +0000] \"GET /api/test-db HTTP/1.1\" 500 117 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:20:00.005Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:20:20 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:20:20.705Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:21:57 +0000] \"GET /api/test-direct HTTP/1.1\" 404 103 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:21:57.955Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:22:05 +0000] \"GET /api/test-db HTTP/1.1\" 500 117 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:22:05.175Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:22:59 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:22:59.862Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:24:02 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:24:02.629Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:25:52 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:25:52.238Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:26:03 +0000] \"GET /api/anuncios-simple HTTP/1.1\" 200 690 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:26:03.427Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T16:26:39.608Z"}
+"timestamp":"2026-06-10T16:25:36.574Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T16:25:36.575Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T16:26:49.592Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T16:26:49.594Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T16:26:49.595Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T16:29:13.632Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T16:37:38.036Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T16:37:38.038Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T16:37:38.038Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:38:08 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T16:38:08.779Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:38:16 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 501 47 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:38:16.601Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:38:16 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 501 47 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:38:16.628Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:38:16 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 501 47 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:38:16.654Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:38:16 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 501 47 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:38:16.678Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:38:22 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 501 47 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:38:22.816Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:38:22 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 501 47 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:38:22.841Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:38:22 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 501 47 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:38:22.863Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:38:22 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 501 47 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:38:22.890Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:38:28 +0000] \"GET /api/anuncios HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T16:38:28.493Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:38:34 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 200 112 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T16:38:34.016Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T16:40:34.331Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T16:40:52.698Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T16:40:52.700Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T16:40:52.700Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:41:29 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T16:41:29.946Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:41:49 +0000] \"GET /api/anuncios HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T16:41:49.451Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:41:52 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 200 112 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T16:41:52.676Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:45:34 +0000] \"GET /api/comunidades HTTP/1.1\" 404 102 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:45:34.853Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:45:56 +0000] \"GET /api/comunidades HTTP/1.1\" 404 103 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:45:56.430Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:46:05 +0000] \"GET /api/anuncios HTTP/1.1\" 200 1148 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:46:05.103Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:46:30 +0000] \"GET /api/anuncios HTTP/1.1\" 200 1148 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:46:30.112Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:47:49 +0000] \"GET /api/anuncios HTTP/1.1\" 200 1148 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:47:49.339Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:48:00 +0000] \"GET /api/anuncios?categoria=educacion&limit=5 HTTP/1.1\" 200 477 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:48:00.374Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:48:06 +0000] \"GET /api/comunidades HTTP/1.1\" 404 103 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:48:06.090Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:48:16 +0000] \"POST /api/auth/login HTTP/1.1\" 501 47 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:48:16.067Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T16:48:31.326Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T16:48:36.206Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T16:48:36.209Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T16:48:36.210Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:48:49 +0000] \"GET /api/comunidades HTTP/1.1\" 200 831 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:48:49.786Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:48:54 +0000] \"POST /api/auth/login HTTP/1.1\" 200 261 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:48:54.337Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:48:59 +0000] \"GET /api/comunidades/categorias/list HTTP/1.1\" 200 99 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:48:59.272Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:49:06 +0000] \"GET /api/comunidades/estadisticas/general HTTP/1.1\" 200 534 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:49:06.086Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T16:49:25.945Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T16:49:42.146Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T16:49:42.148Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T16:49:42.148Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T16:52:14.161Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T16:52:43.807Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T16:52:43.809Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T16:52:43.809Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:53:19 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440003 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440003\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:53:19.251Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:53:19 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440003 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440003\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:53:19.275Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:53:19 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440003 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440003\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:53:19.297Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:53:19 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440003 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440003\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T16:53:19.322Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T16:53:39.548Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T16:54:05.214Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T16:54:05.215Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T16:54:05.215Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T16:55:38.896Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T16:55:42.327Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T16:55:42.330Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T16:55:42.330Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:55:57 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 200 8984 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:55:57.557Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:16:57:02 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 200 8984 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T16:57:02.984Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T16:58:19.893Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T16:58:19.895Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T16:58:19.895Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:16:58:51 +0000] \"GET /api/anuncios?pagina=1&limite=10&categoria=ocio HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T16:58:51.674Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:00:26 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 200 9103 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:00:26.665Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:17:00:38 +0000] \"GET /api/anuncios?pagina=1&limite=5&categoria=ocio HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T17:00:38.545Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T17:00:50.453Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:01:15.369Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:01:15.371Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:01:15.371Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T17:02:14.467Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:08:37.605Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:08:37.607Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:08:37.607Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:26:46.042Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:26:46.045Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:26:46.045Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:27:21.851Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:27:21.853Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:27:21.853Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:27:52 +0000] \"GET /health HTTP/1.1\" 200 122 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:27:52.940Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:27:59 +0000] \"GET /api/anuncios HTTP/1.1\" 200 7272 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:27:59.577Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T17:28:16.279Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:28:30.664Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:28:30.665Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:28:30.666Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T17:30:31.285Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:32:13.326Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:32:13.328Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:32:13.328Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T17:33:48.897Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:34:02.102Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:34:02.105Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:34:02.106Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:34:12 +0000] \"GET /api/anuncios?categoria=ocio&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:34:12.500Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:34:34.117Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:34:34.120Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:34:34.120Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T17:34:41.983Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:34:58.615Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:34:58.618Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:34:58.619Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:35:20 +0000] \"GET /api/anuncios?categoria=ocio&orden=fecha_desc HTTP/1.1\" 200 9339 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:35:20.279Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:36:12.698Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:36:12.700Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:36:12.700Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:17:36:45 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T17:36:45.907Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:17:36:45 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T17:36:45.932Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:17:36:45 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T17:36:45.957Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:17:36:45 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T17:36:45.984Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:37:39 +0000] \"GET /api/anuncios?categoria=ocio HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:37:39.619Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:38:22 +0000] \"GET /api/anuncios?categoria=ocio HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:38:22.006Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:38:30 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:38:30.678Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:38:45 +0000] \"GET /health HTTP/1.1\" 200 123 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:38:45.431Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T17:39:18.835Z"}
+p":"2026-06-10T17:38:12.044Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T17:39:08.341Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:39:40.026Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:39:40.029Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:39:40.030Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:39:54 +0000] \"GET /api/anuncios/test?categoria=ocio HTTP/1.1\" 200 6215 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:39:54.656Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:40:24.257Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:40:24.261Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:40:24.261Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T17:40:38.942Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:40:53.196Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:40:53.199Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:40:53.199Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:41:13 +0000] \"GET /api/anuncios?categoria=ocio HTTP/1.1\" 200 9063 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:41:13.708Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:42:12 +0000] \"GET /api/anuncios?categoria=ocio&comunidad_autonoma=4&provincia=13 HTTP/1.1\" 200 3841 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:42:12.385Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:42:52.640Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:42:52.642Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:42:52.642Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:17:43:23 +0000] \"GET /api/anuncios?page=1&limit=15&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T17:43:23.442Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T17:43:52.360Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:46:12.552Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:46:12.553Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:46:12.554Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:17:46:58 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T17:46:58.052Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:17:46:58 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T17:46:58.080Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:17:46:58 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T17:46:58.108Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:17:46:58 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T17:46:58.134Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T17:47:35.878Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:48:23.444Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:48:23.446Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:48:23.446Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:52:55 +0000] \"GET /health HTTP/1.1\" 200 123 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:52:55.758Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:52:59 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:52:59.521Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:53:41 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:53:41.984Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:54:04 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:54:04.332Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:54:54 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:54:54.624Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:54:58 +0000] \"GET /api/anuncios?pagina=1&limite=5 HTTP/1.1\" 500 54 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:54:58.563Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:55:03 +0000] \"GET /api/anuncios/test HTTP/1.1\" 500 108 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:55:03.980Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:56:08 +0000] \"GET /api/anuncios/test HTTP/1.1\" 500 108 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:56:08.501Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:56:39 +0000] \"GET /api/anuncios/test HTTP/1.1\" 500 108 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:56:39.396Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:57:28 +0000] \"GET /api/anuncios/diagnostic HTTP/1.1\" 400 199 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:57:28.414Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:58:08 +0000] \"GET /api/anuncios/diagnostic HTTP/1.1\" 400 200 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:58:08.018Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:58:39 +0000] \"GET /api/anuncios/debug-db HTTP/1.1\" 400 197 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:58:39.786Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:17:59:21 +0000] \"GET /api/debug/test-connection HTTP/1.1\" 404 113 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-10T17:59:21.724Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T18:05:07.850Z"}
+: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:56:26.776Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:57:17.806Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:57:17.809Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:57:17.810Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:57:39.582Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:57:39.585Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:57:39.586Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:58:27.703Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:58:27.706Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:58:27.707Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T17:59:12.418Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T17:59:12.420Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T17:59:12.421Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T18:11:01.623Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T18:11:01.625Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T18:11:01.625Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:18:11:42 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T18:11:42.375Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:18:11:42 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T18:11:42.404Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:18:11:42 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T18:11:42.433Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:18:11:42 +0000] \"GET /api/anuncios/660e8400-e29b-41d4-a716-446655440001 HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/660e8400-e29b-41d4-a716-446655440001\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T18:11:42.460Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:12:44 +0000] \"GET /api/anuncios?limit=3 HTTP/1.1\" 500 54 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-10T18:12:44.588Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:13:15 +0000] \"GET /api/anuncios?limit=3 HTTP/1.1\" 500 54 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-10T18:13:15.545Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:13:41 +0000] \"GET /test-db HTTP/1.1\" 404 95 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-10T18:13:41.688Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:13:42 +0000] \"GET /api/anuncios?limit=2 HTTP/1.1\" 500 54 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-10T18:13:42.658Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:14:16 +0000] \"GET /test-db HTTP/1.1\" 404 94 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-10T18:14:16.056Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:14:16 +0000] \"GET /api/anuncios?limit=3 HTTP/1.1\" 500 54 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-10T18:14:16.998Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:14:18 +0000] \"POST /api/auth/login HTTP/1.1\" 401 51 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-10T18:14:18.122Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:14:47 +0000] \"GET / HTTP/1.1\" 404 88 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-10T18:14:47.454Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:14:48 +0000] \"GET /test-db HTTP/1.1\" 404 95 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-10T18:14:48.333Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:14:49 +0000] \"GET /api/anuncios?limit=2 HTTP/1.1\" 500 54 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-10T18:14:49.260Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:15:17 +0000] \"GET / HTTP/1.1\" 404 88 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-10T18:15:17.481Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:15:18 +0000] \"GET /test-db HTTP/1.1\" 404 95 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-10T18:15:18.344Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T18:18:03.560Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T18:18:12.336Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T18:18:12.338Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T18:18:12.338Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:18:33 +0000] \"GET / HTTP/1.1\" 404 88 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T18:18:33.477Z"}
+{"level":"info","message":"::1 - - [10/Jun/2026:18:18:34 +0000] \"GET /favicon.ico HTTP/1.1\" 404 98 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-10T18:18:34.742Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-10T18:19:58.846Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-10T18:22:12.546Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-10T18:22:12.548Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-10T18:22:12.548Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [10/Jun/2026:18:22:50 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-10T18:22:50.085Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-11T17:40:25.468Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T17:47:58.824Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T17:47:58.827Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T17:47:58.827Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:17:48:06 +0000] \"GET /health HTTP/1.1\" 200 119 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T17:48:06.956Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:17:48:12 +0000] \"GET /api/anuncios/debug-db HTTP/1.1\" 200 9610 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T17:48:12.186Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:17:48:17 +0000] \"GET /api/anuncios?pagina=1&limite=5 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T17:48:17.438Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:17:48:23 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T17:48:23.629Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:17:49:03 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T17:49:03.861Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:17:49:09 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T17:49:09.546Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:17:49:14 +0000] \"GET /api/anuncios?pagina=1&limite=1 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T17:49:14.146Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T17:49:53.345Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T17:50:24.501Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T17:50:24.503Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T17:50:24.503Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T17:53:01.605Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T17:54:28.218Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T17:54:28.221Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T17:54:28.222Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:17:54:36 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T17:54:36.368Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T17:55:08.259Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T17:55:08.262Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T17:55:08.262Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:17:55:53 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T17:55:53.582Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T17:57:21.645Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T17:57:21.647Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T17:57:21.648Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:17:57:30 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T17:57:30.207Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T17:59:34.381Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T17:59:34.384Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T17:59:34.384Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:18:00:22 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T18:00:22.307Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:01:07.136Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:01:07.140Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:01:07.141Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:18:01:35 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T18:01:35.420Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:02:45.704Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:02:45.707Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:02:45.707Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:03:57.027Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:03:57.029Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:03:57.030Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:07:07.823Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:07:07.825Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:07:07.826Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:10:38.145Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:10:38.148Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:10:38.148Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [12/Jun/2026:18:10:49 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-12T18:10:49.534Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:18:10:54 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-12T18:10:54.349Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:14:59.341Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:14:59.343Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:14:59.343Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T18:16:01.871Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:16:56.339Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:16:56.342Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:16:56.342Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:18:17:20 +0000] \"GET /health HTTP/1.1\" 200 120 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T18:17:20.295Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:18:17:55 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-12T18:17:55.411Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:19:20.028Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:19:20.030Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:19:20.031Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:18:19:37 +0000] \"GET /health HTTP/1.1\" 200 120 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T18:19:37.601Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:24:48.617Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:24:48.620Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:24:48.620Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:27:44.367Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:27:44.369Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:27:44.370Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:18:28:18 +0000] \"GET /health HTTP/1.1\" 200 120 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T18:28:18.377Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:18:28:30 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-12T18:28:30.850Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:28:58.875Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:28:58.877Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:28:58.878Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T19:41:49.930Z"}
+\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-12T18:29:12.164Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:18:29:14 +0000] \"GET /health HTTP/1.1\" 200 119 \"http://localhost:3000/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-12T18:29:14.747Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:18:29:23 +0000] \"GET /api/anuncios?pagina=1&limite=3 HTTP/1.1\" 200 9564 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-06-12T18:29:23.056Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:33:53.827Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:33:53.832Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:33:53.832Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:18:34:21 +0000] \"GET /health HTTP/1.1\" 200 120 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T18:34:21.262Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:35:10.205Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:35:10.208Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:35:10.208Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T18:35:53.175Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T18:35:53.178Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T18:35:53.178Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T19:42:08.972Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T19:42:08.973Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T19:42:08.974Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T19:45:37.984Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:00:51.983Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:00:51.987Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:00:51.988Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:20:00:57 +0000] \"GET /health HTTP/1.1\" 200 119 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T20:00:57.023Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:20:01:11 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T20:01:11.338Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:01:52.940Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:01:52.943Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:01:52.944Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:02:38.177Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:02:38.180Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:02:38.180Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:03:52.325Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:03:52.328Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:03:52.328Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:04:36.800Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:04:36.804Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:04:36.804Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:05:09.077Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:05:09.080Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:05:09.081Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:05:53.335Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:05:53.338Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:05:53.339Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:06:31.922Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:06:31.925Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:06:31.926Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [12/Jun/2026:20:06:54 +0000] \"GET /api/anuncios HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-12T20:06:54.159Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:20:07:07 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T20:07:07.926Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:08:03.868Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:08:03.870Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:08:03.870Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T20:10:21.145Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:10:30.888Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:10:30.890Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:10:30.891Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T20:11:16.425Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:11:25.733Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:11:25.736Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:11:25.737Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [12/Jun/2026:20:11:44 +0000] \"GET /api/anuncios HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-12T20:11:44.489Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:12:14.436Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:12:14.438Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:12:14.438Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T20:13:07.463Z"}
+ Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-12T20:12:42.050Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:13:36.200Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:13:36.202Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:13:36.202Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T20:14:19.795Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:14:39.934Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:14:39.936Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:14:39.937Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [12/Jun/2026:20:15:05 +0000] \"GET /api/anuncios HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-12T20:15:05.635Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:15:25.191Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:15:25.192Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:15:25.193Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T20:16:02.147Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:20:16:05 +0000] \"GET /api/anuncios?pagina=1&limite=12 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T20:16:05.856Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:20:16:10 +0000] \"GET /api/anuncios?pagina=1&limite=12 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T20:16:10.015Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:16:40.050Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:16:40.052Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:16:40.052Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T20:17:15.336Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:17:32.486Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:17:32.488Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:17:32.489Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [12/Jun/2026:20:17:57 +0000] \"GET /api/anuncios HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-12T20:17:57.070Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:18:18.212Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:18:18.213Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:18:18.214Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T20:21:53.144Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:24:15.971Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:24:15.974Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:24:15.976Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:20:24:33 +0000] \"GET /health HTTP/1.1\" 200 120 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T20:24:33.444Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:20:24:33 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T20:24:33.531Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:25:08.736Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:25:08.739Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:25:08.739Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:26:15.366Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:26:15.369Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:26:15.369Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:20:26:56 +0000] \"GET /health HTTP/1.1\" 200 119 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T20:26:56.383Z"}
+{"level":"info","message":"::1 - - [12/Jun/2026:20:26:58 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 200 9564 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-12T20:26:58.649Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-12T20:28:18.319Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-12T20:28:18.322Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-12T20:28:18.322Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [12/Jun/2026:20:29:03 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-12T20:29:03.569Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-12T20:30:40.635Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-13T16:07:36.380Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-13T16:07:36.382Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-13T16:07:36.382Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:08:19 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 200 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:08:19.063Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:08:19 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 197 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:08:19.365Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:08:22 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:08:22.903Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:08:23 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:08:23.044Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:08:25 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 198 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:08:25.518Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:08:25 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 199 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:08:25.797Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:09:31 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 199 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:09:31.228Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:09:31 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 199 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:09:31.473Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:09:39 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:09:39.417Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:09:39 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:09:39.579Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-13T16:10:32.606Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-13T16:21:43.715Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-13T16:21:43.716Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-13T16:21:43.717Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:22:27 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 200 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:22:27.743Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:22:28 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 200 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:22:28.073Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-13T16:24:59.357Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-13T16:29:58.014Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-13T16:29:58.016Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-13T16:29:58.016Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:30:41 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:30:41.491Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:30:41 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:30:41.642Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:30:42 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 200 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:30:42.068Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:30:42 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 199 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:30:42.325Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:30:43 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 199 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:30:43.109Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:30:43 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 200 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:30:43.340Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-13T16:32:53.701Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-13T16:36:26.231Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-13T16:36:26.234Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-13T16:36:26.234Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-13T16:38:31.324Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-13T16:38:41.273Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-13T16:38:41.275Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-13T16:38:41.276Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-13T16:40:22.127Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-13T16:44:48.523Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-13T16:44:48.525Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-13T16:44:48.525Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:45:21 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 201 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:45:21.384Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:16:45:21 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 200 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T16:45:21.766Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-13T17:07:29.490Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-13T17:07:39.914Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-13T17:07:39.916Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-13T17:07:39.917Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:17:08:07 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 199 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T17:08:07.930Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:17:08:08 +0000] \"GET /api/anuncios/destacados HTTP/1.1\" 400 199 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T17:08:08.312Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-13T17:08:54.274Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-13T17:10:11.299Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-13T17:10:11.301Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-13T17:10:11.301Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:17:10:49 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T17:10:49.505Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-13T17:12:16.805Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-13T17:40:41.082Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-13T17:40:41.084Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-13T17:40:41.085Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:17:41:13 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T17:41:13.032Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:17:41:18 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T17:41:18.874Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:17:43:45 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T17:43:45.578Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [13/Jun/2026:17:43:45 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-13T17:43:45.710Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-14T10:27:31.859Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-14T10:27:31.860Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-14T10:27:31.861Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [14/Jun/2026:10:28:15 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-14T10:28:15.440Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [14/Jun/2026:10:29:18 +0000] \"GET /api/anuncios?categoria=intercambios&orden=fecha_desc&limite=30&pagina=1&comunidad_autonoma=Galicia HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-14T10:29:18.394Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [14/Jun/2026:10:29:18 +0000] \"GET /api/anuncios?categoria=intercambios&orden=fecha_desc&limite=30&pagina=1&comunidad_autonoma=Galicia HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-14T10:29:18.558Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [14/Jun/2026:10:29:22 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-14T10:29:22.406Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [14/Jun/2026:10:29:22 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-14T10:29:22.541Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-15T17:53:22.402Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-15T18:04:14.816Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-15T18:04:14.818Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-15T18:04:14.819Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jun/2026:18:04:46 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-15T18:04:46.036Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jun/2026:18:04:52 +0000] \"GET /api/database/realtime?format=categorized HTTP/1.1\" 404 128 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-15T18:04:52.057Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jun/2026:18:04:52 +0000] \"GET /api/database/realtime?format=categorized HTTP/1.1\" 404 126 \"http://localhost:3001/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-15T18:04:52.085Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jun/2026:18:05:22 +0000] \"GET /api/database/realtime?format=categorized HTTP/1.1\" 404 128 \"http://localhost:3001/\" \"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1\"","service":"citypaj-backend","timestamp":"2026-06-15T18:05:22.021Z"}
+{"level":"info","message":"::1 - - [15/Jun/2026:18:05:41 +0000] \"GET /api/database/realtime HTTP/1.1\" 404 109 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-15T18:05:41.054Z"}
+{"level":"info","message":"::1 - - [15/Jun/2026:18:05:46 +0000] \"GET /health HTTP/1.1\" 200 122 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-15T18:05:46.110Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-15T18:05:50.343Z"}

@@ -433,7 +433,7 @@ const Header: React.FC<HeaderProps> = memo(({
 
                 <div className="pt-3 border-t border-black">
                   <div className="font-sans text-xs text-gray-600 mb-2">IDIOMA</div>
-                  <LanguageSelector isMobile={false} />
+                  <LanguageSelector isMobile={true} />
                 </div>
 
                               </div>

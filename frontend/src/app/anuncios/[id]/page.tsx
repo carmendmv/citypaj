@@ -19,8 +19,11 @@ interface Anuncio {
   actualizado: string;
   vistas: number;
   usuario_nombre: string;
-  usuario_email: string;
-  usuario_telefono?: string;
+  email: string;
+  telefono?: string;
+  contacto_email: boolean;
+  contacto_telefono: boolean;
+  contacto_anonimo: boolean;
   imagenes?: Array<{
     id: string;
     url: string;
@@ -294,24 +297,84 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
             </section>
 
             <section className="mt-8 border border-black p-6">
+              <h2 className="font-serif text-xl font-bold text-black">Ubicación</h2>
+              <div className="mt-4 font-sans text-sm text-black">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  <span>
+                    {anuncio.provincia && `${anuncio.provincia}, `}
+                    {anuncio.comunidad_autonoma}
+                  </span>
+                </div>
+                {anuncio.precio && (
+                  <div className="mt-2">
+                    <span className="font-medium">Precio:</span> {anuncio.precio}€
+                  </div>
+                )}
+                <div className="mt-2 flex items-center gap-2">
+                  <Eye className="w-4 h-4" />
+                  <span>{anuncio.vistas || 0} visualizaciones</span>
+                </div>
+                <div className="mt-2 flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>Publicado: {formatDate(anuncio.creado)}</span>
+                </div>
+              </div>
+            </section>
+
+            <section className="mt-8 border border-black p-6">
               <h2 className="font-serif text-xl font-bold text-black">Contacto</h2>
 
               <div className="mt-4 space-y-2 font-sans text-sm text-black">
-                <div>
-                  <span className="font-medium">Email:</span>{' '}
-                  <a href={`mailto:${anuncio.usuario_email || ''}`} className="hover:text-orange-500">
-                    {anuncio.usuario_email || 'No disponible'}
-                  </a>
-                </div>
+                {anuncio.contacto_email && !anuncio.contacto_anonimo ? (
+                  <div>
+                    <span className="font-medium">Email:</span>{' '}
+                    <a href={`mailto:${anuncio.email || ''}`} className="hover:text-orange-500">
+                      {anuncio.email || 'No disponible'}
+                    </a>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(anuncio.email || '');
+                        setShareMessage('Email copiado al portapapeles');
+                        setTimeout(() => setShareMessage(''), 3000);
+                      }}
+                      className="ml-2 px-2 py-1 text-xs border border-black hover:bg-gray-100 transition-colors bg-white"
+                    >
+                      Copiar
+                    </button>
+                  </div>
+                ) : null}
 
-                {anuncio.usuario_telefono ? (
+                {anuncio.contacto_telefono && !anuncio.contacto_anonimo && anuncio.telefono ? (
                   <div>
                     <span className="font-medium">Teléfono:</span>{' '}
-                    <a href={`tel:${anuncio.usuario_telefono}`} className="hover:text-orange-500">
-                      {anuncio.usuario_telefono}
+                    <a href={`tel:${anuncio.telefono}`} className="hover:text-orange-500">
+                      {anuncio.telefono}
+                    </a>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(anuncio.telefono || '');
+                        setShareMessage('Teléfono copiado al portapapeles');
+                        setTimeout(() => setShareMessage(''), 3000);
+                      }}
+                      className="ml-2 px-2 py-1 text-xs border border-black hover:bg-gray-100 transition-colors bg-white"
+                    >
+                      Copiar
+                    </button>
+                    <a
+                      href={`tel:${anuncio.telefono}`}
+                      className="ml-1 px-2 py-1 text-xs border border-black hover:bg-gray-100 transition-colors bg-white"
+                    >
+                      Llamar
                     </a>
                   </div>
                 ) : null}
+
+                {anuncio.contacto_anonimo && (
+                  <div className="text-sm text-gray-600">
+                    Contacto anónimo - Usa el formulario de contacto de la plataforma
+                  </div>
+                )}
               </div>
             </section>
           </div>

@@ -323,3 +323,64 @@ export const deleteSugerencia = async (req: Request, res: Response): Promise<voi
     });
   }
 };
+
+export const getEstadisticasSugerencias = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const client = await pool.connect();
+    try {
+      // Estadísticas por estado
+      const estadoQuery = `
+        SELECT estado, COUNT(*) as count
+        FROM sugerencias
+        GROUP BY estado
+        ORDER BY count DESC
+      `;
+      
+      // Estadísticas por categoría
+      const categoriaQuery = `
+        SELECT categoria, COUNT(*) as count
+        FROM sugerencias
+        GROUP BY categoria
+        ORDER BY count DESC
+      `;
+      
+      // Estadísticas por prioridad
+      const prioridadQuery = `
+        SELECT prioridad, COUNT(*) as count
+        FROM sugerencias
+        GROUP BY prioridad
+        ORDER BY count DESC
+      `;
+      
+      // Total general
+      const totalQuery = 'SELECT COUNT(*) as total FROM sugerencias';
+
+      const [estadoResult, categoriaResult, prioridadResult, totalResult] = await Promise.all([
+        client.query(estadoQuery),
+        client.query(categoriaQuery),
+        client.query(prioridadQuery),
+        client.query(totalQuery)
+      ]);
+
+      res.status(200).json({
+        success: true,
+        data: {
+          total: parseInt(totalResult.rows[0].total),
+          porEstado: estadoResult.rows,
+          porCategoria: categoriaResult.rows,
+          porPrioridad: prioridadResult.rows
+        }
+      });
+
+    } finally {
+      client.release();
+    }
+
+  } catch (error) {
+    console.error('Error obteniendo estadísticas de sugerencias:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Error interno del servidor' 
+    });
+  }
+};

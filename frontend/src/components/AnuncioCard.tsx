@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { HeartIcon, FlagIcon, PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
@@ -62,9 +63,10 @@ export const AnuncioCard: React.FC<AnuncioCardProps> = ({
   };
 
   return (
-    <article 
+    <Link 
+      href={`/anuncios/${anuncio.id}`}
       className={clsx(
-        'bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200',
+        'block bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200',
         'group cursor-pointer overflow-hidden',
         className
       )}
@@ -202,7 +204,7 @@ export const AnuncioCard: React.FC<AnuncioCardProps> = ({
           </button>
         </div>
       </div>
-    </article>
+    </Link>
   );
 };
 

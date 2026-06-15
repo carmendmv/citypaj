@@ -218,7 +218,7 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       modalidad
     } = req.body;
 
-    const userId = req.user?.userId;
+    const userId = req.user?.id;
 
     if (!userId) {
       res.status(401).json({
@@ -300,7 +300,7 @@ export const updateAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       modalidad
     } = req.body;
 
-    const userId = req.user?.userId;
+    const userId = req.user?.id;
 
     if (!userId) {
       res.status(401).json({
@@ -378,7 +378,7 @@ export const updateAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 export const deleteAnuncio = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const userId = req.user?.userId;
+    const userId = req.user?.id;
 
     if (!userId) {
       res.status(401).json({
@@ -438,7 +438,7 @@ export const deleteAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
 export const getAnunciosByUser = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const userId = req.user?.userId;
+    const userId = req.user?.id;
 
     if (!userId) {
       res.status(401).json({
@@ -475,6 +475,93 @@ export const getAnunciosByUser = async (req: AuthRequest, res: Response): Promis
 
   } catch (error) {
     console.error('Error obteniendo anuncios del usuario:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+// Funciones adicionales requeridas por las rutas
+export const createAnuncioPublico = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    // Similar a createAnuncio pero sin autenticación
+    res.status(501).json({
+      success: false,
+      error: 'Función no implementada'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const hideAnuncio = async (_req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    res.status(501).json({
+      success: false,
+      error: 'Función no implementada'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const searchAnuncios = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    // Similar a getAnuncios pero con búsqueda específica
+    res.status(501).json({
+      success: false,
+      error: 'Función no implementada'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const toggleFavorito = async (_req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    res.status(501).json({
+      success: false,
+      error: 'Función no implementada'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const getAnunciosGuardados = async (_req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    res.status(501).json({
+      success: false,
+      error: 'Función no implementada'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+export const incrementarVistas = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    res.status(501).json({
+      success: false,
+      error: 'Función no implementada'
+    });
+  } catch (error) {
     res.status(500).json({
       success: false,
       error: 'Error interno del servidor'
