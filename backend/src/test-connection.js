@@ -1,7 +1,7 @@
 const mysql = require('mysql2/promise');
 
 async function testConnection() {
-  console.log('🔍 Probando conexión con citypaj_user...');
+  console.log('🔍 Probando conexión a la base de datos...');
   
   try {
     const connection = await mysql.createConnection({
@@ -12,25 +12,24 @@ async function testConnection() {
       password: 'citypaj123'
     });
     
-    console.log('✅ Conexión exitosa con citypaj_user');
+    console.log('✅ Conexión exitosa');
     
-    // Probar consulta
-    const [rows] = await connection.execute('SELECT COUNT(*) as total FROM anuncios');
-    console.log(`📊 Total de anuncios: ${rows[0].total}`);
+    // Probar consulta simple
+    const [result] = await connection.execute('SELECT COUNT(*) as total FROM anuncios');
+    console.log(`📊 Total de anuncios en la base de datos: ${result[0].total}`);
     
-    // Probar obtener algunos anuncios
-    const [anuncios] = await connection.execute('SELECT id, titulo, categoria FROM anuncios LIMIT 3');
-    console.log('📝 Ejemplos de anuncios:');
+    // Probar consulta de anuncios
+    const [anuncios] = await connection.execute('SELECT * FROM anuncios LIMIT 5');
+    console.log('📝 Primeros 5 anuncios:');
     anuncios.forEach(anuncio => {
-      console.log(`  - ${anuncio.id}: ${anuncio.titulo} (${anuncio.categoria})`);
+      console.log(`   - ${anuncio.titulo} (${anuncio.categoria})`);
     });
     
     await connection.end();
-    console.log('🎉 Prueba completada exitosamente');
+    console.log('✅ Prueba completada exitosamente');
     
   } catch (error) {
     console.error('❌ Error en la conexión:', error.message);
-    process.exit(1);
   }
 }
 

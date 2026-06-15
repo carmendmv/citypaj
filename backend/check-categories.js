@@ -1,53 +1,62 @@
 const mysql = require('mysql2/promise');
 
 async function checkCategories() {
-  let connection;
+  console.log('🔍 Verificando categorías de anuncios...');
   
   try {
-    console.log('🔄 Verificando categorías en citypaj_db...');
-    
-    connection = await mysql.createConnection({
+    const connection = await mysql.createConnection({
       host: 'localhost',
       port: 3306,
-      user: 'root',
-      password: '',
-      database: 'citypaj_db'
+      database: 'citypaj',
+      user: 'citypaj_user',
+      password: 'citypaj123'
     });
     
-    // Verificar categorías disponibles en la base de datos
-    const [categories] = await connection.execute('SELECT DISTINCT categoria FROM anuncios ORDER BY categoria');
-    console.log('\n📋 Categorías en la base de datos citypaj_db:');
-    categories.forEach(row => {
-      console.log(`   • ${row.categoria}`);
-    });
+    console.log('✅ Conexión exitosa');
     
-    // Contar anuncios por categoría
-    const [categoryCounts] = await connection.execute(`
+    // Obtener distribución por categorías
+    const [categories] = await connection.execute(`
       SELECT categoria, COUNT(*) as count 
       FROM anuncios 
-      WHERE visible = 1 AND estado_moderacion = 'approved'
       GROUP BY categoria 
       ORDER BY count DESC
     `);
-    console.log('\n📊 Anuncios por categoría (visibles y aprobados):');
-    categoryCounts.forEach(row => {
-      console.log(`   • ${row.categoria}: ${row.count} anuncios`);
+    
+    console.log('📊 Distribución por categorías:');
+    categories.forEach(cat => {
+      console.log(`   - ${cat.categoria}: ${cat.count} anuncios`);
     });
     
-    // Verificar si existe la categoría 'ocio'
-    const [ocioCheck] = await connection.execute(`
-      SELECT COUNT(*) as count 
-      FROM anuncios 
-      WHERE categoria = 'ocio' AND visible = 1 AND estado_moderacion = 'approved'
+    // Verificar categorías esperadas
+    const expectedCategories = ['ocio', 'servicios', 'formacion', 'empleo', 'comunidad', 'transporte', 'vivienda', 'salud', 'tecnología', 'otros'];
+    const foundCategories = categories.map(cat => cat.categoria);
+    
+    console.log('📈 Verificación de categorías esperadas:');
+    expectedCategories.forEach(expected => {
+      const found = foundCategories.includes(expected);
+      const count = categories.find(cat => cat.categoria === expected)?.count || 0;
+      console.log(`   - ${expected}: ${found ? '✅' : '❌'} (${count} anuncios)`);
+    });
+    
+    // Verificar estructura del ENUM
+    const [enumInfo] = await connection.execute(`
+      SELECT COLUMN_TYPE 
+      FROM INFORMATION_SCHEMA.COLUMNS 
+      WHERE TABLE_SCHEMA = 'citypaj' 
+      AND TABLE_NAME = 'anuncios' 
+      AND COLUMN_NAME = 'categoria'
     `);
-    console.log(`\n🔍 Categoría 'ocio' encontrada: ${ocioCheck[0].count} anuncios`);
+    
+    if (enumInfo.length > 0) {
+      console.log('📋 Estructura del ENUM categoria:');
+      console.log(`   - ${enumInfo[0].COLUMN_TYPE}`);
+    }
+    
+    await connection.end();
+    console.log('✅ Verificación de categorías completada');
     
   } catch (error) {
-    console.error('❌ Error:', error.message);
-  } finally {
-    if (connection) {
-      await connection.end();
-    }
+    console.error('❌ Error verificando categorías:', error.message);
   }
 }
 

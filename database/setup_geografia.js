@@ -1,105 +1,97 @@
 const mysql = require('mysql2/promise');
-const fs = require('fs');
-const path = require('path');
-
-// Configuración de la base de datos
-const dbConfig = {
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: '', // Sin contraseña según la configuración
-  database: 'citypaj_db'
-};
 
 async function setupGeografia() {
-  let connection;
+  console.log('🗺️ Configurando datos geográficos de España...');
   
   try {
-    console.log('🔄 Conectando a la base de datos...');
-    connection = await mysql.createConnection(dbConfig);
-    
-    console.log('✅ Conexión exitosa a la base de datos');
-    
-    // Leer el archivo SQL
-    const sqlFile = path.join(__dirname, 'geografia_espana.sql');
-    const sqlContent = fs.readFileSync(sqlFile, 'utf8');
-    
-    console.log('📄 Leyendo archivo SQL...');
-    
-    // Separar las sentencias SQL por el delimitador
-    const statements = sqlContent
-      .split(';')
-      .map(stmt => stmt.trim())
-      .filter(stmt => stmt.length > 0 && !stmt.startsWith('--'));
-    
-    console.log(`🔧 Ejecutando ${statements.length} sentencias SQL...`);
-    
-    // Ejecutar cada sentencia
-    for (let i = 0; i < statements.length; i++) {
-      const statement = statements[i];
-      
-      if (statement.trim()) {
-        try {
-          await connection.execute(statement);
-          console.log(`✅ Sentencia ${i + 1}/${statements.length} ejecutada correctamente`);
-        } catch (error) {
-          // Ignorar errores de "IF NOT EXISTS" o tablas que ya existen
-          if (error.code === 'ER_TABLE_EXISTS_ERROR' || 
-              error.code === 'ER_DUP_ENTRY' ||
-              error.code === 'ER_DUP_KEYNAME') {
-            console.log(`⚠️  Sentencia ${i + 1}/${statements.length} omitida (ya existe): ${error.message}`);
-          } else {
-            console.error(`❌ Error en sentencia ${i + 1}: ${error.message}`);
-            console.error(`Statement: ${statement.substring(0, 100)}...`);
-          }
-        }
-      }
-    }
-    
-    // Verificar los datos insertados
-    console.log('\n📊 Verificando datos insertados...');
-    
-    const [comunidadesResult] = await connection.execute('SELECT COUNT(*) as total FROM comunidades_autonomas');
-    const [provinciasResult] = await connection.execute('SELECT COUNT(*) as total FROM provincias');
-    
-    console.log(`✅ Comunidades Autónomas insertadas: ${comunidadesResult[0].total}`);
-    console.log(`✅ Provincias insertadas: ${provinciasResult[0].total}`);
-    
-    // Mostrar resumen por comunidad
-    console.log('\n📋 Resumen por Comunidad Autónoma:');
-    const [resumenResult] = await connection.execute(`
-      SELECT 
-        c.nombre as comunidad_autonoma,
-        COUNT(p.id) as numero_provincias,
-        GROUP_CONCAT(p.nombre ORDER BY p.nombre SEPARATOR ', ') as provincias
-      FROM comunidades_autonomas c
-      LEFT JOIN provincias p ON c.id = p.comunidad_autonoma_id
-      GROUP BY c.id, c.nombre
-      ORDER BY c.nombre
-    `);
-    
-    resumenResult.forEach(row => {
-      console.log(`📍 ${row.comunidad_autonoma}: ${row.numero_provincias} provincias`);
-      if (row.provincias) {
-        const provincias = row.provincias.split(', ');
-        provincias.forEach(prov => {
-          console.log(`   • ${prov}`);
-        });
-      }
+    const connection = await mysql.createConnection({
+      host: 'localhost',
+      port: 3306,
+      database: 'citypaj',
+      user: 'citypaj_user',
+      password: 'citypaj123'
     });
     
-    console.log('\n🎉 ¡Configuración geográfica completada con éxito!');
+    console.log('✅ Conexión exitosa');
+    
+    // Datos de comunidades autónomas y provincias
+    const comunidadesProvincias = {
+      'Andalucía': ['Almería', 'Cádiz', 'Córdoba', 'Granada', 'Huelva', 'Jaén', 'Málaga', 'Sevilla'],
+      'Aragón': ['Huesca', 'Teruel', 'Zaragoza'],
+      'Asturias': ['Asturias'],
+      'Baleares': ['Baleares'],
+      'Canarias': ['Las Palmas', 'Santa Cruz de Tenerife'],
+      'Cantabria': ['Cantabria'],
+      'Castilla-La Mancha': ['Albacete', 'Ciudad Real', 'Cuenca', 'Guadalajara', 'Toledo'],
+      'Castilla y León': ['Ávila', 'Burgos', 'León', 'Palencia', 'Salamanca', 'Segovia', 'Soria', 'Valladolid', 'Zamora'],
+      'Cataluña': ['Barcelona', 'Girona', 'Lleida', 'Tarragona'],
+      'Comunidad Valenciana': ['Alicante', 'Castellón', 'Valencia'],
+      'Extremadura': ['Badajoz', 'Cáceres'],
+      'Galicia': ['A Coruña', 'Lugo', 'Ourense', 'Pontevedra'],
+      'Madrid': ['Madrid'],
+      'Murcia': ['Murcia'],
+      'Navarra': ['Navarra'],
+      'País Vasco': ['Álava', 'Guipúzcoa', 'Vizcaya'],
+      'La Rioja': ['La Rioja']
+    };
+    
+    // Crear tabla de comunidades si no existe
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS comunidades (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(100) NOT NULL UNIQUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
+    // Crear tabla de provincias si no existe
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS provincias (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(100) NOT NULL UNIQUE,
+        comunidad_id INT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (comunidad_id) REFERENCES comunidades(id)
+      )
+    `);
+    
+    console.log('📋 Tablas geográficas creadas');
+    
+    // Insertar comunidades autónomas
+    let comunidadId = 1;
+    for (const [comunidad, provincias] of Object.entries(comunidadesProvincias)) {
+      await connection.execute(
+        'INSERT IGNORE INTO comunidades (id, nombre) VALUES (?, ?)',
+        [comunidadId, comunidad]
+      );
+      
+      // Insertar provincias
+      let provinciaId = 1;
+      for (const provincia of provincias) {
+        await connection.execute(
+          'INSERT IGNORE INTO provincias (id, nombre, comunidad_id) VALUES (?, ?, ?)',
+          [provinciaId, provincia, comunidadId]
+        );
+        provinciaId++;
+      }
+      
+      console.log(`✅ ${comunidad}: ${provincias.length} provincias`);
+      comunidadId++;
+    }
+    
+    // Verificar datos insertados
+    const [comunidadesCount] = await connection.execute('SELECT COUNT(*) as total FROM comunidades');
+    const [provinciasCount] = await connection.execute('SELECT COUNT(*) as total FROM provincias');
+    
+    console.log(`📊 Total comunidades: ${comunidadesCount[0].total}`);
+    console.log(`📊 Total provincias: ${provinciasCount[0].total}`);
+    
+    await connection.end();
+    console.log('🎉 Configuración geográfica completada');
     
   } catch (error) {
-    console.error('❌ Error general:', error.message);
-    process.exit(1);
-  } finally {
-    if (connection) {
-      await connection.end();
-      console.log('🔌 Conexión cerrada');
-    }
+    console.error('❌ Error configurando geografía:', error.message);
   }
 }
 
-// Ejecutar el script
 setupGeografia();

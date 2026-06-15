@@ -1,87 +1,85 @@
 const mysql = require('mysql2/promise');
 
-async function diagnoseMySQLAccess() {
-  console.log('🔍 DIAGNÓSTICO DE ACCESO A MySQL');
-  console.log('=====================================');
+async function diagnoseMysqlAccess() {
+  console.log('🔍 Diagnosticando acceso a MySQL...');
   
   // Probar diferentes configuraciones de conexión
-  const configs = [
+  const connectionConfigs = [
     {
-      name: 'Configuración actual (sin password)',
-      config: {
-        host: 'localhost',
-        port: 3306,
-        user: 'root',
-        password: '',
-        database: 'citypaj_db'
-      }
-    },
-    {
-      name: 'Configuración con password null',
-      config: {
-        host: 'localhost',
-        port: 3306,
-        user: 'root',
-        password: null,
-        database: 'citypaj_db'
-      }
-    },
-    {
-      name: 'Configuración sin especificar database',
+      name: 'Root sin contraseña',
       config: {
         host: 'localhost',
         port: 3306,
         user: 'root',
         password: ''
       }
+    },
+    {
+      name: 'Root con contraseña vacía',
+      config: {
+        host: 'localhost',
+        port: 3306,
+        user: 'root',
+        password: ''
+      }
+    },
+    {
+      name: 'Usuario citypaj_user',
+      config: {
+        host: 'localhost',
+        port: 3306,
+        database: 'citypaj',
+        user: 'citypaj_user',
+        password: 'citypaj123'
+      }
+    },
+    {
+      name: 'Usuario citypaj_user sin base de datos',
+      config: {
+        host: 'localhost',
+        port: 3306,
+        user: 'citypaj_user',
+        password: 'citypaj123'
+      }
     }
   ];
   
-  for (const { name, config } of configs) {
-    console.log(`\n📋 Probando: ${name}`);
-    console.log(`   Config: ${JSON.stringify(config)}`);
+  for (const { name, config } of connectionConfigs) {
+    console.log(`\n🔍 Probando: ${name}`);
     
     try {
       const connection = await mysql.createConnection(config);
-      console.log('   ✅ Conexión exitosa');
+      console.log(`✅ Conexión exitosa`);
       
-      // Si no especificamos database, probar listar bases de datos
+      // Si no hay base de datos especificada, listar bases de datos
       if (!config.database) {
         const [databases] = await connection.execute('SHOW DATABASES');
-        console.log('   📊 Bases de datos disponibles:');
-        databases.forEach(db => {
-          const dbName = Object.values(db)[0];
-          if (dbName.includes('citypaj')) {
-            console.log(`      • ${dbName} ⭐`);
-          } else {
-            console.log(`      • ${dbName}`);
-          }
+        console.log('📋 Bases de datos disponibles:');
+        databases.slice(0, 5).forEach(db => {
+          console.log(`   - ${db.Database}`);
         });
+        if (databases.length > 5) {
+          console.log(`   ... y ${databases.length - 5} más`);
+        }
       } else {
-        // Probar consulta simple
-        const [result] = await connection.execute('SELECT DATABASE() as current_db');
-        console.log(`   📊 Base de datos actual: ${result[0].current_db}`);
-        
+        // Si hay base de datos, verificar tablas
         const [tables] = await connection.execute('SHOW TABLES');
-        console.log(`   📊 Tablas encontradas: ${tables.length}`);
+        console.log(`📋 Tablas en ${config.database}: ${tables.length}`);
+        if (tables.length > 0) {
+          tables.slice(0, 3).forEach(table => {
+            console.log(`   - ${Object.values(table)[0]}`);
+          });
+        }
       }
       
       await connection.end();
-      console.log('   🔌 Conexión cerrada');
       
     } catch (error) {
-      console.log(`   ❌ Error: ${error.message}`);
-      console.log(`   📝 Código: ${error.code}`);
-      console.log(`   📝 SQL State: ${error.sqlState}`);
+      console.log(`❌ Error: ${error.message}`);
     }
   }
   
-  console.log('\n🔍 VERIFICANDO VARIABLES DE ENTORNO');
-  console.log('===================================');
-  console.log(`DB_USER: ${process.env.DB_USER || 'NO DEFINIDO'}`);
-  console.log(`DB_PASSWORD: ${process.env.DB_PASSWORD || 'NO DEFINIDO'}`);
-  console.log(`DB_NAME: ${process.env.DB_NAME || 'NO DEFINIDO'}`);
-  console.log(`DB_HOST: ${process.env.DB_HOST || 'NO DEFINIDO'}`);
+  console.log('\n🎉 Diagnóstico completado');
 }
 
-diagnoseMySQLAccess();
+diagnoseMysqlAccess();

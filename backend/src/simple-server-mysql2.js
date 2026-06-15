@@ -7,67 +7,90 @@ const PORT = 3002;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3001'],
+  origin: ['http://localhost:3001', 'http://172.28.138.61:3001'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID'],
 }));
 app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Pool de conexiones MySQL2
-const pool = mysql.createPool({
-  host: 'localhost',
-  port: 3306,
-  database: 'citypaj',
-  user: 'citypaj_user',
-  password: 'citypaj123',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
+console.log('🚀 Iniciando servidor simple con MySQL2 de CityPaj');
 
-console.log('🔍 Configuración de base de datos MySQL2:');
-console.log('  - Host: localhost');
-console.log('  - Database: citypaj');
-console.log('  - User: citypaj_user');
-console.log('  - Password: citypaj123');
+// Conexión a la base de datos
+let connection = null;
+
+async function connectToDatabase() {
+  try {
+    connection = await mysql.createConnection({
+      host: 'localhost',
+      port: 3306,
+      database: 'citypaj',
+      user: 'citypaj_user',
+      password: 'citypaj123'
+    });
+    console.log('✅ Conexión exitosa a la base de datos');
+  } catch (error) {
+    console.error('❌ Error conectando a la base de datos:', error.message);
+  }
+}
+
+// Iniciar conexión al arrancar
+connectToDatabase();
 
 // Endpoint principal de anuncios
 app.get('/api/anuncios', async (req, res) => {
-  let connection;
+  console.log('📝 Petición recibida a /api/anuncios');
+  
   try {
-    console.log('📊 Obteniendo anuncios con MySQL2...');
+    if (!connection) {
+      await connectToDatabase();
+    }
     
     const pagina = parseInt(req.query.pagina) || 1;
     const limite = parseInt(req.query.limite) || 10;
     const offset = (pagina - 1) * limite;
-
-    connection = await pool.getConnection();
     
-    // Obtener anuncios
-    const [anuncios] = await connection.execute(`
-      SELECT 
-        anuncios.*,
-        usuarios.nombre as usuario_nombre,
-        usuarios.email as email
-      FROM anuncios
-      LEFT JOIN usuarios ON anuncios.usuario_id = usuarios.id
-      WHERE anuncios.visible = 1 AND anuncios.estado_moderacion = 'approved'
-      ORDER BY anuncios.id DESC
-      LIMIT ? OFFSET ?
-    `, [limite, offset]);
-
-    // Obtener total
-    const [totalResult] = await connection.execute(`
-      SELECT COUNT(*) as total
-      FROM anuncios
-      LEFT JOIN usuarios ON anuncios.usuario_id = usuarios.id
-      WHERE anuncios.visible = 1 AND anuncios.estado_moderacion = 'approved'
-    `);
-
-    const total = totalResult[0].total;
-
-    console.log(`✅ Obtenidos ${anuncios.length} anuncios de ${total} totales`);
+    // Construir consulta SQL
+    let query = 'SELECT * FROM anuncios WHERE visible = 1 AND estado_moderacion = "approved"';
+    let params = [];
+    
+    if (req.query.categoria) {
+      query += ' AND categoria = ?';
+      params.push(req.query.categoria);
+    }
+    
+    if (req.query.buscar) {
+      query += ' AND (titulo LIKE ? OR descripcion LIKE ?)';
+      const searchTerm = `%${req.query.buscar}%`;
+      params.push(searchTerm, searchTerm);
+    }
+    
+    query += ' ORDER BY creado_at DESC LIMIT ? OFFSET ?';
+    params.push(limite, offset);
+    
+    // Ejecutar consulta
+    const [anuncios] = await connection.execute(query, params);
+    
+    // Obtener total para paginación
+    let countQuery = 'SELECT COUNT(*) as total FROM anuncios WHERE visible = 1 AND estado_moderacion = "approved"';
+    let countParams = [];
+    
+    if (req.query.categoria) {
+      countQuery += ' AND categoria = ?';
+      countParams.push(req.query.categoria);
+    }
+    
+    if (req.query.buscar) {
+      countQuery += ' AND (titulo LIKE ? OR descripcion LIKE ?)';
+      const searchTerm = `%${req.query.buscar}%`;
+      countParams.push(searchTerm, searchTerm);
+    }
+    
+    const [countResult] = await connection.execute(countQuery, countParams);
+    const total = countResult[0].total;
+    
+    console.log(`✅ Sirviendo ${anuncios.length} anuncios de ${total} totales`);
 
     res.json({
       success: true,
@@ -81,73 +104,42 @@ app.get('/api/anuncios', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('❌ Error obteniendo anuncios:', error);
+    console.error('❌ Error procesando anuncios:', error);
     res.status(500).json({
       success: false,
-      error: 'Error al obtener anuncios de la base de datos',
-      details: error.message
+      error: 'Error al obtener anuncios'
     });
-  } finally {
-    if (connection) {
-      connection.release();
-    }
-  }
-});
-
-// Endpoint de detalle de anuncio
-app.get('/api/anuncios/:id', async (req, res) => {
-  let connection;
-  try {
-    const { id } = req.params;
-    
-    connection = await pool.getConnection();
-    
-    const [anuncios] = await connection.execute(`
-      SELECT 
-        anuncios.*,
-        usuarios.nombre as usuario_nombre,
-        usuarios.email as email
-      FROM anuncios
-      LEFT JOIN usuarios ON anuncios.usuario_id = usuarios.id
-      WHERE anuncios.id = ? AND anuncios.visible = 1 AND anuncios.estado_moderacion = 'approved'
-    `, [id]);
-    
-    const anuncio = anuncios[0];
-    
-    if (!anuncio) {
-      return res.status(404).json({
-        success: false,
-        error: 'Anuncio no encontrado'
-      });
-    }
-
-    res.json({
-      success: true,
-      data: anuncio
-    });
-
-  } catch (error) {
-    console.error('❌ Error obteniendo anuncio:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Error al obtener anuncio',
-      details: error.message
-    });
-  } finally {
-    if (connection) {
-      connection.release();
-    }
   }
 });
 
 // Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+app.get('/health', async (req, res) => {
+  try {
+    let dbStatus = 'disconnected';
+    if (connection) {
+      await connection.ping();
+      dbStatus = 'connected';
+    }
+    
+    res.json({ 
+      status: 'OK', 
+      timestamp: new Date().toISOString(),
+      mode: 'SIMPLE-MYSQL2',
+      database: dbStatus
+    });
+  } catch (error) {
+    res.json({ 
+      status: 'OK', 
+      timestamp: new Date().toISOString(),
+      mode: 'SIMPLE-MYSQL2',
+      database: 'disconnected'
+    });
+  }
 });
 
 // Iniciar servidor
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Servidor MySQL2 corriendo en http://0.0.0.0:${PORT}`);
+  console.log(`🚀 Servidor simple con MySQL2 corriendo en http://0.0.0.0:${PORT}`);
   console.log(`📊 Health check: http://0.0.0.0:${PORT}/health`);
-  console.log(`📝 Anuncios endpoints: http://0.0.0.0:${PORT}/api/anuncios`);
+  console.log('✅ Servidor simple con MySQL2 listo para recibir peticiones');
 });

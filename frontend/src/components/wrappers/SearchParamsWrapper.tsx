@@ -1,16 +1,16 @@
 'use client';
 
-import { Suspense } from 'react';
-import { Spinner } from '@/components/ui/Spinner';
+import React, { ReactNode } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 interface SearchParamsWrapperProps {
-  children: React.ReactNode;
+  children: (params: URLSearchParams) => ReactNode;
 }
 
-export function SearchParamsWrapper({ children }: SearchParamsWrapperProps) {
-  return (
-    <Suspense fallback={<Spinner />}>
-      {children}
-    </Suspense>
-  );
-}
+const SearchParamsWrapper: React.FC<SearchParamsWrapperProps> = ({ children }) => {
+  const searchParams = useSearchParams();
+
+  return <>{children(searchParams)}</>;
+};
+
+export default SearchParamsWrapper;

@@ -15,31 +15,30 @@ async function forceLoadRealData() {
     
     console.log('✅ Conexión exitosa');
     
-    // Obtener todos los anuncios con información de usuarios
+    // Obtener todos los anuncios reales
     const [anuncios] = await connection.execute(`
       SELECT 
-        anuncios.*,
-        usuarios.nombre as usuario_nombre,
-        usuarios.email as email
-      FROM anuncios
-      LEFT JOIN usuarios ON anuncios.usuario_id = usuarios.id
-      WHERE anuncios.visible = 1 AND anuncios.estado_moderacion = 'approved'
-      ORDER BY anuncios.creado_at DESC
+        id, usuario_id, titulo, descripcion, categoria, subcategoria,
+        comunidad_id, provincia_id, comunidad_autonoma, provincia, barrio,
+        precio, modalidad, contacto_email, contacto_telefono, contacto_anonimo,
+        visible, estado_moderacion, motivo_rechazo, vistas, creado_at, actualizado_at
+      FROM anuncios 
+      WHERE visible = 1 AND estado_moderacion = 'approved'
+      ORDER BY creado_at DESC
     `);
-    
-    await connection.end();
     
     console.log(`✅ Obtenidos ${anuncios.length} anuncios reales de la base de datos`);
     
-    // Guardar los datos en un archivo para que el servidor los use
-    const dataToSave = {
+    // Guardar en archivo cache
+    const cacheData = {
       anuncios: anuncios,
       lastCacheUpdate: new Date().toISOString(),
+      dataLoaded: true,
       usandoDatosReales: true,
-      dataLoaded: true
+      totalAnuncios: anuncios.length
     };
     
-    fs.writeFileSync('real-data-cache.json', JSON.stringify(dataToSave, null, 2));
+    fs.writeFileSync('real-data-cache.json', JSON.stringify(cacheData, null, 2));
     console.log('✅ Datos guardados en real-data-cache.json');
     
     // Mostrar distribución por categorías
@@ -53,11 +52,13 @@ async function forceLoadRealData() {
       console.log(`   - ${cat}: ${count} anuncios`);
     });
     
-    console.log('\n🎉 Datos reales cargados y guardados exitosamente');
+    await connection.end();
+    
+    console.log('🎉 Datos reales cargados y guardados exitosamente');
     console.log('📝 Ahora puedes reiniciar el servidor para que use estos datos');
     
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error('❌ Error cargando datos reales:', error.message);
   }
 }
 

@@ -1,92 +1,65 @@
-'use client';
-
 import { useState, useEffect } from 'react';
-import { Anuncio } from '@/types';
+
+interface Favorito {
+  id: string;
+  titulo: string;
+  categoria: string;
+  precio?: number;
+  creado_at: string;
+}
 
 export const useFavoritos = () => {
-  const [favoritos, setFavoritos] = useState<string[]>([]);
-  const [anunciosFavoritos, setAnunciosFavoritos] = useState<Anuncio[]>([]);
+  const [favoritos, setFavoritos] = useState<Favorito[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const toggleFavorito = async (anuncioId: string) => {
-    try {
-      setLoading(true);
-      const response = await fetch('/api/anuncios/favorito', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ anuncioId }),
-      });
-
-      if (response.ok) {
-        setFavoritos(prev => 
-          prev.includes(anuncioId) 
-            ? prev.filter(id => id !== anuncioId)
-            : [...prev, anuncioId]
-        );
-        // Refrescar anuncios favoritos
-        fetchFavoritos();
+  // Cargar favoritos del localStorage al iniciar
+  useEffect(() => {
+    const savedFavoritos = localStorage.getItem('favoritos');
+    if (savedFavoritos) {
+      try {
+        setFavoritos(JSON.parse(savedFavoritos));
+      } catch (error) {
+        console.error('Error cargando favoritos:', error);
       }
-    } catch (error) {
-      console.error('Error toggling favorito:', error);
-    } finally {
-      setLoading(false);
     }
+  }, []);
+
+  // Guardar favoritos en localStorage cuando cambien
+  useEffect(() => {
+    if (favoritos.length > 0) {
+      localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    }
+  }, [favoritos]);
+
+  const agregarFavorito = (anuncio: Favorito) => {
+    setFavoritos(prev => {
+      const existe = prev.find(fav => fav.id === anuncio.id);
+      if (existe) {
+        return prev.filter(fav => fav.id !== anuncio.id);
+      } else {
+        return [...prev, anuncio];
+      }
+    });
   };
 
-  const fetchFavoritos = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('/api/anuncios/favoritos');
-      if (response.ok) {
-        const data = await response.json();
-        setAnunciosFavoritos(data.anuncios || []);
-        setFavoritos(data.anuncios?.map((a: Anuncio) => a.id) || []);
-      }
-    } catch (error) {
-      console.error('Error fetching favoritos:', error);
-    } finally {
-      setLoading(false);
-    }
+  const eliminarFavorito = (id: string) => {
+    setFavoritos(prev => prev.filter(fav => fav.id !== id));
   };
 
-  const limpiarFavoritos = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('/api/anuncios/favoritos', {
-        method: 'DELETE',
-      });
-      if (response.ok) {
-        setFavoritos([]);
-        setAnunciosFavoritos([]);
-      }
-    } catch (error) {
-      console.error('Error limpiando favoritos:', error);
-    } finally {
-      setLoading(false);
-    }
+  const esFavorito = (id: string) => {
+    return favoritos.some(fav => fav.id === id);
   };
 
   const contarFavoritos = () => {
     return favoritos.length;
   };
 
-  const isFavorito = (anuncioId: string) => {
-    return favoritos.includes(anuncioId);
-  };
-
-  useEffect(() => {
-    fetchFavoritos();
-  }, []);
-
   return {
     favoritos,
-    anunciosFavoritos,
     loading,
-    toggleFavorito,
-    isFavorito,
-    limpiarFavoritos,
-    contarFavoritos,
+    agregarFavorito,
+    eliminarFavorito,
+    esFavorito,
+    contarFavoritos
   };
 };

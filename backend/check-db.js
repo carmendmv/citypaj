@@ -1,41 +1,54 @@
 const mysql = require('mysql2/promise');
 
-(async () => {
+async function checkDatabase() {
+  console.log('🔍 Verificando estado de la base de datos...');
+  
   try {
     const connection = await mysql.createConnection({
       host: 'localhost',
       port: 3306,
-      user: 'root',
-      password: '',
-      database: 'citypaj_db'
+      database: 'citypaj',
+      user: 'citypaj_user',
+      password: 'citypaj123'
     });
     
-    console.log('🔍 Analizando estructura y datos de citypaj_db:');
+    console.log('✅ Conexión exitosa a citypaj');
     
-    // Verificar estructura de tablas principales
-    const tables = ['usuarios', 'anuncios', 'favoritos', 'reportes_anuncios', 'sugerencias'];
+    // Verificar tablas
+    const [tables] = await connection.execute('SHOW TABLES');
+    console.log('📋 Tablas encontradas:');
+    tables.forEach(table => {
+      console.log(`   - ${Object.values(table)[0]}`);
+    });
     
-    for (const table of tables) {
-      try {
-        const [structure] = await connection.execute(`DESCRIBE ${table}`);
-        console.log(`\n📋 Estructura de ${table}:`);
-        structure.forEach(col => console.log(`  - ${col.Field}: ${col.Type}`));
-        
-        const [count] = await connection.execute(`SELECT COUNT(*) as total FROM ${table}`);
-        console.log(`  📊 Total registros: ${count[0].total}`);
-        
-        if (count[0].total > 0 && count[0].total <= 3) {
-          const [sample] = await connection.execute(`SELECT * FROM ${table} LIMIT 3`);
-          console.log('  📄 Muestra de datos:');
-          sample.forEach(row => console.log('    ', JSON.stringify(row, null, 2)));
-        }
-      } catch (error) {
-        console.log(`  ❌ Error en tabla ${table}:`, error.message);
-      }
-    }
+    // Verificar usuarios
+    const [users] = await connection.execute('SELECT COUNT(*) as total FROM usuarios');
+    console.log(`👥 Total de usuarios: ${users[0].total}`);
+    
+    // Verificar anuncios
+    const [anuncios] = await connection.execute('SELECT COUNT(*) as total FROM anuncios');
+    console.log(`📊 Total de anuncios: ${anuncios[0].total}`);
+    
+    // Verificar categorías
+    const [categories] = await connection.execute('SELECT DISTINCT categoria FROM anuncios');
+    console.log('📈 Categorías encontradas:');
+    categories.forEach(cat => {
+      console.log(`   - ${cat.categoria}`);
+    });
+    
+    // Verificar comunidades autónomas
+    const [communities] = await connection.execute('SELECT DISTINCT comunidad_autonoma FROM anuncios WHERE comunidad_autonoma IS NOT NULL');
+    console.log('🏛️ Comunidades autónomas encontradas:');
+    communities.forEach(com => {
+      console.log(`   - ${com.comunidad_autonoma}`);
+    });
     
     await connection.end();
+    console.log('✅ Verificación de base de datos completada');
+    
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error('❌ Error verificando base de datos:', error.message);
   }
-})();
+}
+
+checkDatabase();

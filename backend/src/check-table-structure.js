@@ -21,22 +21,16 @@ async function checkTableStructure() {
       console.log(`   - ${col.Field}: ${col.Type} (${col.Null === 'YES' ? 'NULL' : 'NOT NULL'})`);
     });
     
-    // Obtener algunos datos de ejemplo
-    const [sample] = await connection.execute('SELECT * FROM anuncios LIMIT 1');
-    if (sample.length > 0) {
-      console.log('📝 Estructura de un anuncio de ejemplo:');
-      console.log(JSON.stringify(sample[0], null, 2));
-    }
+    // Obtener algunas estadísticas
+    const [stats] = await connection.execute('SELECT COUNT(*) as total FROM anuncios');
+    console.log(`📊 Total de anuncios: ${stats[0].total}`);
     
-    // Verificar columnas específicas
-    const columnNames = columns.map(col => col.Field);
-    console.log('🔍 Verificando columnas específicas:');
-    console.log(`   - visible: ${columnNames.includes('visible') ? '✅' : '❌'}`);
-    console.log(`   - estado_moderacion: ${columnNames.includes('estado_moderacion') ? '✅' : '❌'}`);
-    console.log(`   - creado: ${columnNames.includes('creado') ? '✅' : '❌'}`);
-    console.log(`   - creado_at: ${columnNames.includes('creado_at') ? '✅' : '❌'}`);
-    console.log(`   - comunidad_autonoma: ${columnNames.includes('comunidad_autonoma') ? '✅' : '❌'}`);
-    console.log(`   - provincia: ${columnNames.includes('provincia') ? '✅' : '❌'}`);
+    // Obtener distribución por categorías
+    const [categories] = await connection.execute('SELECT categoria, COUNT(*) as count FROM anuncios GROUP BY categoria');
+    console.log('📈 Distribución por categorías:');
+    categories.forEach(cat => {
+      console.log(`   - ${cat.categoria}: ${cat.count} anuncios`);
+    });
     
     await connection.end();
     

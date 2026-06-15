@@ -1,51 +1,35 @@
 const mysql = require('mysql2/promise');
 
 async function testSimpleQuery() {
-  let connection;
+  console.log('🔍 Probando consulta simple a la base de datos...');
   
   try {
-    console.log('🔄 Probando consulta simple a citypaj_db...');
-    
-    connection = await mysql.createConnection({
+    const connection = await mysql.createConnection({
       host: 'localhost',
       port: 3306,
-      user: 'root',
-      password: '',
-      database: 'citypaj_db'
+      database: 'citypaj',
+      user: 'citypaj_user',
+      password: 'citypaj123'
     });
     
-    // Probar consulta simple sin filtros
-    const [simpleQuery] = await connection.execute(`
-      SELECT id, titulo, categoria 
-      FROM anuncios 
-      WHERE visible = 1 AND estado_moderacion = 'approved' 
-      LIMIT 5
-    `);
-    console.log('✅ Consulta simple exitosa:');
-    simpleQuery.forEach((row, index) => {
-      console.log(`   ${index + 1}. ${row.titulo} (${row.categoria})`);
+    console.log('✅ Conexión exitosa');
+    
+    // Probar consulta simple
+    const [result] = await connection.execute('SELECT COUNT(*) as total FROM anuncios');
+    console.log(`📊 Total de anuncios: ${result[0].total}`);
+    
+    // Probar consulta con límite
+    const [anuncios] = await connection.execute('SELECT * FROM anuncios LIMIT 3');
+    console.log('📝 Primeros 3 anuncios:');
+    anuncios.forEach(anuncio => {
+      console.log(`   - ${anuncio.titulo} (${anuncio.categoria})`);
     });
     
-    // Probar consulta con filtro de categoría
-    const [categoriaQuery] = await connection.execute(`
-      SELECT id, titulo, categoria 
-      FROM anuncios 
-      WHERE visible = 1 AND estado_moderacion = 'approved' 
-      AND categoria = ?
-      LIMIT 5
-    `, ['ocio']);
-    console.log(`\n✅ Consulta con categoría 'ocio': ${categoriaQuery.length} resultados`);
-    categoriaQuery.forEach((row, index) => {
-      console.log(`   ${index + 1}. ${row.titulo} (${row.categoria})`);
-    });
+    await connection.end();
+    console.log('✅ Prueba completada exitosamente');
     
   } catch (error) {
-    console.error('❌ Error en consulta:', error.message);
-  } finally {
-    if (connection) {
-      await connection.end();
-      console.log('\n🔌 Conexión cerrada');
-    }
+    console.error('❌ Error en la consulta:', error.message);
   }
 }
 
