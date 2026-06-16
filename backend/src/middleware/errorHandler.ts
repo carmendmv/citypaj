@@ -17,7 +17,6 @@ export const errorHandler = (
 
   logger.error('Error:', {
     error: err,
-    requestId: req.requestId,
     url: req.url,
     method: req.method,
     ip: req.ip,
@@ -29,13 +28,11 @@ export const errorHandler = (
       success: false,
       error: message,
       stack: err.stack,
-      requestId: req.requestId,
     });
   } else {
     res.status(statusCode).json({
       success: false,
       error: statusCode === 500 ? 'Error interno del servidor' : message,
-      requestId: req.requestId,
     });
   }
 };
@@ -44,7 +41,6 @@ export const notFoundHandler = (req: Request, res: Response) => {
   res.status(404).json({
     success: false,
     error: 'Ruta no encontrada',
-    requestId: req.requestId,
   });
 };
 

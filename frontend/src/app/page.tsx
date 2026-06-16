@@ -43,8 +43,6 @@ interface Anuncio {
 
   barrio?: string;
 
-  precio?: number;
-
   modalidad: 'venta' | 'regalo' | 'intercambio' | 'servicio' | 'compra';
 
   contacto_email: boolean;
@@ -61,13 +59,15 @@ interface Anuncio {
 
   vistas: number;
 
-  creado: string;
+  creado_at: string;  // Cambiado de 'creado' a 'creado_at'
 
-  actualizado: string;
+  actualizado_at: string;  // Cambiado de 'actualizado' a 'actualizado_at'
 
   // Campos adicionales de joins
 
   usuario_nombre?: string;
+
+  usuario_email?: string;  // Añadido email del usuario
 
   usuario_verificado?: boolean;
 
@@ -947,11 +947,11 @@ export default function HomePage() {
                             <div className="flex items-center gap-2">
                               <HeartButton anuncioId={anuncio.id} size="sm" showLabel={false} />
                               <span className="font-medium">
-                                {anuncio.usuario_nombre || 'Anónimo'}
+                                {anuncio.usuario_nombre || 'Usuario'}
                               </span>
                             </div>
                             <span>
-                              {formatFecha(anuncio.creado)}
+                              {formatFecha(anuncio.creado_at)}
                             </span>
                           </div>
                         </div>
@@ -1131,9 +1131,12 @@ export default function HomePage() {
 
                         <div className="mt-auto pt-2 sm:pt-3 font-sans text-xs text-[#666666] flex flex-col sm:flex-row sm:justify-between gap-1">
 
-                          <span>{formatFecha(anuncio.creado)}</span>
+                          <span>{formatFecha(anuncio.creado_at)}</span>
 
-                          {anuncio.usuario_nombre && <span>{anuncio.usuario_nombre}</span>}
+                          <div className="flex items-center gap-2">
+                            <HeartButton anuncioId={anuncio.id} size="sm" showLabel={false} />
+                            {anuncio.usuario_nombre && <span>{anuncio.usuario_nombre}</span>}
+                          </div>
 
                         </div>
 

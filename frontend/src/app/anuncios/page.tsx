@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { FilterBar } from '@/components/filters/FilterBar';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import HeartButton from '@/components/ui/HeartButton';
 
 interface Anuncio {
   id: string;
@@ -14,8 +15,7 @@ interface Anuncio {
   categoria: string;
   comunidad_autonoma: string;
   provincia: string;
-  precio?: number;
-  creado: string;
+  creado_at: string;  // Cambiado de 'creado'
   vistas: number;
   usuario_nombre: string;
   usuario_email: string;
@@ -185,14 +185,17 @@ export default function AnunciosPage() {
                             </p>
                           </div>
                           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs text-gray-500 sm:ml-4">
-                            <span className="font-medium">
-                              {anuncio.usuario_nombre || 'Anónimo'}
+                            <div className="flex items-center gap-2">
+                              <HeartButton anuncioId={anuncio.id} size="sm" showLabel={false} />
+                              <span className="font-medium">
+                                {anuncio.usuario_nombre || 'Usuario'}
+                              </span>
+                            </div>
+                            <span>
+                              {formatFecha(anuncio.creado_at)}
                             </span>
                             <span>
                               {anuncio.comunidad_autonoma}
-                            </span>
-                            <span>
-                              {formatFecha(anuncio.creado)}
                             </span>
                           </div>
                         </div>

@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Pagination from '@/components/ui/Pagination';
+import HeartButton from '@/components/ui/HeartButton';
 // No hay datos hardcodeados - se usa API real
 import { useComunidad } from '@/hooks/useComunidad';
 
@@ -19,7 +20,6 @@ interface Anuncio {
   comunidad_autonoma: string;
   provincia: string;
   barrio?: string;
-  precio?: number;
   modalidad: 'venta' | 'regalo' | 'intercambio' | 'servicio' | 'compra';
   contacto_email: boolean;
   contacto_telefono: boolean;
@@ -28,8 +28,8 @@ interface Anuncio {
   estado_moderacion: 'pending' | 'approved' | 'rejected' | 'flagged';
   motivo_rechazo?: string;
   vistas: number;
-  creado: string;
-  actualizado: string;
+  creado_at: string;  // Cambiado de 'creado'
+  actualizado_at: string;  // Cambiado de 'actualizado'
   // Campos adicionales de joins
   usuario_nombre?: string;
   usuario_verificado?: boolean;
@@ -272,11 +272,14 @@ export default function AnunciosComunidadPage({ params }: { params: { comunidad:
                             </p>
                           </div>
                           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs text-gray-500 sm:ml-4">
-                            <span className="font-medium">
-                              {anuncio.usuario_nombre || 'Anónimo'}
-                            </span>
+                            <div className="flex items-center gap-2">
+                              <HeartButton anuncioId={anuncio.id} size="sm" showLabel={false} />
+                              <span className="font-medium">
+                                {anuncio.usuario_nombre || 'Usuario'}
+                              </span>
+                            </div>
                             <span>
-                              {formatFecha(anuncio.creado)}
+                              {formatFecha(anuncio.creado_at)}
                             </span>
                           </div>
                         </div>

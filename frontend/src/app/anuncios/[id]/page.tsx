@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Bookmark, Share2, Flag, ArrowLeft, Mail, Phone, MapPin, Calendar, Eye } from 'lucide-react';
+import { Bookmark, Share2, Flag, ArrowLeft, Mail, Phone, MapPin, Calendar, Eye, Copy } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
@@ -14,12 +14,11 @@ interface Anuncio {
   categoria: string;
   comunidad_autonoma: string;
   provincia: string;
-  precio?: number;
-  creado: string;
-  actualizado: string;
+  creado_at: string;  // Cambiado de 'creado'
+  actualizado_at: string;  // Cambiado de 'actualizado'
   vistas: number;
   usuario_nombre: string;
-  email: string;
+  usuario_email: string;  // Cambiado de 'email'
   telefono?: string;
   contacto_email: boolean;
   contacto_telefono: boolean;
@@ -169,9 +168,7 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
     return new Date(dateString).toLocaleDateString('es-ES', {
       day: 'numeric',
       month: 'long',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      year: 'numeric'
     });
   };
 
@@ -275,7 +272,7 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
               </div>
 
               <div className="mt-3 font-sans text-sm text-[#666666]">
-                <span>{formatDate(anuncio.creado)}</span>
+                <span>{formatDate(anuncio.creado_at)}</span>
                 {anuncio.comunidad_autonoma ? <span> · {anuncio.comunidad_autonoma}</span> : null}
                 {anuncio.provincia ? <span> · {anuncio.provincia}</span> : null}
               </div>
@@ -306,18 +303,13 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
                     {anuncio.comunidad_autonoma}
                   </span>
                 </div>
-                {anuncio.precio && (
-                  <div className="mt-2">
-                    <span className="font-medium">Precio:</span> {anuncio.precio}€
-                  </div>
-                )}
-                <div className="mt-2 flex items-center gap-2">
+                                <div className="mt-2 flex items-center gap-2">
                   <Eye className="w-4 h-4" />
                   <span>{anuncio.vistas || 0} visualizaciones</span>
                 </div>
                 <div className="mt-2 flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  <span>Publicado: {formatDate(anuncio.creado)}</span>
+                  <span>Publicado: {formatDate(anuncio.creado_at)}</span>
                 </div>
               </div>
             </section>
@@ -325,50 +317,55 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
             <section className="mt-8 border border-black p-6">
               <h2 className="font-serif text-xl font-bold text-black">Contacto</h2>
 
-              <div className="mt-4 space-y-2 font-sans text-sm text-black">
-                {anuncio.contacto_email && !anuncio.contacto_anonimo ? (
-                  <div>
-                    <span className="font-medium">Email:</span>{' '}
-                    <a href={`mailto:${anuncio.email || ''}`} className="hover:text-orange-500">
-                      {anuncio.email || 'No disponible'}
-                    </a>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(anuncio.email || '');
-                        setShareMessage('Email copiado al portapapeles');
-                        setTimeout(() => setShareMessage(''), 3000);
-                      }}
-                      className="ml-2 px-2 py-1 text-xs border border-black hover:bg-gray-100 transition-colors bg-white"
-                    >
-                      Copiar
-                    </button>
-                  </div>
-                ) : null}
+              <div className="mt-4 space-y-4 font-sans text-sm text-black">
+                {/* Nombre del usuario - SIEMPRE visible */}
+                <div>
+                  <span className="font-medium">Publicado por:</span>{' '}
+                  <span className="text-gray-900">{anuncio.usuario_nombre || 'Usuario'}</span>
+                </div>
 
-                {anuncio.contacto_telefono && !anuncio.contacto_anonimo && anuncio.telefono ? (
-                  <div>
-                    <span className="font-medium">Teléfono:</span>{' '}
-                    <a href={`tel:${anuncio.telefono}`} className="hover:text-orange-500">
-                      {anuncio.telefono}
-                    </a>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(anuncio.telefono || '');
-                        setShareMessage('Teléfono copiado al portapapeles');
-                        setTimeout(() => setShareMessage(''), 3000);
-                      }}
-                      className="ml-2 px-2 py-1 text-xs border border-black hover:bg-gray-100 transition-colors bg-white"
-                    >
-                      Copiar
-                    </button>
-                    <a
-                      href={`tel:${anuncio.telefono}`}
-                      className="ml-1 px-2 py-1 text-xs border border-black hover:bg-gray-100 transition-colors bg-white"
-                    >
-                      Llamar
-                    </a>
-                  </div>
-                ) : null}
+                {/* Email - SIEMPRE visible (obligatorio) */}
+                <div>
+                  <span className="font-medium">Email:</span>{' '}
+                  <a href={`mailto:${anuncio.usuario_email || ''}`} className="hover:text-orange-500 text-blue-600">
+                    {anuncio.usuario_email || 'email@ejemplo.com'}
+                  </a>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(anuncio.usuario_email || '');
+                      setShareMessage('Email copiado al portapapeles');
+                      setTimeout(() => setShareMessage(''), 3000);
+                    }}
+                    className="ml-2 p-1 text-xs border border-black hover:bg-gray-100 transition-colors bg-white"
+                    title="Copiar email"
+                  >
+                    <Copy className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* Teléfono - Siempre visible, mostrando "No disponible" si no hay */}
+                <div>
+                  <span className="font-medium">Teléfono:</span>{' '}
+                  {anuncio.contacto_telefono && anuncio.telefono ? (
+                    <>
+                      <a href={`tel:${anuncio.telefono}`} className="hover:text-orange-500 text-blue-600">
+                        {anuncio.telefono}
+                      </a>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(anuncio.telefono || '');
+                          setShareMessage('Teléfono copiado al portapapeles');
+                          setTimeout(() => setShareMessage(''), 3000);
+                        }}
+                        className="ml-2 px-2 py-1 text-xs border border-black hover:bg-gray-100 transition-colors bg-white"
+                      >
+                        Copiar
+                      </button>
+                    </>
+                  ) : (
+                    <span className="text-gray-500">No disponible</span>
+                  )}
+                </div>
 
                 {anuncio.contacto_anonimo && (
                   <div className="text-sm text-gray-600">

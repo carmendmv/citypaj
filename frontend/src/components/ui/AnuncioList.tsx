@@ -114,7 +114,7 @@ const AnuncioList: React.FC<AnuncioListProps> = ({
                   </span>
                 </div>
                 <span>
-                  {formatFecha(anuncio.creado)}
+                  {formatFecha(anuncio.creado_at)}
                 </span>
               </div>
             </div>

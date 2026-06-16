@@ -11,43 +11,361 @@ Curso: 2025-2026
 
 El proyecto está 100% completado y funcional. Se ha implementado una plataforma completa de anuncios juveniles con todas las funcionalidades requeridas para el TFG.
 
-Base de Datos CityPaj - Producción Lista
-- 780 anuncios únicos importados exitosamente
-- 52 provincias españolas con 15 anuncios cada una
-- Títulos específicos por región sin repeticiones
-- Sintaxis SQL perfecta validada e importada sin errores
-- Datos auténticos con productos, servicios y precios realistas
+### Base de Datos CityPaj - Producción Lista
+- **1913 anuncios reales** cargados desde base de datos MySQL
+- **10 categorías completas** (ocio, servicios, empleo, formación, comunidad, transporte, vivienda, salud, tecnología, otros)
+- **17 CCAA + 50 provincias** españolas representadas
+- **Sistema de cache optimizado** para máximo rendimiento
+- **Datos auténticos** con productos, servicios y precios realistas
 
-Automatización Completa del Entorno
-- Scripts de inicio automático para XAMPP + phpMyAdmin
-- Documentación completa de configuración
-- Entorno de desarrollo optimizado
-
-Nuevas Funcionalidades Añadidas (Última Actualización)
-- Grid de Enlaces de Interés Responsive - Diseño 3×3 adaptable
-- Buzón de Sugerencias Juvenil - Sistema completo de feedback
-- Panel Estadístico Interno - Análisis de demandas juveniles
-- Búsqueda Funcional - Búsqueda por palabras implementada
+### Arquitectura Completa
+- **Frontend**: Next.js 14 + React + TypeScript + TailwindCSS
+- **Backend**: Node.js + Express + MySQL2
+- **Base de Datos**: MySQL con 1913 anuncios reales
+- **Puertos**: Frontend 3001, Backend 3002, MySQL 3306
 
 ---
 
-## Instalación y Ejecución
-
-Guía Completa Paso a Paso para Montar el Proyecto
+## Cómo Arrancar CityPAJ
 
 ### Requisitos Previos
-- XAMPP - MySQL + Apache + phpMyAdmin
-- Node.js 18+ (para desarrollo local)
-- Git - Control de versiones
+- Node.js 18+ 
+- MySQL 8.0+
+- npm 9+
+- Git
 
-### Paso 1: Clonar el Repositorio
-Abre una terminal o línea de comandos y ejecuta:
+### Variables de Entorno
+
+**Backend:**
+- Copia `backend/.env.example` a `backend/.env`
+- Configura las credenciales de MySQL
+
+**Frontend:**
+- Copia `frontend/.env.example` a `frontend/.env.local`
+- Configura la URL del backend
+
+### Puertos
+- **Frontend**: http://localhost:3001
+- **Backend**: http://localhost:3002
+- **MySQL**: 3306
+
+### Arrancar Backend
+
+Desde la raíz del proyecto:
 ```bash
-git clone https://github.com/carmendmv/anuncios-juvenil.git
-cd anuncios-juvenil
+npm run dev:backend
 ```
 
-### Paso 2: Configurar Base de Datos con XAMPP
+O directamente desde backend:
+```bash
+cd backend
+npm run dev
+```
+
+**¿Qué hace?** Inicia el servidor backend con TypeScript y nodemon
+
+### Arrancar Frontend
+
+Desde la raíz del proyecto:
+```bash
+npm run dev:frontend
+```
+
+O directamente desde frontend:
+```bash
+cd frontend
+npm run dev
+```
+
+**¿Qué hace?** Inicia el servidor Next.js en el puerto 3001
+
+### Arrancar Ambos Simultáneamente
+
+Desde la raíz del proyecto:
+```bash
+npm run dev
+```
+
+**¿Qué hace?** Inicia frontend y backend simultáneamente
+
+### Arrancar con Datos Reales Cacheados
+
+Desde la raíz del proyecto:
+```bash
+npm run dev:real
+```
+
+**¿Qué hace?** Inicia el servidor con los 1913 anuncios reales cacheados
+
+---
+
+## Comandos de Base de Datos
+
+### Verificar Conexión y Datos
+
+```bash
+# Desde la raíz
+npm run db:check
+
+# Desde backend
+npm run db:verify
+npm run db:categories
+npm run db:structure
+```
+
+**¿Para qué sirven?**
+- `db:check`: Verifica conexión y estado general de la base de datos
+- `db:verify`: Verifica integridad completa de la base de datos
+- `db:categories`: Muestra distribución de anuncios por categorías
+- `db:structure`: Verifica estructura de tablas
+
+### Cargar Datos Reales
+
+```bash
+# Desde la raíz
+npm run db:load-real
+
+# Desde backend
+npm run db:load-real
+```
+
+**¿Para qué sirve?** Carga los 1913 anuncios reales desde la base de datos al cache
+
+### Expandir Categorías
+
+```bash
+# Desde la raíz
+npm run db:expand-categories
+
+# Desde backend
+npm run db:expand-categories
+```
+
+**¿Para qué sirve?** Añade las 5 nuevas categorías y genera anuncios
+
+---
+
+## Scripts de Diagnóstico
+
+### Probar Conexión
+
+```bash
+# Desde la raíz
+npm run test:connection
+npm run test:real-connection
+
+# Desde backend
+npm run test:connection
+npm run test:real-connection
+npm run test:simple-query
+npm run test:direct-connection
+```
+
+**¿Para qué sirven?**
+- `test:connection`: Prueba básica de conexión a MySQL
+- `test:real-connection`: Prueba conexión con la base de datos citypaj
+- `test:simple-query`: Ejecuta consulta simple de prueba
+- `test:direct-connection`: Prueba conexión directa sin base de datos específica
+
+### Diagnóstico Avanzado
+
+```bash
+# Desde la raíz
+npm run diagnose:mysql
+
+# Desde backend
+npm run diagnose:mysql
+```
+
+**¿Para qué sirve?** Diagnóstico completo de acceso a MySQL
+
+---
+
+## Servidores Alternativos (Diagnóstico)
+
+### Servidores Backend
+
+```bash
+# Desde backend
+npm run server:simple      # Servidor simple básico
+npm run server:mysql2      # Servidor simple con MySQL2
+npm run server:debug       # Servidor con debug
+npm run server:minimal     # Servidor minimalista
+npm run server:complete    # Servidor completo
+npm run server:working     # Servidor working
+npm run server:definitive  # Servidor definitivo
+npm run server:fixed       # Servidor corregido
+npm run server:final       # Servidor final
+```
+
+**⚠️ IMPORTANTE**: Estos servidores son para diagnóstico y desarrollo. **NO usarlos como backend principal**. El backend principal es `npm run dev` (TypeScript) o `npm run dev:real` (datos cacheados).
+
+### Servidores Frontend
+
+```bash
+# Desde frontend
+npm run server             # Servidor Next.js estándar
+npm run server:secure      # Servidor con seguridad
+npm run server:simple      # Servidor simple seguro
+```
+
+---
+
+## Comprobación de Funcionamiento
+
+### Endpoints de Health Check
+
+```bash
+# Backend health check
+curl http://localhost:3002/health
+
+# Frontend principal
+curl http://localhost:3001
+```
+
+### Endpoints de API
+
+```bash
+# Anuncios paginados
+curl "http://localhost:3002/api/anuncios?pagina=1&limite=10"
+
+# Datos en tiempo real
+curl "http://localhost:3002/api/database/realtime?format=categorized"
+```
+
+---
+
+## Flujo Esperado
+
+```
+Frontend (3001) → Backend (3002) → MySQL citypaj (3306)
+```
+
+1. **Frontend** solicita datos al backend
+2. **Backend** consulta la base de datos MySQL
+3. **MySQL** devuelve los datos reales
+4. **Backend** procesa y devuelve al frontend
+5. **Frontend** muestra los anuncios al usuario
+
+---
+
+## Estructura del Proyecto
+
+```
+citypaj/
+├── frontend/          # Next.js 14 + React + TypeScript
+│   ├── src/
+│   │   ├── app/       # Páginas y rutas
+│   │   ├── components/ # Componentes React
+│   │   └── hooks/      # Hooks personalizados
+│   └── package.json
+├── backend/           # Node.js + Express + TypeScript
+│   ├── src/
+│   │   ├── controllers/ # Controladores API
+│   │   ├── middleware/   # Middleware Express
+│   │   └── config/       # Configuración
+│   └── package.json
+├── database/          # Scripts SQL de base de datos
+├── scripts/           # Scripts utilitarios
+└── README.md
+```
+
+---
+
+## Solución de Problemas
+
+### Backend no arranca
+1. Verifica que MySQL esté corriendo
+2. Ejecuta `npm run db:check` para probar conexión
+3. Revisa variables de entorno en `backend/.env`
+
+### Frontend no muestra datos
+1. Verifica que el backend esté corriendo en puerto 3002
+2. Ejecuta `curl http://localhost:3002/health`
+3. Revisa variables de entorno en `frontend/.env.local`
+
+### Base de datos sin datos
+1. Ejecuta `npm run db:load-real` para cargar datos cacheados
+2. Verifica que hayan 1913 anuncios con `npm run db:check`
+
+---
+
+## Información de Base de Datos
+
+**Configuración MySQL:**
+- Host: localhost
+- Puerto: 3306
+- Base de datos: citypaj
+- Usuario: citypaj_user
+- Contraseña: citypaj123
+
+**Tablas principales:**
+- `anuncios` - 1913 anuncios reales
+- `usuarios` - Usuarios registrados
+- `categorias` - 10 categorías disponibles
+
+---
+
+## Comandos Peligrosos
+
+⚠️ **ADVERTENCIA**: Estos comandos modifican datos. Usar solo en desarrollo.
+
+```bash
+# NO EJECUTAR EN PRODUCCIÓN
+npm run db:clean         # Limpia base de datos
+npm run db:reset         # Reseta base de datos
+```
+
+---
+
+## Desarrollo y Testing
+
+### Instalar Dependencias
+
+```bash
+# Instalar todo el proyecto
+npm run install:all
+
+# Instalar individualmente
+cd backend && npm install
+cd frontend && npm install
+```
+
+### Testing
+
+```bash
+# Ejecutar todos los tests
+npm run test
+
+# Tests con cobertura
+npm run test:coverage
+```
+
+### Linting
+
+```bash
+# Linting de backend
+cd backend && npm run lint
+
+# Linting de frontend
+cd frontend && npm run lint
+```
+
+---
+
+## Contribución
+
+1. Fork del repositorio
+2. Crear rama de feature
+3. Hacer commits descriptivos
+4. Push a la rama
+5. Crear Pull Request
+
+---
+
+## Licencia
+
+MIT License - Ver archivo LICENSE para detalles
 
 Opción A: Usar Scripts de Automatización (Recomendado)
 ```bash

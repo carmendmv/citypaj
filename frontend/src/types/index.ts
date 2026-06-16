@@ -38,8 +38,7 @@ export interface Anuncio {
   comunidad_autonoma: string;
   provincia: string;
   barrio?: string;
-  precio?: number;
-  modalidad: 'venta' | 'regalo' | 'intercambio' | 'servicio';
+  modalidad: 'venta' | 'regalo' | 'intercambio' | 'servicio' | 'compra';
   contacto_email: boolean;
   contacto_telefono: boolean;
   contacto_anonimo: boolean;
@@ -47,12 +46,11 @@ export interface Anuncio {
   estado_moderacion: 'pending' | 'approved' | 'rejected' | 'flagged';
   motivo_rechazo?: string;
   vistas: number;
-  creado: string;
-  actualizado: string;
+  creado_at: string;  // Cambiado de 'creado' a 'creado_at'
+  actualizado_at: string;  // Cambiado de 'actualizado' a 'actualizado_at'
   // Campos adicionales de joins
   usuario_nombre?: string;
-  email?: string;
-  telefono?: string;
+  usuario_email?: string;  // Email del usuario
   usuario_verificado?: boolean;
   numero_imagenes?: number;
   imagenes?: Imagen[];
