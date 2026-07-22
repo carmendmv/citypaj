@@ -1,214 +1,257 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { useComunidad } from '@/hooks/useComunidad';
-import Pagination from '@/components/ui/Pagination';
+import ListingRow from '@/components/ui/ListingRow';
+import EmptyState from '@/components/ui/EmptyState';
+import LoadingRows from '@/components/ui/LoadingRows';
+import PageHeader from '@/components/ui/PageHeader';
 
-type Anuncio = {
-  id: string;
-  titulo: string;
-  descripcion: string;
-  creado: string;
-  autor?: string;
-};
-
-type NoticiaComunitaria = {
-  id: string;
+interface Publicacion {
+  id: number;
   titulo: string;
   contenido: string;
-  categoria: 'evento' | 'anuncio' | 'servicio' | 'cultura' | 'deporte' | 'educacion';
-  creado: string;
-  autor: string;
-  comunidad_autonoma: string;
-  destacada?: boolean;
-};
+  provincia: string;
+  tema: string;
+  creado_at: string;
+  usuario_nombre?: string;
+}
 
-type PaginationMeta = {
-  pagina: number;
-  limite: number;
-  total: number;
-  total_paginas: number;
-};
+interface ComunidadData {
+  id: number;
+  nombre: string;
+  provincias: string[];
+}
 
-const BLOG_STORAGE_KEY = 'citypaj_blog_posts';
+const TEMAS = ['todos', 'general', 'empleo', 'vivienda', 'ocio', 'cultura', 'participacion'];
 
-export default function ComunidadPage() {
+function ComunidadContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [publicaciones, setPublicaciones] = useState<Publicacion[]>([]);
+  const [comunidades, setComunidades] = useState<ComunidadData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
-  const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [posts, setPosts] = useState<NoticiaComunitaria[]>([]);
-  const { comunidadAutonoma, setComunidadAutonoma } = useComunidad();
+  const [error, setError] = useState<string | null>(null);
 
-  const fetchListado = async (pagina: number = 1) => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({
-        categoria: 'intercambios',
-        orden: 'fecha_desc',
-        limite: '30',
-        pagina: pagina.toString(),
-      });
+  const ccaa = searchParams.get('ccaa') || '';
+  const provincia = searchParams.get('provincia') || '';
+  const tema = searchParams.get('tema') || '';
 
-      if (comunidadAutonoma) params.set('comunidad_autonoma', comunidadAutonoma);
+  useEffect(() => {
+    const cargarComunidades = async () => {
+      try {
+        const res = await fetch('/api/comunidad/provincias');
+        const data = await res.json();
+        if (data.success) setComunidades(data.data || []);
+      } catch (err) {
+        console.error('Error cargando comunidades:', err);
+      }
+    };
+    cargarComunidades();
+  }, []);
 
-      const res = await fetch(`/api/anuncios?${params.toString()}`);
-      const json = await res.json();
-      setAnuncios(json?.data || []);
-      setPaginationMeta(json?.meta || null);
-    } catch {
-      setAnuncios([]);
-      setPaginationMeta(null);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    const cargarPublicaciones = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const params = new URLSearchParams();
+        if (provincia) params.set('provincia', provincia);
+        else if (ccaa) params.set('comunidad_autonoma', ccaa);
+        if (tema && tema !== 'todos') params.set('tema', tema);
+
+        const res = await fetch(`/api/comunidad?${params.toString()}`);
+        const data = await res.json();
+        if (data.success) {
+          setPublicaciones(data.data || []);
+        } else {
+          setError(data.error || 'Error cargando publicaciones');
+        }
+      } catch (err) {
+        setError('Error de conexión');
+      } finally {
+        setLoading(false);
+      }
+    };
+    cargarPublicaciones();
+  }, [ccaa, provincia, tema]);
+
+  const setFilter = (key: 'ccaa' | 'provincia' | 'tema', value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (key === 'ccaa') {
+      if (value && value !== 'todas') {
+        params.set('ccaa', value);
+      } else {
+        params.delete('ccaa');
+      }
+      params.delete('provincia');
+    } else if (key === 'provincia') {
+      if (value && value !== 'todas') {
+        const parent = comunidades.find((c) => c.provincias.includes(value));
+        if (parent) params.set('ccaa', parent.nombre);
+        params.set('provincia', value);
+      } else {
+        params.delete('provincia');
+      }
+    } else {
+      if (value && value !== 'todos') {
+        params.set('tema', value);
+      } else {
+        params.delete('tema');
+      }
     }
+    router.push(`/comunidad?${params.toString()}`);
   };
 
-  useEffect(() => {
-    void fetchListado(currentPage);
-  }, [comunidadAutonoma, currentPage]);
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(BLOG_STORAGE_KEY);
-      if (!raw) {
-        setPosts([]);
-        return;
-      }
-      const parsed = JSON.parse(raw) as NoticiaComunitaria[];
-      setPosts(Array.isArray(parsed) ? parsed : []);
-    } catch {
-      setPosts([]);
-    }
-  }, []);
+  const provinciasVisibles = comunidades.find((c) => c.nombre === ccaa)?.provincias || [];
 
   return (
     <div className="min-h-screen bg-white">
       <Header />
 
-      <main className="w-[80%] max-w-6xl mx-auto px-6 py-14">
-        <div className="border-b border-black pb-6">
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-black">Noticias comunitarias de {comunidadAutonoma || 'España'}</h1>
-          <p className="mt-2 font-sans text-sm text-[#666666]">
-            Información relevante y actual de tu comunidad autónoma. Espacio para noticias moderadas.
-          </p>
-        </div>
+      <PageHeader titulo="Comunidad" subtitulo="Foros por comunidad autónoma y provincia para que la juventud converse.">
+        <Link
+          href="/comunidad/nuevo"
+          className="inline-flex items-center px-5 py-2.5 bg-black text-white text-sm font-medium rounded-full hover:bg-blue-600 transition-colors"
+        >
+          Nueva publicación
+        </Link>
+      </PageHeader>
 
-        <section className="mt-10 border border-black p-6">
-          <h2 className="font-serif text-xl font-bold text-black">Últimas Noticias</h2>
-          <p className="mt-4 font-sans text-sm text-black/80">
-            Mantente informado sobre eventos, anuncios y servicios importantes en tu comunidad.
-          </p>
-        </section>
-
-        <section className="mt-10 border border-black p-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <h2 className="font-serif text-xl font-bold text-black">Noticias Publicadas</h2>
-            <Link
-              href="/comunidad/nuevo"
-              className="inline-flex items-center justify-center bg-black text-white border border-black px-6 py-3 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 hover:text-black transition-colors"
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        <div className="bg-gray-50 rounded-2xl p-4 sm:p-6 mb-8">
+          <h2 className="text-sm font-semibold text-gray-700 mb-3">Foros por comunidad autónoma</h2>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <button
+              onClick={() => setFilter('ccaa', 'todas')}
+              className={`px-3 py-1.5 text-sm border rounded-full transition-colors ${
+                !ccaa ? 'bg-black text-white border-black' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'
+              }`}
             >
-              Publicar noticia
-            </Link>
-          </div>
-
-          {posts.length === 0 ? (
-            <p className="mt-4 font-sans text-sm text-black/80">
-              Aún no hay noticias publicadas. Sé el primero en compartir información relevante de tu comunidad.
-            </p>
-          ) : (
-            <div className="mt-6 space-y-6">
-              {posts
-                .slice()
-                .sort((a, b) => new Date(b.creado).getTime() - new Date(a.creado).getTime())
-                .map((p) => (
-                  <div
-                    key={p.id}
-                    className="border border-black p-6 hover:border-orange-500 transition-colors"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-3">
-                          <span className={`px-3 py-1 text-xs font-medium rounded-full ${
-                            p.categoria === 'evento' ? 'bg-blue-100 text-blue-800' :
-                            p.categoria === 'anuncio' ? 'bg-green-100 text-green-800' :
-                            p.categoria === 'servicio' ? 'bg-purple-100 text-purple-800' :
-                            p.categoria === 'cultura' ? 'bg-pink-100 text-pink-800' :
-                            p.categoria === 'deporte' ? 'bg-orange-100 text-orange-800' :
-                            'bg-gray-100 text-gray-800'
-                          }`}>
-                            {p.categoria.charAt(0).toUpperCase() + p.categoria.slice(1)}
-                          </span>
-                          {p.destacada && (
-                            <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">
-                              Destacada
-                            </span>
-                          )}
-                          <span className="text-xs text-gray-500">
-                            {p.comunidad_autonoma}
-                          </span>
-                        </div>
-                        <h3 className="font-serif text-xl font-bold text-black mb-3">
-                          {p.titulo}
-                        </h3>
-                        <p className="font-sans text-sm text-gray-700 leading-relaxed mb-4">
-                          {p.contenido.length > 200 ? `${p.contenido.slice(0, 197)}...` : p.contenido}
-                        </p>
-                        <div className="flex items-center justify-between text-xs text-gray-500">
-                          <span>Por: {p.autor}</span>
-                          <span>{new Date(p.creado).toLocaleDateString('es-ES', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric'
-                          })}</span>
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <Link
-                          href={`/comunidad/${p.id}`}
-                          className="px-4 py-2 border border-black text-black hover:bg-black hover:text-white transition-all font-light text-sm text-center"
-                        >
-                          Leer más
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          )}
-        </section>
-
-
-        {loading ? (
-          <div className="mt-10 border border-black px-6 py-4 font-sans text-sm text-gray-700 inline-block">Cargando...</div>
-        ) : (
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {anuncios.map((a) => (
-              <Link
-                key={a.id}
-                href={`/anuncios/${a.id}`}
-                className="group block border border-black p-5 hover:border-orange-500 transition-colors"
+              Todas
+            </button>
+            {comunidades.map((c) => (
+              <button
+                key={c.id}
+                onClick={() => setFilter('ccaa', c.nombre)}
+                className={`px-3 py-1.5 text-sm border rounded-full transition-colors ${
+                  ccaa === c.nombre ? 'bg-black text-white border-black' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'
+                }`}
               >
-                <h3 className="font-serif text-xl font-bold text-black group-hover:text-orange-500 transition-colors">
-                  {a.titulo}
-                </h3>
-                <p className="mt-3 font-sans text-sm text-black/80">{a.descripcion}</p>
-              </Link>
+                {c.nombre}
+              </button>
             ))}
           </div>
-        )}
 
-        {paginationMeta && paginationMeta.total_paginas > 1 && (
-          <div className="mt-8 flex justify-end">
-            <Pagination currentPage={paginationMeta.pagina} totalPages={paginationMeta.total_paginas} baseUrl="/comunidad" />
+          {ccaa && (
+            <>
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">Provincias de {ccaa}</h3>
+              <div className="flex flex-wrap gap-2 mb-4">
+                <button
+                  onClick={() => setFilter('provincia', 'todas')}
+                  className={`px-3 py-1 text-xs border rounded-full transition-colors ${
+                    !provincia ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-100'
+                  }`}
+                >
+                  Todas
+                </button>
+                {provinciasVisibles.map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => setFilter('provincia', p)}
+                    className={`px-3 py-1 text-xs border rounded-full transition-colors ${
+                      provincia === p ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-100'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+            <select
+              value={ccaa}
+              onChange={(e) => setFilter('ccaa', e.target.value)}
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+            >
+              <option value="">Todas las comunidades</option>
+              {comunidades.map((c) => (
+                <option key={c.id} value={c.nombre}>{c.nombre}</option>
+              ))}
+            </select>
+            <select
+              value={tema}
+              onChange={(e) => setFilter('tema', e.target.value)}
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+            >
+              <option value="todos">Todos los temas</option>
+              {TEMAS.filter((t) => t !== 'todos').map((t) => (
+                <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
+              ))}
+            </select>
           </div>
-        )}
+
+          {ccaa && (
+            <div className="mt-4">
+              <select
+                value={provincia}
+                onChange={(e) => setFilter('provincia', e.target.value)}
+                className="w-full sm:w-1/2 px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+              >
+                <option value="">Todas las provincias de {ccaa}</option>
+                {provinciasVisibles.map((p) => (
+                  <option key={p} value={p}>{p}</option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden min-h-[300px]">
+          {loading ? (
+            <LoadingRows count={4} />
+          ) : error ? (
+            <div className="p-8 text-center text-red-600">{error}</div>
+          ) : publicaciones.length === 0 ? (
+            <EmptyState
+              titulo="Aún no hay publicaciones"
+              mensaje="Sé el primero en compartir algo en tu comunidad."
+              accion={{ label: 'Crear publicación', href: '/comunidad/nuevo' }}
+            />
+          ) : (
+            publicaciones.map((pub) => (
+              <ListingRow
+                key={pub.id}
+                id={pub.id}
+                titulo={pub.titulo}
+                descripcion={pub.contenido}
+                categoria={pub.tema}
+                provincia={pub.provincia}
+                fecha={pub.creado_at}
+                autor={pub.usuario_nombre || 'Anónimo'}
+                url={`/comunidad/${pub.id}`}
+                tipo="comunidad"
+              />
+            ))
+          )}
+        </div>
       </main>
 
       <Footer />
     </div>
+  );
+}
+
+export default function ComunidadPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <ComunidadContent />
+    </Suspense>
   );
 }
