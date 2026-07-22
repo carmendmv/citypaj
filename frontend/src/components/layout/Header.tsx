@@ -26,28 +26,22 @@ interface HeaderProps {
 
 const MENU_PRINCIPAL = [
   {
-    categoria: 'ocio',
-    label: 'Ocio',
-    descripcion: 'Eventos, conciertos y cultura',
-    href: '/ocio'
-  },
-  {
-    categoria: 'servicios',
-    label: 'Servicios',
-    descripcion: 'Transporte, salud y vivienda',
-    href: '/servicios'
-  },
-  {
-    categoria: 'educacion',
-    label: 'Formación',
-    descripcion: 'Cursos, talleres y becas',
-    href: '/educacion'
-  },
-  {
     categoria: 'empleo',
     label: 'Empleo',
     descripcion: 'Ofertas laborales y prácticas',
-    href: '/empleo'
+    href: '/anuncios?categoria=empleo'
+  },
+  {
+    categoria: 'comunidad',
+    label: 'Comunidad',
+    descripcion: 'Foros por CCAA y provincia',
+    href: '/comunidad'
+  },
+  {
+    categoria: 'ayudas',
+    label: 'Ayudas',
+    descripcion: 'Ayudas para jóvenes y extranjería',
+    href: '/ayudas'
   }
 ];
 
@@ -73,7 +67,7 @@ const Header: React.FC<HeaderProps> = memo(({
       if (onSearch) {
         onSearch(searchCodigo.trim());
       } else {
-        router.push(`/?buscar=${encodeURIComponent(searchCodigo.trim())}`);
+        router.push(`/anuncios?busqueda=${encodeURIComponent(searchCodigo.trim())}`);
         setIsMobileMenuOpen(false);
       }
     }
