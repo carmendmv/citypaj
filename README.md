@@ -1,628 +1,307 @@
-# CityPaj - Plataforma de Anuncios Juvenil
+# CityPAJ
 
-Trabajo de Fin de Grado (TFG) - Desarrollo de Aplicaciones Web
+Plataforma web para jóvenes que conecta recursos, anuncios, eventos, propuestas y participación ciudadana.
 
-Autor: Carmen de Miguel Velázquez  
-Curso: 2025-2026
+## Novedades recientes (para no perderse)
+
+- **Navegación renovada**: el menú principal ahora tiene **Empleo**, **Comunidad**, **Buzón de sugerencias** y **Ayudas**. Se han quitado las secciones antiguas de Ocio, Servicios y Formación.
+- **Página de ayudas (`/ayudas`)**: recursos nacionales para jóvenes y extranjería, más un directorio por comunidad autónoma.
+- **Publicar anuncio con IA**: cuando publicas, el sistema muestra un mensaje avisando de que un moderador automático (IA interna) revisa el contenido antes de publicarlo. Si detecta algo inapropiado, lo rechaza y explica el motivo.
+- **Panel de moderación de anuncios**: desde `/admin/anuncios` puedes ver los anuncios reportados o pendientes, aprobarlos, rechazarlos o dejar que la IA los revise.
+- **Idiomas corregidos**: la advertencia de `react-i18next` desapareció; la traducción se inicializa correctamente y los textos clave tienen valores por defecto.
+- **Usuario demo preparado**: puedes entrar con `demo@citypaj.com` / `Demo1234!` para probar sin crear cuenta.
 
 ---
 
-## Estado Actual del Proyecto
+## Stack tecnológico
 
-El proyecto está 100% completado y funcional. Se ha implementado una plataforma completa de anuncios juveniles con todas las funcionalidades requeridas para el TFG.
-
-### Base de Datos CityPaj - Producción Lista
-- **1913 anuncios reales** cargados desde base de datos MySQL
-- **10 categorías completas** (ocio, servicios, empleo, formación, comunidad, transporte, vivienda, salud, tecnología, otros)
-- **17 CCAA + 50 provincias** españolas representadas
-- **Sistema de cache optimizado** para máximo rendimiento
-- **Datos auténticos** con productos, servicios y precios realistas
-
-### Arquitectura Completa
-- **Frontend**: Next.js 14 + React + TypeScript + TailwindCSS
-- **Backend**: Node.js + Express + MySQL2
-- **Base de Datos**: MySQL con 1913 anuncios reales
+- **Frontend**: Next.js 14 + React 18 + TypeScript + Tailwind CSS
+- **Backend**: Node.js + Express + TypeScript + MySQL2
+- **Base de datos**: MySQL (`citypaj`)
 - **Puertos**: Frontend 3001, Backend 3002, MySQL 3306
 
 ---
 
-## Cómo Arrancar CityPAJ
+## Requisitos previos
 
-### Requisitos Previos
-- Node.js 18+ 
-- MySQL 8.0+
+- Node.js 18+
+- MySQL 8.0+ o Docker Desktop
 - npm 9+
-- Git
 
-### Variables de Entorno
+## Configuración inicial
 
-**Backend:**
-- Copia `backend/.env.example` a `backend/.env`
-- Configura las credenciales de MySQL
+Las credenciales por defecto en desarrollo son:
 
-**Frontend:**
-- Copia `frontend/.env.example` a `frontend/.env.local`
-- Configura la URL del backend
+| Servicio | Valor |
+|----------|-------|
+| Base de datos | `citypaj` |
+| Usuario MySQL | `citypaj_user` |
+| Contraseña | `citypaj123` |
+| Host MySQL | `localhost` |
+| Puerto MySQL | `3306` |
+| Puerto backend | `3002` |
+| Puerto frontend | `3001` |
 
-### Puertos
-- **Frontend**: http://localhost:3001
-- **Backend**: http://localhost:3002
-- **MySQL**: 3306
+Los archivos `.env.example` y `.env.local.example` están preparados. El proyecto incluye `.env` y `.env.local` con esos valores para desarrollo local.
 
-### Arrancar Backend
+---
+
+## Arranque automático recomendado
 
 Desde la raíz del proyecto:
-```bash
-npm run dev:backend
+
+```powershell
+# Levantar MySQL con Docker, crear la base de datos si no existe, instalar dependencias y compilar
+npm run setup
+
+# O solo levantar MySQL con Docker
+npm run db:up
+
+# Luego arrancar backend y frontend juntos
+npm run dev
 ```
 
-O directamente desde backend:
+### WSL
+
+Si trabajas en WSL, ejecuta desde la raíz del proyecto en una terminal de Ubuntu/WSL:
+
+```bash
+cd /mnt/c/Users/Carmen/Documents/TFG-2DAW/citypaj
+npm run dev
+```
+
+Esto arranca backend (`nodemon` con `ts-node` en el puerto 3002) y frontend (Next.js en el puerto 3001) a la vez. Espera unos 10-15 segundos a que `ts-node` compile y el backend conecte a MySQL.
+
+Si no usas Docker, asegúrate de tener MySQL corriendo en `localhost:3306` con la base de datos `citypaj` y el usuario `citypaj_user`.
+
+> **Importante:** Si en Windows también tienes un servidor MySQL (XAMPP, MySQL Installer, etc.), `localhost` en WSL puede apuntar a una base de datos distinta. Si ves errores como `Unknown column` o `Table doesn't exist` en WSL, es porque el backend se conectó a un MySQL incorrecto. En ese caso, la opción más sencilla es arrancar todo en **PowerShell de Windows** (ver apartado anterior) para que backend y frontend usen el mismo `localhost` que el MySQL de Windows.
+
+---
+
+## Arranque manual
+
+### 1. MySQL
+
+**Con Docker:**
+
+```powershell
+docker compose up -d mysql
+```
+
+**Con XAMPP / MySQL local:**
+
+Asegúrate de que MySQL esté corriendo en el puerto 3306 y de que exista la base de datos `citypaj`.
+
+Para crear la base e inicializar las tablas:
+
 ```bash
 cd backend
-npm run dev
+npm run db:init
 ```
 
-**¿Qué hace?** Inicia el servidor backend con TypeScript y nodemon
+### 2. Backend
 
-### Arrancar Frontend
-
-Desde la raíz del proyecto:
 ```bash
-npm run dev:frontend
+cd backend
+npm install
+npm run build
+npm start
 ```
 
-O directamente desde frontend:
+El backend arranca en `http://localhost:3002` y se conecta automáticamente a MySQL usando la base `citypaj`.
+
+### 3. Frontend
+
 ```bash
 cd frontend
+npm install
 npm run dev
 ```
 
-**¿Qué hace?** Inicia el servidor Next.js en el puerto 3001
-
-### Arrancar Ambos Simultáneamente
-
-Desde la raíz del proyecto:
-```bash
-npm run dev
-```
-
-**¿Qué hace?** Inicia frontend y backend simultáneamente
-
-### Arrancar con Datos Reales Cacheados
-
-Desde la raíz del proyecto:
-```bash
-npm run dev:real
-```
-
-**¿Qué hace?** Inicia el servidor con los 1913 anuncios reales cacheados
+El frontend arranca en `http://localhost:3001` y consume la API del backend en `http://localhost:3002`.
 
 ---
 
-## Comandos de Base de Datos
+## Comprobación de conexión
 
-### Verificar Conexión y Datos
-
-```bash
-# Desde la raíz
-npm run db:check
-
-# Desde backend
-npm run db:verify
-npm run db:categories
-npm run db:structure
-```
-
-**¿Para qué sirven?**
-- `db:check`: Verifica conexión y estado general de la base de datos
-- `db:verify`: Verifica integridad completa de la base de datos
-- `db:categories`: Muestra distribución de anuncios por categorías
-- `db:structure`: Verifica estructura de tablas
-
-### Cargar Datos Reales
+Una vez levantado todo:
 
 ```bash
-# Desde la raíz
-npm run db:load-real
-
-# Desde backend
-npm run db:load-real
-```
-
-**¿Para qué sirve?** Carga los 1913 anuncios reales desde la base de datos al cache
-
-### Expandir Categorías
-
-```bash
-# Desde la raíz
-npm run db:expand-categories
-
-# Desde backend
-npm run db:expand-categories
-```
-
-**¿Para qué sirve?** Añade las 5 nuevas categorías y genera anuncios
-
----
-
-## Scripts de Diagnóstico
-
-### Probar Conexión
-
-```bash
-# Desde la raíz
-npm run test:connection
-npm run test:real-connection
-
-# Desde backend
-npm run test:connection
-npm run test:real-connection
-npm run test:simple-query
-npm run test:direct-connection
-```
-
-**¿Para qué sirven?**
-- `test:connection`: Prueba básica de conexión a MySQL
-- `test:real-connection`: Prueba conexión con la base de datos citypaj
-- `test:simple-query`: Ejecuta consulta simple de prueba
-- `test:direct-connection`: Prueba conexión directa sin base de datos específica
-
-### Diagnóstico Avanzado
-
-```bash
-# Desde la raíz
-npm run diagnose:mysql
-
-# Desde backend
-npm run diagnose:mysql
-```
-
-**¿Para qué sirve?** Diagnóstico completo de acceso a MySQL
-
----
-
-## Servidores Alternativos (Diagnóstico)
-
-### Servidores Backend
-
-```bash
-# Desde backend
-npm run server:simple      # Servidor simple básico
-npm run server:mysql2      # Servidor simple con MySQL2
-npm run server:debug       # Servidor con debug
-npm run server:minimal     # Servidor minimalista
-npm run server:complete    # Servidor completo
-npm run server:working     # Servidor working
-npm run server:definitive  # Servidor definitivo
-npm run server:fixed       # Servidor corregido
-npm run server:final       # Servidor final
-```
-
-**⚠️ IMPORTANTE**: Estos servidores son para diagnóstico y desarrollo. **NO usarlos como backend principal**. El backend principal es `npm run dev` (TypeScript) o `npm run dev:real` (datos cacheados).
-
-### Servidores Frontend
-
-```bash
-# Desde frontend
-npm run server             # Servidor Next.js estándar
-npm run server:secure      # Servidor con seguridad
-npm run server:simple      # Servidor simple seguro
-```
-
----
-
-## Comprobación de Funcionamiento
-
-### Endpoints de Health Check
-
-```bash
-# Backend health check
 curl http://localhost:3002/health
-
-# Frontend principal
-curl http://localhost:3001
+curl http://localhost:3002/test-db
+curl "http://localhost:3002/api/anuncios?pagina=1&limite=5"
 ```
 
-### Endpoints de API
+- `/health` indica que el backend responde.
+- `/test-db` confirma que el backend está conectado a la base `citypaj`.
+- `/api/anuncios` devuelve anuncios reales de la base de datos.
 
-```bash
-# Anuncios paginados
-curl "http://localhost:3002/api/anuncios?pagina=1&limite=10"
+---
 
-# Datos en tiempo real
-curl "http://localhost:3002/api/database/realtime?format=categorized"
+## Scripts principales
+
+Desde la raíz:
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run setup` | Levanta MySQL con Docker, crea la base, instala dependencias y compila |
+| `npm run db:up` | Levanta MySQL con Docker |
+| `npm run db:down` | Detiene MySQL de Docker |
+| `npm run db:init` | Crea la base `citypaj` y aplica migraciones |
+| `npm run install:all` | Instala dependencias en raíz, backend y frontend |
+| `npm run build` | Compila backend y frontend |
+| `npm run dev` | Arranca backend y frontend en modo desarrollo |
+| `npm run start` | Arranca backend y frontend para uso |
+
+Desde `backend`:
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | Backend con recarga automática (nodemon) |
+| `npm run build` | Compila TypeScript |
+| `npm start` | Inicia backend compilado |
+| `npm run db:init` | Crea la base de datos y tablas |
+| `npm run db:check` | Verifica conexión a MySQL |
+| `npm run db:verify` | Verifica integridad de la base de datos |
+
+Desde `frontend`:
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | Inicia Next.js en `http://localhost:3001` |
+| `npm run build` | Build de producción |
+| `npm start` | Servidor Next.js en `http://localhost:3001` |
+
+---
+
+## Variables de entorno
+
+**backend/.env** (desarrollo local):
+
+```env
+PORT=3002
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=citypaj
+DB_USER=citypaj_user
+DB_PASSWORD=citypaj123
+NODE_ENV=development
+JWT_SECRET=your-super-secret-jwt-key-change-in-production
+```
+
+**frontend/.env.local** (desarrollo local):
+
+```env
+BACKEND_URL=http://localhost:3002
+NEXT_PUBLIC_API_URL=http://localhost:3002
 ```
 
 ---
 
-## Flujo Esperado
-
-```
-Frontend (3001) → Backend (3002) → MySQL citypaj (3306)
-```
-
-1. **Frontend** solicita datos al backend
-2. **Backend** consulta la base de datos MySQL
-3. **MySQL** devuelve los datos reales
-4. **Backend** procesa y devuelve al frontend
-5. **Frontend** muestra los anuncios al usuario
-
----
-
-## Estructura del Proyecto
+## Estructura de carpetas principales
 
 ```
 citypaj/
-├── frontend/          # Next.js 14 + React + TypeScript
-│   ├── src/
-│   │   ├── app/       # Páginas y rutas
-│   │   ├── components/ # Componentes React
-│   │   └── hooks/      # Hooks personalizados
+├── backend/
+│   ├── src/               # Código fuente de la API
+│   ├── migrations/        # Migraciones SQL de MySQL
+│   ├── scripts/           # Scripts utilitarios (init-db, etc.)
 │   └── package.json
-├── backend/           # Node.js + Express + TypeScript
-│   ├── src/
-│   │   ├── controllers/ # Controladores API
-│   │   ├── middleware/   # Middleware Express
-│   │   └── config/       # Configuración
+├── frontend/
+│   ├── src/app/           # Páginas y rutas API de Next.js
+│   ├── src/components/    # Componentes React
+│   ├── src/lib/           # Utilidades (configuración API)
 │   └── package.json
-├── database/          # Scripts SQL de base de datos
-├── scripts/           # Scripts utilitarios
+├── docker-compose.yml     # MySQL con Docker
 └── README.md
 ```
 
 ---
 
-## Solución de Problemas
+## Endpoints principales
 
-### Backend no arranca
-1. Verifica que MySQL esté corriendo
-2. Ejecuta `npm run db:check` para probar conexión
-3. Revisa variables de entorno en `backend/.env`
-
-### Frontend no muestra datos
-1. Verifica que el backend esté corriendo en puerto 3002
-2. Ejecuta `curl http://localhost:3002/health`
-3. Revisa variables de entorno en `frontend/.env.local`
-
-### Base de datos sin datos
-1. Ejecuta `npm run db:load-real` para cargar datos cacheados
-2. Verifica que hayan 1913 anuncios con `npm run db:check`
-
----
-
-## Información de Base de Datos
-
-**Configuración MySQL:**
-- Host: localhost
-- Puerto: 3306
-- Base de datos: citypaj
-- Usuario: citypaj_user
-- Contraseña: citypaj123
-
-**Tablas principales:**
-- `anuncios` - 1913 anuncios reales
-- `usuarios` - Usuarios registrados
-- `categorias` - 10 categorías disponibles
+| Recurso | Ruta backend |
+|---------|--------------|
+| Health | `GET /health` |
+| Test DB | `GET /test-db` |
+| Anuncios | `GET/POST /api/anuncios` |
+| Moderación de anuncios | `GET /api/anuncios/moderacion` |
+| Reportes de un anuncio | `GET /api/anuncios/:id/reportes` |
+| Moderar un anuncio | `POST /api/anuncios/:id/moderar` |
+| Moderar con IA | `POST /api/anuncios/:id/moderar-ia` |
+| Comunidad | `GET/POST /api/comunidad` |
+| Propuestas | `GET /api/propuestas` |
+| Recursos | `GET/POST /api/recursos` |
+| Eventos | `GET/POST /api/eventos` |
+| Sugerencias | `POST /api/sugerencias` |
+| Estadísticas | `GET /api/sugerencias/estadisticas` |
+| Autenticación | `POST /api/auth/login`, `/api/auth/register`, `/api/auth/logout`, `/api/auth/refresh` |
+| Usuarios | `GET /api/usuarios/perfil` |
 
 ---
 
-## Comandos Peligrosos
+## Panel de moderación
 
-⚠️ **ADVERTENCIA**: Estos comandos modifican datos. Usar solo en desarrollo.
+Hay dos paneles:
 
-```bash
-# NO EJECUTAR EN PRODUCCIÓN
-npm run db:clean         # Limpia base de datos
-npm run db:reset         # Reseta base de datos
-```
+- **Sugerencias**: `/admin/sugerencias` (accesible desde el footer). Muestra las propuestas de los usuarios con colores según prioridad (baja, media, alta, crítica) y permite exportar a PDF.
+- **Anuncios**: `/admin/anuncios` (enlace dentro del panel de sugerencias). Muestra anuncios reportados o pendientes de aprobación. Desde ahí puedes aprobar, rechazar o volver a revisar con IA.
 
----
-
-## Desarrollo y Testing
-
-### Instalar Dependencias
-
-```bash
-# Instalar todo el proyecto
-npm run install:all
-
-# Instalar individualmente
-cd backend && npm install
-cd frontend && npm install
-```
-
-### Testing
-
-```bash
-# Ejecutar todos los tests
-npm run test
-
-# Tests con cobertura
-npm run test:coverage
-```
-
-### Linting
-
-```bash
-# Linting de backend
-cd backend && npm run lint
-
-# Linting de frontend
-cd frontend && npm run lint
-```
+Para entrar necesitas una cuenta. Puedes usar la **cuenta demo**: `demo@citypaj.com` / `Demo1234!`.
 
 ---
 
-## Contribución
+## Solución de problemas
 
-1. Fork del repositorio
-2. Crear rama de feature
-3. Hacer commits descriptivos
-4. Push a la rama
-5. Crear Pull Request
+### MySQL no responde
 
----
+Asegúrate de que MySQL está corriendo. Con Docker:
 
-## Licencia
-
-MIT License - Ver archivo LICENSE para detalles
-
-Opción A: Usar Scripts de Automatización (Recomendado)
-```bash
-# En Windows, doble clic en:
-start-xampp-phpmyadmin.bat
+```powershell
+docker compose up -d mysql
 ```
 
-Opción B: Configuración Manual
-1. Inicia XAMPP Control Panel
-2. Inicia los servicios Apache y MySQL
-3. Abre tu navegador y ve a: http://localhost/phpmyadmin/
-4. Crea una nueva base de datos llamada "citypaj"
-5. Importa el archivo: database/anuncios-completos.sql
-6. Importa también: database/sugerencias.sql
+Con XAMPP, inicia el servicio MySQL desde el panel de control.
 
-### Paso 3: Configurar Variables de Entorno
-```bash
-# Copiar archivo de configuración
-cp backend/.env.example backend/.env
+### La base de datos `citypaj` no existe
 
-# Editar el archivo .env con tu configuración
-# Abre backend/.env y asegúrate de que tenga:
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=citypaj
-```
-
-### Paso 4: Instalar Dependencias y Ejecutar
-
-Terminal 1 - Backend:
 ```bash
 cd backend
-npm install
-npm start
-```
-El backend iniciará en: http://localhost:3002
-
-Terminal 2 - Frontend:
-```bash
-cd frontend
-npm install
-npm run dev
-```
-El frontend iniciará en: http://localhost:3001
-
-### Paso 5: Verificar que Todo Funciona
-
-1. Frontend: Abre http://localhost:3001 en tu navegador
-2. Backend API: Abre http://localhost:3002/health
-3. Base de Datos: Abre http://localhost/phpmyadmin/
-4. Panel de Sugerencias: Abre http://localhost:3001/admin/sugerencias
-
-Notas Importantes para Estudiantes:
-- Si el frontend está corriendo en WSL y el navegador de Windows no abre http://localhost:3001, puedes entrar usando la IP de WSL: http://<IP_WSL>:3001
-- Para ver la IP de WSL: ejecuta `hostname -I`
-- El proyecto está diseñado para funcionar inmediatamente después de seguir estos pasos
-
----
-
-## Arquitectura y Tecnologías Aplicadas
-
-Este proyecto demuestra el dominio de un stack tecnológico completo y moderno:
-
-### Frontend - Desarrollo Web Moderno
-- React 18 + TypeScript - Componentes reutilizables y tipado estático
-- Next.js 14 para SSR y optimización - Renderizado del lado del servidor
-- Tailwind CSS con diseño moderno - CSS framework y diseño responsive
-- Zustand para state management - Gestión de estado global
-- React Query para server state - Caché y sincronización de datos
-- React Hook Form + Zod para validación - Formularios y validación robusta
-
-### Backend - Arquitectura de Servicios
-- Node.js 20 + TypeScript - Servidor asíncrono y tipado seguro
-- Express.js con middleware de seguridad - API RESTful y seguridad web
-- MySQL/PostgreSQL con búsqueda full-text - Base de datos relacional avanzada
-- Redis para caché y rate limiting - Optimización de rendimiento
-- JWT para autenticación - Seguridad en API REST
-
-### Infraestructura - DevOps y Producción
-- Docker + Docker Compose - Contenerización y orquestación
-- Nginx como reverse proxy - Balanceo de carga y serving estático
-- XAMPP para desarrollo local - Entorno MySQL completo
-- GitHub Actions para CI/CD - Integración continua y despliegue automático
-
----
-
-## Funcionalidades Implementadas
-
-Características Principales
-- Filtrado geográfico por comunidad autónoma - Aplicación de consultas SQL complejas
-- Perfiles de usuario con historial de anuncios - Gestión de estado y sesiones
-- Opción de ocultar anuncios sin eliminarlos - Soft delete y lógica de negocio
-- Moderación eficiente con dashboard avanzado - Roles y permisos
-- Mobile-first y PWA ready - Responsive Design y Progressive Web Apps
-- Internacionalización (10+ idiomas) - i18n y localización
-- Accesibilidad WCAG AA - Diseño inclusivo y estándares web
-- Estética moderna con tipografía elegante - UI/UX y CSS avanzado
-
-Funcionalidades Implementadas Recientemente
-- Grid de Enlaces 3×3 Responsive - CSS Grid y diseño móvil-first
-  - Organizado por categorías: Juventud, Extranjería, Comunidad
-  - Imágenes con bordes finos 1px black
-  - Totalmente adaptable a dispositivos móviles
-  
-- Buzón de Sugerencias Juvenil - Formularios avanzados y gestión de feedback
-  - Formulario detallado con 12 categorías y 4 niveles de prioridad
-  - Opción de envío anónimo para privacidad
-  - Solicitud específica al ayuntamiento
-  - Validación completa y feedback inmediato
-  
-- Panel Estadístico Interno - Análisis de datos y visualización
-  - Gráficos interactivos con Recharts
-  - Estadísticas por categoría, prioridad y comunidad
-  - Insights automáticos sobre demandas urgentes
-  - Filtros dinámicos por comunidad autónoma
-  
-- Búsqueda por Palabras Funcional - Implementación de búsqueda frontend
-  - Input de búsqueda en el header
-  - Redirección automática con parámetros URL
-  - Integración con sistema de anuncios existente
-
----
-
-## API RESTful
-
-Endpoints Implementados
-
-### Autenticación y Gestión de Usuarios
-- POST /api/auth/register - Registro de nuevos usuarios
-- POST /api/auth/login - Inicio de sesión con JWT
-- POST /api/auth/logout - Cierre de sesión seguro
-- GET /api/usuarios/perfil - Obtener perfil de usuario
-
-### Gestión de Anuncios (CRUD Completo)
-- GET /api/anuncios - Listar anuncios con filtros avanzados
-- GET /api/anuncios/:id - Obtener anuncio específico
-- POST /api/anuncios - Crear nuevo anuncio (autenticado)
-- PUT /api/anuncios/:id - Actualizar anuncio (propietario)
-- PATCH /api/anuncios/:id/ocultar - Soft delete
-- DELETE /api/anuncios/:id - Eliminar permanente
-
-### Sistema de Sugerencias Juveniles
-- POST /api/sugerencias - Crear nueva sugerencia
-- GET /api/sugerencias - Listar sugerencias con filtros
-- GET /api/sugerencias/estadisticas - Obtener estadísticas
-- PUT /api/sugerencias/:id - Actualizar estado de sugerencia
-
-### Funcionalidades Avanzadas
-- POST /api/anuncios/:id/favorito - Gestión de favoritos
-- GET /api/anuncios/search?q=termino - Búsqueda full-text
-
----
-
-## Base de Datos
-
-Archivos de Base de Datos
-```
-📂 database/
-├── ✅ anuncios-completos.sql (136KB) - PRODUCCIÓN
-├── ✅ setup.sql (6KB) - Estructura MySQL/XAMPP
-├── ✅ sugerencias.sql - Tabla de sugerencias juveniles
-└── 🗑️ [Archivos obsoletos eliminados]
+npm run db:init
 ```
 
----
+### El backend no conecta con MySQL
 
-## Estructura del Proyecto
+Revisa `backend/.env` y verifica que los valores coincidan con tu MySQL.
 
-Organización del Directorio
-```
-citypaj/                          # Raíz del proyecto TFG
-├── README.md                     # Documentación principal
-├── docker-compose.yml            # Orquestación de servicios
-├── .gitignore                    # Archivos ignorados por Git
-├── 
-├── backend/                      # API RESTful (Node.js + TypeScript)
-│   ├── src/
-│   │   ├── controllers/          # Lógica de negocio
-│   │   │   ├── anuncios.ts       # Controlador de anuncios
-│   │   │   ├── sugerencias.ts    # Controlador de sugerencias
-│   │   │   └── auth.ts           # Autenticación
-│   │   ├── routes/               # Definición de endpoints
-│   │   │   ├── anuncios.ts       # Rutas de anuncios
-│   │   │   ├── sugerencias.ts    # Rutas de sugerencias
-│   │   │   └── auth.ts           # Rutas de autenticación
-│   │   ├── middleware/           # Middleware (auth, validation)
-│   │   ├── models/               # Modelos de datos
-│   │   ├── config/               # Configuración
-│   │   └── index.ts              # Punto de entrada
-│   ├── Dockerfile                # Configuración Docker
-│   ├── package.json              # Dependencias
-│   └── tsconfig.json             # Configuración TypeScript
-│
-├── frontend/                     # Aplicación web (Next.js + TypeScript)
-│   ├── src/
-│   │   ├── app/                  # App Router (Next.js 14)
-│   │   │   ├── layout.tsx         # Layout principal
-│   │   │   ├── page.tsx           # Página principal
-│   │   │   ├── admin/
-│   │   │   │   └── sugerencias/   # Panel estadístico
-│   │   │   ├── buzon-sugerencias/ # Formulario de sugerencias
-│   │   │   └── api/               # API routes
-│   │   └── components/           # Componentes React
-│   │       ├── layout/           # Header, Footer
-│   │       ├── ui/               # Componentes UI
-│   │       └── anuncios/         # Componentes de anuncios
-│   ├── Dockerfile                # Configuración Docker
-│   ├── package.json              # Dependencias
-│   └── next.config.js             # Configuración Next.js
-│
-├── 📁 database/                  # Scripts de base de datos
-│   ├── ✅ anuncios-completos.sql  # PRODUCCIÓN - 780 anuncios
-│   ├── ✅ setup.sql              # Estructura MySQL/XAMPP
-│   └── ✅ sugerencias.sql        # Tabla de sugerencias
-│
-├── 📁 start-xampp-phpmyadmin.bat # Script automatización
-├── 📁 start-xampp-phpmyadmin.vbs # Script silencioso
-└── 📁 README-AUTOMATIZACION.md   # Documentación automatización
-```
+### El frontend no encuentra el backend
+
+Asegúrate de que `frontend/.env.local` tiene `BACKEND_URL=http://localhost:3002` y de que el backend está corriendo.
 
 ---
 
-## Conclusión del TFG
+## ¿El frontend está conectado al backend y a la base de datos?
 
-CityPaj representa la culminación de la formación demostrando:
+**Sí.** El frontend no habla directamente con MySQL, sino con el backend a través de las rutas `/api/*` de Next.js. Esas rutas actúan como intermediarias y le piden los datos al backend en `http://localhost:3002`, que es quien consulta MySQL.
 
-Capacidad técnica - Dominio de stack tecnológico completo  
-Resolución de problemas - Arquitectura escalable y mantenible  
-Innovación - Aplicación moderna de tecnologías emergentes  
-Calidad - Código robusto, seguro y bien documentado  
-Visión práctica - Solución real a necesidades sociales
+Por ejemplo:
+- Página de inicio → `/api/anuncios` → backend → tabla `anuncios`
+- `/comunidad` → `/api/comunidad` → backend → tablas `comunidad_publicaciones` y `comunidad_comentarios`
+- `/admin/sugerencias` → `/api/sugerencias` → backend → tabla `sugerencias`
+- `/admin/anuncios` → `/api/anuncios/moderacion` → backend → tablas `anuncios` + `reportes_anuncios`
 
-Logros Destacados
-- 780 anuncios reales importados y funcionando
-- Automatización completa del entorno de desarrollo
-- Base de datos producción-lista con datos auténticos
-- Sistema completo de feedback juvenil implementado
-- Panel estadístico para análisis de demandas
-- Documentación completa para mantenimiento futuro
+Casi todo el contenido que ves en la web viene de la base de datos. Lo único estático son algunos desplegables de comunidades/provincias en formularios y la página de `/ayudas`, que es un directorio de enlaces externos.
 
-Considero que este proyecto tiene potencial real de deployment y uso en la comunidad juvenil, contribuyendo al ecosistema digital local.
+## Usuarios de prueba
 
----
+| Email | Contraseña | Uso |
+|-------|------------|-----|
+| `demo@citypaj.com` | `Demo1234!` | Cuenta demo para probar login, publicar anuncios y entrar al panel de moderación |
+| `test@citypaj.es` | `Test1234!` | Otra cuenta de prueba existente |
 
-## Estado Final: 100% Completado
+## Notas
 
-Base de Datos: 780 anuncios funcionando  
-Automatización: Scripts de inicio listos  
-Documentación: Completa y actualizada  
-Entorno: Producción inmediata disponible  
-Sistema de Sugerencias: Funcional y analizable  
-
----
-
-CityPaj - Tu ciudad, tus anuncios, tu comunidad
-
-Trabajo de Fin de Grado - 100% Completado
-#tfg #engineering #webdevelopment #typescript #react #nodejs #database #production-ready
+- El frontend no se conecta directamente a MySQL; siempre consume el backend.
+- El backend usa `mysql2/promise` con un pool centralizado en `src/config/database.ts`.
+- No se usa el puerto 3005 ni la base `citypaj_db` en el código activo.
+- Los servidores temporales (`server-simple.js`, etc.) no forman parte del arranque oficial.
