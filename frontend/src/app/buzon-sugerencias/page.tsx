@@ -15,6 +15,7 @@ export default function BuzonSugerencias() {
     titulo: '',
     descripcion: '',
     solicitud_ayuntamiento: '',
+    comunidad_autonoma: '',
     anonimo: false
   });
 
@@ -56,7 +57,6 @@ export default function BuzonSugerencias() {
         },
         body: JSON.stringify({
           ...formData,
-          comunidad_autonoma: 'Todas',
           fecha: new Date().toISOString(),
           estado: 'pendiente'
         }),
@@ -74,6 +74,7 @@ export default function BuzonSugerencias() {
           titulo: '',
           descripcion: '',
           solicitud_ayuntamiento: '',
+          comunidad_autonoma: '',
           anonimo: false
         });
       } else {
@@ -189,6 +190,38 @@ export default function BuzonSugerencias() {
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-sans text-sm font-medium text-black mb-2">
+                    Comunidad Autónoma *
+                  </label>
+                  <select
+                    name="comunidad_autonoma"
+                    value={formData.comunidad_autonoma}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 font-sans text-sm border border-black bg-white focus:outline-none"
+                    required
+                  >
+                    <option value="">Selecciona tu comunidad</option>
+                    <option value="Andalucía">Andalucía</option>
+                    <option value="Aragón">Aragón</option>
+                    <option value="Asturias">Asturias</option>
+                    <option value="Baleares">Baleares</option>
+                    <option value="Canarias">Canarias</option>
+                    <option value="Cantabria">Cantabria</option>
+                    <option value="Castilla-La Mancha">Castilla-La Mancha</option>
+                    <option value="Castilla y León">Castilla y León</option>
+                    <option value="Cataluña">Cataluña</option>
+                    <option value="Comunidad Valenciana">Comunidad Valenciana</option>
+                    <option value="Extremadura">Extremadura</option>
+                    <option value="Galicia">Galicia</option>
+                    <option value="Madrid">Madrid</option>
+                    <option value="Murcia">Murcia</option>
+                    <option value="Navarra">Navarra</option>
+                    <option value="País Vasco">País Vasco</option>
+                    <option value="La Rioja">La Rioja</option>
+                  </select>
+                </div>
+
                 <div>
                   <label className="block font-sans text-sm font-medium text-black mb-2">
                     Categoría *

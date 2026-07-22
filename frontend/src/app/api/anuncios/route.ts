@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { BACKEND_URL } from '@/lib/api';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,7 +13,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Conectar con backend real para obtener anuncios
-    const response = await fetch(`http://localhost:3002/api/anuncios?${params.toString()}`, {
+    const response = await fetch(`${BACKEND_URL}/api/anuncios?${params.toString()}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -94,7 +94,7 @@ export const getAnuncios = async (req: Request, res: Response): Promise<void> =>
         a.vistas,
         u.nombre as autor,
         u.email as email,
-        u.telefono as telefono
+        NULL AS telefono
       FROM anuncios a
       JOIN usuarios u ON a.usuario_id = u.id
       WHERE ${whereClause}
@@ -167,7 +167,7 @@ export const getAnuncioById = async (req: Request, res: Response): Promise<void>
         a.vistas,
         u.nombre as autor,
         u.email as email,
-        u.telefono as telefono
+        NULL AS telefono
       FROM anuncios a
       JOIN usuarios u ON a.usuario_id = u.id
       WHERE a.id = $1 AND a.visible = true AND a.estado_moderacion = 'approved'
@@ -261,7 +261,7 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
         `SELECT 
           a.id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
           a.provincia, a.precio, a.modalidad, a.creado, a.actualizado, a.vistas,
-          u.nombre as autor, u.email as email, u.telefono as telefono
+          u.nombre as autor, u.email as email, NULL AS telefono
         FROM anuncios a
         JOIN usuarios u ON a.usuario_id = u.id
         WHERE a.id = $1`,
@@ -349,7 +349,7 @@ export const updateAnuncio = async (req: AuthRequest, res: Response): Promise<vo
         `SELECT 
           a.id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
           a.provincia, a.precio, a.modalidad, a.creado, a.actualizado, a.vistas,
-          u.nombre as autor, u.email as email, u.telefono as telefono
+          u.nombre as autor, u.email as email, NULL AS telefono
         FROM anuncios a
         JOIN usuarios u ON a.usuario_id = u.id
         WHERE a.id = $1`,
@@ -453,7 +453,7 @@ export const getAnunciosByUser = async (req: AuthRequest, res: Response): Promis
         a.id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
         a.provincia, a.precio, a.modalidad, a.visible, a.estado_moderacion,
         a.creado, a.actualizado, a.vistas,
-        u.nombre as autor, u.email as email, u.telefono as telefono
+        u.nombre as autor, u.email as email, NULL AS telefono
       FROM anuncios a
       JOIN usuarios u ON a.usuario_id = u.id
       WHERE a.usuario_id = $1

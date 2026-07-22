@@ -11,8 +11,6 @@ const dbConfig = {
   waitForConnections: true,
   connectionLimit: config.database.pool.max,
   queueLimit: 0,
-  acquireTimeout: config.database.pool.connectionTimeoutMillis,
-  timeout: config.database.pool.idleTimeoutMillis,
 };
 
 // Crear el pool de conexiones

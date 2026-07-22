@@ -12,7 +12,13 @@ import { anunciosRoutes } from './routes/anuncios';
 import { usuariosRoutes } from './routes/usuarios';
 import { moderacionRoutes } from './routes/moderacion';
 import { reportesRoutes } from './routes/reportes';
+import { comunidadRoutes } from './routes/comunidad';
+import { propuestasRoutes } from './routes/propuestas';
+import { recursosRoutes } from './routes/recursos';
+import { eventosRoutes } from './routes/eventos';
+import { estadisticasRoutes } from './routes/estadisticas';
 import sugerenciasRoutes from './routes/sugerencias';
+import { pool } from './config/database';
 
 const app = express();
 
@@ -99,6 +105,30 @@ app.get('/api/health', (_req: Request, res: Response) => {
   });
 });
 
+async function testDbHandler(_req: Request, res: Response) {
+  try {
+    const [rows] = await pool.execute('SELECT 1 AS ok, DATABASE() AS db');
+    res.status(200).json({
+      success: true,
+      status: 'ok',
+      connected: true,
+      database: (rows as any[])[0]?.db,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    logger.error('Error en /test-db:', error);
+    res.status(503).json({
+      success: false,
+      status: 'error',
+      connected: false,
+      error: error instanceof Error ? error.message : 'Error de conexión a MySQL',
+    });
+  }
+}
+
+app.get('/test-db', testDbHandler);
+app.get('/api/test-db', testDbHandler);
+
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/anuncios', anunciosRoutes);
@@ -106,6 +136,11 @@ app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/moderacion', moderacionRoutes);
 app.use('/api/reportes', reportesRoutes);
 app.use('/api/sugerencias', sugerenciasRoutes);
+app.use('/api/comunidad', comunidadRoutes);
+app.use('/api/propuestas', propuestasRoutes);
+app.use('/api/recursos', recursosRoutes);
+app.use('/api/eventos', eventosRoutes);
+app.use('/api/estadisticas', estadisticasRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {

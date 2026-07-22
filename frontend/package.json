@@ -6,16 +6,12 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "load-env": "node load-env.js",
-    "server": "node server.js",
-    "server:secure": "node secure-server.js",
-    "server:simple": "node secure-frontend-simple.js"
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.0",

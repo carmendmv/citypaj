@@ -2,10 +2,21 @@
 
 import { useState } from 'react';
 import { useFavoritos } from '@/hooks/useFavoritos';
-import { Anuncio } from '@/types';
+
+interface FavoritoLike {
+  id: string;
+  titulo: string;
+  descripcion?: string;
+  categoria: string;
+  precio?: number;
+  creado_at?: string;
+  usuario_nombre?: string;
+  comunidad_autonoma?: string;
+  provincia?: string;
+}
 
 interface FavoritoButtonProps {
-  anuncio: Anuncio;
+  anuncio: FavoritoLike;
   className?: string;
   showLabel?: boolean;
 }

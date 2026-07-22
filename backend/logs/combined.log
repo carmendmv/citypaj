@@ -3,3 +3,438 @@
 {"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-15T20:16:45.075Z"}
 {"level":"info","message":"::ffff:127.0.0.1 - - [15/Jun/2026:20:17:09 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-15T20:17:09.714Z"}
 {"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-15T20:20:00.401Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-16T17:09:58.991Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-16T17:09:58.994Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-16T17:09:58.995Z"}
+{"level":"info","message":"::1 - - [16/Jun/2026:17:10:07 +0000] \"GET /health HTTP/1.1\" 200 120 \"-\" \"Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655\"","service":"citypaj-backend","timestamp":"2026-06-16T17:10:07.474Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-16T17:10:48.056Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-16T17:10:48.058Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-16T17:10:48.059Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [16/Jun/2026:17:11:18 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-16T17:11:18.284Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [16/Jun/2026:17:11:18 +0000] \"GET /api/anuncios HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-16T17:11:18.408Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [16/Jun/2026:17:11:27 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-16T17:11:27.029Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [16/Jun/2026:17:11:27 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-06-16T17:11:27.153Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-17T06:35:02.013Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-17T06:35:02.026Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-17T06:35:02.027Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-06-17T07:30:45.395Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-06-17T07:30:45.399Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-06-17T07:30:45.400Z"}
+{"level":"info","message":"::1 - - [17/Jun/2026:19:21:45 +0000] \"GET /api/health HTTP/1.1\" 200 123 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-06-17T19:21:45.675Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-06-17T19:21:46.793Z"}
+{"level":"info","message":"Process terminated","service":"citypaj-backend","timestamp":"2026-06-17T19:22:47.712Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-15T18:10:04.145Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-15T18:10:04.147Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-15T18:10:04.148Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:10:48 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:10:48.432Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:10:54 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:10:54.440Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:10:57 +0000] \"GET /api/anuncios?page=1&limit=15&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:10:57.228Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:10:57 +0000] \"GET /api/anuncios?page=1&limit=15&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:10:57.359Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-15T18:15:49.644Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-15T18:15:55.945Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-15T18:15:55.947Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-15T18:15:55.947Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:16:24 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:16:24.720Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:18:53 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:18:53.179Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:18:54 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:18:54.031Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:18:54 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:18:54.813Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:18:55 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:18:55.600Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:18:56 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:18:56.437Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:18:57 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:18:57.236Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:18:58 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:18:58.097Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:18:58 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:18:58.871Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:18:59 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:18:59.715Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:00 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:00.510Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:01 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:01.322Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:02 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:02.104Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:02 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:02.894Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:03 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:03.707Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:04 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:04.480Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:05 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:05.303Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:06 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:06.082Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:06 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:06.873Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:07 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:07.627Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:08 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:08.402Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:09 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:09.308Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:19:10 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:19:10.260Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-15T18:19:25.295Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-15T18:19:30.936Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-15T18:19:30.938Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-15T18:19:30.938Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:04 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:04.562Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:05 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:05.405Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:06 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:06.203Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:07 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:07.079Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:07 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:07.897Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:08 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:08.703Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:09 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:09.523Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:10 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:10.302Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:11 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:11.222Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:12 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:12.840Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:13 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:13.695Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:14 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:14.643Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:15 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:15.608Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [15/Jul/2026:18:20:16 +0000] \"GET /api/anuncios?pagina=1&limite=10 HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-15T18:20:16.623Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-15T18:20:24.447Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-15T18:20:31.022Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-15T18:20:31.026Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-15T18:20:31.026Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-20T17:25:47.441Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-20T17:25:47.443Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-20T17:25:47.444Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-20T17:29:01.900Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-20T17:29:11.348Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-20T17:29:11.351Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-20T17:29:11.352Z"}
+{"level":"info","message":"::1 - - [20/Jul/2026:17:29:37 +0000] \"GET /health HTTP/1.1\" 200 120 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-20T17:29:37.251Z"}
+{"level":"info","message":"::1 - - [20/Jul/2026:17:29:38 +0000] \"GET /favicon.ico HTTP/1.1\" 404 98 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-20T17:29:38.242Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-20T17:29:46.546Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-20T17:29:54.677Z"}
+{"level":"info","message":"Process terminated","service":"citypaj-backend","timestamp":"2026-07-20T17:30:37.510Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-20T17:30:50.176Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-20T17:30:50.179Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-20T17:30:50.179Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-20T17:38:44.879Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T10:17:29.928Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T10:17:29.930Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T10:17:29.931Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T10:45:28.969Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T10:45:28.974Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T10:45:28.975Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T10:46:03.897Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T10:46:05.225Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T10:46:05.228Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T10:46:05.229Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T10:49:25.724Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T10:49:56.951Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T10:49:56.960Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T10:49:56.960Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T10:50:56.775Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T10:50:56.777Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T10:50:56.777Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:51:53 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:51:53.517Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:51:53 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:51:53.519Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:51:53 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:51:53.715Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:51:53 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:51:53.749Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:51:56 +0000] \"GET /api/anuncios?categoria=educacion&orden=fecha_desc&limite=30&pagina=1&comunidad_autonoma=Arag%C3%B3n HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:51:56.406Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:51:56 +0000] \"GET /api/anuncios?categoria=educacion&orden=fecha_desc&limite=30&pagina=1&comunidad_autonoma=Arag%C3%B3n HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:51:56.659Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:51:58 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:51:58.384Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:51:58 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:51:58.438Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:51:58 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:51:58.582Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:51:58 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:51:58.626Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:52:13 +0000] \"GET /api/comunidad HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:52:13.659Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:52:13 +0000] \"GET /api/comunidad HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:52:13.798Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:52:18 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:52:18.733Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:52:18 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:52:18.778Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:52:18 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:52:18.964Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:10:52:19 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T10:52:19.010Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T10:53:59.147Z"}
+
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T10:52:39.914Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T10:52:39.917Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T10:52:39.917Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T10:53:19.984Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T10:56:57.748Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T10:56:57.751Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T10:56:57.751Z"}
+{"level":"info","message":"::1 - - [21/Jul/2026:10:57:13 +0000] \"GET /health HTTP/1.1\" 200 120 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-21T10:57:13.180Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T10:58:06.578Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T10:58:13.691Z"}
+{"level":"info","message":"Process terminated","service":"citypaj-backend","timestamp":"2026-07-21T10:59:05.446Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T11:00:19.210Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T11:00:19.213Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T11:00:19.213Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T11:02:44.029Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T11:03:01.061Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T11:03:01.064Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T11:03:01.065Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T11:03:06.306Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T11:03:15.425Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T11:03:15.428Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T11:03:15.428Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T11:06:31.680Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T11:24:02.156Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T11:24:02.160Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T11:24:02.161Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T11:25:56.767Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T11:26:05.402Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T11:26:05.405Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T11:26:05.406Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T11:26:35.919Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T11:28:56.817Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T11:28:56.820Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T11:28:56.821Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T11:30:40.978Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T12:18:48.792Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T12:18:48.795Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T12:18:48.796Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T12:20:16.234Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T12:20:16.236Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T12:20:16.237Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:20:43 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:20:43.639Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:20:43 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:20:43.640Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:20:43 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:20:43.821Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:20:43 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:20:43.854Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:21:26 +0000] \"GET /api/sugerencias/estadisticas HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:21:26.390Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:21:26 +0000] \"GET /api/sugerencias/estadisticas HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:21:26.550Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T12:21:36.678Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T12:21:39.074Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T12:22:36.194Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T12:22:36.197Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T12:22:36.198Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T12:22:53.160Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T12:22:53.161Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T12:22:53.162Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:23:23 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:23:23.610Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:23:23 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:23:23.615Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:23:23 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:23:23.812Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:23:23 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:23:23.854Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:23:35 +0000] \"GET /api/sugerencias/estadisticas HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:23:35.714Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:23:35 +0000] \"GET /api/sugerencias/estadisticas HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:23:35.864Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:23:44 +0000] \"GET /api/sugerencias/estadisticas HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:23:44.001Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [21/Jul/2026:12:23:44 +0000] \"GET /api/sugerencias/estadisticas HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-21T12:23:44.150Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T12:24:57.941Z"}
+
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T12:25:31.604Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T12:25:31.607Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T12:25:31.607Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-21T12:28:30.423Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-21T12:28:53.991Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-21T12:28:53.994Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-21T12:28:53.995Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T11:06:36.198Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T11:08:06.260Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T11:08:06.262Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T11:08:06.263Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T11:13:56.934Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T11:13:56.936Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T11:13:56.936Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:14:41 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:14:41.268Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:14:41 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:14:41.270Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:14:41 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:14:41.462Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:14:41 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:14:41.493Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:14:51 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:14:51.564Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:14:51 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:14:51.704Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T11:15:41.446Z"}
+
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T11:16:30.638Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T11:16:30.646Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T11:16:30.646Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T11:17:46.023Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T11:19:00.427Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T11:19:00.429Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T11:19:00.430Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T11:19:15.816Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T11:20:59.082Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T11:20:59.095Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T11:20:59.096Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:21:36 +0000] \"GET /api/sugerencias/estadisticas HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:21:36.199Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:21:36 +0000] \"GET /api/sugerencias/estadisticas HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:21:36.352Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:21:38 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:21:38.328Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:21:38 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:21:38.372Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:21:38 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:21:38.549Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:21:38 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:21:38.590Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:21:42 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:21:42.175Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:21:42 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:21:42.213Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:21:42 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:21:42.377Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:21:42 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:21:42.414Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:22:27 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:22:27.064Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:22:27 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:22:27.066Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:22:27 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:22:27.256Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:22:27 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:22:27.295Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T11:23:17.730Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T11:24:26.873Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T11:24:26.876Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T11:24:26.876Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:25:47 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:25:47.516Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:25:47 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:25:47.522Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:25:47 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:25:47.696Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:25:47 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:25:47.733Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T11:26:23.043Z"}
+{"level":"info","message":"::1 - - [22/Jul/2026:11:26:41 +0000] \"GET /health HTTP/1.1\" 200 119 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-07-22T11:26:41.707Z"}
+{"level":"info","message":"::1 - - [22/Jul/2026:11:26:41 +0000] \"GET /test-db HTTP/1.1\" 200 107 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-07-22T11:26:41.732Z"}
+{"level":"info","message":"::1 - - [22/Jul/2026:11:26:41 +0000] \"GET /api/anuncios?limit=2&ordenar=creado-desc HTTP/1.1\" 200 207359 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-07-22T11:26:41.783Z"}
+{"level":"info","message":"::1 - - [22/Jul/2026:11:26:41 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 200 130 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-07-22T11:26:41.805Z"}
+{"level":"info","message":"::1 - - [22/Jul/2026:11:26:41 +0000] \"GET /api/sugerencias/estadisticas HTTP/1.1\" 500 54 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-07-22T11:26:41.813Z"}
+{"level":"info","message":"::1 - - [22/Jul/2026:11:28:21 +0000] \"GET /health HTTP/1.1\" 200 119 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-07-22T11:28:21.945Z"}
+{"level":"info","message":"::1 - - [22/Jul/2026:11:28:21 +0000] \"GET /test-db HTTP/1.1\" 200 107 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-07-22T11:28:21.972Z"}
+{"level":"info","message":"::1 - - [22/Jul/2026:11:28:21 +0000] \"GET /api/anuncios?limit=2&ordenar=creado-desc HTTP/1.1\" 200 207359 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-07-22T11:28:21.992Z"}
+{"level":"info","message":"::1 - - [22/Jul/2026:11:28:22 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 200 130 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-07-22T11:28:22.008Z"}
+{"level":"info","message":"::1 - - [22/Jul/2026:11:28:22 +0000] \"GET /api/sugerencias/estadisticas HTTP/1.1\" 200 1788 \"-\" \"-\"","service":"citypaj-backend","timestamp":"2026-07-22T11:28:22.019Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T11:34:03.737Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T11:34:03.739Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T11:34:03.739Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:34:36 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:34:36.435Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:34:36 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:34:36.453Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:34:36 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:34:36.622Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:34:36 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:34:36.663Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:35:03 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:35:03.247Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:35:03 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:35:03.385Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T11:35:22.409Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T11:41:55.527Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T11:41:55.529Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T11:41:55.529Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:42:30 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:42:30.590Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:42:30 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:42:30.593Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:42:30 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:42:30.767Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:42:30 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:42:30.797Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:42:34 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:42:34.781Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:42:34 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 500 54 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:42:34.909Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T11:42:56.242Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T11:47:37.764Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T11:47:37.766Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T11:47:37.766Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:48:01 +0000] \"GET /api/anuncios?limit=5&ordenar=creado-desc HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:48:01.978Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:48:01 +0000] \"GET /api/estadisticas/home HTTP/1.1\" 200 130 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:48:01.981Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:48:10 +0000] \"GET /api/anuncios/undefined HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/undefined\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T11:48:10.665Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:48:10 +0000] \"GET /api/anuncios/undefined HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/undefined\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T11:48:10.696Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:48:10 +0000] \"GET /api/anuncios/undefined HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/undefined\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T11:48:10.725Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:48:10 +0000] \"GET /api/anuncios/undefined HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/undefined\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T11:48:10.753Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:48:14 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&orden=fecha_desc HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:48:14.130Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:11:48:21 +0000] \"GET /api/anuncios?pagina=1&limite=20&categoria=ocio&comunidad_autonoma=Madrid&orden=fecha_desc HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T11:48:21.262Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T11:50:12.509Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T11:52:05.203Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T11:52:05.215Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T11:52:05.215Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T11:57:02.720Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T12:03:35.527Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T12:03:35.528Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T12:03:35.528Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:04:18 +0000] \"GET /api/anuncios/undefined HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/undefined\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:04:18.175Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:04:18 +0000] \"GET /api/anuncios/undefined HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/undefined\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:04:18.203Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:04:18 +0000] \"GET /api/anuncios/undefined HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/undefined\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:04:18.228Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:04:18 +0000] \"GET /api/anuncios/undefined HTTP/1.1\" 404 49 \"http://localhost:3001/anuncios/undefined\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:04:18.255Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:04:32 +0000] \"GET /api/anuncios?categoria=vivienda&orden=fecha_desc&limite=30&pagina=1&comunidad_autonoma=Arag%C3%B3n HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T12:04:32.001Z"}
+{"level":"info","message":"::1 - - [22/Jul/2026:12:08:39 +0000] \"GET /api/anuncios?categoria=ocio&pagina=1&limite=2 HTTP/1.1\" 200 646717 \"-\" \"curl/8.5.0\"","service":"citypaj-backend","timestamp":"2026-07-22T12:08:39.122Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T12:10:06.730Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T12:18:10.266Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T12:18:10.267Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T12:18:10.267Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T12:19:35.308Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T12:21:20.640Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T12:21:20.642Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T12:21:20.642Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:23:17 +0000] \"GET /api/anuncios/undefined HTTP/1.1\" 500 54 \"http://localhost:3001/anuncios/undefined\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:23:17.834Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:23:17 +0000] \"GET /api/anuncios/undefined HTTP/1.1\" 500 54 \"http://localhost:3001/anuncios/undefined\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:23:17.864Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:23:17 +0000] \"GET /api/anuncios/undefined HTTP/1.1\" 500 54 \"http://localhost:3001/anuncios/undefined\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:23:17.888Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:23:17 +0000] \"GET /api/anuncios/undefined HTTP/1.1\" 500 54 \"http://localhost:3001/anuncios/undefined\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:23:17.913Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T12:25:05.261Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T12:34:27.880Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T12:34:27.882Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T12:34:27.882Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:34:52 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T12:34:52.588Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:35:07 +0000] \"GET /api/anuncios/new-otros-3 HTTP/1.1\" 200 981 \"http://localhost:3001/anuncios/new-otros-3\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:35:07.330Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:35:07 +0000] \"GET /api/anuncios/new-otros-3 HTTP/1.1\" 200 981 \"http://localhost:3001/anuncios/new-otros-3\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:35:07.361Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:35:07 +0000] \"GET /api/anuncios/new-otros-3 HTTP/1.1\" 200 981 \"http://localhost:3001/anuncios/new-otros-3\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:35:07.392Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:35:07 +0000] \"GET /api/anuncios/new-otros-3 HTTP/1.1\" 200 981 \"http://localhost:3001/anuncios/new-otros-3\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:35:07.421Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T12:40:57.003Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T12:44:34.402Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T12:44:34.404Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T12:44:34.404Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:44:52 +0000] \"GET /api/sugerencias/estadisticas HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T12:44:52.153Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:45:40 +0000] \"GET /api/sugerencias/estadisticas?comunidad_autonoma=Castilla-La+Mancha HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T12:45:40.259Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:46:00 +0000] \"GET /api/sugerencias/estadisticas?comunidad_autonoma=Arag%C3%B3n HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T12:46:00.036Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:50:29 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=tecnolog%C3%ADa HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T12:50:29.123Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:50:37 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=tecnolog%C3%ADa&comunidad_autonoma=Arag%C3%B3n HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T12:50:37.989Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T12:50:56.399Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T12:52:51.918Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T12:52:51.920Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T12:52:51.920Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T12:54:04.252Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T12:58:38.254Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T12:58:38.256Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T12:58:38.256Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:59:16 +0000] \"GET /api/anuncios/new-otros-92 HTTP/1.1\" 200 983 \"http://localhost:3001/anuncios/new-otros-92\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:59:16.146Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:59:16 +0000] \"GET /api/anuncios/new-otros-92 HTTP/1.1\" 200 983 \"http://localhost:3001/anuncios/new-otros-92\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:59:16.181Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:59:16 +0000] \"GET /api/anuncios/new-otros-92 HTTP/1.1\" 200 983 \"http://localhost:3001/anuncios/new-otros-92\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:59:16.216Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:59:16 +0000] \"GET /api/anuncios/new-otros-92 HTTP/1.1\" 200 983 \"http://localhost:3001/anuncios/new-otros-92\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T12:59:16.253Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:59:17 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=ocio HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T12:59:17.962Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:59:21 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=ocio&comunidad_autonoma=Asturias HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T12:59:21.818Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:12:59:43 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=servicios HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T12:59:43.089Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T12:59:48.594Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T16:13:10.444Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T16:13:10.446Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T16:13:10.446Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:16:13:35 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=empleo HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T16:13:35.892Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:16:13:40 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=empleo&comunidad_autonoma=Arag%C3%B3n HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T16:13:40.934Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T16:18:16.709Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T16:29:16.673Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T16:29:16.675Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T16:29:16.676Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:16:31:36 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=formacion HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T16:31:36.126Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T16:34:20.382Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T16:43:00.475Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T16:43:00.478Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T16:43:00.478Z"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T16:43:04.718Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T16:49:27.683Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T16:49:27.684Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T16:49:27.685Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T17:01:46.339Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T17:07:53.430Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T17:07:53.432Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T17:07:53.432Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T17:18:56.581Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T17:18:56.584Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T17:18:56.584Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:21:22 +0000] \"GET /api/anuncios?limit=10&ordenar=creado-desc HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:21:22.828Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:21:58 +0000] \"GET /api/anuncios/new-otros-92 HTTP/1.1\" 200 983 \"http://localhost:3001/anuncios/new-otros-92\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T17:21:58.245Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:21:58 +0000] \"GET /api/anuncios/new-otros-92 HTTP/1.1\" 200 983 \"http://localhost:3001/anuncios/new-otros-92\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T17:21:58.279Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:21:58 +0000] \"GET /api/anuncios/new-otros-92 HTTP/1.1\" 200 983 \"http://localhost:3001/anuncios/new-otros-92\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T17:21:58.308Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:21:58 +0000] \"GET /api/anuncios/new-otros-92 HTTP/1.1\" 200 983 \"http://localhost:3001/anuncios/new-otros-92\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T17:21:58.339Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:23:02 +0000] \"POST /api/auth/register HTTP/1.1\" 201 636 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:23:02.224Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:23:02 +0000] \"POST /api/auth/login HTTP/1.1\" 200 636 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:23:02.990Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T17:28:18.507Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T17:28:18.509Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T17:28:18.509Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:30:06 +0000] \"POST /api/auth/register HTTP/1.1\" 409 56 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:30:06.666Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:30:16 +0000] \"POST /api/auth/register HTTP/1.1\" 201 619 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:30:16.736Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:30:17 +0000] \"POST /api/auth/login HTTP/1.1\" 200 619 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:30:17.446Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:30:27 +0000] \"POST /api/auth/register HTTP/1.1\" 409 56 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:30:27.189Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:30:49 +0000] \"POST /api/auth/register HTTP/1.1\" 201 615 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:30:49.852Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:30:50 +0000] \"POST /api/auth/login HTTP/1.1\" 429 69 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:30:50.001Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:31:49 +0000] \"POST /api/auth/register HTTP/1.1\" 429 69 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:31:49.303Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:32:46 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=servicios&busqueda=voluntariado HTTP/1.1\" 200 153 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:32:46.924Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:32:54 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=servicios&comunidad_autonoma=Navarra&busqueda=voluntariado HTTP/1.1\" 200 153 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:32:54.646Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T17:34:16.045Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T17:42:31.613Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T17:42:31.614Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T17:42:31.614Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:43:15 +0000] \"POST /api/auth/login HTTP/1.1\" 200 548 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:43:15.874Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:43:24 +0000] \"GET /api/sugerencias?page=1&limit=10 HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:43:24.623Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:43:24 +0000] \"GET /api/sugerencias?page=1&limit=10 HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:43:24.831Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:44:30 +0000] \"GET /api/sugerencias?page=1&limit=10&comunidad_autonoma=Arag%C3%B3n HTTP/1.1\" 200 112 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:44:30.687Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:44:31 +0000] \"GET /api/sugerencias?page=1&limit=10&comunidad_autonoma=Arag%C3%B3n HTTP/1.1\" 200 112 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:44:31.754Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:44:33 +0000] \"GET /api/sugerencias?page=1&limit=10&comunidad_autonoma=Arag%C3%B3n HTTP/1.1\" 200 112 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:44:33.406Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:45:13 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=vivienda HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:45:13.294Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:45:24 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=vivienda&comunidad_autonoma=Arag%C3%B3n HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:45:24.548Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:45:32 +0000] \"GET /api/anuncios/new-vivienda-8 HTTP/1.1\" 200 969 \"http://localhost:3001/anuncios/new-vivienda-8\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T17:45:32.010Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:45:32 +0000] \"GET /api/anuncios/new-vivienda-8 HTTP/1.1\" 200 969 \"http://localhost:3001/anuncios/new-vivienda-8\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T17:45:32.040Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:45:32 +0000] \"GET /api/anuncios/new-vivienda-8 HTTP/1.1\" 200 969 \"http://localhost:3001/anuncios/new-vivienda-8\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T17:45:32.073Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:45:32 +0000] \"GET /api/anuncios/new-vivienda-8 HTTP/1.1\" 200 969 \"http://localhost:3001/anuncios/new-vivienda-8\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-22T17:45:32.102Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:45:39 +0000] \"POST /api/anuncios/guardar HTTP/1.1\" 404 108 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:45:39.252Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:45:41 +0000] \"POST /api/anuncios/guardar HTTP/1.1\" 404 108 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:45:41.012Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:17:45:57 +0000] \"POST /api/anuncios/guardar HTTP/1.1\" 404 108 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T17:45:57.589Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T17:48:10.318Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T18:01:07.263Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T18:01:07.265Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T18:01:07.265Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:01:21 +0000] \"POST /api/auth/logout HTTP/1.1\" 200 57 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:01:21.709Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:01:21 +0000] \"POST /api/auth/logout HTTP/1.1\" 200 57 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:01:21.711Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T18:04:56.883Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-22T18:25:14.488Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-22T18:25:14.489Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-22T18:25:14.490Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:25:40 +0000] \"GET /api/comunidad HTTP/1.1\" 200 112 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:25:40.270Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:25:40 +0000] \"GET /api/comunidad/provincias HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:25:40.273Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:25:40 +0000] \"GET /api/comunidad HTTP/1.1\" 200 112 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:25:40.447Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:25:55 +0000] \"GET /api/comunidad?comunidad_autonoma=Comunidad+Valenciana HTTP/1.1\" 200 112 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:25:55.188Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:26:57 +0000] \"POST /api/auth/login HTTP/1.1\" 401 51 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:26:57.345Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:27:10 +0000] \"POST /api/auth/login HTTP/1.1\" 401 51 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:27:10.557Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:27:14 +0000] \"POST /api/auth/login HTTP/1.1\" 401 51 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:27:14.159Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:30:37 +0000] \"POST /api/auth/login HTTP/1.1\" 200 548 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:30:37.086Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:30:40 +0000] \"GET /api/sugerencias?page=1&limit=10 HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:30:40.362Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:30:40 +0000] \"GET /api/sugerencias?page=1&limit=10 HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:30:40.612Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:30:50 +0000] \"GET /api/anuncios/moderacion HTTP/1.1\" 401 50 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:30:50.012Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:30:50 +0000] \"GET /api/anuncios/moderacion HTTP/1.1\" 401 50 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:30:50.171Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T18:31:58.366Z"}

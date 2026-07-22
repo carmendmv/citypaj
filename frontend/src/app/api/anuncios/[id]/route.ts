@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { BACKEND_URL } from '@/lib/api';
 
 export async function GET(
   request: NextRequest,
@@ -8,7 +9,7 @@ export async function GET(
     const { id } = params;
 
     // Conectar con backend real para obtener el anuncio
-    const response = await fetch(`http://localhost:3002/api/anuncios/${id}`, {
+    const response = await fetch(`${BACKEND_URL}/api/anuncios/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -61,7 +62,7 @@ export async function PUT(
     }
 
     // Conectar con backend real para actualizar el anuncio
-    const response = await fetch(`http://localhost:3002/api/anuncios/${params.id}`, {
+    const response = await fetch(`${BACKEND_URL}/api/anuncios/${params.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -106,7 +107,7 @@ export async function DELETE(
 ) {
   try {
     // Conectar con backend real para eliminar el anuncio
-    const response = await fetch(`http://localhost:3002/api/anuncios/${params.id}`, {
+    const response = await fetch(`${BACKEND_URL}/api/anuncios/${params.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

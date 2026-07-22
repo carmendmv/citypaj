@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { BACKEND_URL } from '@/lib/api';
+
+export const dynamic = 'force-dynamic';
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,19 +28,23 @@ export async function POST(request: NextRequest) {
     };
 
     // Enviar sugerencia al backend
-    const backendResponse = await fetch('http://localhost:3002/api/sugerencias', {
+    const backendResponse = await fetch(`${BACKEND_URL}/api/sugerencias`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        nombre: body.nombre.trim(),
-        email: body.email.trim(),
+        nombre: body.nombre?.trim(),
+        email: body.email?.trim(),
+        edad: body.edad,
         titulo: body.titulo.trim(),
         descripcion: body.descripcion.trim(),
+        solicitud_ayuntamiento: body.solicitud_ayuntamiento?.trim(),
         tipo: body.tipo || 'sugerencia',
         categoria: body.categoria || 'general',
-        prioridad: body.prioridad || 'media'
+        prioridad: body.prioridad || 'media',
+        anonimo: body.anonimo || false,
+        comunidad_autonoma: body.comunidad_autonoma
       })
     });
 
@@ -53,19 +61,14 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    // Aquí obtendrías las estadísticas del backend
-    return NextResponse.json({
-      total: 0,
-      porCategoria: {},
-      porPrioridad: {},
-      recientes: []
-    });
+    const { searchParams } = new URL(request.url);
+    const response = await fetch(`${BACKEND_URL}/api/sugerencias?${searchParams.toString()}`);
+    const result = await response.json().catch(() => ({}));
+    return NextResponse.json(result, { status: response.status });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Error al obtener estadísticas' },
-      { status: 500 }
-    );
+    console.error('Error proxy sugerencias:', error);
+    return NextResponse.json({ success: false, error: 'Error de conexión' }, { status: 500 });
   }
 }

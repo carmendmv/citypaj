@@ -45,6 +45,7 @@ export interface Anuncio {
   visible: boolean;
   estado_moderacion: 'pending' | 'approved' | 'rejected' | 'flagged';
   motivo_rechazo?: string;
+  precio?: number;
   vistas: number;
   creado_at: string;  // Cambiado de 'creado' a 'creado_at'
   actualizado_at: string;  // Cambiado de 'actualizado' a 'actualizado_at'

@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { BACKEND_URL } from '@/lib/api';
+
+export const dynamic = 'force-dynamic';
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,7 +20,7 @@ export async function POST(request: NextRequest) {
     const token = authHeader?.replace('Bearer ', '') || '';
 
     // Conectar con backend real para reportar anuncio
-    const response = await fetch('http://localhost:3002/api/anuncios/reportar', {
+    const response = await fetch(`${BACKEND_URL}/api/anuncios/reportar`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

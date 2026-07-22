@@ -1,20 +1,31 @@
 import { Router } from 'express';
+import {
+  getSugerencias,
+  createSugerencia,
+  getSugerenciaById,
+  updateSugerencia,
+  deleteSugerencia,
+  getEstadisticasSugerencias
+} from '../controllers/sugerencias';
 
 const router = Router();
 
-// Get all sugerencias
-router.get('/', (req, res) => {
-  res.json({ message: 'Get all sugerencias endpoint' });
-});
+// Get all sugerencias with filters
+router.get('/', getSugerencias);
 
 // Create new sugerencia
-router.post('/', (req, res) => {
-  res.json({ message: 'Create sugerencia endpoint' });
-});
+router.post('/', createSugerencia);
+
+// Get estadisticas
+router.get('/estadisticas', getEstadisticasSugerencias);
 
 // Get sugerencia by ID
-router.get('/:id', (req, res) => {
-  res.json({ message: 'Get sugerencia by ID endpoint' });
-});
+router.get('/:id', getSugerenciaById);
+
+// Update sugerencia (status)
+router.put('/:id', updateSugerencia);
+
+// Delete sugerencia
+router.delete('/:id', deleteSugerencia);
 
 export default router;

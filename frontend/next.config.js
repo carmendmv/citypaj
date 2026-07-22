@@ -14,6 +14,16 @@ const nextConfig = {
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
+  async redirects() {
+    return [
+      { source: '/ocio', destination: '/anuncios?categoria=ocio', permanent: false },
+      { source: '/servicios', destination: '/anuncios?categoria=servicios', permanent: false },
+      { source: '/educacion', destination: '/anuncios?categoria=formacion', permanent: false },
+      { source: '/formacion', destination: '/anuncios?categoria=formacion', permanent: false },
+      { source: '/empleo', destination: '/anuncios?categoria=empleo', permanent: false },
+      { source: '/vivienda', destination: '/anuncios?categoria=vivienda', permanent: false },
+    ];
+  },
   async rewrites() {
     const apiUrlRaw = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
     const apiUrlCandidate = apiUrlRaw.replace(/\/api\/?$/, '');

@@ -72,10 +72,10 @@ const Footer: React.FC = memo(() => {
               </div>
             </nav>
 
-            {/* Legal y contacto */}
+            {/* Legal, moderación y contacto */}
             <div className="flex flex-col gap-4">
               <h4 className="font-sans text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Legal
+                Legal y administración
               </h4>
               <div className="flex flex-col gap-2">
                 <Link href="/contacto" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
@@ -86,6 +86,9 @@ const Footer: React.FC = memo(() => {
                 </Link>
                 <Link href="/privacidad" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
                   Política de privacidad
+                </Link>
+                <Link href="/admin/sugerencias" className="text-sm font-sans text-red-400 hover:text-red-300 transition-colors duration-200">
+                  Panel de moderación
                 </Link>
               </div>
             </div>
