@@ -3,6 +3,7 @@
 import { ReactNode, useEffect } from 'react';
 import { AuthProvider } from '@/context/AuthContext';
 import { ComunidadProvider } from '@/hooks/useComunidad';
+import '@/i18n';
 
 export default function Providers({ children }: { children: ReactNode }) {
   useEffect(() => {
