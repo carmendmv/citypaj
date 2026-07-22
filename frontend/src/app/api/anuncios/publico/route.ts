@@ -1,4 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { BACKEND_URL } from '@/lib/api';
+
+export const dynamic = 'force-dynamic';
+
+
+const CATEGORIA_MAP: Record<string, string> = {
+  educacion: 'formacion',
+  intercambios: 'comunidad',
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,17 +30,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const categoriaBackend = CATEGORIA_MAP[categoria] || categoria;
+    const authHeader = request.headers.get('authorization') || '';
+
     // Conectar con backend real para guardar el anuncio
-    const response = await fetch('http://localhost:3002/api/anuncios', {
+    const response = await fetch(`${BACKEND_URL}/api/anuncios`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${request.headers.get('authorization')?.replace('Bearer ', '') || ''}`
+        'Authorization': authHeader.startsWith('Bearer ') ? authHeader : `Bearer ${authHeader}`
       },
       body: JSON.stringify({
         titulo: titulo.trim(),
         descripcion: descripcion.trim(),
-        categoria,
+        categoria: categoriaBackend,
         comunidad_autonoma: comunidad_autonoma.trim(),
         provincia: comunidad_autonoma, // Por ahora usamos la misma comunidad como provincia
         precio: null,
