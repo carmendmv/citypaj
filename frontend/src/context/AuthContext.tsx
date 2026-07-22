@@ -8,6 +8,12 @@ export type AuthUser = {
   nombre: string;
 };
 
+type StoredAuth = {
+  user?: AuthUser;
+  accessToken?: string;
+  refreshToken?: string;
+};
+
 type AuthState = {
   user: AuthUser | null;
   accessToken: string | null;
@@ -20,35 +26,117 @@ const AuthContext = createContext<AuthState | null>(null);
 
 const STORAGE_KEY = 'citypaj_auth';
 
+function decodeJwtExp(token: string): number | null {
+  try {
+    const payload = token.split('.')[1];
+    if (!payload) return null;
+    const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+    const json = JSON.parse(atob(base64));
+    return json.exp ? json.exp * 1000 : null;
+  } catch {
+    return null;
+  }
+}
+
+function isTokenExpired(token: string): boolean {
+  const exp = decodeJwtExp(token);
+  if (!exp) return false;
+  return Date.now() >= exp - 60000;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  useEffect(() => {
+  const persist = useCallback((nextUser: AuthUser | null, nextAccessToken: string | null, nextRefreshToken?: string | null) => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw) as { user?: AuthUser; accessToken?: string };
-      if (parsed?.user && parsed?.accessToken) {
-        setUser(parsed.user);
-        setAccessToken(parsed.accessToken);
+      if (!nextUser || !nextAccessToken) {
+        localStorage.removeItem(STORAGE_KEY);
+        return;
       }
+      const stored: StoredAuth = { user: nextUser, accessToken: nextAccessToken };
+      if (nextRefreshToken) stored.refreshToken = nextRefreshToken;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
     } catch {
       return;
     }
   }, []);
 
-  const persist = useCallback((nextUser: AuthUser | null, token: string | null) => {
+  const logout = useCallback(async () => {
     try {
-      if (!nextUser || !token) {
-        localStorage.removeItem(STORAGE_KEY);
-        return;
-      }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: nextUser, accessToken: token }));
+      await fetch('/api/auth/logout', { method: 'POST' });
     } catch {
-      return;
+      // ignorar errores de red
     }
-  }, []);
+    setUser(null);
+    setAccessToken(null);
+    persist(null, null, null);
+  }, [persist]);
+
+  const refreshAccessToken = useCallback(async () => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as StoredAuth;
+      if (!parsed.refreshToken || !parsed.user) return;
+
+      const res = await fetch('/api/auth/refresh', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken: parsed.refreshToken }),
+      });
+
+      if (!res.ok) throw new Error('refresh failed');
+
+      const json = await res.json();
+      const nextAccessToken = json?.data?.accessToken as string | undefined;
+      if (!nextAccessToken) throw new Error('no access token');
+
+      setUser(parsed.user);
+      setAccessToken(nextAccessToken);
+      persist(parsed.user, nextAccessToken, parsed.refreshToken);
+    } catch {
+      logout();
+    }
+  }, [logout, persist]);
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw) as StoredAuth;
+        if (!parsed.user) return;
+
+        if (parsed.refreshToken) {
+          try {
+            await refreshAccessToken();
+            return;
+          } catch {
+            // si el refresh falla, comprobar accessToken
+          }
+        }
+
+        if (parsed.accessToken && !isTokenExpired(parsed.accessToken)) {
+          setUser(parsed.user);
+          setAccessToken(parsed.accessToken);
+        } else {
+          logout();
+        }
+      } catch {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    };
+    init();
+  }, [logout, refreshAccessToken]);
+
+  useEffect(() => {
+    if (!accessToken) return;
+    const interval = setInterval(() => {
+      refreshAccessToken();
+    }, 14 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, [accessToken, refreshAccessToken]);
 
   const login = useCallback(async ({ email, password }: { email: string; password: string }) => {
     const res = await fetch('/api/auth/login', {
@@ -58,20 +146,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     if (!res.ok) {
-      throw new Error('Login fallido');
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.message || errorData.error || 'Login fallido');
     }
 
     const json = await res.json();
     const nextUser = json?.data?.user as AuthUser | undefined;
-    const token = json?.data?.token as string | undefined;
+    const nextAccessToken = (json?.data?.tokens?.accessToken || json?.data?.token) as string | undefined;
+    const nextRefreshToken = json?.data?.tokens?.refreshToken as string | undefined;
 
-    if (!nextUser || !token) {
+    if (!nextUser || !nextAccessToken || !nextRefreshToken) {
       throw new Error('Login fallido');
     }
 
     setUser(nextUser);
-    setAccessToken(token);
-    persist(nextUser, token);
+    setAccessToken(nextAccessToken);
+    persist(nextUser, nextAccessToken, nextRefreshToken);
   }, [persist]);
 
   const register = useCallback(async ({
@@ -97,22 +187,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     if (!res.ok) {
-      throw new Error('Registro fallido');
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.message || errorData.error || 'Registro fallido');
     }
 
     await login({ email, password });
   }, [login]);
-
-  const logout = useCallback(async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-    } catch {
-    }
-
-    setUser(null);
-    setAccessToken(null);
-    persist(null, null);
-  }, [persist]);
 
   const value = useMemo<AuthState>(() => ({ user, accessToken, login, register, logout }), [user, accessToken, login, register, logout]);
 

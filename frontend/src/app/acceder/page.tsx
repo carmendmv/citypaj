@@ -70,8 +70,8 @@ export default function AccederPage() {
     try {
       await login({ email: loginEmail, password: loginPassword });
       router.push('/mi-perfil');
-    } catch {
-      setErrorLogin('Error al iniciar sesión');
+    } catch (err: any) {
+      setErrorLogin(err?.message || 'Error al iniciar sesión');
     } finally {
       setLoadingLogin(false);
     }
@@ -112,8 +112,8 @@ export default function AccederPage() {
         turnstileToken: turnstileToken || undefined,
       });
       router.push('/mi-perfil');
-    } catch {
-      setErrorRegister('Error al crear cuenta');
+    } catch (err: any) {
+      setErrorRegister(err?.message || 'Error al crear cuenta');
     } finally {
       setLoadingRegister(false);
     }

@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { BACKEND_URL } from '@/lib/api';
+
+export const dynamic = 'force-dynamic';
+
 
 export async function POST(request: NextRequest) {
   try {
     // Conectar con backend real para logout
-    const response = await fetch('http://localhost:3002/api/auth/logout', {
+    const response = await fetch(`${BACKEND_URL}/api/auth/logout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

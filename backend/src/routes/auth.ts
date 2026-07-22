@@ -1,35 +1,24 @@
 import { Router } from 'express';
+import { login, register, logout, forgotPassword, resetPassword, refreshToken } from '../controllers/auth-simple';
 
 const router = Router();
 
 // Login
-router.post('/login', (req, res) => {
-  res.json({ message: 'Login endpoint' });
-});
+router.post('/login', login);
 
 // Register
-router.post('/register', (req, res) => {
-  res.json({ message: 'Register endpoint' });
-});
+router.post('/register', register);
 
 // Logout
-router.post('/logout', (req, res) => {
-  res.json({ message: 'Logout endpoint' });
-});
+router.post('/logout', logout);
 
 // Forgot password
-router.post('/forgot-password', (req, res) => {
-  res.json({ message: 'Forgot password endpoint' });
-});
+router.post('/forgot-password', forgotPassword);
 
 // Reset password
-router.post('/reset-password', (req, res) => {
-  res.json({ message: 'Reset password endpoint' });
-});
+router.post('/reset-password', resetPassword);
 
 // Refresh token
-router.post('/refresh', (req, res) => {
-  res.json({ message: 'Refresh token endpoint' });
-});
+router.post('/refresh', refreshToken);
 
 export { router as authRoutes };
