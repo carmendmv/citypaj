@@ -93,9 +93,16 @@ const AnuncioList: React.FC<AnuncioListProps> = ({
       <div className="divide-y divide-black">
         {anuncios.map((anuncio) => (
           <div
-            key={anuncio.id}
-            onClick={() => onAnuncioClick?.(anuncio.id)}
-            className="block py-2 px-4 hover:bg-gray-50 transition-colors cursor-pointer"
+            key={anuncio.id || Math.random()}
+            onClick={() => {
+              if (!anuncio.id || anuncio.id === 'undefined' || anuncio.id === 'null') return;
+              if (onAnuncioClick) {
+                onAnuncioClick(anuncio.id);
+              } else {
+                window.location.href = `/anuncios/${anuncio.id}`;
+              }
+            }}
+            className={`block py-2 px-4 hover:bg-gray-50 transition-colors ${anuncio.id && anuncio.id !== 'undefined' && anuncio.id !== 'null' ? 'cursor-pointer' : 'cursor-default opacity-60'}`}
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
               <div className="flex-1">
@@ -108,7 +115,11 @@ const AnuncioList: React.FC<AnuncioListProps> = ({
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs text-gray-500 sm:ml-4">
                 <div className="flex items-center gap-2">
-                  <HeartButton anuncioId={anuncio.id} size="sm" showLabel={false} />
+                  {anuncio.id && anuncio.id !== 'undefined' && anuncio.id !== 'null' ? (
+                    <HeartButton anuncioId={anuncio.id} size="sm" showLabel={false} />
+                  ) : (
+                    <span className="w-4 h-4 inline-block" />
+                  )}
                   <span className="font-medium">
                     {anuncio.usuario_nombre || 'Anónimo'}
                   </span>

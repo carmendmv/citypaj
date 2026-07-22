@@ -163,7 +163,7 @@ export default function GuardadosPage() {
                     <div>
                       <p className="font-sans text-xs text-gray-500 mb-1">Publicado</p>
                       <p className="font-sans text-sm text-black">
-                        {new Date(anuncio.creado).toLocaleDateString('es-ES', {
+                        {new Date(anuncio.creado_at).toLocaleDateString('es-ES', {
                           day: 'numeric',
                           month: 'short',
                           year: 'numeric'
@@ -175,9 +175,9 @@ export default function GuardadosPage() {
                   <div className="flex flex-wrap gap-3 items-center border-t border-gray-200 pt-4">
                     <div className="flex items-center gap-4 text-sm text-gray-600">
                       <span>Por: {anuncio.usuario_nombre || 'Anónimo'}</span>
-                      {anuncio.email && (
+                      {anuncio.usuario_email && (
                         <a 
-                          href={`mailto:${anuncio.email}`}
+                          href={`mailto:${anuncio.usuario_email}`}
                           className="hover:text-orange-500 transition-colors"
                         >
                           Contactar

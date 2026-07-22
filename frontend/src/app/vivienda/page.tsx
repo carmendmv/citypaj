@@ -72,8 +72,8 @@ export default function ViviendaPage() {
 
         <FiltroAvanzado
           onFiltroChange={(nuevosFiltros) => {
-            setComunidadAutonoma(nuevosFiltros.comunidad);
-            setCurrentPage(1); // Resetear a la primera página cuando cambian los filtros
+            setComunidadAutonoma(nuevosFiltros.comunidad_autonoma);
+            setCurrentPage(1);
           }}
           categoriaInicial="vivienda"
         />

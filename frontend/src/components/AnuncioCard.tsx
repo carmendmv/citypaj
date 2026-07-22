@@ -114,7 +114,7 @@ export const AnuncioCard: React.FC<AnuncioCardProps> = ({
                   </>
                 )}
                 <span>•</span>
-                <span>{formatoFecha(anuncio.creado)}</span>
+                <span>{formatoFecha(anuncio.creado_at)}</span>
               </div>
             </div>
             

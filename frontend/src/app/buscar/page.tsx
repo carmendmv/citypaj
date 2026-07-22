@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Header from '@/components/layout/Header';
@@ -13,7 +13,7 @@ type Anuncio = {
   creado: string;
 };
 
-export default function BuscarPage() {
+function BuscarContent() {
   const searchParams = useSearchParams();
   const q = useMemo(() => (searchParams.get('q') || '').trim(), [searchParams]);
 
@@ -83,5 +83,13 @@ export default function BuscarPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function BuscarPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <BuscarContent />
+    </Suspense>
   );
 }
