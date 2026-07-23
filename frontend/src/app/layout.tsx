@@ -2,7 +2,6 @@ import { Inter } from 'next/font/google'
 import type { Metadata } from 'next'
 import './globals.css'
 import { AuthProvider } from '@/context/AuthContext'
-import { TranslationProvider } from '@/contexts/TranslationContext'
 import Providers from './providers';
 
 export const metadata: Metadata = {
@@ -78,9 +77,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <div id="root">
-          <TranslationProvider>
-            <Providers>{children}</Providers>
-          </TranslationProvider>
+          <Providers>{children}</Providers>
         </div>
       </body>
     </html>

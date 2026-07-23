@@ -7,7 +7,6 @@ import { Search, Menu, X, User, LogOut, Trash2, AlertCircle } from 'lucide-react
 import { useAuth } from '@/context/AuthContext';
 import { useHeaderVisibility } from '@/context/HeaderVisibilityContext';
 import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
-import LanguageSelector from '@/components/ui/LanguageSelector';
 
 const COMUNIDADES_AUTONOMAS = [
   'Andalucía', 'Aragón', 'Asturias', 'Baleares', 'Canarias',
@@ -259,10 +258,6 @@ const Header: React.FC<HeaderProps> = memo(({
                 {t('common.publish', 'Publicar')}
               </Link>
 
-              <div className="hidden md:block">
-                <LanguageSelector isMobile={false} />
-              </div>
-
               <div className="relative hidden md:block">
                 <button
                   onClick={toggleUserMenu}
@@ -481,11 +476,6 @@ const Header: React.FC<HeaderProps> = memo(({
                         </>
                       ) : null}
                   </div>
-                </div>
-
-                <div className="pt-3 border-t border-black">
-                  <div className="font-sans text-xs text-gray-600 mb-2">{t('common.language', 'IDIOMA')}</div>
-                  <LanguageSelector isMobile={true} />
                 </div>
 
                               </div>
