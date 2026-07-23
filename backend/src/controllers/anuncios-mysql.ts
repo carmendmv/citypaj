@@ -269,6 +269,8 @@ export const getAnuncioById = async (req: Request, res: Response): Promise<void>
   }
 };
 
+const ANON_USER_ID = '69ff671c-8d97-4179-b525-0a62bb8b2f62';
+
 export const createAnuncio = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const {
@@ -280,18 +282,10 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       modalidad
     } = req.body;
 
-    const userId = req.user?.id;
-
-    if (!userId) {
-      res.status(401).json({
-        success: false,
-        error: 'Usuario no autenticado'
-      });
-      return;
-    }
+    const userId = req.user?.id || ANON_USER_ID;
 
     // Validaciones básicas
-    if (!titulo || !descripcion || !categoria || !comunidad_autonoma || !provincia) {
+    if (!titulo || !descripcion || !categoria || !comunidad_autonoma) {
       res.status(400).json({
         success: false,
         error: 'Faltan campos obligatorios'
@@ -300,10 +294,33 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
     }
 
     const connection = await pool.getConnection();
-    
+
     try {
       const anuncioId = randomUUID();
       const now = new Date();
+
+      // Resolver IDs de comunidad y provincia
+      let comunidadId = 0;
+      let provinciaId = 0;
+      let provinciaNombre = provincia || comunidad_autonoma;
+
+      const [comunidadRows] = await connection.execute(
+        'SELECT id FROM comunidades WHERE nombre = ? LIMIT 1',
+        [comunidad_autonoma]
+      );
+      const comunidadRow = (comunidadRows as any[])[0];
+      if (comunidadRow) {
+        comunidadId = comunidadRow.id;
+        const [provinciaRows] = await connection.execute(
+          'SELECT id, nombre FROM provincias WHERE comunidad_id = ? LIMIT 1',
+          [comunidadId]
+        );
+        const provinciaRow = (provinciaRows as any[])[0];
+        if (provinciaRow) {
+          provinciaId = provinciaRow.id;
+          provinciaNombre = provincia || provinciaRow.nombre;
+        }
+      }
 
       const textoCompleto = `${titulo} ${descripcion}`;
       const resultadoIA = moderarConIA(textoCompleto);
@@ -313,19 +330,19 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
       await connection.execute(
         `INSERT INTO anuncios (
-          id, usuario_id, titulo, descripcion, categoria, comunidad_autonoma, 
-          provincia, modalidad, visible, estado_moderacion, motivo_rechazo, creado_at, actualizado_at, vistas
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          id, usuario_id, titulo, descripcion, categoria, comunidad_autonoma,
+          comunidad_id, provincia, provincia_id, modalidad, visible, estado_moderacion, motivo_rechazo, creado_at, actualizado_at, vistas
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           anuncioId, userId, titulo.trim(), descripcion.trim(), categoria,
-          comunidad_autonoma, provincia, modalidad || 'servicio',
+          comunidad_autonoma, comunidadId, provinciaNombre, provinciaId, modalidad || 'servicio',
           visible, estadoModeracion, motivoRechazo, now, now, 0
         ]
       );
 
       // Obtener el anuncio creado para devolverlo completo
       const [result] = await connection.execute(
-        `SELECT 
+        `SELECT
           a.id, a.usuario_id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
           a.provincia, a.modalidad, a.visible, a.estado_moderacion, a.motivo_rechazo, a.creado_at, a.actualizado_at, a.vistas,
           u.nombre as usuario_nombre, u.email as usuario_email

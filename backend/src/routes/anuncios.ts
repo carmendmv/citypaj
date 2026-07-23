@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { optionalAuth } from '../middleware/auth';
 import {
   getAnuncios,
   getAnuncioById,
@@ -26,7 +27,7 @@ router.get('/moderacion', getAnunciosModeracion);
 router.get('/:id', getAnuncioById);
 
 // Create new anuncio
-router.post('/', createAnuncio);
+router.post('/', optionalAuth, createAnuncio);
 
 // Update anuncio
 router.put('/:id', updateAnuncio);

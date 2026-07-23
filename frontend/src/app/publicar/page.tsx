@@ -46,11 +46,6 @@ export default function PublicarPage() {
     setSuccess(false);
     setResultado(null);
 
-    if (!user || !accessToken) {
-      setError('Debes iniciar sesión para publicar un anuncio.');
-      return;
-    }
-
     if (!titulo.trim() || !descripcion.trim() || !categoria || !nombre.trim() || !comunidadAutonoma.trim() || !email.trim()) {
       setError('Error al publicar el anuncio. Por favor, inténtalo de nuevo.');
       return;
@@ -65,13 +60,17 @@ export default function PublicarPage() {
 
     setLoading(true);
 
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json'
+    };
+    if (accessToken) {
+      headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+
     try {
       const res = await fetch('/api/anuncios/publico', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        },
+        headers,
         body: JSON.stringify({
           titulo,
           descripcion,
@@ -114,17 +113,7 @@ export default function PublicarPage() {
           <p className="mt-2 font-sans text-sm text-[#666666]">Comparte tu anuncio con la comunidad juvenil</p>
         </div>
 
-        {!user ? (
-          <section className="mt-10 border border-black p-6 text-center">
-            <p className="font-sans text-sm text-black mb-4">Inicia sesión para publicar un anuncio.</p>
-            <Link
-              href="/acceder"
-              className="inline-block bg-black text-white border border-black px-6 py-3 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors"
-            >
-              Acceder / Registrarse
-            </Link>
-          </section>
-        ) : success && resultado ? (
+        {success && resultado ? (
           <section className="mt-10 border border-black p-6">
             <h2 className="font-serif text-2xl font-bold text-black mb-4">
               {resultado.estado === 'rejected' ? 'Anuncio rechazado' : 'Anuncio recibido'}

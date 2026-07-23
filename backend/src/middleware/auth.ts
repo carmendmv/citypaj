@@ -47,6 +47,20 @@ export const auth = (req: AuthRequest, res: Response, next: NextFunction): void 
   }
 };
 
+export const optionalAuth = (req: AuthRequest, _res: Response, next: NextFunction): void => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.substring(7);
+      const decoded = jwt.verify(token, config.jwt.secret) as any;
+      req.user = decoded;
+    }
+    next();
+  } catch {
+    next();
+  }
+};
+
 export const requireRole = (roles: string[]) => {
   return (req: AuthRequest, res: Response, next: NextFunction): void => {
     if (!req.user) {
