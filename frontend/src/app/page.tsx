@@ -27,13 +27,6 @@ interface Estadisticas {
   comunidades_activas: number;
 }
 
-const COMUNIDADES = [
-  'Andalucía', 'Aragón', 'Asturias', 'Baleares', 'Canarias',
-  'Cantabria', 'Castilla-La Mancha', 'Castilla y León', 'Cataluña',
-  'Comunidad Valenciana', 'Extremadura', 'Galicia', 'Madrid',
-  'Murcia', 'Navarra', 'País Vasco', 'La Rioja'
-];
-
 const CATEGORIAS = [
   { id: 'empleo', label: 'Empleo', href: '/anuncios?categoria=empleo' },
   { id: 'formacion', label: 'Formación', href: '/anuncios?categoria=formacion' },
@@ -48,8 +41,6 @@ export default function HomePage() {
   const [estadisticas, setEstadisticas] = useState<Estadisticas | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [busqueda, setBusqueda] = useState('');
-  const [comunidad, setComunidad] = useState('');
 
   useEffect(() => {
     cargarDatos();
@@ -84,13 +75,6 @@ export default function HomePage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleBuscar = () => {
-    const params = new URLSearchParams();
-    if (comunidad) params.set('comunidad', comunidad);
-    if (busqueda) params.set('busqueda', busqueda);
-    window.location.href = `/anuncios?${params.toString()}`;
   };
 
   const guardar = async (id: string) => {
@@ -130,37 +114,6 @@ export default function HomePage() {
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-10">
             CityPAJ conecta a jóvenes con recursos, anuncios y participación en su provincia.
           </p>
-
-          <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
-            <div className="space-y-3">
-              <input
-                type="text"
-                value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleBuscar()}
-                placeholder="¿Qué estás buscando?"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none"
-              />
-              <div className="flex flex-col sm:flex-row gap-3">
-                <select
-                  value={comunidad}
-                  onChange={(e) => setComunidad(e.target.value)}
-                  className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
-                >
-                  <option value="">Toda España</option>
-                  {COMUNIDADES.map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
-                <button
-                  onClick={handleBuscar}
-                  className="px-8 py-3 bg-black text-white font-semibold rounded-xl hover:bg-blue-600 transition-colors"
-                >
-                  Buscar
-                </button>
-              </div>
-            </div>
-          </div>
 
           {estadisticas && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto mt-12">
