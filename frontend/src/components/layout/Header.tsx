@@ -6,6 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { Search, Menu, X, User, LogOut, Trash2, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useHeaderVisibility } from '@/context/HeaderVisibilityContext';
+import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
 import LanguageSelector from '@/components/ui/LanguageSelector';
 
 const COMUNIDADES_AUTONOMAS = [
@@ -57,6 +58,7 @@ const Header: React.FC<HeaderProps> = memo(({
   const router = useRouter();
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { t } = useCustomTranslation();
   const { registerHeader, unregisterHeader } = useHeaderVisibility();
 
   const getSearchParam = useCallback((key: string) => {
@@ -232,7 +234,7 @@ const Header: React.FC<HeaderProps> = memo(({
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Buscar..."
+                    placeholder={t('common.search', 'Buscar...')}
                     value={searchCodigo}
                     onChange={(e) => setSearchCodigo(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -254,7 +256,7 @@ const Header: React.FC<HeaderProps> = memo(({
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="hidden md:inline-flex items-center justify-center border border-black bg-black text-white px-3 py-2 text-sm font-sans hover:bg-orange-500 hover:border-orange-500 hover:text-black transition-colors"
               >
-                Publicar
+                {t('common.publish', 'Publicar')}
               </Link>
 
               <div className="hidden md:block">
@@ -274,7 +276,7 @@ const Header: React.FC<HeaderProps> = memo(({
                 {isUserMenuOpen && (
                   <div className="absolute right-0 mt-2 w-52 border border-black bg-white shadow-sm">
                     <div className="px-4 py-2 border-b border-black font-sans text-xs text-gray-600">
-                      ZONA DE USUARIO
+                      {t('common.user_zone', 'ZONA DE USUARIO')}
                     </div>
 
                     <div className="py-1">
@@ -284,7 +286,7 @@ const Header: React.FC<HeaderProps> = memo(({
                           className="block px-4 py-2 font-sans text-sm text-black hover:bg-orange-50"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
-                      Acceder / Registrarse
+                      {t('common.login_register', 'Acceder / Registrarse')}
                         </Link>
                       ) : null}
 
@@ -293,7 +295,7 @@ const Header: React.FC<HeaderProps> = memo(({
                         className="block px-4 py-2 font-sans text-sm text-black hover:bg-orange-50"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
-                        Mi perfil
+                        {t('common.my_profile', 'Mi perfil')}
                       </Link>
 
                       <Link
@@ -301,7 +303,7 @@ const Header: React.FC<HeaderProps> = memo(({
                         className="block px-4 py-2 font-sans text-sm text-black hover:bg-orange-50"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
-                        Mis anuncios
+                        {t('common.my_ads', 'Mis anuncios')}
                       </Link>
 
                       <Link
@@ -309,7 +311,7 @@ const Header: React.FC<HeaderProps> = memo(({
                         className="block px-4 py-2 font-sans text-sm text-black hover:bg-orange-50"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
-                        Mis guardados
+                        {t('common.my_saved', 'Mis guardados')}
                       </Link>
 
                       {user ? (
@@ -320,7 +322,7 @@ const Header: React.FC<HeaderProps> = memo(({
                             className="w-full text-left px-4 py-2 font-sans text-sm text-black hover:bg-orange-50 flex items-center gap-2"
                           >
                             <LogOut className="w-4 h-4" />
-                            Cerrar sesión
+                            {t('common.logout', 'Cerrar sesión')}
                           </button>
                           <button
                             type="button"

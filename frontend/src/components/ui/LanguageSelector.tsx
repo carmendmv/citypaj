@@ -1,14 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAITranslation, SUPPORTED_LANGUAGES, Language } from '@/hooks/useAITranslation';
+import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
+import { SUPPORTED_LANGUAGES, Language } from '@/lib/translations';
 
 interface LanguageSelectorProps {
   isMobile?: boolean;
 }
 
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({ isMobile = false }) => {
-  const { currentLanguage, changeLanguage, isLoading } = useAITranslation();
+  const { currentLanguage, changeLanguage, isLoading } = useCustomTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLanguageChange = (language: Language) => {
@@ -90,8 +91,6 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ isMobile = false })
         )}
       </div>
 
-      {/* Elemento oculto para Google Translate */}
-      <div id="google_translate_element" style={{ display: 'none' }} />
       {isLoading && <span className="sr-only">Cargando traducción...</span>}
     </div>
   );

@@ -4,6 +4,10 @@ import jwt from 'jsonwebtoken';
 import { pool } from '../config/database';
 import { config } from '../config';
 
+const DEMO_EMAIL = 'demo@citypaj.com';
+const DEMO_PASSWORD = 'Demo1234!';
+const DEMO_NAME = 'Usuario Demo';
+
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
@@ -21,19 +25,37 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     try {
       // Buscar usuario por email
       const [users] = await connection.execute(
-        'SELECT id, email, password_hash, nombre, verificado FROM usuarios WHERE email = ?',
+        'SELECT id, email, password_hash, nombre, verificado, rol FROM usuarios WHERE email = ?',
         [email]
       );
 
-      if ((users as any[]).length === 0) {
+      let user: any = (users as any[])[0];
+
+      // Crear usuario demo automáticamente si no existe y se usan las credenciales demo
+      if (!user && email === DEMO_EMAIL && password === DEMO_PASSWORD) {
+        const userId = require('crypto').randomUUID();
+        const hashedPassword = await bcrypt.hash(DEMO_PASSWORD, 10);
+        await connection.execute(
+          `INSERT INTO usuarios (id, email, password_hash, nombre, verificado, rol) VALUES (?, ?, ?, ?, ?, ?)`,
+          [userId, DEMO_EMAIL, hashedPassword, DEMO_NAME, 1, 'admin']
+        );
+        user = {
+          id: userId,
+          email: DEMO_EMAIL,
+          password_hash: hashedPassword,
+          nombre: DEMO_NAME,
+          verificado: 1,
+          rol: 'admin'
+        };
+      }
+
+      if (!user) {
         res.status(401).json({
           success: false,
           error: 'Credenciales inválidas'
         });
         return;
       }
-
-      const user = (users as any)[0];
 
       // Verificar contraseña
       const isPasswordValid = await bcrypt.compare(password, user.password_hash);
@@ -50,7 +72,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       const payload = { 
         id: user.id, 
         email: user.email, 
-        nombre: user.nombre 
+        nombre: user.nombre,
+        rol: user.rol || 'usuario'
       };
       
       const accessToken = jwt.sign(payload, config.jwt.secret, { expiresIn: '15m' });
@@ -63,7 +86,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             id: user.id,
             email: user.email,
             nombre: user.nombre,
-            verificado: Boolean(user.verificado)
+            verificado: Boolean(user.verificado),
+            rol: user.rol || 'usuario'
           },
           tokens: {
             accessToken,

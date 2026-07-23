@@ -342,6 +342,36 @@ export default function AccederPage() {
 
         )}
 
+        {!user ? (
+          <div className="mt-10 border border-black p-6 bg-gray-50">
+            <h3 className="font-serif text-lg font-bold text-black mb-2">Usuario demo</h3>
+            <p className="font-sans text-sm text-gray-700 mb-4">
+              Usa estas credenciales para acceder al panel de moderación:
+            </p>
+            <div className="space-y-2 font-sans text-sm text-black mb-4">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Email:</span>
+                <span className="font-medium">demo@citypaj.com</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Contraseña:</span>
+                <span className="font-medium">Demo1234!</span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setLoginEmail('demo@citypaj.com');
+                setLoginPassword('Demo1234!');
+                setLoginTerminos(true);
+              }}
+              className="w-full bg-black text-white border border-black px-6 py-3 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors"
+            >
+              Rellenar credenciales demo
+            </button>
+          </div>
+        ) : null}
+
         <div className="mt-10">
           <Link
             href="/"

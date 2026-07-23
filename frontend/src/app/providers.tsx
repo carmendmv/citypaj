@@ -4,8 +4,8 @@ import { ReactNode, useEffect } from 'react';
 import { AuthProvider } from '@/context/AuthContext';
 import { ComunidadProvider } from '@/hooks/useComunidad';
 import { HeaderVisibilityProvider } from '@/context/HeaderVisibilityContext';
+import { CustomTranslationProvider } from '@/contexts/CustomTranslationContext';
 import Header from '@/components/layout/Header';
-import '@/i18n';
 
 export default function Providers({ children }: { children: ReactNode }) {
   useEffect(() => {
@@ -16,12 +16,14 @@ export default function Providers({ children }: { children: ReactNode }) {
 
   return (
     <AuthProvider>
-      <ComunidadProvider>
-        <HeaderVisibilityProvider>
-          <Header />
-          {children}
-        </HeaderVisibilityProvider>
-      </ComunidadProvider>
+      <CustomTranslationProvider>
+        <ComunidadProvider>
+          <HeaderVisibilityProvider>
+            <Header />
+            {children}
+          </HeaderVisibilityProvider>
+        </ComunidadProvider>
+      </CustomTranslationProvider>
     </AuthProvider>
   );
 }

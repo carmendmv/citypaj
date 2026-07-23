@@ -64,8 +64,8 @@ export const getAnuncios = async (req: Request, res: Response): Promise<void> =>
     }
 
     if (busqueda) {
-      whereConditions.push('(a.titulo LIKE ? OR a.descripcion LIKE ?)');
-      queryParams.push(`%${busqueda}%`, `%${busqueda}%`);
+      whereConditions.push('(a.titulo LIKE ? OR a.descripcion LIKE ? OR a.categoria LIKE ?)');
+      queryParams.push(`%${busqueda}%`, `%${busqueda}%`, `%${busqueda}%`);
     }
 
     // Construir ORDER BY basado en columnas reales

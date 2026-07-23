@@ -34,12 +34,16 @@ export async function POST(request: NextRequest) {
     const authHeader = request.headers.get('authorization') || '';
 
     // Conectar con backend real para guardar el anuncio
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json'
+    };
+    if (authHeader) {
+      headers['Authorization'] = authHeader.startsWith('Bearer ') ? authHeader : `Bearer ${authHeader}`;
+    }
+
     const response = await fetch(`${BACKEND_URL}/api/anuncios`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': authHeader.startsWith('Bearer ') ? authHeader : `Bearer ${authHeader}`
-      },
+      headers,
       body: JSON.stringify({
         titulo: titulo.trim(),
         descripcion: descripcion.trim(),

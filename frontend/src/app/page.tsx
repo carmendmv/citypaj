@@ -7,6 +7,7 @@ import Footer from '@/components/layout/Footer';
 import ListingRow from '@/components/ui/ListingRow';
 import EmptyState from '@/components/ui/EmptyState';
 import LoadingRows from '@/components/ui/LoadingRows';
+import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
 
 interface Anuncio {
   id: string;
@@ -37,6 +38,7 @@ const CATEGORIAS = [
 ];
 
 export default function HomePage() {
+  const { t } = useCustomTranslation();
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
   const [estadisticas, setEstadisticas] = useState<Estadisticas | null>(null);
   const [loading, setLoading] = useState(true);
@@ -157,8 +159,8 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Últimas oportunidades</h2>
-              <p className="text-gray-600">Anuncios recientes de jóvenes y recursos cercanos</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{t('home.latest_ads', 'Últimos anuncios')}</h2>
+              <p className="text-gray-600">{t('home.latest_ads', 'Anuncios recientes de jóvenes y recursos cercanos')}</p>
             </div>
             <Link
               href="/anuncios"
@@ -175,9 +177,9 @@ export default function HomePage() {
               <div className="p-8 text-center text-red-600">{error}</div>
             ) : anuncios.length === 0 ? (
               <EmptyState
-                titulo="Aún no hay anuncios"
-                mensaje="Sé el primero en publicar una oportunidad en tu provincia."
-                accion={{ label: 'Publicar anuncio', href: '/publicar' }}
+                titulo={t('home.no_ads', 'Aún no hay anuncios')}
+                mensaje={t('home.no_ads_text', 'Sé el primero en publicar una oportunidad en tu provincia.')}
+                accion={{ label: t('common.publish_ad', 'Publicar anuncio'), href: '/publicar' }}
               />
             ) : (
               anuncios.map((anuncio) => (
