@@ -10,6 +10,7 @@ import EmptyState from '@/components/ui/EmptyState';
 import LoadingRows from '@/components/ui/LoadingRows';
 import PageHeader from '@/components/ui/PageHeader';
 import Pagination from '@/components/ui/Pagination';
+import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD } from '@/lib/provinces';
 
 interface Anuncio {
   id: string;
@@ -30,19 +31,7 @@ interface Meta {
   totalPages: number;
 }
 
-const COMUNIDADES = [
-  'Andalucía', 'Aragón', 'Asturias', 'Baleares', 'Canarias', 'Cantabria',
-  'Castilla-La Mancha', 'Castilla y León', 'Cataluña', 'Comunidad Valenciana',
-  'Extremadura', 'Galicia', 'Madrid', 'Murcia', 'Navarra', 'País Vasco', 'La Rioja'
-];
-
 const CATEGORIAS = ['todos', 'empleo', 'formacion', 'vivienda', 'ocio', 'servicios', 'comunidad', 'transporte', 'salud', 'tecnología', 'otros'];
-
-const ORDEN = [
-  { value: 'creado-desc', label: 'Más recientes' },
-  { value: 'creado-asc', label: 'Más antiguos' },
-  { value: 'vistas-desc', label: 'Más vistos' },
-];
 
 function AnunciosContent() {
   const searchParams = useSearchParams();
@@ -55,8 +44,9 @@ function AnunciosContent() {
 
   const categoria = searchParams.get('categoria') || '';
   const comunidad = searchParams.get('comunidad') || '';
+  const provincia = searchParams.get('provincia') || '';
   const busqueda = searchParams.get('busqueda') || '';
-  const orden = searchParams.get('ordenar') || 'creado-desc';
+  const orden = 'creado-desc';
   const page = parseInt(searchParams.get('page') || '1', 10);
 
   const fetchAnuncios = useCallback(async () => {
@@ -69,6 +59,7 @@ function AnunciosContent() {
       params.set('ordenar', orden);
       if (categoria && categoria !== 'todos') params.set('categoria', categoria);
       if (comunidad) params.set('comunidad_autonoma', comunidad);
+      if (provincia) params.set('provincia', provincia);
       if (busqueda) params.set('busqueda', busqueda);
 
       const res = await fetch(`/api/anuncios?${params.toString()}`);
@@ -84,11 +75,13 @@ function AnunciosContent() {
     } finally {
       setLoading(false);
     }
-  }, [categoria, comunidad, busqueda, orden, page]);
+  }, [categoria, comunidad, provincia, busqueda, page]);
 
   useEffect(() => {
     fetchAnuncios();
   }, [fetchAnuncios]);
+
+  const provinciasDisponibles = comunidad ? PROVINCIAS_POR_COMUNIDAD[comunidad] || [] : [];
 
   const updateFilter = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -96,6 +89,12 @@ function AnunciosContent() {
       params.set(key, value);
     } else {
       params.delete(key);
+    }
+    if (key === 'comunidad' && value && value !== 'todos') {
+      const provs = PROVINCIAS_POR_COMUNIDAD[value] || [];
+      if (provincia && !provs.includes(provincia)) {
+        params.delete('provincia');
+      }
     }
     params.set('page', '1');
     router.push(`/anuncios?${params.toString()}`);
@@ -167,12 +166,14 @@ function AnunciosContent() {
               ))}
             </select>
             <select
-              value={orden}
-              onChange={(e) => updateFilter('ordenar', e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+              value={provincia}
+              onChange={(e) => updateFilter('provincia', e.target.value)}
+              disabled={!comunidad}
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none bg-white disabled:bg-gray-100 disabled:text-gray-400"
             >
-              {ORDEN.map((o) => (
-                <option key={o.value} value={o.value}>{o.label}</option>
+              <option value="">Toda la comunidad</option>
+              {provinciasDisponibles.map((p) => (
+                <option key={p} value={p}>{p}</option>
               ))}
             </select>
           </div>

@@ -8,6 +8,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/context/AuthContext';
 import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
+import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD } from '@/lib/provinces';
 
 type Categoria = 'ocio' | 'servicios' | 'educacion' | 'empleo' | 'intercambios';
 
@@ -22,9 +23,12 @@ export default function PublicarPage() {
 
   const [nombre, setNombre] = useState('');
   const [comunidadAutonoma, setComunidadAutonoma] = useState('');
+  const [provincia, setProvincia] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
   const [acceptedRules, setAcceptedRules] = useState(false);
+
+  const provinciasDisponibles = comunidadAutonoma ? PROVINCIAS_POR_COMUNIDAD[comunidadAutonoma] || [] : [];
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +50,7 @@ export default function PublicarPage() {
     setSuccess(false);
     setResultado(null);
 
-    if (!titulo.trim() || !descripcion.trim() || !categoria || !nombre.trim() || !comunidadAutonoma.trim() || !email.trim()) {
+    if (!titulo.trim() || !descripcion.trim() || !categoria || !nombre.trim() || !comunidadAutonoma.trim() || !provincia.trim() || !email.trim()) {
       setError('Error al publicar el anuncio. Por favor, inténtalo de nuevo.');
       return;
     }
@@ -75,6 +79,7 @@ export default function PublicarPage() {
           categoria,
           nombre,
           comunidad_autonoma: comunidadAutonoma,
+          provincia,
           email,
           telefono: telefono || undefined,
         }),
@@ -245,29 +250,38 @@ export default function PublicarPage() {
                   <select
                     id="comunidad"
                     value={comunidadAutonoma}
-                    onChange={(e) => setComunidadAutonoma(e.target.value)}
+                    onChange={(e) => {
+                      setComunidadAutonoma(e.target.value);
+                      setProvincia('');
+                    }}
                     className={`w-full px-3 py-2 text-sm font-sans border bg-white focus:outline-none transition-all ${
                       error && !comunidadAutonoma.trim() ? 'border-red-500' : 'border-black focus:border-orange-500 hover:border-orange-500'
                     }`}
                   >
                     <option value="">{t('publish.community', 'Comunidad Autónoma')}</option>
-                    <option value="Andalucía">Andalucía</option>
-                    <option value="Aragón">Aragón</option>
-                    <option value="Asturias">Asturias</option>
-                    <option value="Baleares">Baleares</option>
-                    <option value="Canarias">Canarias</option>
-                    <option value="Cantabria">Cantabria</option>
-                    <option value="Castilla-La Mancha">Castilla-La Mancha</option>
-                    <option value="Castilla y León">Castilla y León</option>
-                    <option value="Cataluña">Cataluña</option>
-                    <option value="Comunidad Valenciana">Comunidad Valenciana</option>
-                    <option value="Extremadura">Extremadura</option>
-                    <option value="Galicia">Galicia</option>
-                    <option value="Madrid">Madrid</option>
-                    <option value="Murcia">Murcia</option>
-                    <option value="Navarra">Navarra</option>
-                    <option value="País Vasco">País Vasco</option>
-                    <option value="La Rioja">La Rioja</option>
+                    {COMUNIDADES.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-sans text-xs text-gray-600 mb-2" htmlFor="provincia">
+                    {t('publish.province', 'Provincia')} *
+                  </label>
+                  <select
+                    id="provincia"
+                    value={provincia}
+                    onChange={(e) => setProvincia(e.target.value)}
+                    disabled={!comunidadAutonoma}
+                    className={`w-full px-3 py-2 text-sm font-sans border bg-white focus:outline-none transition-all ${
+                      error && !provincia.trim() ? 'border-red-500' : 'border-black focus:border-orange-500 hover:border-orange-500'
+                    } ${!comunidadAutonoma ? 'bg-gray-100 text-gray-400' : ''}`}
+                  >
+                    <option value="">{t('publish.province', 'Provincia')}</option>
+                    {provinciasDisponibles.map((p) => (
+                      <option key={p} value={p}>{p}</option>
+                    ))}
                   </select>
                 </div>
               </div>

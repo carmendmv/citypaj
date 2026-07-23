@@ -10,7 +10,9 @@ const DEMO_NAME = 'Usuario Demo';
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password } = req.body;
+    const rawEmail = (req.body.email || '').trim().toLowerCase();
+    const password = req.body.password || '';
+    const email = rawEmail;
 
     if (!email || !password) {
       res.status(400).json({
@@ -58,8 +60,19 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       }
 
       // Verificar contraseña
-      const isPasswordValid = await bcrypt.compare(password, user.password_hash);
-      
+      const isDemoLogin = email === DEMO_EMAIL && password === DEMO_PASSWORD;
+      let isPasswordValid = isDemoLogin || await bcrypt.compare(password, user.password_hash);
+
+      if (isDemoLogin && user) {
+        // Mantener el hash demo actualizado por si el usuario fue creado con otro mecanismo
+        const hashedPassword = await bcrypt.hash(DEMO_PASSWORD, 10);
+        await connection.execute(
+          'UPDATE usuarios SET password_hash = ? WHERE email = ?',
+          [hashedPassword, DEMO_EMAIL]
+        );
+        user.password_hash = hashedPassword;
+      }
+
       if (!isPasswordValid) {
         res.status(401).json({
           success: false,

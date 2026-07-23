@@ -1,218 +1,417 @@
-export interface Language {
-  code: string;
-  name: string;
-  nativeName: string;
-  flag: string;
-}
+// Motor de traducción personalizado de CityPaj
+// Diccionario generado a partir de los recursos existentes
 
-export const SUPPORTED_LANGUAGES: Language[] = [
-  { code: 'es', name: 'Spanish', nativeName: 'Español', flag: 'ES' },
-  { code: 'en', name: 'English', nativeName: 'English', flag: 'GB' },
-  { code: 'fr', name: 'French', nativeName: 'Français', flag: 'FR' },
-  { code: 'it', name: 'Italian', nativeName: 'Italiano', flag: 'IT' },
-  { code: 'de', name: 'German', nativeName: 'Deutsch', flag: 'DE' },
-  { code: 'pt', name: 'Portuguese', nativeName: 'Português', flag: 'PT' },
-  { code: 'ca', name: 'Catalan', nativeName: 'Català', flag: 'ES' },
-  { code: 'gl', name: 'Galician', nativeName: 'Galego', flag: 'ES' },
-  { code: 'eu', name: 'Basque', nativeName: 'Euskara', flag: 'ES' },
-  { code: 'ar', name: 'Arabic', nativeName: 'العربية', flag: 'SA' },
-  { code: 'ro', name: 'Romanian', nativeName: 'Română', flag: 'RO' },
-  { code: 'zh', name: 'Chinese', nativeName: '中文', flag: 'CN' },
-];
-
-export type LangCode = (typeof SUPPORTED_LANGUAGES)[number]['code'];
-
-const resources: Record<LangCode, Record<string, Record<string, string>>> = {
+export const resources = {
   es: {
-    common: {
-      search: 'Buscar...',
-      back: 'Volver',
-      cancel: 'Cancelar',
-      loading: 'Cargando...',
-      user_zone: 'Zona de usuario',
-      login_register: 'Acceder / Registrarse',
-      my_profile: 'Mi perfil',
-      my_ads: 'Mis anuncios',
-      my_saved: 'Mis guardados',
-      logout: 'Cerrar sesión',
-      publish: 'Publicar',
-      publish_ad: 'Publicar anuncio',
-      language: 'Idioma',
-      searching: 'Buscando...',
-    },
-    human: {
-      title: 'Verificación humana',
-      disabled: 'La verificación automática está desactivada en este entorno.',
-      verified: 'Verificado',
-      required: 'Requerido',
-      hint: 'Marca la casilla para continuar.',
-    },
-    publish: {
-      title: 'Publicar anuncio',
-      subtitle: 'Comparte tu anuncio con la comunidad juvenil',
-      ad_title: 'Título del anuncio',
-      description: 'Descripción detallada',
-      category: 'Categoría',
-      name: 'Nombre',
-      community: 'Comunidad Autónoma',
-      email: 'Correo electrónico',
-      phone: 'Teléfono (opcional)',
-      rules_title: 'Normas de publicación',
-      rules_text: 'Al publicar un anuncio, aceptas que el contenido sea apropiado y cumpla con las normas de la comunidad. Nos reservamos el derecho de eliminar contenido inapropiado.',
-      accept_rules: 'Acepto las normas de publicación',
-      publishing: 'Publicando...',
-      publish: 'Publicar anuncio',
-      received_title: 'Anuncio recibido',
-      received_text: 'Revisado por IA interna. Se publicará en breve.',
-      code: 'Código',
-      email_label: 'Correo',
-      view_ad: 'Ver anuncio',
-      home: 'Volver al inicio',
-    },
-    nav: {
-      employment: 'Empleo',
-      community: 'Comunidad',
-      help: 'Ayudas',
-      suggestions_box: 'Buzón de Sugerencias',
-    },
-    home: {
-      latest_ads: 'Últimos anuncios',
-      explore_categories: 'Explora por categorías',
-      view_all: 'Ver todos',
-      no_ads: 'Aún no hay anuncios',
-      no_ads_text: 'Sé el primero en publicar un anuncio en tu provincia.',
-    },
+    translation: {
+      menu: {
+        ocio: "Ocio",
+        servicios: "Servicios",
+        formacion: "Formación",
+        empleo: "Empleo",
+        comunidad: "Comunidad",
+        viviendas_trabajo: "Viviendas + trabajo",
+        noticias: "Noticias"
+      },
+      common: {
+        back: "Volver",
+        cancel: "Cancelar",
+        loading: "Cargando...",
+        searching: "Buscando...",
+        edition: "LISTADO DE ANUNCIOS",
+        language: "Idioma",
+        search: "Buscar...",
+        user_zone: "Zona de usuario",
+        login_register: "Acceder / Registrarse",
+        my_profile: "Mi perfil",
+        my_ads: "Mis anuncios",
+        logout: "Cerrar sesión",
+        publish: "Publicar"
+      },
+      home: {
+        hero_title: "CityPaj",
+        hero_subtitle: "Tu ciudad, tus anuncios, tu comunidad",
+        filter_button: "Buscar",
+        latest_ads: "Últimos anuncios",
+        no_ads: "No hay anuncios para este filtro.",
+        spain: "España",
+        edit_ad: "Editar",
+        delete_ad: "Eliminar",
+        ad_code: "Código de anuncio:",
+        offer: "Oferta",
+        demand: "Demanda",
+        offer_demand: "Oferta/Demanda"
+      },
+      publish_form: {
+        title: "Publicar anuncio",
+        subtitle: "Comparte tu oportunidad con la comunidad",
+        fields: {
+          title: "Título del anuncio *",
+          description: "Descripción detallada *",
+          category: "Categoría *",
+          offer_demand: "Tipo de anuncio *",
+          name: "Nombre *",
+          community: "Comunidad Autónoma *",
+          province: "Provincia *",
+          email_required: "Email de contacto *",
+          phone_optional: "Teléfono (opcional)"
+        },
+        categories: {
+          ocio: "Ocio",
+          servicios: "Servicios",
+          educacion: "Formación",
+          empleo: "Empleo",
+          intercambios: "Comunidad",
+          oferta: "Oferta",
+          demanda: "Demanda"
+        },
+        rules: {
+          title: "Reglas y condiciones",
+          text: "Al publicar un anuncio, aceptas cumplir con nuestras normas de conducta y términos de servicio. Los anuncios inapropiados serán eliminados.",
+          accept: "Acepto las reglas y condiciones",
+          required: "Debes aceptar las reglas y condiciones"
+        },
+        posting: "Publicando...",
+        post: "Publicar anuncio",
+        failed: "Error al publicar. Intenta de nuevo.",
+        api_error: "Error al publicar el anuncio"
+      },
+      my_ads: {
+        title: "Mis anuncios",
+        no_ads: "No tienes anuncios publicados",
+        edit: "Editar",
+        delete: "Eliminar",
+        code: "Código de anuncio:"
+      }
+    }
+  },
+  ca: {
+    translation: {
+      menu: {
+        ocio: "Oci",
+        servicios: "Serveis",
+        formacion: "Formació",
+        empleo: "Feina",
+        comunidad: "Comunitat",
+        viviendas_trabajo: "Allotjament + feina",
+        noticias: "Notícies"
+      },
+      common: {
+        back: "Tornar",
+        cancel: "Cancel·lar",
+        loading: "Carregant...",
+        searching: "Cercant...",
+        edition: "EDICIÓ CATALANA",
+        language: "Idioma",
+        search: "Cercar...",
+        user_zone: "Zona d'usuari",
+        login_register: "Accedir / Registrar-se",
+        my_profile: "El meu perfil",
+        my_ads: "Els meus anuncis",
+        logout: "Tancar sessió",
+        publish: "Publicar"
+      },
+      home: {
+        hero_title: "CityPaj",
+        hero_subtitle: "La teva ciutat, els teus anuncis, la teva comunitat",
+        filter_button: "Cercar",
+        latest_ads: "Últims anuncis",
+        no_ads: "No hi ha anuncis per aquest filtre.",
+        spain: "Espanya"
+      }
+    }
+  },
+  va: {
+    translation: {
+      menu: {
+        ocio: "Oci",
+        servicios: "Serveis",
+        formacion: "Formació",
+        empleo: "Feina",
+        comunidad: "Comunitat",
+        viviendas_trabajo: "Allotjament + feina",
+        noticias: "Notícies"
+      },
+      common: {
+        back: "Tornar",
+        cancel: "Cancel·lar",
+        loading: "Carregant...",
+        searching: "Buscant...",
+        edition: "EDICIÓ VALENCIANA",
+        language: "Idioma",
+        search: "Buscar...",
+        user_zone: "Zona d'usuari",
+        login_register: "Accedir / Registrar-se",
+        my_profile: "El meu perfil",
+        my_ads: "Els meus anuncis",
+        logout: "Tancar sessió",
+        publish: "Publicar"
+      },
+      home: {
+        hero_title: "CityPaj",
+        hero_subtitle: "La teua ciutat, els teus anuncis, la teua comunitat",
+        filter_button: "Buscar",
+        latest_ads: "Últims anuncis",
+        no_ads: "No hi ha anuncis per a este filtre.",
+        spain: "Espanya"
+      }
+    }
+  },
+  gl: {
+    translation: {
+      menu: {
+        ocio: "Ocio",
+        servicios: "Servizos",
+        formacion: "Formación",
+        empleo: "Emprego",
+        comunidad: "Comunidade",
+        viviendas_trabajo: "Vivendas + traballo",
+        noticias: "Noticias"
+      },
+      common: {
+        back: "Volver",
+        cancel: "Cancelar",
+        loading: "Cargando...",
+        searching: "Buscando...",
+        edition: "EDICIÓN GALEGA",
+        language: "Idioma",
+        search: "Buscar...",
+        user_zone: "Zona de usuario",
+        login_register: "Acceder / Rexistrarse",
+        my_profile: "O meu perfil",
+        my_ads: "Os meus anuncios",
+        logout: "Pechar sesión",
+        publish: "Publicar"
+      },
+      home: {
+        hero_title: "CityPaj",
+        hero_subtitle: "A túa cidade, os teus anuncios, a túa comunidade",
+        filter_button: "Buscar",
+        latest_ads: "Últimos anuncios",
+        no_ads: "Non hai anuncios para este filtro.",
+        spain: "España"
+      }
+    }
+  },
+  eu: {
+    translation: {
+      menu: {
+        ocio: "Ocioa",
+        servicios: "Zerbitzuak",
+        formacion: "Hezkuntza",
+        empleo: "Lana",
+        comunidad: "Komunitatea",
+        viviendas_trabajo: "Etxebizitzak + lana",
+        noticias: "Berriak"
+      },
+      common: {
+        back: "Itzuli",
+        cancel: "Utzi",
+        loading: "Kargatzen...",
+        searching: "Bilatzen...",
+        edition: "EDICIÓN EUSKERA",
+        language: "Hizkuntza",
+        search: "Bilatu...",
+        user_zone: "Erabiltzailearen area",
+        login_register: "Sartu / Erregistratu",
+        my_profile: "Nire profila",
+        my_ads: "Nire iragarkiak",
+        logout: "Saioa itxi",
+        publish: "Argitaratu"
+      },
+      home: {
+        hero_title: "CityPaj",
+        hero_subtitle: "Zure hiria, zure iragarkiak, zure komunitatea",
+        filter_button: "Bilatu",
+        latest_ads: "Azken iragarkiak",
+        no_ads: "Ez dago iragarkirik filtro honentzat.",
+        spain: "Espainia"
+      }
+    }
+  },
+  ar: {
+    translation: {
+      menu: {
+        ocio: "ترفيه",
+        servicios: "خدمات",
+        formacion: "تكوين",
+        empleo: "توظيف",
+        comunidad: "مجتمع",
+        viviendas_trabajo: "سكن + عمل",
+        noticias: "أخبار"
+      },
+      common: {
+        back: "عودة",
+        cancel: "إلغاء",
+        loading: "جاري التحميل...",
+        searching: "جاري البحث...",
+        edition: "الطبعة الإسبانية",
+        language: "اللغة",
+        search: "بحث...",
+        user_zone: "منطقة المستخدم",
+        login_register: "دخول / تسجيل",
+        my_profile: "ملفي الشخصي",
+        my_ads: "إعلاناتي",
+        logout: "إغلاق الجلسة",
+        publish: "نشر"
+      },
+      home: {
+        hero_title: "سيتي باج",
+        hero_subtitle: "مدينتك، إعلاناتك، مجتمعك",
+        filter_button: "بحث",
+        latest_ads: "آخر الإعلانات",
+        no_ads: "لا توجد إعلانات لهذا الفلتر.",
+        spain: "إسبانيا"
+      }
+    }
+  },
+  ro: {
+    translation: {
+      menu: {
+        ocio: "Divertisment",
+        servicios: "Servicii",
+        formacion: "Formare",
+        empleo: "Angajare",
+        comunidad: "Comunitate",
+        viviendas_trabajo: "Locuințe + muncă",
+        noticias: "Știri"
+      },
+      common: {
+        back: "Înapoi",
+        cancel: "Anulează",
+        loading: "Se încarcă...",
+        searching: "Se caută...",
+        edition: "EDIȚIA SPANIA",
+        language: "Limba",
+        search: "Caută...",
+        user_zone: "Zonă utilizator",
+        login_register: "Accesare / Înregistrare",
+        my_profile: "Profilul meu",
+        my_ads: "Anunțurile mele",
+        logout: "Închide sesiunea",
+        publish: "Publică"
+      },
+      home: {
+        hero_title: "CityPaj",
+        hero_subtitle: "Orașul tău, anunțurile tale, comunitatea ta",
+        filter_button: "Caută",
+        latest_ads: "Ultimele anunțuri",
+        no_ads: "Nu există anunțuri pentru acest filtru.",
+        spain: "Spania"
+      }
+    }
   },
   en: {
-    common: {
-      search: 'Search...',
-      back: 'Back',
-      cancel: 'Cancel',
-      loading: 'Loading...',
-      user_zone: 'User area',
-      login_register: 'Login / Register',
-      my_profile: 'My profile',
-      my_ads: 'My ads',
-      my_saved: 'My saved',
-      logout: 'Log out',
-      publish: 'Publish',
-      publish_ad: 'Publish ad',
-      language: 'Language',
-      searching: 'Searching...',
-    },
-    human: {
-      title: 'Human verification',
-      disabled: 'Automatic verification is disabled in this environment.',
-      verified: 'Verified',
-      required: 'Required',
-      hint: 'Check the box to continue.',
-    },
-    publish: {
-      title: 'Publish ad',
-      subtitle: 'Share your ad with the youth community',
-      ad_title: 'Ad title',
-      description: 'Detailed description',
-      category: 'Category',
-      name: 'Name',
-      community: 'Autonomous Community',
-      email: 'Email address',
-      phone: 'Phone (optional)',
-      rules_title: 'Publication rules',
-      rules_text: 'By publishing an ad, you agree that the content is appropriate and complies with community rules. We reserve the right to remove inappropriate content.',
-      accept_rules: 'I accept the publication rules',
-      publishing: 'Publishing...',
-      publish: 'Publish ad',
-      received_title: 'Ad received',
-      received_text: 'Reviewed by internal AI. It will be published shortly.',
-      code: 'Code',
-      email_label: 'Email',
-      view_ad: 'View ad',
-      home: 'Back to home',
-    },
-    nav: {
-      employment: 'Employment',
-      community: 'Community',
-      help: 'Aid',
-      suggestions_box: 'Suggestion box',
-    },
-    home: {
-      latest_ads: 'Latest ads',
-      explore_categories: 'Explore by category',
-      view_all: 'View all',
-      no_ads: 'No ads yet',
-      no_ads_text: 'Be the first to publish an ad in your province.',
-    },
+    translation: {
+      menu: {
+        ocio: "Leisure",
+        servicios: "Services",
+        formacion: "Education",
+        empleo: "Jobs",
+        comunidad: "Community",
+        viviendas_trabajo: "Housing + jobs",
+        noticias: "News"
+      },
+      common: {
+        back: "Back",
+        cancel: "Cancel",
+        loading: "Loading...",
+        searching: "Searching...",
+        edition: "SPAIN EDITION",
+        language: "Language",
+        search: "Search...",
+        user_zone: "User area",
+        login_register: "Sign in / Sign up",
+        my_profile: "My profile",
+        my_ads: "My ads",
+        logout: "Log out",
+        publish: "Publish"
+      },
+      home: {
+        hero_title: "CityPaj",
+        hero_subtitle: "Your city, your listings, your community",
+        filter_button: "Search",
+        latest_ads: "Latest listings",
+        no_ads: "No listings for this filter.",
+        spain: "Spain"
+      }
+    }
   },
   fr: {
-    common: {
-      search: 'Rechercher...',
-      back: 'Retour',
-      cancel: 'Annuler',
-      loading: 'Chargement...',
-      user_zone: 'Espace utilisateur',
-      login_register: 'Connexion / Inscription',
-      my_profile: 'Mon profil',
-      my_ads: 'Mes annonces',
-      my_saved: 'Mes favoris',
-      logout: 'Déconnexion',
-      publish: 'Publier',
-      publish_ad: 'Publier une annonce',
-      language: 'Langue',
-      searching: 'Recherche...',
-    },
-    human: {
-      title: 'Vérification humaine',
-      disabled: 'La vérification automatique est désactivée dans cet environnement.',
-      verified: 'Vérifié',
-      required: 'Requis',
-      hint: 'Cochez la case pour continuer.',
-    },
-    publish: {
-      title: 'Publier une annonce',
-      subtitle: 'Partagez votre annonce avec la communauté jeunesse',
-      ad_title: 'Titre de l\'annonce',
-      description: 'Description détaillée',
-      category: 'Catégorie',
-      name: 'Nom',
-      community: 'Communauté autonome',
-      email: 'Adresse email',
-      phone: 'Téléphone (optionnel)',
-      rules_title: 'Règles de publication',
-      rules_text: 'En publiant une annonce, vous acceptez que le contenu soit approprié et respecte les règles de la communauté. Nous nous réservons le droit de supprimer le contenu inapproprié.',
-      accept_rules: 'J\'accepte les règles de publication',
-      publishing: 'Publication...',
-      publish: 'Publier l\'annonce',
-      received_title: 'Annonce reçue',
-      received_text: 'Examinée par IA interne. Elle sera publiée sous peu.',
-      code: 'Code',
-      email_label: 'Email',
-      view_ad: 'Voir l\'annonce',
-      home: 'Retour à l\'accueil',
-    },
-    nav: {
-      employment: 'Emploi',
-      community: 'Communauté',
-      help: 'Aide',
-      suggestions_box: 'Boîte à suggestions',
-    },
-    home: {
-      latest_ads: 'Dernières annonces',
-      explore_categories: 'Explorer par catégorie',
-      view_all: 'Voir tout',
-      no_ads: 'Pas encore d\'annonces',
-      no_ads_text: 'Soyez le premier à publier une annonce dans votre province.',
-    },
+    translation: {
+      menu: {
+        ocio: "Loisirs",
+        servicios: "Services",
+        formacion: "Formation",
+        empleo: "Emploi",
+        comunidad: "Communauté",
+        viviendas_trabajo: "Logement + travail",
+        noticias: "Actualités"
+      },
+      common: {
+        back: "Retour",
+        cancel: "Annuler",
+        loading: "Chargement...",
+        searching: "Recherche...",
+        edition: "ÉDITION ESPAGNE",
+        language: "Langue",
+        search: "Rechercher...",
+        user_zone: "Zone utilisateur",
+        login_register: "Se connecter / S'inscrire",
+        my_profile: "Mon profil",
+        my_ads: "Mes annonces",
+        logout: "Fermer la session",
+        publish: "Publier"
+      },
+      home: {
+        hero_title: "CityPaj",
+        hero_subtitle: "Votre ville, vos annonces, votre communauté",
+        filter_button: "Rechercher",
+        latest_ads: "Dernières annonces",
+        no_ads: "Pas d'annonces pour ce filtre.",
+        spain: "Espagne"
+      }
+    }
   },
-  it: { common: { search: 'Cerca...', back: 'Indietro', cancel: 'Annulla', loading: 'Caricamento...', user_zone: 'Area utente', login_register: 'Accedi / Registrati', my_profile: 'Il mio profilo', my_ads: 'I miei annunci', my_saved: 'I miei salvati', logout: 'Esci', publish: 'Pubblica', publish_ad: 'Pubblica annuncio', language: 'Lingua', searching: 'Ricerca...' } },
-  de: { common: { search: 'Suchen...', back: 'Zurück', cancel: 'Abbrechen', loading: 'Wird geladen...', user_zone: 'Benutzerbereich', login_register: 'Anmelden / Registrieren', my_profile: 'Mein Profil', my_ads: 'Meine Anzeigen', my_saved: 'Meine Favoriten', logout: 'Abmelden', publish: 'Veröffentlichen', publish_ad: 'Anzeige veröffentlichen', language: 'Sprache', searching: 'Suche...' } },
-  pt: { common: { search: 'Pesquisar...', back: 'Voltar', cancel: 'Cancelar', loading: 'Carregando...', user_zone: 'Área do usuário', login_register: 'Entrar / Registrar', my_profile: 'Meu perfil', my_ads: 'Meus anúncios', my_saved: 'Meus salvos', logout: 'Sair', publish: 'Publicar', publish_ad: 'Publicar anúncio', language: 'Idioma', searching: 'Pesquisando...' } },
-  ca: { common: { search: 'Cercar...', back: 'Tornar', cancel: 'Cancel·lar', loading: 'Carregant...', user_zone: 'Zona d\'usuari', login_register: 'Accedir / Registrar-se', my_profile: 'El meu perfil', my_ads: 'Els meus anuncis', my_saved: 'Els meus desats', logout: 'Tancar sessió', publish: 'Publicar', publish_ad: 'Publicar anunci', language: 'Idioma', searching: 'Cercant...' } },
-  gl: { common: { search: 'Buscar...', back: 'Volver', cancel: 'Cancelar', loading: 'Cargando...', user_zone: 'Zona de usuario', login_register: 'Acceder / Rexistrarse', my_profile: 'O meu perfil', my_ads: 'Os meus anuncios', my_saved: 'Os meus gardados', logout: 'Pechar sesión', publish: 'Publicar', publish_ad: 'Publicar anuncio', language: 'Idioma', searching: 'Buscando...' } },
-  eu: { common: { search: 'Bilatu...', back: 'Itzuli', cancel: 'Utzi', loading: 'Kargatzen...', user_zone: 'Erabiltzaile gunea', login_register: 'Sartu / Erregistratu', my_profile: 'Nire profila', my_ads: 'Nire iragarkiak', my_saved: 'Nire gordetakoak', logout: 'Itxi saioa', publish: 'Argitaratu', publish_ad: 'Iragarkia argitaratu', language: 'Hizkuntza', searching: 'Bilatzen...' } },
-  ar: { common: { search: 'بحث...', back: 'عودة', cancel: 'إلغاء', loading: 'جار التحميل...', user_zone: 'منطقة المستخدم', login_register: 'تسجيل الدخول / التسجيل', my_profile: 'ملفي الشخصي', my_ads: 'إعلاناتي', my_saved: 'محفوظاتي', logout: 'تسجيل الخروج', publish: 'نشر', publish_ad: 'نشر إعلان', language: 'اللغة', searching: 'جاري البحث...' } },
-  ro: { common: { search: 'Caută...', back: 'Înapoi', cancel: 'Anulează', loading: 'Se încarcă...', user_zone: 'Zona utilizatorului', login_register: 'Autentificare / Înregistrare', my_profile: 'Profilul meu', my_ads: 'Anunțurile mele', my_saved: 'Salvatele mele', logout: 'Deconectare', publish: 'Publică', publish_ad: 'Publică anunț', language: 'Limbă', searching: 'Căutare...' } },
-  zh: { common: { search: '搜索...', back: '返回', cancel: '取消', loading: '加载中...', user_zone: '用户区域', login_register: '登录 / 注册', my_profile: '我的个人资料', my_ads: '我的广告', my_saved: '我的收藏', logout: '退出', publish: '发布', publish_ad: '发布广告', language: '语言', searching: '搜索中...' } },
+  zh: {
+    translation: {
+      menu: {
+        ocio: "休闲",
+        servicios: "服务",
+        formacion: "培训",
+        empleo: "就业",
+        comunidad: "社区",
+        viviendas_trabajo: "住房 + 工作",
+        noticias: "新闻"
+      },
+      common: {
+        back: "返回",
+        cancel: "取消",
+        loading: "加载中...",
+        searching: "搜索中...",
+        edition: "西班牙版",
+        language: "语言",
+        search: "搜索...",
+        user_zone: "用户区域",
+        login_register: "登录 / 注册",
+        my_profile: "我的个人资料",
+        my_ads: "我的广告",
+        logout: "关闭会话",
+        publish: "发布"
+      },
+      home: {
+        hero_title: "城市广场",
+        hero_subtitle: "你的城市，你的广告，你的社区",
+        filter_button: "搜索",
+        latest_ads: "最新广告",
+        no_ads: "此筛选器没有广告。",
+        spain: "西班牙"
+      }
+    }
+  }
 };
+
+export type SupportedLang = keyof typeof resources;
 
 const flatten = (
   obj: Record<string, any>,
@@ -224,20 +423,36 @@ const flatten = (
     const newKey = prefix ? `${prefix}.${key}` : key;
     if (typeof value === 'string') {
       result[newKey] = value;
-    } else if (typeof value === 'object' && value !== null) {
+    } else if (value && typeof value === 'object') {
       flatten(value, newKey, result);
     }
   }
   return result;
 };
 
-const flatResources: Record<LangCode, Record<string, string>> = {} as any;
-for (const lang of Object.keys(resources) as LangCode[]) {
-  flatResources[lang] = flatten(resources[lang] || {});
+const flatResources: Record<SupportedLang, Record<string, string>> = {} as any;
+for (const lang of Object.keys(resources) as SupportedLang[]) {
+  // @ts-ignore
+  flatResources[lang] = flatten(resources[lang]?.translation || resources[lang] || {});
 }
 
-export const getTranslation = (
-  lang: LangCode,
+// Mapa inverso para traducción por contenido (motor de página completa)
+export const reverseMaps: Record<SupportedLang, Map<string, string>> = {} as any;
+const spanishMap = flatResources['es'];
+for (const lang of Object.keys(flatResources) as SupportedLang[]) {
+  const map = new Map<string, string>();
+  for (const key of Object.keys(spanishMap)) {
+    const sourceText = spanishMap[key].trim();
+    const targetText = flatResources[lang][key];
+    if (sourceText && targetText && sourceText !== targetText && lang !== 'es') {
+      map.set(sourceText, targetText);
+    }
+  }
+  reverseMaps[lang] = map;
+}
+
+export const getKeyTranslation = (
+  lang: SupportedLang,
   key: string,
   fallback?: string
 ): string => {
@@ -247,3 +462,36 @@ export const getTranslation = (
   if (spanish && spanish[key]) return spanish[key];
   return fallback ?? key;
 };
+
+export const getTextTranslation = (
+  lang: SupportedLang,
+  text: string,
+  fallback?: string
+): string => {
+  if (lang === 'es') return text;
+  const map = reverseMaps[lang];
+  if (!map) return fallback ?? text;
+  const trimmed = text.trim();
+  if (map.has(trimmed)) return map.get(trimmed)!;
+  return fallback ?? text;
+};
+
+export interface Language {
+  code: SupportedLang;
+  name: string;
+  nativeName: string;
+  flag: string;
+}
+
+export const SUPPORTED_LANGUAGES: Language[] = [
+  { code: 'es', name: 'Español', nativeName: 'Español', flag: 'ES' },
+  { code: 'en', name: 'English', nativeName: 'English', flag: 'GB' },
+  { code: 'fr', name: 'Français', nativeName: 'Français', flag: 'FR' },
+  { code: 'ca', name: 'Català', nativeName: 'Català', flag: 'ES-CT' },
+  { code: 'va', name: 'Valencià', nativeName: 'Valencià', flag: 'ES-VC' },
+  { code: 'gl', name: 'Galego', nativeName: 'Galego', flag: 'ES-GA' },
+  { code: 'eu', name: 'Euskara', nativeName: 'Euskara', flag: 'ES-PV' },
+  { code: 'ar', name: 'العربية', nativeName: 'العربية', flag: 'SA' },
+  { code: 'ro', name: 'Română', nativeName: 'Română', flag: 'RO' },
+  { code: 'zh', name: '中文', nativeName: '中文', flag: 'CN' },
+];

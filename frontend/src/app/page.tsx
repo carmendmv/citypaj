@@ -117,40 +117,6 @@ export default function HomePage() {
             CityPAJ conecta a jóvenes con recursos, anuncios y participación en su provincia.
           </p>
 
-          {estadisticas && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto mt-12">
-              {[
-                { label: 'Anuncios', value: estadisticas.anuncios_publicados },
-                { label: 'Usuarios', value: estadisticas.usuarios_registrados },
-                { label: 'Sugerencias', value: estadisticas.sugerencias_recibidas },
-                { label: 'Provincias', value: estadisticas.comunidades_activas },
-              ].map((stat) => (
-                <div key={stat.label} className="text-center p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
-                  <div className="text-2xl sm:text-3xl font-bold text-gray-900">{stat.value}</div>
-                  <div className="text-xs sm:text-sm text-gray-500 uppercase tracking-wide">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Categorías */}
-      <section className="py-16 px-4 sm:px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8 text-center">Explora por categorías</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {CATEGORIAS.map((cat) => (
-              <Link
-                key={cat.id}
-                href={cat.href}
-                className="group p-6 bg-gray-50 rounded-2xl border border-gray-100 text-center hover:border-blue-300 hover:bg-blue-50/50 transition-all"
-              >
-                <div className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 mb-1">{cat.label}</div>
-                <div className="text-sm text-gray-500 group-hover:text-blue-500">Ver →</div>
-              </Link>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -240,46 +206,6 @@ export default function HomePage() {
               </div>
               <div className="text-sm text-gray-500 uppercase tracking-wide">Sugerencias recibidas</div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Instituciones */}
-      <section className="py-16 px-4 sm:px-6 bg-gray-50/50">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Una herramienta útil para instituciones</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-            Ayuntamientos, diputaciones y áreas de juventud pueden escuchar, ordenar y comprender las necesidades reales de la juventud por territorio.
-          </p>
-          <Link
-            href="/instituciones"
-            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-full hover:bg-blue-700 transition-colors"
-          >
-            Más información para instituciones
-          </Link>
-        </div>
-      </section>
-
-      {/* CTA final */}
-      <section className="py-16 px-4 sm:px-6 bg-black text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Empieza por tu provincia</h2>
-          <p className="text-gray-300 text-lg mb-8">
-            Únete a miles de jóvenes que ya encuentran oportunidades y hacen oír su voz.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/anuncios"
-              className="px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-100 transition-colors text-center"
-            >
-              Explorar oportunidades
-            </Link>
-            <Link
-              href="/publicar"
-              className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-colors text-center"
-            >
-              Publicar anuncio
-            </Link>
           </div>
         </div>
       </section>

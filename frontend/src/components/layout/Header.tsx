@@ -354,7 +354,28 @@ const Header: React.FC<HeaderProps> = memo(({
             <div className="lg:hidden mt-4 border-t border-black pt-4">
               <div className="space-y-4">
                 <div>
-                  <div className="font-sans text-xs text-gray-600 mb-2">COMUNIDAD AUTÓNOMA</div>
+                  <div className="font-sans text-xs text-gray-600 mb-2">{t('common.search', 'Buscar').toUpperCase()}</div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={searchCodigo}
+                      onChange={(e) => setSearchCodigo(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                      placeholder={t('common.search', 'Buscar...')}
+                      className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none"
+                    />
+                    <button
+                      onClick={handleSearch}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-black hover:text-orange-500"
+                      aria-label={t('common.search', 'Buscar')}
+                    >
+                      <Search className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="font-sans text-xs text-gray-600 mb-2">{t('publish.community', 'Comunidad Autónoma').toUpperCase()}</div>
                   <div className="flex items-center gap-2">
                     <select
                       id="comunidad-mobile"
@@ -362,7 +383,7 @@ const Header: React.FC<HeaderProps> = memo(({
                       defaultValue="Todas"
                       onChange={(e) => handleComunidadSelect(e.target.value)}
                     >
-                      <option value="Todas">Todas</option>
+                      <option value="Todas">{t('common.all', 'Todas')}</option>
                       {COMUNIDADES_AUTONOMAS.map((comunidad) => (
                         <option key={comunidad} value={comunidad}>
                           {comunidad}
@@ -370,15 +391,6 @@ const Header: React.FC<HeaderProps> = memo(({
                       ))}
                     </select>
                   </div>
-                  <button
-                    onClick={() => {
-                      handleComunidadSelect('Todas');
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="mt-2 w-full bg-black text-white border border-black px-4 py-2 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors"
-                  >
-                    Buscar
-                  </button>
                 </div>
 
                 <div className="pt-3 border-t border-black">
@@ -390,12 +402,12 @@ const Header: React.FC<HeaderProps> = memo(({
                     }}
                     className="block w-full bg-black text-white border border-black px-4 py-3 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors text-center"
                   >
-                    Publicar anuncio
+                    {t('common.publish_ad', 'Publicar anuncio')}
                   </Link>
                 </div>
 
                 <div className="pt-3 border-t border-black">
-                  <div className="font-sans text-xs text-gray-600 mb-2">SECCIONES</div>
+                  <div className="font-sans text-xs text-gray-600 mb-2">{t('common.sections', 'SECCIONES')}</div>
                   <div className="space-y-2">
                     {MENU_PRINCIPAL.map((item) => (
                       <Link
@@ -412,7 +424,7 @@ const Header: React.FC<HeaderProps> = memo(({
                 </div>
 
                 <div className="pt-3 border-t border-black">
-                  <div className="font-sans text-xs text-gray-600 mb-2">ZONA DE USUARIO</div>
+                  <div className="font-sans text-xs text-gray-600 mb-2">{t('common.user_zone', 'ZONA DE USUARIO')}</div>
                   <div className="space-y-2">
                     {!user ? (
                       <Link
@@ -420,7 +432,7 @@ const Header: React.FC<HeaderProps> = memo(({
                         className="block font-sans text-sm text-black hover:text-orange-500"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        Acceder / Registrarse
+                        {t('common.login_register', 'Acceder / Registrarse')}
                       </Link>
                     ) : null}
 
@@ -429,7 +441,7 @@ const Header: React.FC<HeaderProps> = memo(({
                       className="block font-sans text-sm text-black hover:text-orange-500"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      Mi perfil
+                      {t('common.my_profile', 'Mi perfil')}
                     </Link>
 
                     <Link
@@ -437,7 +449,7 @@ const Header: React.FC<HeaderProps> = memo(({
                       className="block font-sans text-sm text-black hover:text-orange-500"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      Mis anuncios
+                      {t('common.my_ads', 'Mis anuncios')}
                     </Link>
 
                     <Link
@@ -445,7 +457,7 @@ const Header: React.FC<HeaderProps> = memo(({
                       className="block font-sans text-sm text-black hover:text-orange-500"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      Mis guardados
+                      {t('common.my_saved', 'Mis guardados')}
                     </Link>
 
                     {user ? (
@@ -456,7 +468,7 @@ const Header: React.FC<HeaderProps> = memo(({
                             className="w-full text-left font-sans text-sm text-black hover:text-orange-500 flex items-center gap-2"
                           >
                             <LogOut className="w-4 h-4" />
-                            Cerrar sesión
+                            {t('common.logout', 'Cerrar sesión')}
                           </button>
                           <button
                             type="button"
@@ -464,7 +476,7 @@ const Header: React.FC<HeaderProps> = memo(({
                             className="w-full text-left font-sans text-sm text-red-600 hover:text-red-700 flex items-center gap-2"
                           >
                             <Trash2 className="w-4 h-4" />
-                            Eliminar cuenta
+                            {t('common.delete_account', 'Eliminar cuenta')}
                           </button>
                         </>
                       ) : null}
@@ -472,7 +484,7 @@ const Header: React.FC<HeaderProps> = memo(({
                 </div>
 
                 <div className="pt-3 border-t border-black">
-                  <div className="font-sans text-xs text-gray-600 mb-2">IDIOMA</div>
+                  <div className="font-sans text-xs text-gray-600 mb-2">{t('common.language', 'IDIOMA')}</div>
                   <LanguageSelector isMobile={true} />
                 </div>
 

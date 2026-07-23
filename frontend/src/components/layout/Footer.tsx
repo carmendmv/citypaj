@@ -72,6 +72,19 @@ const Footer: React.FC = memo(() => {
               </div>
             </nav>
 
+            {/* Instituciones */}
+            <div className="flex flex-col gap-4">
+              <h4 className="font-sans text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Instituciones
+              </h4>
+              <p className="text-sm font-sans text-gray-400 max-w-xs">
+                Ayuntamientos, diputaciones y áreas de juventud pueden escuchar y comprender las necesidades reales de la juventud por territorio.
+              </p>
+              <Link href="/instituciones" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
+                Más información
+              </Link>
+            </div>
+
             {/* Legal, moderación y contacto */}
             <div className="flex flex-col gap-4">
               <h4 className="font-sans text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -87,7 +100,7 @@ const Footer: React.FC = memo(() => {
                 <Link href="/privacidad" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
                   Política de privacidad
                 </Link>
-                <Link href="/admin/sugerencias" className="text-sm font-sans text-red-400 hover:text-red-300 transition-colors duration-200">
+                <Link href="/admin/sugerencias" className="text-sm font-sans font-bold text-yellow-400 hover:text-yellow-300 transition-colors duration-200">
                   Panel de moderación
                 </Link>
               </div>
