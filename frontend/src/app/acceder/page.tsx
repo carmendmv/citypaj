@@ -301,16 +301,16 @@ export default function AccederPage() {
         )}
 
         {!user ? (
-          <div className="mt-10 border border-black p-6 bg-gray-50">
-            <h3 className="font-serif text-lg font-bold text-black mb-2">¿Eres moderador?</h3>
-            <p className="font-sans text-sm text-gray-700 mb-4">
-              Usa el acceso exclusivo para moderadores.
+          <div className="mt-12 text-center border-t border-gray-200 pt-8">
+            <p className="font-sans text-xs text-gray-400 uppercase tracking-widest mb-3">
+              Acceso para equipos de moderación
             </p>
             <Link
               href="/moderador/login"
-              className="block w-full text-center bg-black text-white border border-black px-6 py-3 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors"
+              className="inline-flex items-center gap-2 font-sans text-sm text-gray-500 border border-gray-200 rounded-full px-4 py-2 hover:border-black hover:text-black transition-colors"
             >
-              Acceso de moderadores
+              <span>¿Eres moderador?</span>
+              <span className="font-medium">Acceder</span>
             </Link>
           </div>
         ) : null}

@@ -105,18 +105,22 @@ export default function HomePage() {
       <Header />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/40 px-4 sm:px-6 py-16 sm:py-24">
-        <div className="absolute top-0 right-0 w-72 h-72 bg-blue-200/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-violet-200/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3"></div>
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-purple-50/40 px-4 sm:px-6 py-16 sm:py-24">
+        <div className="absolute top-0 right-0 w-72 h-72 bg-purple-300/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-yellow-300/30 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3"></div>
 
         <div className="relative max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight mb-6">
-            Todo lo que necesitas, <span className="text-blue-600">cerca de ti</span>
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight mb-8 bg-gradient-to-r from-purple-600 via-violet-500 to-yellow-500 bg-clip-text text-transparent">
+            Encuentra tu lugar en la ciudad.
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-10">
-            CityPAJ conecta a jóvenes con recursos, anuncios y participación en su provincia.
-          </p>
-
+          <div className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-10 space-y-4">
+            <p>
+              CityPAJ es el punto de encuentro joven donde descubrir oportunidades, recursos, anuncios y comunidad en tu provincia.
+            </p>
+            <p>
+              Aquí puedes buscar empleo, formación, vivienda, cultura o ayudas, pero también compartir lo que falta, proponer ideas y conectar con otras personas jóvenes que quieren vivir su ciudad de una forma más activa, útil y cercana.
+            </p>
+          </div>
         </div>
       </section>
 
