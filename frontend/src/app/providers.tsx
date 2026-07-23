@@ -1,8 +1,10 @@
 'use client';
 
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, Suspense } from 'react';
 import { AuthProvider } from '@/context/AuthContext';
 import { ComunidadProvider } from '@/hooks/useComunidad';
+import { HeaderVisibilityProvider } from '@/context/HeaderVisibilityContext';
+import Header from '@/components/layout/Header';
 import '@/i18n';
 
 export default function Providers({ children }: { children: ReactNode }) {
@@ -15,7 +17,12 @@ export default function Providers({ children }: { children: ReactNode }) {
   return (
     <AuthProvider>
       <ComunidadProvider>
-        {children}
+        <HeaderVisibilityProvider>
+          <Suspense fallback={null}>
+            <Header />
+          </Suspense>
+          {children}
+        </HeaderVisibilityProvider>
       </ComunidadProvider>
     </AuthProvider>
   );

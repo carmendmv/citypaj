@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, memo, useCallback } from 'react';
+import React, { useState, memo, useCallback, useEffect, useLayoutEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { Search, Menu, X, User, LogOut, Trash2, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { useHeaderVisibility } from '@/context/HeaderVisibilityContext';
 import LanguageSelector from '@/components/ui/LanguageSelector';
 
 const COMUNIDADES_AUTONOMAS = [
@@ -54,31 +55,70 @@ const Header: React.FC<HeaderProps> = memo(({
   onLogout
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { registerHeader, unregisterHeader } = useHeaderVisibility();
+
+  const getSearchParam = useCallback((key: string) => {
+    if (typeof window === 'undefined') return '';
+    return new URLSearchParams(window.location.search).get(key) || '';
+  }, []);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchCodigo, setSearchCodigo] = useState('');
+  const [searchCodigo, setSearchCodigo] = useState(getSearchParam('busqueda'));
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setSearchCodigo(getSearchParam('busqueda'));
+  }, [pathname, getSearchParam]);
+
+  useLayoutEffect(() => {
+    const visible = registerHeader();
+    setIsVisible(visible);
+    return () => {
+      unregisterHeader();
+    };
+  }, [registerHeader, unregisterHeader]);
 
   const handleSearch = useCallback(() => {
     if (searchCodigo.trim()) {
       if (onSearch) {
         onSearch(searchCodigo.trim());
       } else {
-        router.push(`/anuncios?busqueda=${encodeURIComponent(searchCodigo.trim())}`);
+        const params = new URLSearchParams();
+        params.set('busqueda', searchCodigo.trim());
+        router.push(`/anuncios?${params.toString()}`);
         setIsMobileMenuOpen(false);
       }
     }
   }, [searchCodigo, onSearch, router]);
 
+  const isActive = useCallback((href: string) => {
+    if (!pathname) return false;
+    if (href === '/') return pathname === '/';
+    if (href.startsWith('/anuncios?categoria=')) {
+      const cat = new URLSearchParams(href.split('?')[1]).get('categoria');
+      const currentCat = getSearchParam('categoria');
+      return pathname.startsWith('/anuncios') && (!!cat && cat === currentCat);
+    }
+    return pathname.startsWith(href);
+  }, [pathname, getSearchParam]);
+
   const handleComunidadSelect = useCallback(
     (comunidad: string) => {
-      onComunidadChange?.(comunidad);
+      if (onComunidadChange) {
+        onComunidadChange(comunidad);
+      } else if (comunidad && comunidad !== 'Todas') {
+        router.push(`/anuncios?comunidad_autonoma=${encodeURIComponent(comunidad)}`);
+      } else {
+        router.push('/anuncios');
+      }
       setIsMobileMenuOpen(false);
     },
-    [onComunidadChange]
+    [onComunidadChange, router]
   );
 
   const handleCategoriaSelect = useCallback(
@@ -131,6 +171,8 @@ const Header: React.FC<HeaderProps> = memo(({
     setIsUserMenuOpen(!isUserMenuOpen);
   }, [isUserMenuOpen]);
 
+  if (!isVisible) return null;
+
   return (
     <header 
       className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-black"
@@ -168,7 +210,9 @@ const Header: React.FC<HeaderProps> = memo(({
                 <Link
                   key={item.categoria}
                   title={item.descripcion}
-                  className="text-base font-serif text-black hover:text-orange-500 hover:underline underline-offset-8 decoration-2"
+                  className={`text-base font-serif hover:text-orange-500 hover:underline underline-offset-8 decoration-2 ${
+                    isActive(item.href) ? 'text-orange-600 underline' : 'text-black'
+                  }`}
                   href={item.href}
                   onClick={() => handleCategoriaSelect(item.categoria)}
                 >
@@ -177,7 +221,9 @@ const Header: React.FC<HeaderProps> = memo(({
               ))}
               <Link
                 href="/buzon-sugerencias"
-                className="text-base font-serif text-black hover:text-orange-500 hover:underline underline-offset-8 decoration-2"
+                className={`text-base font-serif hover:text-orange-500 hover:underline underline-offset-8 decoration-2 ${
+                  isActive('/buzon-sugerencias') ? 'text-orange-600 underline' : 'text-black'
+                }`}
               >
                 Buzón de Sugerencias
               </Link>
@@ -358,7 +404,7 @@ const Header: React.FC<HeaderProps> = memo(({
                         className="block w-full text-left"
                         onClick={() => handleCategoriaSelect(item.categoria)}
                       >
-                        <div className="text-base font-serif text-black hover:text-orange-500">{item.label}</div>
+                        <div className={`text-base font-serif hover:text-orange-500 ${isActive(item.href) ? 'text-orange-600' : 'text-black'}`}>{item.label}</div>
                         <div className="mt-1 font-sans text-xs text-gray-600">{item.descripcion}</div>
                       </Link>
                     ))}
