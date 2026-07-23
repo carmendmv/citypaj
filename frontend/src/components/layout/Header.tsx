@@ -209,7 +209,7 @@ const Header: React.FC<HeaderProps> = memo(({
                 <Link
                   key={item.categoria}
                   title={item.descripcion}
-                  className={`text-base font-serif hover:text-orange-500 hover:underline underline-offset-8 decoration-2 ${
+                  className={`text-xl font-serif hover:text-orange-500 hover:underline underline-offset-8 decoration-2 ${
                     isActive(item.href) ? 'text-orange-600 underline' : 'text-black'
                   }`}
                   href={item.href}
@@ -220,7 +220,7 @@ const Header: React.FC<HeaderProps> = memo(({
               ))}
               <Link
                 href="/buzon-sugerencias"
-                className={`text-base font-serif hover:text-orange-500 hover:underline underline-offset-8 decoration-2 ${
+                className={`text-xl font-serif hover:text-orange-500 hover:underline underline-offset-8 decoration-2 ${
                   isActive('/buzon-sugerencias') ? 'text-orange-600 underline' : 'text-black'
                 }`}
               >
@@ -411,7 +411,7 @@ const Header: React.FC<HeaderProps> = memo(({
                         className="block w-full text-left"
                         onClick={() => handleCategoriaSelect(item.categoria)}
                       >
-                        <div className={`text-base font-serif hover:text-orange-500 ${isActive(item.href) ? 'text-orange-600' : 'text-black'}`}>{item.label}</div>
+                        <div className={`text-lg font-serif hover:text-orange-500 ${isActive(item.href) ? 'text-orange-600' : 'text-black'}`}>{item.label}</div>
                         <div className="mt-1 font-sans text-xs text-gray-600">{item.descripcion}</div>
                       </Link>
                     ))}

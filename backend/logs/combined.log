@@ -438,3 +438,11 @@
 {"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:30:50 +0000] \"GET /api/anuncios/moderacion HTTP/1.1\" 401 50 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:30:50.012Z"}
 {"level":"info","message":"::ffff:127.0.0.1 - - [22/Jul/2026:18:30:50 +0000] \"GET /api/anuncios/moderacion HTTP/1.1\" 401 50 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-22T18:30:50.171Z"}
 {"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-22T18:31:58.366Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-23T21:08:27.077Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-23T21:08:27.079Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-23T21:08:27.079Z"}
+{"level":"info","message":"127.0.0.1 - - [23/Jul/2026:21:08:53 +0000] \"GET /health HTTP/1.1\" 200 122 \"-\" \"curl/8.21.0\"","service":"citypaj-backend","timestamp":"2026-07-23T21:08:53.122Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-23T21:09:35.059Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-23T21:09:35.061Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-23T21:09:35.061Z"}
+{"level":"info","message":"127.0.0.1 - - [23/Jul/2026:21:11:36 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=empleo&busqueda=vivienda HTTP/1.1\" 200 153 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-23T21:11:36.813Z"}

@@ -110,7 +110,7 @@ export default function HomePage() {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-yellow-300/30 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3"></div>
 
         <div className="relative max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight mb-8 bg-gradient-to-r from-purple-600 via-violet-500 to-yellow-500 bg-clip-text text-transparent">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black leading-tight mb-8 bg-gradient-to-r from-purple-600 via-violet-500 to-yellow-500 bg-clip-text text-transparent">
             Encuentra tu lugar en la ciudad.
           </h1>
           <div className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-10 space-y-4">
