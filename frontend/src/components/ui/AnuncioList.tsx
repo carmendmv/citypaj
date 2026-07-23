@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Anuncio, PaginationMeta } from '@/types';
 import HeartButton from '@/components/ui/HeartButton';
+import Pagination from '@/components/ui/Pagination';
 
 interface AnuncioListProps {
   anuncios: Anuncio[];
@@ -133,41 +134,16 @@ const AnuncioList: React.FC<AnuncioListProps> = ({
         ))}
       </div>
 
-      {/* Paginación elegante - números más grandes, negros, serifa, sin fondo */}
-      {paginationMeta && (
+      {/* Paginación */}
+      {paginationMeta && paginationMeta.total_paginas > 1 && (
         <div className="border-t border-black p-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
-            <div className="text-xs sm:text-sm text-gray-600">
-              Mostrando {anuncios.length} de {paginationMeta.total} anuncios
-            </div>
-            <div className="flex items-center justify-center sm:justify-end space-x-1 sm:space-x-2">
-              {/* Números de página del 1 al 7 */}
-              {Array.from({ length: Math.min(7, paginationMeta.total_paginas) }, (_, i) => i + 1).map((pageNum) => (
-                <button
-                  key={pageNum}
-                  onClick={() => onPageChange?.(pageNum)}
-                  className={`px-2 sm:px-3 py-1 text-base sm:text-lg font-serif font-bold transition-all hover:text-orange-500 ${
-                    paginationMeta.pagina === pageNum
-                      ? 'text-black text-lg sm:text-xl'
-                      : 'text-black hover:text-orange-500'
-                  }`}
-                >
-                  {pageNum}
-                </button>
-              ))}
-              
-              {paginationMeta.total_paginas > 7 && (
-                <>
-                  <span className="px-1 sm:px-2 text-gray-500 font-serif text-base sm:text-lg">...</span>
-                  <button
-                    onClick={() => onPageChange?.(paginationMeta.total_paginas)}
-                    className="px-2 sm:px-3 py-1 text-base sm:text-lg font-serif font-bold text-black hover:text-orange-500 transition-all"
-                  >
-                    {paginationMeta.total_paginas}
-                  </button>
-                </>
-              )}
-            </div>
+          <Pagination
+            currentPage={paginationMeta.pagina}
+            totalPages={paginationMeta.total_paginas}
+            onPageChange={onPageChange}
+          />
+          <div className="text-xs sm:text-sm text-gray-600 text-center mt-4">
+            Mostrando {anuncios.length} de {paginationMeta.total} anuncios
           </div>
         </div>
       )}
