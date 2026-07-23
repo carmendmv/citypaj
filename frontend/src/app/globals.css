@@ -93,6 +93,12 @@ a:hover {
   color: #f97316;
   text-decoration: underline;
 }
+
+/* Enlaces que cambian solo el color al hover deben pasar a un tono bien distinguible */
+a[class*="hover:text-"]:not([class*="hover:bg-"]):hover {
+  color: #f97316 !important;
+  text-decoration: underline;
+}
 .logo-link,
 .logo-link:hover {
   text-decoration: none;
