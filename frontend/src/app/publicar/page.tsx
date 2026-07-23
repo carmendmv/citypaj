@@ -95,11 +95,7 @@ export default function PublicarPage() {
       const estado = json?.data?.estado_moderacion;
       const motivo = json?.data?.motivo_rechazo;
 
-      if (estado === 'rejected') {
-        setError(motivo || 'No se ha podido publicar el anuncio.');
-        return;
-      }
-
+      // rejected solo lo aplica un moderador humano; la IA marca flagged para revisión
       setResultado({
         id: json?.data?.id,
         estado,
@@ -130,10 +126,19 @@ export default function PublicarPage() {
               <div className="mb-4 flex h-12 w-12 items-center justify-center border border-black bg-black text-white">
                 <Check className="w-6 h-6" />
               </div>
-              <h2 className="font-serif text-2xl font-bold text-black mb-2">{t('publish.received_title', 'Anuncio recibido')}</h2>
+              <h2 className="font-serif text-2xl font-bold text-black mb-2">
+                {resultado.estado === 'approved' ? 'Anuncio publicado' : 'Anuncio en revisión'}
+              </h2>
               <p className="font-sans text-sm text-gray-700 mb-4">
-                {t('publish.received_text', 'Revisado por IA interna. Se publicará en breve.')}
+                {resultado.estado === 'approved'
+                  ? 'Tu anuncio ya está publicado y visible para la comunidad.'
+                  : 'Tu anuncio ha sido marcado para revisión humana. En breve lo revisaremos y, si cumple las normas, lo publicaremos.'}
               </p>
+              {resultado.motivo ? (
+                <p className="font-sans text-xs text-orange-600 mb-4 border border-orange-200 p-2 bg-orange-50">
+                  Motivo: {resultado.motivo}
+                </p>
+              ) : null}
               <div className="space-y-2 font-sans text-sm text-black border border-gray-200 p-3 mb-4">
                 {resultado.id ? (
                   <div className="flex justify-between">
@@ -147,7 +152,7 @@ export default function PublicarPage() {
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
-                {resultado.id ? (
+                {resultado.id && resultado.estado === 'approved' ? (
                   <Link
                     href={`/anuncios/${resultado.id}`}
                     className="flex-1 text-center bg-black text-white border border-black px-6 py-3 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors"

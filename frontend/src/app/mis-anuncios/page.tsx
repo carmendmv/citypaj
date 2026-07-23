@@ -111,8 +111,8 @@ export default function MisAnunciosPage() {
           ) : (
             <div className="mt-8 space-y-4">
               {anuncios.map((anuncio) => {
-                const estado = anuncio.estado_moderacion === 'approved' ? 'Aprobado' : anuncio.estado_moderacion === 'rejected' ? 'Rechazado' : 'Pendiente';
-                const estadoColor = anuncio.estado_moderacion === 'approved' ? 'bg-emerald-100 text-emerald-800' : anuncio.estado_moderacion === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800';
+                const estado = anuncio.estado_moderacion === 'approved' ? 'Aprobado' : anuncio.estado_moderacion === 'rejected' ? 'Rechazado' : anuncio.estado_moderacion === 'flagged' ? 'En revisión' : 'Pendiente';
+                const estadoColor = anuncio.estado_moderacion === 'approved' ? 'bg-emerald-100 text-emerald-800' : anuncio.estado_moderacion === 'rejected' ? 'bg-red-100 text-red-800' : anuncio.estado_moderacion === 'flagged' ? 'bg-orange-100 text-orange-800' : 'bg-amber-100 text-amber-800';
                 return (
                   <div key={anuncio.id} className="border border-black p-5 hover:shadow-lg transition-shadow">
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">

@@ -218,9 +218,10 @@ export default function AdminAnunciosPage() {
                       <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                         a.estado_moderacion === 'approved' ? 'bg-green-100 text-green-800' :
                         a.estado_moderacion === 'rejected' ? 'bg-red-100 text-red-800' :
+                        a.estado_moderacion === 'flagged' ? 'bg-orange-100 text-orange-800' :
                         'bg-yellow-100 text-yellow-800'
                       }`}>
-                        {a.estado_moderacion}
+                        {a.estado_moderacion === 'flagged' ? 'flagged' : a.estado_moderacion}
                       </span>
                       {a.motivo_rechazo ? <p className="text-xs text-red-600 mt-1 max-w-xs">{a.motivo_rechazo}</p> : null}
                     </td>

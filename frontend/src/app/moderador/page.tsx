@@ -61,7 +61,7 @@ export default function ModeradorPanelPage() {
         if (resAnuncios.status === 'fulfilled' && resAnuncios.value.ok) {
           const anunciosJson = await resAnuncios.value.json();
           const anuncios = Array.isArray(anunciosJson?.data) ? anunciosJson.data : [];
-          nuevoEstado.anunciosPendientes = anuncios.filter((a: any) => a.estado_moderacion === 'pending').length;
+          nuevoEstado.anunciosPendientes = anuncios.filter((a: any) => a.estado_moderacion === 'pending' || a.estado_moderacion === 'flagged').length;
           nuevoEstado.anunciosReportados = anuncios.filter((a: any) => (a.reportes || 0) > 0).length;
         } else {
           nuevoEstado.anunciosPendientes = 0;

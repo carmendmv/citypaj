@@ -404,7 +404,8 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
       const textoCompleto = `${titulo} ${descripcion}`;
       const resultadoIA = moderarConIA(textoCompleto);
-      const estadoModeracion = resultadoIA.aprobado ? 'approved' : 'rejected';
+      // La IA no rechaza; solo aprueba o marca para revisión humana
+      const estadoModeracion = resultadoIA.aprobado ? 'approved' : 'flagged';
       const motivoRechazo = resultadoIA.aprobado ? null : resultadoIA.motivo;
       const visible = resultadoIA.aprobado ? 1 : 0;
 
@@ -841,7 +842,8 @@ export const moderarAnuncioIA = async (req: AuthRequest, res: Response): Promise
       }
 
       const resultado = moderarConIA(`${anuncio.titulo} ${anuncio.descripcion}`);
-      const estado = resultado.aprobado ? 'approved' : 'rejected';
+      // La IA nunca aplica rejected; solo aprueba o marca para revisión humana
+      const estado = resultado.aprobado ? 'approved' : 'flagged';
       const visible = resultado.aprobado ? 1 : 0;
 
       await connection.execute(
@@ -854,7 +856,7 @@ export const moderarAnuncioIA = async (req: AuthRequest, res: Response): Promise
         [id]
       );
 
-      res.status(200).json({ success: true, data: { estado, motivo: resultado.motivo } });
+      res.status(200).json({ success: true, message: resultado.aprobado ? 'Anuncio aprobado' : 'Marcado para revisión humana', data: { estado, motivo: resultado.motivo } });
     } finally {
       connection.release();
     }
