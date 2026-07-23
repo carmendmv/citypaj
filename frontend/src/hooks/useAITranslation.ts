@@ -57,19 +57,19 @@ export const useAITranslation = () => {
     loadGoogleTranslateScript();
   };
 
-  const preventGoogleTranslateBanner = () => {
-    const preventBanner = () => {
-      const banner = document.querySelector('.goog-te-banner-frame');
-      if (banner) {
-        (banner as HTMLElement).style.display = 'none';
-      }
-      document.body.style.marginTop = '0px';
-      document.body.style.position = '';
-      document.documentElement.style.marginTop = '0px';
-    };
+  const hideGoogleTranslateBanner = () => {
+    const banner = document.querySelector('.goog-te-banner-frame');
+    if (banner) {
+      (banner as HTMLElement).style.display = 'none';
+    }
+    document.body.style.marginTop = '0px';
+    document.body.style.position = '';
+    document.documentElement.style.marginTop = '0px';
+  };
 
-    preventBanner();
-    const interval = setInterval(preventBanner, 100);
+  const preventGoogleTranslateBanner = () => {
+    hideGoogleTranslateBanner();
+    const interval = setInterval(hideGoogleTranslateBanner, 100);
     return () => clearInterval(interval);
   };
 
@@ -209,16 +209,34 @@ export const useAITranslation = () => {
       }
 
       // Traducir elementos usando Google Translate UI
-      const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-      if (select) {
-        select.value = targetLanguage.googleCode;
-        select.dispatchEvent(new Event('change'));
-        
-        // Esperar a que se complete la traducción
-        setTimeout(() => {
-          preventGoogleTranslateBanner();
-          setIsLoading(false);
-        }, 1500);
+      const applyLanguage = () => {
+        const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+        if (select && select.options.length > 1) {
+          select.value = targetLanguage.googleCode;
+          select.dispatchEvent(new Event('change'));
+
+          // Esperar a que se complete la traducción
+          setTimeout(() => {
+            hideGoogleTranslateBanner();
+            setIsLoading(false);
+          }, 1500);
+          return true;
+        }
+        return false;
+      };
+
+      if (!applyLanguage()) {
+        let attempts = 0;
+        const maxAttempts = 20;
+        const poll = setInterval(() => {
+          attempts += 1;
+          if (applyLanguage() || attempts >= maxAttempts) {
+            clearInterval(poll);
+            if (attempts >= maxAttempts) {
+              setIsLoading(false);
+            }
+          }
+        }, 250);
       }
 
     } catch (error) {
@@ -255,6 +273,13 @@ export const useAITranslation = () => {
       detail: { language, code: language.code } 
     }));
   }, [translatePage]);
+
+  // Traducir automáticamente cuando el widget esté listo y haya un idioma distinto al español guardado
+  useEffect(() => {
+    if (isTranslationReady && currentLanguage.code !== 'es') {
+      translatePage(currentLanguage);
+    }
+  }, [isTranslationReady, currentLanguage, translatePage]);
 
   const translateText = useCallback(async (text: string, targetLang?: string): Promise<string> => {
     const language = targetLang || currentLanguage.googleCode;
