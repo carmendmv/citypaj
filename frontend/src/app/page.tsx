@@ -105,7 +105,7 @@ export default function HomePage() {
       <Header />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-purple-50/40 px-4 sm:px-6 py-16 sm:py-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-purple-50/40 px-4 sm:px-6 py-16 sm:py-24 border-b border-gray-200">
         <div className="absolute top-0 right-0 w-72 h-72 bg-purple-300/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-yellow-300/30 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3"></div>
 

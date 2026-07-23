@@ -480,3 +480,16 @@
 {"level":"info","message":"127.0.0.1 - - [23/Jul/2026:21:20:45 +0000] \"POST /api/auth/refresh HTTP/1.1\" 200 331 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-23T21:20:45.014Z"}
 {"level":"info","message":"127.0.0.1 - - [23/Jul/2026:21:20:45 +0000] \"POST /api/auth/refresh HTTP/1.1\" 200 331 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-23T21:20:45.058Z"}
 {"level":"info","message":"SIGINT received, shutting down gracefully","service":"citypaj-backend","timestamp":"2026-07-23T21:22:09.280Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-23T21:35:35.573Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-23T21:35:35.575Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-23T21:35:35.575Z"}
+{"level":"info","message":"127.0.0.1 - - [23/Jul/2026:21:36:05 +0000] \"GET /health HTTP/1.1\" 200 122 \"-\" \"curl/8.21.0\"","service":"citypaj-backend","timestamp":"2026-07-23T21:36:05.985Z"}
+{"level":"info","message":"127.0.0.1 - - [23/Jul/2026:21:36:07 +0000] \"GET /api/anuncios?busqueda=test&limit=50&ordenar=creado-desc HTTP/1.1\" 200 153 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-23T21:36:07.259Z"}
+{"level":"info","message":"🚀 CityPaj Backend API running on port 3002","service":"citypaj-backend","timestamp":"2026-07-23T21:36:55.966Z"}
+{"level":"info","message":"📚 Environment: development","service":"citypaj-backend","timestamp":"2026-07-23T21:36:55.967Z"}
+{"level":"info","message":"🔗 Health check: http://localhost:3002/health","service":"citypaj-backend","timestamp":"2026-07-23T21:36:55.968Z"}
+{"level":"info","message":"127.0.0.1 - - [23/Jul/2026:21:37:22 +0000] \"GET /api/anuncios?busqueda=vivienda&limit=50&ordenar=creado-desc HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-23T21:37:22.858Z"}
+{"level":"info","message":"127.0.0.1 - - [23/Jul/2026:21:37:42 +0000] \"GET /api/anuncios?page=1&limit=12&ordenar=creado-desc&categoria=vivienda&comunidad_autonoma=Cantabria HTTP/1.1\" 200 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-23T21:37:42.908Z"}
+{"level":"info","message":"127.0.0.1 - - [23/Jul/2026:21:38:22 +0000] \"POST /api/auth/register HTTP/1.1\" 201 - \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-23T21:38:22.094Z"}
+{"level":"info","message":"127.0.0.1 - - [23/Jul/2026:21:38:22 +0000] \"POST /api/auth/login HTTP/1.1\" 200 1016 \"-\" \"node\"","service":"citypaj-backend","timestamp":"2026-07-23T21:38:22.935Z"}
+{"level":"info","message":"127.0.0.1 - - [23/Jul/2026:21:38:27 +0000] \"POST /api/anuncios/guardados HTTP/1.1\" 200 971 \"http://localhost:3001/guardados\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36\"","service":"citypaj-backend","timestamp":"2026-07-23T21:38:27.701Z"}
