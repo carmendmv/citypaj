@@ -71,11 +71,11 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Request ID middleware
-app.use((_req: Request, res: Response, next: NextFunction) => {
-  const requestId = Array.isArray(_req.headers['x-request-id']) 
-    ? _req.headers['x-request-id'][0] 
-    : _req.headers['x-request-id'] || generateRequestId();
-  (_req as any).requestId = requestId;
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const requestId = Array.isArray(req.headers['x-request-id'])
+    ? req.headers['x-request-id'][0]
+    : req.headers['x-request-id'] || generateRequestId();
+  req.requestId = requestId;
   res.setHeader('X-Request-ID', requestId);
   next();
 });
@@ -143,11 +143,11 @@ app.use('/api/eventos', eventosRoutes);
 app.use('/api/estadisticas', estadisticasRoutes);
 
 // 404 handler
-app.use('*', (req, res) => {
+app.use('*', (req: Request, res: Response) => {
   res.status(404).json({
     error: 'Not Found',
     message: `Route ${req.originalUrl} not found`,
-    requestId: (req as any).requestId,
+    requestId: req.requestId,
   });
 });
 

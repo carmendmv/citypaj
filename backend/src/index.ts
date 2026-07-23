@@ -12,7 +12,7 @@ async function startServer() {
     process.exit(1);
   }
 
-  const server = app.listen(PORT, () => {
+  const server = app.listen(PORT, '0.0.0.0', () => {
     logger.info(`🚀 CityPaj Backend API running on port ${PORT}`);
     logger.info(`📚 Environment: ${config.env}`);
     logger.info(`🔗 Health check: http://localhost:${PORT}/health`);
