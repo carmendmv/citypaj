@@ -1,12 +1,9 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { AuthRequest } from '../middleware/auth';
 import { pool } from '../config/database';
 import { config } from '../config';
-
-const DEMO_EMAIL = 'demo@citypaj.com';
-const DEMO_PASSWORD = 'Demo1234!';
-const DEMO_NAME = 'Usuario Demo';
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -27,29 +24,11 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     try {
       // Buscar usuario por email
       const [users] = await connection.execute(
-        'SELECT id, email, password_hash, nombre, verificado, rol FROM usuarios WHERE email = ?',
+        'SELECT id, email, password_hash, nombre, verificado, rol FROM usuarios WHERE LOWER(email) = ?',
         [email]
       );
 
-      let user: any = (users as any[])[0];
-
-      // Crear usuario demo automáticamente si no existe y se usan las credenciales demo
-      if (!user && email === DEMO_EMAIL && password === DEMO_PASSWORD) {
-        const userId = require('crypto').randomUUID();
-        const hashedPassword = await bcrypt.hash(DEMO_PASSWORD, 10);
-        await connection.execute(
-          `INSERT INTO usuarios (id, email, password_hash, nombre, verificado, rol) VALUES (?, ?, ?, ?, ?, ?)`,
-          [userId, DEMO_EMAIL, hashedPassword, DEMO_NAME, 1, 'admin']
-        );
-        user = {
-          id: userId,
-          email: DEMO_EMAIL,
-          password_hash: hashedPassword,
-          nombre: DEMO_NAME,
-          verificado: 1,
-          rol: 'admin'
-        };
-      }
+      const user: any = (users as any[])[0];
 
       if (!user) {
         res.status(401).json({
@@ -60,18 +39,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       }
 
       // Verificar contraseña
-      const isDemoLogin = email === DEMO_EMAIL && password === DEMO_PASSWORD;
-      let isPasswordValid = isDemoLogin || await bcrypt.compare(password, user.password_hash);
-
-      if (isDemoLogin && user) {
-        // Mantener el hash demo actualizado por si el usuario fue creado con otro mecanismo
-        const hashedPassword = await bcrypt.hash(DEMO_PASSWORD, 10);
-        await connection.execute(
-          'UPDATE usuarios SET password_hash = ? WHERE email = ?',
-          [hashedPassword, DEMO_EMAIL]
-        );
-        user.password_hash = hashedPassword;
-      }
+      const isPasswordValid = await bcrypt.compare(password, user.password_hash);
 
       if (!isPasswordValid) {
         res.status(401).json({
@@ -94,6 +62,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
       res.status(200).json({
         success: true,
+        message: 'Login correcto',
         data: {
           user: {
             id: user.id,
@@ -102,6 +71,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             verificado: Boolean(user.verificado),
             rol: user.rol || 'usuario'
           },
+          token: accessToken,
           tokens: {
             accessToken,
             refreshToken
@@ -124,7 +94,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password, nombre } = req.body;
+    const { email: rawEmail, password, nombre } = req.body;
+    const email = (rawEmail || '').trim().toLowerCase();
 
     if (!email || !password || !nombre) {
       res.status(400).json({
@@ -134,12 +105,20 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    if (password.length < 4) {
+      res.status(400).json({
+        success: false,
+        error: 'La contraseña debe tener al menos 4 caracteres'
+      });
+      return;
+    }
+
     const connection = await pool.getConnection();
     
     try {
       // Verificar si el email ya existe
       const [existingUsers] = await connection.execute(
-        'SELECT id FROM usuarios WHERE email = ?',
+        'SELECT id FROM usuarios WHERE LOWER(email) = ?',
         [email]
       );
 
@@ -160,16 +139,17 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       const now = new Date();
 
       await connection.execute(
-        `INSERT INTO usuarios (id, email, password_hash, nombre, verificado, creado_at, actualizado_at) 
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [userId, email, passwordHash, nombre, 0, now, now]
+        `INSERT INTO usuarios (id, email, password_hash, nombre, verificado, rol, creado_at, actualizado_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [userId, email, passwordHash, nombre, 1, 'usuario', now, now]
       );
 
       // Generar tokens
       const payload = { 
         id: userId, 
         email, 
-        nombre 
+        nombre,
+        rol: 'usuario'
       };
       
       const accessToken = jwt.sign(payload, config.jwt.secret, { expiresIn: '15m' });
@@ -177,13 +157,16 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
       res.status(201).json({
         success: true,
+        message: 'Usuario registrado correctamente',
         data: {
           user: {
             id: userId,
             email,
             nombre,
-            verificado: false
+            verificado: true,
+            rol: 'usuario'
           },
+          token: accessToken,
           tokens: {
             accessToken,
             refreshToken
@@ -297,21 +280,37 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
 
     try {
       const decoded = jwt.verify(refreshToken, config.jwt.refreshSecret) as any;
-      
-      const payload = { 
-        id: decoded.id, 
-        email: decoded.email, 
-        nombre: decoded.nombre 
-      };
-      
-      const newAccessToken = jwt.sign(payload, config.jwt.secret, { expiresIn: '15m' });
 
-      res.status(200).json({
-        success: true,
-        data: {
-          accessToken: newAccessToken
+      const connection = await pool.getConnection();
+      try {
+        const [users] = await connection.execute(
+          'SELECT id, email, nombre, rol FROM usuarios WHERE id = ?',
+          [decoded.id]
+        );
+        const user = (users as any[])[0];
+        if (!user) {
+          res.status(401).json({ success: false, error: 'Usuario no encontrado' });
+          return;
         }
-      });
+
+        const payload = {
+          id: user.id,
+          email: user.email,
+          nombre: user.nombre,
+          rol: user.rol || 'usuario'
+        };
+
+        const newAccessToken = jwt.sign(payload, config.jwt.secret, { expiresIn: '15m' });
+
+        res.status(200).json({
+          success: true,
+          data: {
+            accessToken: newAccessToken
+          }
+        });
+      } finally {
+        connection.release();
+      }
 
     } catch (jwtError) {
       res.status(401).json({
@@ -326,5 +325,55 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
       success: false,
       error: 'Error interno del servidor'
     });
+  }
+};
+
+export const me = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ success: false, error: 'No autenticado' });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: { user: req.user }
+    });
+  } catch (error) {
+    console.error('Error en me:', (error as Error).message);
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  }
+};
+
+export const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(401).json({ success: false, error: 'Usuario no autenticado' });
+      return;
+    }
+
+    const { nombre } = req.body;
+    if (!nombre || !nombre.trim()) {
+      res.status(400).json({ success: false, error: 'El nombre es requerido' });
+      return;
+    }
+
+    const connection = await pool.getConnection();
+    try {
+      await connection.execute(
+        'UPDATE usuarios SET nombre = ?, actualizado_at = ? WHERE id = ?',
+        [nombre.trim(), new Date(), userId]
+      );
+      res.status(200).json({
+        success: true,
+        data: { id: userId, nombre: nombre.trim() }
+      });
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error('Error actualizando perfil:', (error as Error).message);
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
   }
 };

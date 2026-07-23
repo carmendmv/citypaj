@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { login, register, logout, forgotPassword, resetPassword, refreshToken } from '../controllers/auth-simple';
+import { auth } from '../middleware/auth';
+import { login, register, logout, forgotPassword, resetPassword, refreshToken, updateProfile, me } from '../controllers/auth-simple';
 
 const router = Router();
 
@@ -20,5 +21,11 @@ router.post('/reset-password', resetPassword);
 
 // Refresh token
 router.post('/refresh', refreshToken);
+
+// Current user
+router.get('/me', auth, me);
+
+// Update profile
+router.put('/profile', auth, updateProfile);
 
 export { router as authRoutes };

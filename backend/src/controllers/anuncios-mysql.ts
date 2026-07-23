@@ -183,6 +183,86 @@ export const getAnuncios = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
+export const getMisAnuncios = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(401).json({ success: false, error: 'Usuario no autenticado' });
+      return;
+    }
+
+    const connection = await pool.getConnection();
+    try {
+      const [rows] = await connection.execute(
+        `SELECT 
+          a.id, a.usuario_id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
+          a.provincia, a.estado_moderacion, a.visible, a.creado_at, a.actualizado_at, a.vistas,
+          u.nombre as usuario_nombre, u.email as usuario_email
+        FROM anuncios a
+        LEFT JOIN usuarios u ON a.usuario_id = u.id
+        WHERE a.usuario_id = ?
+        ORDER BY a.creado_at DESC`,
+        [userId]
+      );
+      res.status(200).json({ success: true, data: rows });
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error('Error obteniendo mis anuncios:', (error as Error).message);
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  }
+};
+
+export const getAnunciosGuardados = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { ids } = req.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      res.status(200).json({ success: true, data: [] });
+      return;
+    }
+
+    const validIds = ids.filter(isValidId);
+    if (validIds.length === 0) {
+      res.status(200).json({ success: true, data: [] });
+      return;
+    }
+
+    const placeholders = validIds.map(() => '?').join(',');
+    const query = `
+      SELECT
+        a.id, a.usuario_id, a.titulo, a.descripcion, a.categoria, a.subcategoria,
+        a.comunidad_id, a.provincia_id, a.comunidad_autonoma, a.provincia,
+        a.barrio, a.modalidad, a.contacto_email, a.contacto_telefono,
+        a.contacto_anonimo, a.visible, a.estado_moderacion, a.motivo_rechazo,
+        a.vistas, a.creado_at, a.actualizado_at,
+        u.nombre as usuario_nombre, u.email as usuario_email
+      FROM anuncios a
+      LEFT JOIN usuarios u ON a.usuario_id = u.id
+      WHERE a.id IN (${placeholders}) AND a.visible = 1 AND a.estado_moderacion = 'approved'
+    `;
+
+    const connection = await pool.getConnection();
+    try {
+      const [rows] = await connection.execute(query, validIds);
+      const processed = (rows as any[]).map((anuncio: any) => ({
+        ...anuncio,
+        contacto_email: Boolean(anuncio.contacto_email),
+        contacto_telefono: Boolean(anuncio.contacto_telefono),
+        contacto_anonimo: Boolean(anuncio.contacto_anonimo),
+        visible: Boolean(anuncio.visible)
+      }));
+      res.status(200).json({ success: true, data: processed });
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error('Error obteniendo anuncios guardados:', (error as Error).message);
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  }
+};
+
 export const getAnuncioById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;

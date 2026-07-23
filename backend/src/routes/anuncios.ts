@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { optionalAuth } from '../middleware/auth';
+import { auth, optionalAuth, requireRole } from '../middleware/auth';
 import {
   getAnuncios,
   getAnuncioById,
+  getAnunciosGuardados,
   createAnuncio,
   updateAnuncio,
   deleteAnuncio,
@@ -12,7 +13,8 @@ import {
   getAnunciosModeracion,
   getReportesAnuncio,
   moderarAnuncio,
-  moderarAnuncioIA
+  moderarAnuncioIA,
+  getMisAnuncios
 } from '../controllers/anuncios-mysql';
 
 const router = Router();
@@ -21,7 +23,13 @@ const router = Router();
 router.get('/', getAnuncios);
 
 // Get anuncios pending moderation/reported
-router.get('/moderacion', getAnunciosModeracion);
+router.get('/moderacion', auth, requireRole(['admin', 'moderador']), getAnunciosModeracion);
+
+// Get anuncios del usuario autenticado
+router.get('/mis-anuncios', auth, getMisAnuncios);
+
+// Get anuncios guardados por IDs
+router.post('/guardados', getAnunciosGuardados);
 
 // Get anuncio by ID
 router.get('/:id', getAnuncioById);
@@ -30,19 +38,19 @@ router.get('/:id', getAnuncioById);
 router.post('/', optionalAuth, createAnuncio);
 
 // Update anuncio
-router.put('/:id', updateAnuncio);
+router.put('/:id', auth, updateAnuncio);
 
 // Get reports for an ad
-router.get('/:id/reportes', getReportesAnuncio);
+router.get('/:id/reportes', auth, requireRole(['admin', 'moderador']), getReportesAnuncio);
 
 // Moderate ad
-router.post('/:id/moderar', moderarAnuncio);
+router.post('/:id/moderar', auth, requireRole(['admin', 'moderador']), moderarAnuncio);
 
 // Moderate ad with IA
-router.post('/:id/moderar-ia', moderarAnuncioIA);
+router.post('/:id/moderar-ia', auth, requireRole(['admin', 'moderador']), moderarAnuncioIA);
 
 // Delete anuncio
-router.delete('/:id', deleteAnuncio);
+router.delete('/:id', auth, deleteAnuncio);
 
 // Guardar favorito
 router.post('/:id/guardar', guardarAnuncio);

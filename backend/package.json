@@ -14,7 +14,8 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "db:init": "node scripts/init-db.js",
     "db:check": "node check-db.js",
-    "db:verify": "node verify-db.js"
+    "db:verify": "node verify-db.js",
+    "db:seed:demo": "node scripts/seed-demo.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.0",
