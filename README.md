@@ -9,7 +9,7 @@ Plataforma web para jóvenes que conecta recursos, anuncios, eventos, propuestas
 - **Publicar anuncio con IA**: cuando publicas, el sistema muestra un mensaje avisando de que un moderador automático (IA interna) revisa el contenido antes de publicarlo. Si detecta algo inapropiado, lo rechaza y explica el motivo.
 - **Panel de moderación de anuncios**: desde `/admin/anuncios` puedes ver los anuncios reportados o pendientes, aprobarlos, rechazarlos o dejar que la IA los revise.
 - **Idiomas corregidos**: la advertencia de `react-i18next` desapareció; la traducción se inicializa correctamente y los textos clave tienen valores por defecto.
-- **Usuario demo preparado**: puedes entrar con `demo@citypaj.com` / `Demo1234!` para probar sin crear cuenta.
+- **Usuarios demo preparados**: puedes probar con `usuario@citypaj.demo` / `demo123` (usuario normal) y `moderador@citypaj.demo` / `demo123` (panel de moderación).
 
 ---
 
@@ -75,6 +75,58 @@ Esto arranca backend (`nodemon` con `ts-node` en el puerto 3002) y frontend (Nex
 Si no usas Docker, asegúrate de tener MySQL corriendo en `localhost:3306` con la base de datos `citypaj` y el usuario `citypaj_user`.
 
 > **Importante:** Si en Windows también tienes un servidor MySQL (XAMPP, MySQL Installer, etc.), `localhost` en WSL puede apuntar a una base de datos distinta. Si ves errores como `Unknown column` o `Table doesn't exist` en WSL, es porque el backend se conectó a un MySQL incorrecto. En ese caso, la opción más sencilla es arrancar todo en **PowerShell de Windows** (ver apartado anterior) para que backend y frontend usen el mismo `localhost` que el MySQL de Windows.
+
+### Si el puerto 3001 o 3002 está ocupado
+
+`npm run dev` ejecuta automáticamente `predev`, que limpia procesos stale del proyecto (anteriores `next dev`, `nodemon`, `ts-node` o `concurrently`) antes de arrancar. Si quieres forzar la limpieza manualmente:
+
+```bash
+npm run kill:ports
+```
+
+Antes de arrancar, comprueba qué proceso los usa:
+
+```bash
+npm run check:ports
+```
+
+O manualmente:
+
+**Linux/WSL:**
+
+```bash
+lsof -i :3001
+lsof -i :3002
+ss -ltnp | grep -E '3001|3002'
+```
+
+**Windows PowerShell:**
+
+```powershell
+netstat -ano | findstr :3001
+netstat -ano | findstr :3002
+```
+
+Cierra el proceso antiguo antes de volver a arrancar:
+
+**Linux/WSL:**
+
+```bash
+kill -9 <PID>
+```
+
+**Windows PowerShell (como administrador si es necesario):**
+
+```powershell
+Stop-Process -PID <PID> -Force
+```
+
+Si el conflicto persiste en Windows por `iphlpsvc` o WSL, abre PowerShell como administrador y elimina el reenvío:
+
+```powershell
+netsh interface portproxy delete v4tov4 listenaddress=127.0.0.1 listenport=3001
+netsh interface portproxy delete v6tov4 listenaddress=::1 listenport=3001
+```
 
 ---
 
@@ -163,6 +215,7 @@ Desde `backend`:
 | `npm run db:init` | Crea la base de datos y tablas |
 | `npm run db:check` | Verifica conexión a MySQL |
 | `npm run db:verify` | Verifica integridad de la base de datos |
+| `npm run db:seed:demo` | Crea/actualiza usuarios demo (usuario, moderador y admin) |
 
 Desde `frontend`:
 
@@ -235,19 +288,23 @@ citypaj/
 | Eventos | `GET/POST /api/eventos` |
 | Sugerencias | `POST /api/sugerencias` |
 | Estadísticas | `GET /api/sugerencias/estadisticas` |
-| Autenticación | `POST /api/auth/login`, `/api/auth/register`, `/api/auth/logout`, `/api/auth/refresh` |
+| Autenticación | `POST /api/auth/login`, `/api/auth/register`, `/api/auth/logout`, `/api/auth/refresh`, `GET /api/auth/me` |
 | Usuarios | `GET /api/usuarios/perfil` |
 
 ---
 
 ## Panel de moderación
 
-Hay dos paneles:
+El panel principal de moderación está en **`/moderador`**.
 
-- **Sugerencias**: `/admin/sugerencias` (accesible desde el footer). Muestra las propuestas de los usuarios con colores según prioridad (baja, media, alta, crítica) y permite exportar a PDF.
-- **Anuncios**: `/admin/anuncios` (enlace dentro del panel de sugerencias). Muestra anuncios reportados o pendientes de aprobación. Desde ahí puedes aprobar, rechazar o volver a revisar con IA.
+- **Login de moderador**: `/moderador/login`
+- **Panel de moderador**: `/moderador`
+- **Sugerencias**: `/admin/sugerencias`
+- **Anuncios**: `/admin/anuncios`
 
-Para entrar necesitas una cuenta. Puedes usar la **cuenta demo**: `demo@citypaj.com` / `Demo1234!`.
+Desde el panel puedes revisar anuncios reportados o pendientes de aprobación, aprobar, rechazar o dejar que la IA los revise. También hay enlaces a sugerencias y comunidad.
+
+Para entrar usa la **cuenta demo de moderador**: `moderador@citypaj.demo` / `demo123`.
 
 ---
 
@@ -289,15 +346,48 @@ Por ejemplo:
 - `/comunidad` → `/api/comunidad` → backend → tablas `comunidad_publicaciones` y `comunidad_comentarios`
 - `/admin/sugerencias` → `/api/sugerencias` → backend → tabla `sugerencias`
 - `/admin/anuncios` → `/api/anuncios/moderacion` → backend → tablas `anuncios` + `reportes_anuncios`
+- `/moderador` → `/api/anuncios/moderacion`, `/api/sugerencias`, `/api/comunidad`, `/api/reportes` → backend → base de datos
 
 Casi todo el contenido que ves en la web viene de la base de datos. Lo único estático son algunos desplegables de comunidades/provincias en formularios y la página de `/ayudas`, que es un directorio de enlaces externos.
 
-## Usuarios de prueba
+## Credenciales de demo
 
-| Email | Contraseña | Uso |
-|-------|------------|-----|
-| `demo@citypaj.com` | `Demo1234!` | Cuenta demo para probar login, publicar anuncios y entrar al panel de moderación |
-| `test@citypaj.es` | `Test1234!` | Otra cuenta de prueba existente |
+> **Nota:** Estas credenciales son solo para entorno demo/desarrollo. No deben usarse en producción.
+
+Puedes crear o actualizar los usuarios demo ejecutando:
+
+```bash
+cd backend
+npm run db:seed:demo
+```
+
+### Usuario normal
+
+| Campo | Valor |
+|-------|-------|
+| Email | `usuario@citypaj.demo` |
+| Contraseña | `demo123` |
+| Rol | `usuario` |
+| Ruta de acceso | `/acceder` |
+
+### Moderador
+
+| Campo | Valor |
+|-------|-------|
+| Email | `moderador@citypaj.demo` |
+| Contraseña | `demo123` |
+| Rol | `moderador` |
+| Ruta de acceso | `/moderador/login` |
+| Panel | `/moderador` |
+
+### Administrador (opcional)
+
+| Campo | Valor |
+|-------|-------|
+| Email | `admin@citypaj.demo` |
+| Contraseña | `demo123` |
+| Rol | `admin` |
+| Ruta de acceso | `/moderador/login` |
 
 ## Notas
 
