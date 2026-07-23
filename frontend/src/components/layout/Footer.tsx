@@ -51,23 +51,26 @@ const Footer: React.FC = memo(() => {
             {/* Navegación */}
             <nav aria-label="Footer" className="flex flex-col gap-4">
               <h4 className="font-sans text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Explorar
+                Navegación
               </h4>
               <div className="flex flex-wrap gap-x-8 gap-y-3">
-                <Link href="/ocio" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
-                  Ocio
+                <Link href="/anuncios" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
+                  Anuncios
                 </Link>
-                <Link href="/servicios" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
-                  Servicios
-                </Link>
-                <Link href="/empleo" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
+                <Link href="/anuncios?categoria=empleo" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
                   Empleo
                 </Link>
-                <Link href="/educacion" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
-                  Formación
+                <Link href="/comunidad" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
+                  Comunidad
+                </Link>
+                <Link href="/ayudas" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
+                  Ayudas
                 </Link>
                 <Link href="/buzon-sugerencias" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
                   Buzón de Sugerencias
+                </Link>
+                <Link href="/publicar" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
+                  Publicar
                 </Link>
               </div>
             </nav>

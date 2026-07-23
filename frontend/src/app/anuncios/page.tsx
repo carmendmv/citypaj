@@ -10,6 +10,9 @@ import EmptyState from '@/components/ui/EmptyState';
 import LoadingRows from '@/components/ui/LoadingRows';
 import PageHeader from '@/components/ui/PageHeader';
 import Pagination from '@/components/ui/Pagination';
+import ReportModal from '@/components/ui/ReportModal';
+import { useGuardados } from '@/hooks/useGuardados';
+import { useAuth } from '@/context/AuthContext';
 import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD } from '@/lib/provinces';
 
 interface Anuncio {
@@ -41,6 +44,11 @@ function AnunciosContent() {
   const [meta, setMeta] = useState<Meta | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [reportandoId, setReportandoId] = useState<string | null>(null);
+  const [reportandoLoading, setReportandoLoading] = useState(false);
+
+  const { estaGuardado, toggleGuardado } = useGuardados();
+  const { user } = useAuth();
 
   const categoria = searchParams.get('categoria') || '';
   const comunidad = searchParams.get('comunidad') || '';
@@ -96,28 +104,43 @@ function AnunciosContent() {
         params.delete('provincia');
       }
     }
-    params.set('page', '1');
+    if (key !== 'page') {
+      params.set('page', '1');
+    }
     router.push(`/anuncios?${params.toString()}`);
   };
 
   const guardar = async (id: string) => {
-    try {
-      await fetch(`/api/anuncios/${id}/guardar`, { method: 'POST' });
-    } catch (err) {
-      console.error('Error guardando:', err);
+    toggleGuardado(id);
+    if (user) {
+      try {
+        const method = estaGuardado(id) ? 'DELETE' : 'POST';
+        await fetch(`/api/anuncios/${id}/guardar`, { method });
+      } catch (err) {
+        console.error('Error sincronizando guardado:', err);
+      }
     }
   };
 
-  const reportar = async (id: string) => {
+  const reportar = async (id: string, motivo: string, descripcion: string) => {
+    setReportandoLoading(true);
     try {
-      await fetch(`/api/anuncios/${id}/reportar`, {
+      const res = await fetch(`/api/anuncios/${id}/reportar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ motivo: 'Contenido inapropiado' })
+        body: JSON.stringify({ motivo, descripcion })
       });
-      alert('Anuncio reportado. Será revisado por moderación.');
+      if (res.ok) {
+        alert('Anuncio reportado. Será revisado por moderación.');
+      } else {
+        alert('No se pudo enviar el reporte.');
+      }
     } catch (err) {
       console.error('Error reportando:', err);
+      alert('Error al enviar el reporte.');
+    } finally {
+      setReportandoLoading(false);
+      setReportandoId(null);
     }
   };
 
@@ -209,9 +232,9 @@ function AnunciosContent() {
                 fecha={anuncio.creado_at}
                 autor={anuncio.usuario_nombre || 'Anónimo'}
                 url={`/anuncios/${anuncio.id}`}
-                esFavorito={anuncio.es_favorito}
+                esFavorito={estaGuardado(anuncio.id)}
                 onFavorito={() => guardar(anuncio.id)}
-                onReportar={() => reportar(anuncio.id)}
+                onReportar={() => setReportandoId(anuncio.id)}
               />
             ))
           )}
@@ -227,6 +250,12 @@ function AnunciosContent() {
         )}
       </main>
 
+      <ReportModal
+        isOpen={!!reportandoId}
+        onClose={() => setReportandoId(null)}
+        onSubmit={(motivo, descripcion) => reportandoId && reportar(reportandoId, motivo, descripcion)}
+        loading={reportandoLoading}
+      />
       <Footer />
     </div>
   );

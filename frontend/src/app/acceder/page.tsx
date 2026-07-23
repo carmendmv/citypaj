@@ -15,14 +15,12 @@ export default function AccederPage() {
   
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-  const [loginTerminos, setLoginTerminos] = useState(false);
 
   const [regNombre, setRegNombre] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
   const [regConfirmPassword, setRegConfirmPassword] = useState('');
   const [regTerminos, setRegTerminos] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState('');
 
   const [loadingLogin, setLoadingLogin] = useState(false);
   const [loadingRegister, setLoadingRegister] = useState(false);
@@ -31,29 +29,15 @@ export default function AccederPage() {
   const [showTerminosModal, setShowTerminosModal] = useState(false);
 
   
-  const validatePassword = (password: string): { isValid: boolean; errors: string[] } => {
-    const errors: string[] = [];
-    
-    if (password.length < 7) {
-      errors.push('Mínimo 7 caracteres');
+  const validatePassword = (password: string): { isValid: boolean; error?: string } => {
+    if (!password || password.length < 4) {
+      return { isValid: false, error: 'La contraseña debe tener al menos 4 caracteres' };
     }
-    if (!/[a-z]/.test(password)) {
-      errors.push('Al menos una letra minúscula');
-    }
-    if (!/[A-Z]/.test(password)) {
-      errors.push('Al menos una letra mayúscula');
-    }
-    if (!/[0-9]/.test(password)) {
-      errors.push('Al menos un número');
-    }
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      errors.push('Al menos un carácter especial (!@#$%^&*...)');
-    }
-    
-    return {
-      isValid: errors.length === 0,
-      errors
-    };
+    return { isValid: true };
+  };
+
+  const validateEmail = (email: string): boolean => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   };
 
   const onSubmitLogin = async () => {
@@ -62,8 +46,8 @@ export default function AccederPage() {
       setErrorLogin('Todos los campos son obligatorios');
       return;
     }
-    if (!loginTerminos) {
-      setErrorLogin('Debes aceptar los términos y condiciones');
+    if (!validateEmail(loginEmail)) {
+      setErrorLogin('Introduce un email válido');
       return;
     }
     setLoadingLogin(true);
@@ -84,32 +68,36 @@ export default function AccederPage() {
       setErrorRegister('Todos los campos son obligatorios');
       return;
     }
-    
+
+    if (!validateEmail(regEmail)) {
+      setErrorRegister('Introduce un email válido');
+      return;
+    }
+
     if (!regTerminos) {
       setErrorRegister('Debes aceptar los términos y condiciones');
       return;
     }
-    
+
     // Validar contraseña
     const passwordValidation = validatePassword(regPassword);
     if (!passwordValidation.isValid) {
-      setErrorRegister('La contraseña no cumple los requisitos: ' + passwordValidation.errors.join(', '));
+      setErrorRegister(passwordValidation.error || 'La contraseña no es válida');
       return;
     }
-    
+
     // Validar que las contraseñas coincidan
     if (regPassword !== regConfirmPassword) {
       setErrorRegister('Las contraseñas no coinciden');
       return;
     }
-    
-        setLoadingRegister(true);
+
+    setLoadingRegister(true);
     try {
       await register({
         nombre: regNombre,
         email: regEmail,
         password: regPassword,
-        turnstileToken: turnstileToken || undefined,
       });
       router.push('/mi-perfil');
     } catch (err: any) {
@@ -183,29 +171,6 @@ export default function AccederPage() {
                 />
               </div>
               
-              {/* Checkbox de términos y condiciones */}
-              <div className="flex items-start space-x-2">
-                <input
-                  id="login-terminos"
-                  type="checkbox"
-                  checked={loginTerminos}
-                  onChange={(e) => setLoginTerminos(e.target.checked)}
-                  className={`mt-1 w-4 h-4 border focus:outline-none transition-all ${
-                    errorLogin && !loginTerminos ? 'border-red-500' : 'border-black'
-                  }`}
-                />
-                <label htmlFor="login-terminos" className="text-sm text-gray-700 leading-relaxed">
-                  Acepto los{' '}
-                  <button
-                    type="button"
-                    onClick={() => setShowTerminosModal(true)}
-                    className="underline hover:text-orange-500 transition-colors"
-                  >
-                    términos y condiciones
-                  </button>
-                </label>
-              </div>
-              
               {errorLogin ? (
                 <div className="border border-black p-3 font-sans text-sm text-black">{errorLogin}</div>
               ) : null}
@@ -275,14 +240,7 @@ export default function AccederPage() {
                   }`}
                 />
                 <div className="mt-2 text-xs text-gray-600">
-                  <p>La contraseña debe tener:</p>
-                  <ul className="list-disc list-inside space-y-1 mt-1">
-                    <li>Mínimo 7 caracteres</li>
-                    <li>Al menos una letra minúscula</li>
-                    <li>Al menos una letra mayúscula</li>
-                    <li>Al menos un número</li>
-                    <li>Al menos un carácter especial (!@#$%^&*...)</li>
-                  </ul>
+                  <p>La contraseña debe tener al menos 4 caracteres.</p>
                 </div>
               </div>
 
@@ -344,31 +302,16 @@ export default function AccederPage() {
 
         {!user ? (
           <div className="mt-10 border border-black p-6 bg-gray-50">
-            <h3 className="font-serif text-lg font-bold text-black mb-2">Usuario demo</h3>
+            <h3 className="font-serif text-lg font-bold text-black mb-2">¿Eres moderador?</h3>
             <p className="font-sans text-sm text-gray-700 mb-4">
-              Usa estas credenciales para acceder al panel de moderación:
+              Usa el acceso exclusivo para moderadores.
             </p>
-            <div className="space-y-2 font-sans text-sm text-black mb-4">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Email:</span>
-                <span className="font-medium">demo@citypaj.com</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Contraseña:</span>
-                <span className="font-medium">Demo1234!</span>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                setLoginEmail('demo@citypaj.com');
-                setLoginPassword('Demo1234!');
-                setLoginTerminos(true);
-              }}
-              className="w-full bg-black text-white border border-black px-6 py-3 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors"
+            <Link
+              href="/moderador/login"
+              className="block w-full text-center bg-black text-white border border-black px-6 py-3 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors"
             >
-              Rellenar credenciales demo
-            </button>
+              Acceso de moderadores
+            </Link>
           </div>
         ) : null}
 

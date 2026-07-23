@@ -4,16 +4,17 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import ListingRow from '@/components/ui/ListingRow';
+import ReportModal from '@/components/ui/ReportModal';
 import { useGuardados } from '@/hooks/useGuardados';
-import { useComunidad } from '@/hooks/useComunidad';
-import HeartButton from '@/components/ui/HeartButton';
 import { Anuncio } from '@/types';
 
 export default function GuardadosPage() {
-  const { guardados, loading, limpiarGuardados } = useGuardados();
-  const { comunidadAutonoma } = useComunidad();
+  const { guardados, loading, toggleGuardado, limpiarGuardados } = useGuardados();
   const [anunciosGuardados, setAnunciosGuardados] = useState<Anuncio[]>([]);
   const [cargandoAnuncios, setCargandoAnuncios] = useState(true);
+  const [reportandoId, setReportandoId] = useState<string | null>(null);
+  const [reportandoLoading, setReportandoLoading] = useState(false);
 
   // Cargar anuncios guardados
   useEffect(() => {
@@ -78,6 +79,24 @@ export default function GuardadosPage() {
     }
   };
 
+  const reportar = async (id: string, motivo: string, descripcion: string) => {
+    setReportandoLoading(true);
+    try {
+      const res = await fetch(`/api/anuncios/${id}/reportar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ motivo, descripcion })
+      });
+      if (res.ok) alert('Anuncio reportado. Será revisado por moderación.');
+      else alert('No se pudo enviar el reporte.');
+    } catch {
+      alert('Error al enviar el reporte.');
+    } finally {
+      setReportandoLoading(false);
+      setReportandoId(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -94,11 +113,16 @@ export default function GuardadosPage() {
 
         <section className="mt-10 border border-black p-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <h2 className="font-serif text-xl font-bold text-black">
-              Anuncios guardados ({guardados.length})
-            </h2>
-            
-            {guardados.length > 0 && (
+            <div>
+              <h2 className="font-serif text-xl font-bold text-black">Listado de anuncios guardados</h2>
+              {!cargandoAnuncios && (
+                <p className="font-sans text-sm text-gray-500 mt-1">
+                  {anunciosGuardados.length} anuncio{anunciosGuardados.length !== 1 ? 's' : ''} disponible{anunciosGuardados.length !== 1 ? 's' : ''}
+                </p>
+              )}
+            </div>
+
+            {anunciosGuardados.length > 0 && (
               <button
                 onClick={handleLimpiarGuardados}
                 className="inline-flex items-center justify-center border border-black px-4 py-2 font-sans text-sm text-black hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors"
@@ -112,7 +136,7 @@ export default function GuardadosPage() {
             <div className="mt-6 border border-black px-6 py-4 font-sans text-sm text-gray-700 inline-block">
               Cargando...
             </div>
-          ) : guardados.length === 0 ? (
+          ) : anunciosGuardados.length === 0 ? (
             <div className="mt-6">
               <p className="font-sans text-sm text-black/80">
                 No tienes anuncios guardados todavía.
@@ -128,70 +152,34 @@ export default function GuardadosPage() {
               </Link>
             </div>
           ) : (
-            <div className="mt-8 space-y-6">
+            <div className="mt-6 space-y-1">
               {anunciosGuardados.map((anuncio) => (
-                <div key={anuncio.id} className="border border-black p-6 hover:shadow-lg transition-shadow">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="font-serif text-xl font-bold text-black hover:text-orange-500 transition-colors">
-                          <Link href={`/anuncios/${anuncio.id}`}>
-                            {anuncio.titulo}
-                          </Link>
-                        </h3>
-                        <HeartButton anuncioId={anuncio.id} size="sm" showLabel={false} />
-                      </div>
-                      <p className="font-sans text-sm text-gray-600 mb-4 leading-relaxed">
-                        {anuncio.descripcion}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-                    <div>
-                      <p className="font-sans text-xs text-gray-500 mb-1">Categoría</p>
-                      <span className="inline-block border border-black px-2 py-1 font-sans text-xs">
-                        {anuncio.categoria}
-                      </span>
-                    </div>
-                    <div>
-                      <p className="font-sans text-xs text-gray-500 mb-1">Ubicación</p>
-                      <p className="font-sans text-sm text-black">
-                        {anuncio.provincia}, {anuncio.comunidad_autonoma}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="font-sans text-xs text-gray-500 mb-1">Publicado</p>
-                      <p className="font-sans text-sm text-black">
-                        {new Date(anuncio.creado_at).toLocaleDateString('es-ES', {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric'
-                        })}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-3 items-center border-t border-gray-200 pt-4">
-                    <div className="flex items-center gap-4 text-sm text-gray-600">
-                      <span>Por: {anuncio.usuario_nombre || 'Anónimo'}</span>
-                      {anuncio.usuario_email && (
-                        <a 
-                          href={`mailto:${anuncio.usuario_email}`}
-                          className="hover:text-orange-500 transition-colors"
-                        >
-                          Contactar
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                <ListingRow
+                  key={anuncio.id}
+                  id={anuncio.id}
+                  titulo={anuncio.titulo}
+                  descripcion={anuncio.descripcion}
+                  categoria={anuncio.categoria}
+                  provincia={anuncio.provincia}
+                  fecha={anuncio.creado_at}
+                  autor={anuncio.usuario_nombre || 'Anónimo'}
+                  url={`/anuncios/${anuncio.id}`}
+                  esFavorito={true}
+                  onFavorito={() => toggleGuardado(anuncio.id)}
+                  onReportar={() => setReportandoId(anuncio.id)}
+                />
               ))}
             </div>
           )}
         </section>
       </main>
 
+      <ReportModal
+        isOpen={!!reportandoId}
+        onClose={() => setReportandoId(null)}
+        onSubmit={(motivo, descripcion) => reportandoId && reportar(reportandoId, motivo, descripcion)}
+        loading={reportandoLoading}
+      />
       <Footer />
     </div>
   );

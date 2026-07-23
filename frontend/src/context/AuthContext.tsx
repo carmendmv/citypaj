@@ -6,6 +6,8 @@ export type AuthUser = {
   id: string;
   email: string;
   nombre: string;
+  rol?: string;
+  verificado?: boolean;
 };
 
 type StoredAuth = {
@@ -113,7 +115,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             await refreshAccessToken();
             return;
           } catch {
-            // si el refresh falla, comprobar accessToken
+            // refreshAccessToken ya hace logout; no reutilizar accessToken viejo
+            return;
           }
         }
 

@@ -230,10 +230,10 @@ export default function AdminSugerencias() {
             </select>
 
             <Link
-              href="/admin/anuncios"
+              href="/moderador"
               className="px-4 py-2 bg-white text-black border border-black hover:bg-gray-100 transition-colors"
             >
-              Moderar anuncios
+              Panel de moderación
             </Link>
 
             <button

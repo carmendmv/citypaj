@@ -19,7 +19,7 @@ export default function FormacionPage() {
     setLoading(true);
     try {
       const params = new URLSearchParams({
-        categoria: 'educacion',
+        categoria: 'formacion',
         orden: 'fecha_desc',
         limite: '30',
         pagina: pagina.toString(),
@@ -59,7 +59,7 @@ export default function FormacionPage() {
           loading={loading}
           paginationMeta={paginationMeta}
           comunidadAutonoma={comunidadAutonoma || undefined}
-          categoria="educacion"
+          categoria="formacion"
           onPageChange={(page) => {
             setCurrentPage(page);
             void fetchListado(page);
