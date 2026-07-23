@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect, Suspense } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { AuthProvider } from '@/context/AuthContext';
 import { ComunidadProvider } from '@/hooks/useComunidad';
 import { HeaderVisibilityProvider } from '@/context/HeaderVisibilityContext';
@@ -18,9 +18,7 @@ export default function Providers({ children }: { children: ReactNode }) {
     <AuthProvider>
       <ComunidadProvider>
         <HeaderVisibilityProvider>
-          <Suspense fallback={null}>
-            <Header />
-          </Suspense>
+          <Header />
           {children}
         </HeaderVisibilityProvider>
       </ComunidadProvider>

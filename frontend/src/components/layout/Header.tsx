@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, memo, useCallback, useEffect, useLayoutEffect } from 'react';
+import React, { useState, memo, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { Search, Menu, X, User, LogOut, Trash2, AlertCircle } from 'lucide-react';
@@ -69,19 +69,17 @@ const Header: React.FC<HeaderProps> = memo(({
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible] = useState(() => registerHeader());
 
   useEffect(() => {
     setSearchCodigo(getSearchParam('busqueda'));
   }, [pathname, getSearchParam]);
 
-  useLayoutEffect(() => {
-    const visible = registerHeader();
-    setIsVisible(visible);
+  useEffect(() => {
     return () => {
       unregisterHeader();
     };
-  }, [registerHeader, unregisterHeader]);
+  }, [unregisterHeader]);
 
   const handleSearch = useCallback(() => {
     if (searchCodigo.trim()) {
