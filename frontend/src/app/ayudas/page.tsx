@@ -34,6 +34,15 @@ function searchUrl(tipo: string, ccaa: string) {
   return `https://www.google.com/search?q=${q}`;
 }
 
+function empleoUrl(ccaa: string) {
+  if (ccaa === 'Aragón') return 'https://inaem.aragon.es/';
+  return searchUrl('empleo juvenil', ccaa);
+}
+
+function empleoLabel(ccaa: string) {
+  return ccaa === 'Aragón' ? 'INAEM' : 'Empleo joven';
+}
+
 export default function AyudasPage() {
   return (
     <div className="min-h-screen bg-white">
@@ -92,6 +101,15 @@ export default function AyudasPage() {
                   >
                     <ExternalLink className="w-3 h-3" />
                     Extranjería
+                  </a>
+                  <a
+                    href={empleoUrl(ccaa)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 font-sans text-sm text-blue-700 hover:underline"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    {empleoLabel(ccaa)}
                   </a>
                 </div>
               </div>

@@ -66,14 +66,20 @@ const Header: React.FC<HeaderProps> = memo(({
   }, []);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchCodigo, setSearchCodigo] = useState(getSearchParam('busqueda'));
+  const [searchCodigo, setSearchCodigo] = useState('');
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isVisible] = useState(() => registerHeader());
 
   useEffect(() => {
-    setSearchCodigo(getSearchParam('busqueda'));
+    if (pathname === '/buscar') {
+      setSearchCodigo(getSearchParam('q'));
+    } else if (pathname?.startsWith('/anuncios')) {
+      setSearchCodigo(getSearchParam('busqueda'));
+    } else {
+      setSearchCodigo('');
+    }
   }, [pathname, getSearchParam]);
 
   useEffect(() => {
@@ -83,15 +89,13 @@ const Header: React.FC<HeaderProps> = memo(({
   }, [unregisterHeader]);
 
   const handleSearch = useCallback(() => {
-    if (searchCodigo.trim()) {
-      if (onSearch) {
-        onSearch(searchCodigo.trim());
-      } else {
-        const params = new URLSearchParams();
-        params.set('busqueda', searchCodigo.trim());
-        router.push(`/anuncios?${params.toString()}`);
-        setIsMobileMenuOpen(false);
-      }
+    const term = searchCodigo.trim();
+    if (!term) return;
+    if (onSearch) {
+      onSearch(term);
+    } else {
+      router.push(`/buscar?q=${encodeURIComponent(term)}`);
+      setIsMobileMenuOpen(false);
     }
   }, [searchCodigo, onSearch, router]);
 
