@@ -1,235 +1,143 @@
 # CityPAJ
 
-Plataforma web para jóvenes que conecta recursos, anuncios, eventos, propuestas y participación ciudadana.
-
-## Novedades recientes (para no perderse)
-
-- **Navegación renovada**: el menú principal ahora tiene **Empleo**, **Comunidad**, **Buzón de sugerencias** y **Ayudas**. Se han quitado las secciones antiguas de Ocio, Servicios y Formación.
-- **Página de ayudas (`/ayudas`)**: recursos nacionales para jóvenes y extranjería, más un directorio por comunidad autónoma.
-- **Publicar anuncio con IA**: cuando publicas, el sistema muestra un mensaje avisando de que un moderador automático (IA interna) revisa el contenido antes de publicarlo. Si detecta algo inapropiado, lo rechaza y explica el motivo.
-- **Panel de moderación de anuncios**: desde `/admin/anuncios` puedes ver los anuncios reportados o pendientes, aprobarlos, rechazarlos o dejar que la IA los revise.
-- **Idiomas corregidos**: la advertencia de `react-i18next` desapareció; la traducción se inicializa correctamente y los textos clave tienen valores por defecto.
-- **Usuarios demo preparados**: puedes probar con `usuario@citypaj.demo` / `demo123` (usuario normal) y `moderador@citypaj.demo` / `demo123` (panel de moderación).
+Plataforma web dirigida a jóvenes para publicar y descubrir anuncios, recursos, eventos, propuestas y participación ciudadana.
 
 ---
 
-## Stack tecnológico
+## Índice
 
-- **Frontend**: Next.js 14 + React 18 + TypeScript + Tailwind CSS
-- **Backend**: Node.js + Express + TypeScript + MySQL2
-- **Base de datos**: MySQL (`citypaj`)
-- **Puertos**: Frontend 3001, Backend 3002, MySQL 3306
+1. [Descripción](#descripción)
+2. [Características principales](#características-principales)
+3. [Arquitectura y stack tecnológico](#arquitectura-y-stack-tecnológico)
+4. [Estructura de carpetas](#estructura-de-carpetas)
+5. [Requisitos previos](#requisitos-previos)
+6. [Configuración inicial](#configuración-inicial)
+7. [Instalación paso a paso](#instalación-paso-a-paso)
+8. [Cómo arrancar el proyecto](#cómo-arrancar-el-proyecto)
+9. [Scripts disponibles](#scripts-disponibles)
+10. [Credenciales de demo](#credenciales-de-demo)
+11. [Flujo de autenticación](#flujo-de-autenticación)
+12. [Moderación de anuncios](#moderación-de-anuncios)
+13. [Subida de imágenes](#subida-de-imágenes)
+14. [Endpoints API principales](#endpoints-api-principales)
+15. [Rutas del frontend](#rutas-del-frontend)
+16. [Tests](#tests)
+17. [Despliegue](#despliegue)
+18. [Solución de problemas](#solución-de-problemas)
+19. [FAQ](#faq)
+20. [Seguridad](#seguridad)
+21. [Licencia y autor](#licencia-y-autor)
+
+---
+
+## Descripción
+
+CityPAJ es una aplicación full-stack que permite a los usuarios publicar anuncios juveniles, buscar contenido por comunidad autónoma y provincia, y participar en secciones como comunidad, buzón de sugerencias y ayudas. Los anuncios pasan por un flujo de moderación humana con ayuda de un filtro interno de IA que marca contenido dudoso para revisión.
+
+El objetivo del proyecto es ofrecer una experiencia moderna, accesible desde móvil, con un panel de moderación profesional y totalmente separado del acceso de usuarios normales.
+
+---
+
+## Características principales
+
+- **Anuncios**: publicación, edición, búsqueda y filtrado por CCAA, provincia, categoría y texto.
+- **Página principal**: sección "Últimos anuncios" con filtros dinámicos y ordenación de más reciente a más antiguo.
+- **Autenticación**: registro, login, JWT access/refresh, logout y eliminación de cuenta.
+- **Moderación humana**: panel exclusivo para moderadores con selector de estado, notas y acciones de aprobar/rechazar/ver.
+- **Filtro interno de IA**: detecta palabras inapropiadas y marca anuncios como `flagged` (en revisión); nunca rechaza automáticamente.
+- **Responsive**: panel de moderación y toda la interfaz adaptada a móvil.
+- **Buzón de sugerencias**: formulario público con panel de lectura para moderadores.
+- **Página de ayudas**: directorio de recursos nacionales y por comunidad autónoma.
+- **Subida de imágenes**: soporte para hasta 6 imágenes por anuncio (JPEG, PNG, WebP, máximo 5 MB).
+
+---
+
+## Arquitectura y stack tecnológico
+
+| Capa | Tecnología | Versión aprox. |
+|------|------------|----------------|
+| Frontend | Next.js + React + TypeScript | 14 / 18 |
+| Estilos | Tailwind CSS | 3.3 |
+| Backend | Node.js + Express + TypeScript | 18+ / 4.18 |
+| Base de datos | MySQL (mysql2) | 8.0 |
+| ORM/SQL | Knex + SQL raw (mysql2 pool) | — |
+| Cache/Sesión | Redis (opcional) | 7 |
+| Email | Nodemailer (SMTP) | 6.9 |
+| Almacenamiento de imágenes | S3-compatible (opcional) / local | — |
+
+### Puertos por defecto
+
+| Servicio | Puerto | URL local |
+|----------|--------|-----------|
+| Frontend Next.js | 3001 | http://localhost:3001 |
+| Backend Express | 3002 | http://localhost:3002 |
+| MySQL | 3306 | localhost:3306 |
+| Redis | 6379 | localhost:6379 |
+
+---
+
+## Estructura de carpetas
+
+```
+citypaj/
+├── .env.example                 # Variables globales de ejemplo
+├── .env.production              # Plantilla para producción
+├── docker-compose.yml           # MySQL con Docker
+├── package.json                 # Scripts raíz y dependencias compartidas
+├── citypaj_dump.sql            # Volcado completo de la base de datos
+├── backend/
+│   ├── src/
+│   │   ├── config/             # Configuración (DB, env, logger)
+│   │   ├── controllers/        # Lógica de negocio (anuncios, auth, sugerencias...)
+│   │   ├── routes/             # Definición de rutas Express
+│   │   ├── middleware/         # Autenticación, validación, errores
+│   │   ├── models/             # Tipos y helpers
+│   │   ├── utils/              # Utilidades (logger, etc.)
+│   │   └── index.ts            # Punto de entrada del servidor
+│   ├── migrations/             # Scripts SQL de esquema
+│   ├── scripts/                # init-db.js, seed-demo.js...
+│   ├── check-db.js             # Verificación de conexión
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── app/                # Rutas y páginas de Next.js (App Router)
+│   │   ├── components/         # Componentes React reutilizables
+│   │   ├── lib/                # Utilidades, API y datos (provincias.ts)
+│   │   └── hooks/              # Hooks personalizados
+│   ├── public/                 # Assets estáticos
+│   └── package.json
+├── scripts/                    # Helpers de arranque y limpieza de puertos
+├── start-all.ps1              # Inicio completo en PowerShell
+├── start-wsl.sh               # Inicio completo en WSL
+└── migrate-to-wsl.sh          # Migración de la base a WSL
+```
 
 ---
 
 ## Requisitos previos
 
-- Node.js 18+
-- MySQL 8.0+ o Docker Desktop
-- npm 9+
+- **Node.js** 18 o superior.
+- **npm** 9 o superior.
+- **MySQL** 8.0+ o Docker Desktop con soporte para Linux containers.
+- **Git**.
+- (Opcional) **Redis** si se quieren usar sesiones/cache avanzadas.
+
+---
 
 ## Configuración inicial
 
-Las credenciales por defecto en desarrollo son:
-
-| Servicio | Valor |
-|----------|-------|
-| Base de datos | `citypaj` |
-| Usuario MySQL | `citypaj_user` |
-| Contraseña | `citypaj123` |
-| Host MySQL | `localhost` |
-| Puerto MySQL | `3306` |
-| Puerto backend | `3002` |
-| Puerto frontend | `3001` |
-
-Los archivos `.env.example` y `.env.local.example` están preparados. El proyecto incluye `.env` y `.env.local` con esos valores para desarrollo local.
-
----
-
-## Arranque automático recomendado
-
-Desde la raíz del proyecto:
-
-```powershell
-# Levantar MySQL con Docker, crear la base de datos si no existe, instalar dependencias y compilar
-npm run setup
-
-# O solo levantar MySQL con Docker
-npm run db:up
-
-# Luego arrancar backend y frontend juntos
-npm run dev
-```
-
-### WSL
-
-Si trabajas en WSL, ejecuta desde la raíz del proyecto en una terminal de Ubuntu/WSL:
+El proyecto usa varios archivos de entorno. Copia los ejemplos y rellena los valores:
 
 ```bash
-cd /mnt/c/Users/Carmen/Documents/TFG-2DAW/citypaj
-npm run dev
+# Desde la raíz del proyecto
+cp .env.example .env
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env.local
 ```
 
-Esto arranca backend (`nodemon` con `ts-node` en el puerto 3002) y frontend (Next.js en el puerto 3001) a la vez. Espera unos 10-15 segundos a que `ts-node` compile y el backend conecte a MySQL.
+### Variables mínimas necesarias para desarrollo
 
-Si no usas Docker, asegúrate de tener MySQL corriendo en `localhost:3306` con la base de datos `citypaj` y el usuario `citypaj_user`.
-
-> **Importante:** Si en Windows también tienes un servidor MySQL (XAMPP, MySQL Installer, etc.), `localhost` en WSL puede apuntar a una base de datos distinta. Si ves errores como `Unknown column` o `Table doesn't exist` en WSL, es porque el backend se conectó a un MySQL incorrecto. En ese caso, la opción más sencilla es arrancar todo en **PowerShell de Windows** (ver apartado anterior) para que backend y frontend usen el mismo `localhost` que el MySQL de Windows.
-
-### Si el puerto 3001 o 3002 está ocupado
-
-`npm run dev` ejecuta automáticamente `predev`, que limpia procesos stale del proyecto (anteriores `next dev`, `nodemon`, `ts-node` o `concurrently`) antes de arrancar. Si quieres forzar la limpieza manualmente:
-
-```bash
-npm run kill:ports
-```
-
-Antes de arrancar, comprueba qué proceso los usa:
-
-```bash
-npm run check:ports
-```
-
-O manualmente:
-
-**Linux/WSL:**
-
-```bash
-lsof -i :3001
-lsof -i :3002
-ss -ltnp | grep -E '3001|3002'
-```
-
-**Windows PowerShell:**
-
-```powershell
-netstat -ano | findstr :3001
-netstat -ano | findstr :3002
-```
-
-Cierra el proceso antiguo antes de volver a arrancar:
-
-**Linux/WSL:**
-
-```bash
-kill -9 <PID>
-```
-
-**Windows PowerShell (como administrador si es necesario):**
-
-```powershell
-Stop-Process -PID <PID> -Force
-```
-
-Si el conflicto persiste en Windows por `iphlpsvc` o WSL, abre PowerShell como administrador y elimina el reenvío:
-
-```powershell
-netsh interface portproxy delete v4tov4 listenaddress=127.0.0.1 listenport=3001
-netsh interface portproxy delete v6tov4 listenaddress=::1 listenport=3001
-```
-
----
-
-## Arranque manual
-
-### 1. MySQL
-
-**Con Docker:**
-
-```powershell
-docker compose up -d mysql
-```
-
-**Con XAMPP / MySQL local:**
-
-Asegúrate de que MySQL esté corriendo en el puerto 3306 y de que exista la base de datos `citypaj`.
-
-Para crear la base e inicializar las tablas:
-
-```bash
-cd backend
-npm run db:init
-```
-
-### 2. Backend
-
-```bash
-cd backend
-npm install
-npm run build
-npm start
-```
-
-El backend arranca en `http://localhost:3002` y se conecta automáticamente a MySQL usando la base `citypaj`.
-
-### 3. Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-El frontend arranca en `http://localhost:3001` y consume la API del backend en `http://localhost:3002`.
-
----
-
-## Comprobación de conexión
-
-Una vez levantado todo:
-
-```bash
-curl http://localhost:3002/health
-curl http://localhost:3002/test-db
-curl "http://localhost:3002/api/anuncios?pagina=1&limite=5"
-```
-
-- `/health` indica que el backend responde.
-- `/test-db` confirma que el backend está conectado a la base `citypaj`.
-- `/api/anuncios` devuelve anuncios reales de la base de datos.
-
----
-
-## Scripts principales
-
-Desde la raíz:
-
-| Comando | Descripción |
-|---------|-------------|
-| `npm run setup` | Levanta MySQL con Docker, crea la base, instala dependencias y compila |
-| `npm run db:up` | Levanta MySQL con Docker |
-| `npm run db:down` | Detiene MySQL de Docker |
-| `npm run db:init` | Crea la base `citypaj` y aplica migraciones |
-| `npm run install:all` | Instala dependencias en raíz, backend y frontend |
-| `npm run build` | Compila backend y frontend |
-| `npm run dev` | Arranca backend y frontend en modo desarrollo |
-| `npm run start` | Arranca backend y frontend para uso |
-
-Desde `backend`:
-
-| Comando | Descripción |
-|---------|-------------|
-| `npm run dev` | Backend con recarga automática (nodemon) |
-| `npm run build` | Compila TypeScript |
-| `npm start` | Inicia backend compilado |
-| `npm run db:init` | Crea la base de datos y tablas |
-| `npm run db:check` | Verifica conexión a MySQL |
-| `npm run db:verify` | Verifica integridad de la base de datos |
-| `npm run db:seed:demo` | Crea/actualiza usuarios demo (usuario, moderador y admin) |
-
-Desde `frontend`:
-
-| Comando | Descripción |
-|---------|-------------|
-| `npm run dev` | Inicia Next.js en `http://localhost:3001` |
-| `npm run build` | Build de producción |
-| `npm start` | Servidor Next.js en `http://localhost:3001` |
-
----
-
-## Variables de entorno
-
-**backend/.env** (desarrollo local):
+**`backend/.env`**
 
 ```env
 PORT=3002
@@ -239,159 +147,474 @@ DB_NAME=citypaj
 DB_USER=citypaj_user
 DB_PASSWORD=citypaj123
 NODE_ENV=development
-JWT_SECRET=your-super-secret-jwt-key-change-in-production
+JWT_SECRET=cambia-esta-clave-en-produccion
 ```
 
-**frontend/.env.local** (desarrollo local):
+**`frontend/.env.local`**
 
 ```env
 BACKEND_URL=http://localhost:3002
 NEXT_PUBLIC_API_URL=http://localhost:3002
 ```
 
+**Variables opcionales pero recomendables**
+
+- `REDIS_HOST` / `REDIS_PORT` para cache y sesiones.
+- `EMAIL_*` para envío de correos de verificación.
+- `S3_*` para almacenar imágenes en S3 en producción.
+- `MODERATION_*` para conectar un servicio externo de IA/ML.
+- `RATE_LIMIT_*` para ajustar límites de peticiones.
+
 ---
 
-## Estructura de carpetas principales
+## Instalación paso a paso
 
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/carmendmv/anuncios-juvenil.git
+cd anuncios-juvenil
 ```
-citypaj/
-├── backend/
-│   ├── src/               # Código fuente de la API
-│   ├── migrations/        # Migraciones SQL de MySQL
-│   ├── scripts/           # Scripts utilitarios (init-db, etc.)
-│   └── package.json
-├── frontend/
-│   ├── src/app/           # Páginas y rutas API de Next.js
-│   ├── src/components/    # Componentes React
-│   ├── src/lib/           # Utilidades (configuración API)
-│   └── package.json
-├── docker-compose.yml     # MySQL con Docker
-└── README.md
-```
 
----
+### 2. Levantar MySQL
 
-## Endpoints principales
+**Opción A: con Docker (recomendada)**
 
-| Recurso | Ruta backend |
-|---------|--------------|
-| Health | `GET /health` |
-| Test DB | `GET /test-db` |
-| Anuncios | `GET/POST /api/anuncios` |
-| Moderación de anuncios | `GET /api/anuncios/moderacion` |
-| Reportes de un anuncio | `GET /api/anuncios/:id/reportes` |
-| Moderar un anuncio | `POST /api/anuncios/:id/moderar` |
-| Moderar con IA | `POST /api/anuncios/:id/moderar-ia` |
-| Comunidad | `GET/POST /api/comunidad` |
-| Propuestas | `GET /api/propuestas` |
-| Recursos | `GET/POST /api/recursos` |
-| Eventos | `GET/POST /api/eventos` |
-| Sugerencias | `POST /api/sugerencias` |
-| Estadísticas | `GET /api/sugerencias/estadisticas` |
-| Autenticación | `POST /api/auth/login`, `/api/auth/register`, `/api/auth/logout`, `/api/auth/refresh`, `GET /api/auth/me` |
-| Usuarios | `GET /api/usuarios/perfil` |
-
----
-
-## Panel de moderación
-
-El panel principal de moderación está en **`/moderador`**.
-
-- **Login de moderador**: `/moderador/login`
-- **Panel de moderador**: `/moderador`
-- **Sugerencias**: `/admin/sugerencias`
-- **Anuncios**: `/admin/anuncios`
-
-Desde el panel puedes revisar anuncios reportados o pendientes de aprobación, aprobar, rechazar o dejar que la IA los revise. También hay enlaces a sugerencias y comunidad.
-
-Para entrar usa la **cuenta demo de moderador**: `moderador@citypaj.demo` / `demo123`.
-
----
-
-## Solución de problemas
-
-### MySQL no responde
-
-Asegúrate de que MySQL está corriendo. Con Docker:
-
-```powershell
+```bash
 docker compose up -d mysql
 ```
 
-Con XAMPP, inicia el servicio MySQL desde el panel de control.
+Esto crea un contenedor `citypaj-mysql` en el puerto `3306` con la base `citypaj`, usuario `citypaj_user` y contraseña `citypaj123`.
 
-### La base de datos `citypaj` no existe
+**Opción B: MySQL local / XAMPP / WAMP**
+
+Asegúrate de tener MySQL corriendo en `localhost:3306` y crea la base manualmente:
+
+```sql
+CREATE DATABASE IF NOT EXISTS citypaj CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'citypaj_user'@'%' IDENTIFIED BY 'citypaj123';
+GRANT ALL PRIVILEGES ON citypaj.* TO 'citypaj_user'@'%';
+FLUSH PRIVILEGES;
+```
+
+### 3. Instalar dependencias
 
 ```bash
-cd backend
+npm run install:all
+```
+
+Equivalente a:
+
+```bash
+npm install
+cd backend && npm install
+cd ../frontend && npm install
+```
+
+### 4. Inicializar la base de datos
+
+```bash
 npm run db:init
 ```
 
-### El backend no conecta con MySQL
+Este comando:
 
-Revisa `backend/.env` y verifica que los valores coincidan con tu MySQL.
+1. Crea la base `citypaj` si no existe.
+2. Crea el usuario `citypaj_user` si no existe.
+3. Ejecuta todos los archivos `.sql` de `backend/migrations/` en orden.
 
-### El frontend no encuentra el backend
+**Alternativa: restaurar desde el volcado**
 
-Asegúrate de que `frontend/.env.local` tiene `BACKEND_URL=http://localhost:3002` y de que el backend está corriendo.
+```bash
+cd backend
+npx ts-node scripts/import-dump.ts ../../citypaj_dump.sql
+# o directamente con mysql si tienes el cliente:
+# mysql -u citypaj_user -pcitypaj123 citypaj < citypaj_dump.sql
+```
 
----
-
-## ¿El frontend está conectado al backend y a la base de datos?
-
-**Sí.** El frontend no habla directamente con MySQL, sino con el backend a través de las rutas `/api/*` de Next.js. Esas rutas actúan como intermediarias y le piden los datos al backend en `http://localhost:3002`, que es quien consulta MySQL.
-
-Por ejemplo:
-- Página de inicio → `/api/anuncios` → backend → tabla `anuncios`
-- `/comunidad` → `/api/comunidad` → backend → tablas `comunidad_publicaciones` y `comunidad_comentarios`
-- `/admin/sugerencias` → `/api/sugerencias` → backend → tabla `sugerencias`
-- `/admin/anuncios` → `/api/anuncios/moderacion` → backend → tablas `anuncios` + `reportes_anuncios`
-- `/moderador` → `/api/anuncios/moderacion`, `/api/sugerencias`, `/api/comunidad`, `/api/reportes` → backend → base de datos
-
-Casi todo el contenido que ves en la web viene de la base de datos. Lo único estático son algunos desplegables de comunidades/provincias en formularios y la página de `/ayudas`, que es un directorio de enlaces externos.
-
-## Credenciales de demo
-
-> **Nota:** Estas credenciales son solo para entorno demo/desarrollo. No deben usarse en producción.
-
-Puedes crear o actualizar los usuarios demo ejecutando:
+### 5. Crear usuarios de demo
 
 ```bash
 cd backend
 npm run db:seed:demo
 ```
 
-### Usuario normal
+Si no ejecutas el script, el backend intenta crear el moderador demo automáticamente al arrancar.
 
-| Campo | Valor |
-|-------|-------|
-| Email | `usuario@citypaj.demo` |
-| Contraseña | `demo123` |
-| Rol | `usuario` |
-| Ruta de acceso | `/acceder` |
+### 6. Compilar (opcional en desarrollo)
 
-### Moderador
+```bash
+npm run build
+```
 
-| Campo | Valor |
-|-------|-------|
-| Email | `moderador@citypaj.demo` |
-| Contraseña | `demo123` |
-| Rol | `moderador` |
-| Ruta de acceso | `/moderador/login` |
-| Panel | `/moderador` |
+Esto compila TypeScript en `backend/dist` y genera el build de Next.js en `frontend/.next`.
 
-### Administrador (opcional)
+---
 
-| Campo | Valor |
-|-------|-------|
-| Email | `admin@citypaj.demo` |
-| Contraseña | `demo123` |
-| Rol | `admin` |
-| Ruta de acceso | `/moderador/login` |
+## Cómo arrancar el proyecto
 
-## Notas
+### Desarrollo (backend + frontend a la vez)
 
-- El frontend no se conecta directamente a MySQL; siempre consume el backend.
-- El backend usa `mysql2/promise` con un pool centralizado en `src/config/database.ts`.
-- No se usa el puerto 3005 ni la base `citypaj_db` en el código activo.
-- Los servidores temporales (`server-simple.js`, etc.) no forman parte del arranque oficial.
+Desde la raíz:
+
+```bash
+npm run dev
+```
+
+Esto ejecuta en paralelo:
+
+- `cd backend && npm run dev` → Express + nodemon + ts-node en `http://localhost:3002`
+- `cd frontend && npm run dev` → Next.js en `http://localhost:3001`
+
+Espera 10-15 segundos a que `ts-node` compile el backend y conecte a MySQL.
+
+**En WSL / Linux**
+
+```bash
+cd /mnt/c/Users/Carmen/Documents/TFG-2DAW/citypaj
+npm run dev
+```
+
+o con el script incluido:
+
+```bash
+./start-wsl.sh
+```
+
+**En Windows PowerShell**
+
+```powershell
+.\start-all.ps1
+```
+
+### Desarrollo por separado
+
+Terminal 1 (backend):
+
+```bash
+cd backend
+npm run dev
+```
+
+Terminal 2 (frontend):
+
+```bash
+cd frontend
+npm run dev
+```
+
+### Producción
+
+```bash
+npm run build
+npm run start
+```
+
+- Backend: `node backend/dist/index.js` en el puerto `PORT`.
+- Frontend: `next start -p 3001` en `http://localhost:3001`.
+
+> **Nota:** El script `start:frontend` de la raíz apunta a `npm run dev` en el `package.json` actual. Para producción real se recomienda ejecutar `next start` manualmente o configurar un servicio como PM2.
+
+---
+
+## Scripts disponibles
+
+### Raíz (`package.json`)
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run install:all` | Instala dependencias en raíz, backend y frontend |
+| `npm run setup` | Levanta MySQL con Docker, inicializa DB, instala dependencias y compila |
+| `npm run setup:docker` | Sólo Docker + instalar + build |
+| `npm run dev` | Arranca backend y frontend en desarrollo |
+| `npm run start` | Arranca backend y frontend para uso |
+| `npm run build` | Compila backend y frontend |
+| `npm run db:up` | Levanta MySQL con Docker |
+| `npm run db:down` | Detiene MySQL de Docker |
+| `npm run db:init` | Crea base de datos y aplica migraciones |
+| `npm run db:check` | Verifica conexión a MySQL |
+| `npm run kill:ports` | Limpia procesos de puertos 3001/3002 |
+| `npm run check:ports` | Comprueba si los puertos están libres |
+
+### Backend
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | Backend con recarga automática (nodemon + ts-node) |
+| `npm run build` | Compila TypeScript |
+| `npm start` | Ejecuta el servidor compilado |
+| `npm run db:init` | Crea base de datos y tablas |
+| `npm run db:check` | Verifica conexión a MySQL |
+| `npm run db:verify` | Verifica integridad de datos |
+| `npm run db:seed:demo` | Crea/actualiza usuarios demo |
+| `npm test` | Ejecuta tests con Jest |
+| `npm run lint` | Linter ESLint |
+
+### Frontend
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | Next.js en `http://localhost:3001` |
+| `npm run build` | Build de producción |
+| `npm run start` | Servidor Next.js en `http://localhost:3001` |
+| `npm run lint` | Linter Next.js |
+| `npm run type-check` | `tsc --noEmit` |
+| `npm test` | Tests con Jest |
+
+---
+
+## Credenciales de demo
+
+> Estas credenciales se crean automáticamente en desarrollo. No usar en producción.
+
+| Rol | Email | Contraseña | Acceso / Panel |
+|-----|-------|------------|----------------|
+| Usuario normal | `usuario@citypaj.demo` | `demo123` | `/acceder` |
+| Moderador | `moderador@citypaj.demo` | `demo123` | `/moderador/login` → `/moderador` |
+| Administrador | `admin@citypaj.demo` | `demo123` | `/moderador/login` → `/admin/*` |
+
+---
+
+## Flujo de autenticación
+
+1. El usuario se registra en `/api/auth/register`.
+2. El backend guarda el hash de la contraseña con `bcrypt`.
+3. Al hacer login, el servidor emite un **access token** JWT (15 min) y un **refresh token** (7 días).
+4. El frontend almacena ambos tokens y los envía en la cabecera `Authorization: Bearer <token>`.
+5. Las rutas protegidas verifican el JWT y el rol (`usuario`, `moderador`, `admin`).
+6. El logout invalida el refresh token en el servidor.
+
+---
+
+## Moderación de anuncios
+
+El acceso a la moderación está **desvinculado** del login de usuarios normales.
+
+- **Login exclusivo**: `/moderador/login`
+- **Panel de moderador**: `/moderador`
+- **Anuncios pendientes**: `/admin/anuncios`
+- **Sugerencias**: `/admin/sugerencias`
+
+### Flujo
+
+1. Un usuario publica un anuncio.
+2. El sistema ejecuta un filtro interno (`moderarConIA`) que puede marcarlo como `flagged` si detecta palabras inapropiadas. **Nunca lo rechaza automáticamente**; solo lo deja en revisión humana.
+3. Los moderadores ven en `/admin/anuncios` los anuncios en estado `pending` o `flagged`, y también los `approved` que tengan reportes pendientes.
+4. Desde el panel se puede:
+   - Ver la descripción completa del anuncio.
+   - Cambiar el estado desde un selector (`Pendiente`, `En revisión`, `Aprobado`, `Rechazado`).
+   - Añadir notas internas o motivos.
+   - Aprobar o rechazar con un solo click.
+   - Ver reportes asociados.
+   - Abrir el anuncio público.
+5. Un anuncio aprobado o rechazado desaparece de la lista pendiente.
+
+### Estados de moderación
+
+| Estado | Significado |
+|--------|-------------|
+| `pending` | Pendiente de revisión |
+| `flagged` | Marcado por el filtro interno; requiere revisión humana |
+| `approved` | Aprobado y visible públicamente |
+| `rejected` | Rechazado; no visible públicamente |
+
+---
+
+## Subida de imágenes
+
+- Se permiten hasta **6 imágenes** por anuncio.
+- Formatos: `image/jpeg`, `image/png`, `image/webp`.
+- Tamaño máximo por archivo: **5 MB**.
+- En producción se puede configurar almacenamiento en S3 con las variables `S3_*`.
+- En desarrollo las imágenes se sirven desde el directorio de uploads local.
+
+---
+
+## Endpoints API principales
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| `GET` | `/health` | Healthcheck del backend |
+| `GET` | `/test-db` | Comprueba conexión a MySQL |
+| `POST` | `/api/auth/register` | Registro de usuario |
+| `POST` | `/api/auth/login` | Login (devuelve tokens) |
+| `POST` | `/api/auth/logout` | Logout |
+| `POST` | `/api/auth/refresh` | Refresca access token |
+| `GET` | `/api/auth/me` | Perfil del usuario actual |
+| `GET` | `/api/anuncios` | Listar/buscar anuncios |
+| `POST` | `/api/anuncios` | Crear anuncio |
+| `GET` | `/api/anuncios/:id` | Detalle de un anuncio |
+| `PUT` | `/api/anuncios/:id` | Actualizar anuncio |
+| `DELETE` | `/api/anuncios/:id` | Eliminar anuncio |
+| `GET` | `/api/anuncios/moderacion` | Listado para moderadores |
+| `POST` | `/api/anuncios/:id/moderar` | Aprobar/rechazar/actualizar estado |
+| `GET` | `/api/anuncios/:id/reportes` | Reportes de un anuncio |
+| `POST` | `/api/anuncios/:id/reportar` | Reportar un anuncio |
+| `POST` | `/api/sugerencias` | Enviar sugerencia |
+| `GET` | `/api/sugerencias/estadisticas` | Estadísticas de sugerencias |
+| `GET/POST` | `/api/comunidad` | Publicaciones y comentarios de comunidad |
+| `GET/POST` | `/api/recursos` | Recursos / ayudas |
+| `GET/POST` | `/api/eventos` | Eventos |
+| `GET` | `/api/usuarios/perfil` | Perfil del usuario |
+
+---
+
+## Rutas del frontend
+
+| Ruta | Descripción |
+|------|-------------|
+| `/` | Página principal con hero y últimos anuncios |
+| `/acceder` | Login de usuarios |
+| `/registro` | Registro de usuarios |
+| `/publicar` | Formulario para publicar anuncio |
+| `/mis-anuncios` | Anuncios del usuario logueado |
+| `/anuncios/[id]` | Detalle público de un anuncio |
+| `/buscar` | Búsqueda avanzada de anuncios |
+| `/comunidad` | Muro de comunidad |
+| `/buzon` | Buzón de sugerencias |
+| `/ayudas` | Directorio de ayudas |
+| `/moderador/login` | Login exclusivo de moderadores |
+| `/moderador` | Dashboard de moderador |
+| `/admin/anuncios` | Panel de moderación de anuncios |
+| `/admin/sugerencias` | Panel de lectura de sugerencias |
+| `/contacto`, `/terminos`, `/privacidad` | Páginas legales/informativas |
+
+---
+
+## Tests
+
+Backend:
+
+```bash
+cd backend
+npm test
+```
+
+Frontend:
+
+```bash
+cd frontend
+npm test
+```
+
+---
+
+## Despliegue
+
+1. Configura las variables de entorno en el servidor (`.env.production` como guía).
+2. Asegúrate de que MySQL/Redis sean accesibles.
+3. Ejecuta `npm run build`.
+4. Ejecuta `npm run start` o configura PM2/systemd para mantener los procesos.
+5. Coloca un reverse proxy (Nginx, Caddy, etc.) frente al frontend y backend con HTTPS.
+
+### Variables importantes en producción
+
+```env
+NODE_ENV=production
+PORT=3002
+DB_HOST=mysql.tu-dominio.com
+DB_SSL=true
+JWT_SECRET=<clave-muy-segura>
+JWT_REFRESH_SECRET=<clave-muy-segura-refresh>
+NEXT_PUBLIC_API_URL=https://api.tu-dominio.com
+BACKEND_URL=https://api.tu-dominio.com
+```
+
+---
+
+## Solución de problemas
+
+### Los puertos 3001 o 3002 están ocupados
+
+```bash
+npm run kill:ports
+```
+
+o manualmente:
+
+**WSL/Linux**
+
+```bash
+lsof -i :3001
+lsof -i :3002
+kill -9 <PID>
+```
+
+**Windows PowerShell**
+
+```powershell
+netstat -ano | findstr :3001
+Stop-Process -PID <PID> -Force
+```
+
+Si WSL reserva los puertos, elimina el reenvío:
+
+```powershell
+netsh interface portproxy delete v4tov4 listenaddress=127.0.0.1 listenport=3001
+netsh interface portproxy delete v6tov4 listenaddress=::1 listenport=3001
+```
+
+### `localhost` en WSL apunta a otro MySQL
+
+Si tienes MySQL en Windows (XAMPP) y en Docker/WSL, `localhost` puede resolver de forma distinta. Revisa que `DB_HOST` coincida con el MySQL que realmente quieres usar.
+
+### El frontend muestra "Error de conexión"
+
+1. Comprueba que el backend está corriendo: `curl http://localhost:3002/health`.
+2. Verifica que `frontend/.env.local` tiene `BACKEND_URL=http://localhost:3002` y `NEXT_PUBLIC_API_URL=http://localhost:3002`.
+3. En WSL, si accedes desde Windows, usa `http://127.0.0.1:3002` o la IP de WSL.
+
+### La base de datos `citypaj` no existe
+
+```bash
+npm run db:init
+```
+
+### Errores de migración
+
+Revisa la consola del backend; el script `init-db.js` detiene el proceso si una migración SQL falla.
+
+---
+
+## FAQ
+
+**¿El frontend se conecta directamente a MySQL?**
+
+No. El frontend solo consume la API del backend. Es el backend quien gestiona el pool de conexiones MySQL.
+
+**¿Puedo usar el panel de moderación desde el móvil?**
+
+Sí. Toda la interfaz, incluido `/admin/anuncios`, está pensada para pantallas pequeñas.
+
+**¿La IA rechaza anuncios sola?**
+
+No. El filtro interno solo marca anuncios como `flagged`. Un moderador humano decide después aprobar o rechazar.
+
+**¿Cómo cambio el puerto del frontend o backend?**
+
+Modifica `PORT` en `backend/.env` y el flag `-p` en el script `dev` de `frontend/package.json`.
+
+**¿Para qué sirve Redis?**
+
+Es opcional. Se puede usar para cache, rate limiting distribuido y sesiones. Sin él, el backend funciona con memoria local.
+
+---
+
+## Seguridad
+
+- Las contraseñas nunca se almacenan en texto plano; usan `bcrypt`.
+- Los tokens JWT tienen expiración corta (15 min) y se refrescan.
+- El rate limiting protege rutas de autenticación y subida de archivos.
+- Helmet añade cabeceras de seguridad HTTP.
+- CORS está configurado por lista blanca de orígenes.
+- En producción cambia siempre `JWT_SECRET`, `JWT_REFRESH_SECRET` y `SESSION_SECRET`.
+
+---
+
+## Licencia y autor
+
+- **Proyecto**: CityPAJ
+- **Autor**: Carmen (TFG 2º DAW)
+- **Licencia**: MIT
+
+Para dudas o mejoras, abre un issue en el repositorio.
