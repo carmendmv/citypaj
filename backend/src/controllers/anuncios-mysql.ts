@@ -718,23 +718,112 @@ export const getAnunciosModeracion = async (req: AuthRequest, res: Response): Pr
       return;
     }
 
+    const {
+      pagina = '1',
+      limite = '20',
+      orden = 'reciente',
+      estado,
+      busqueda,
+      categoria,
+      comunidad,
+      provincia,
+      reportados
+    } = req.query;
+
+    const pageNum = Math.max(1, parseInt(pagina as string) || 1);
+    const limitNum = Math.min(100, Math.max(1, parseInt(limite as string) || 20));
+    const offset = (pageNum - 1) * limitNum;
+
+    const whereConditions = ['(a.estado_moderacion IN (\'pending\', \'flagged\') OR (a.estado_moderacion = \'approved\' AND r.id IS NOT NULL))'];
+    const havingConditions: string[] = [];
+    const params: any[] = [];
+
+    if (estado && ['approved', 'rejected', 'pending', 'flagged'].includes(estado as string)) {
+      whereConditions.push('a.estado_moderacion = ?');
+      params.push(estado);
+    }
+
+    if (busqueda) {
+      whereConditions.push('(a.titulo LIKE ? OR a.descripcion LIKE ? OR a.categoria LIKE ? OR u.email LIKE ? OR u.nombre LIKE ?)');
+      const q = `%${busqueda}%`;
+      params.push(q, q, q, q, q);
+    }
+
+    if (categoria) {
+      whereConditions.push('a.categoria = ?');
+      params.push(categoria);
+    }
+
+    if (comunidad) {
+      whereConditions.push('a.comunidad_autonoma LIKE ?');
+      params.push(`%${comunidad}%`);
+    }
+
+    if (provincia) {
+      whereConditions.push('a.provincia LIKE ?');
+      params.push(`%${provincia}%`);
+    }
+
+    if (reportados === 'si') {
+      havingConditions.push('reportes > 0');
+    } else if (reportados === 'no') {
+      havingConditions.push('reportes = 0');
+    }
+
+    let orderBy = 'a.creado_at DESC';
+    switch (orden as string) {
+      case 'antiguo':
+        orderBy = 'a.creado_at ASC';
+        break;
+      case 'reportes':
+        orderBy = 'reportes DESC, a.creado_at DESC';
+        break;
+      case 'titulo-asc':
+        orderBy = 'a.titulo ASC';
+        break;
+      case 'titulo-desc':
+        orderBy = 'a.titulo DESC';
+        break;
+    }
+
+    const where = whereConditions.join(' AND ');
+    const having = havingConditions.length ? `HAVING ${havingConditions.join(' AND ')}` : '';
+
     const connection = await pool.getConnection();
     try {
       const [rows] = await connection.execute(
-        `SELECT
+        `SELECT SQL_CALC_FOUND_ROWS
           a.id, a.usuario_id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
-          a.provincia, a.estado_moderacion, a.motivo_rechazo, a.creado_at, a.visible,
+          a.provincia, a.estado_moderacion, a.motivo_rechazo, a.creado_at, a.actualizado_at, a.visible,
           u.nombre as usuario_nombre, u.email as usuario_email,
-          COUNT(r.id) as reportes
+          COUNT(r.id) as reportes,
+          ml.creado_at as moderado_at,
+          mu.nombre as moderado_por_nombre
         FROM anuncios a
         LEFT JOIN usuarios u ON a.usuario_id = u.id
         LEFT JOIN reportes_anuncios r ON a.id = r.anuncio_id AND r.estado = 'pendiente'
-        WHERE a.estado_moderacion IN ('pending', 'flagged') OR (a.estado_moderacion = 'approved' AND r.id IS NOT NULL)
+        LEFT JOIN (
+          SELECT l1.anuncio_id, l1.moderador_id, l1.creado_at
+          FROM moderacion_logs l1
+          INNER JOIN (
+            SELECT anuncio_id, MAX(creado_at) AS max_fecha
+            FROM moderacion_logs
+            GROUP BY anuncio_id
+          ) l2 ON l1.anuncio_id = l2.anuncio_id AND l1.creado_at = l2.max_fecha
+        ) ml ON ml.anuncio_id = a.id
+        LEFT JOIN usuarios mu ON ml.moderador_id = mu.id
+        WHERE ${where}
         GROUP BY a.id
-        ORDER BY a.creado_at DESC`
+        ${having}
+        ORDER BY ${orderBy}
+        LIMIT ? OFFSET ?`,
+        [...params, limitNum, offset]
       );
 
-      res.status(200).json({ success: true, data: rows });
+      const [countRows] = await connection.execute('SELECT FOUND_ROWS() as total');
+      const total = ((countRows as any[])[0]?.total as number) || 0;
+
+      res.status(200).json({ success: true, data: rows, meta: { page: pageNum, limit: limitNum, total } });
     } finally {
       connection.release();
     }
@@ -800,6 +889,12 @@ export const moderarAnuncio = async (req: AuthRequest, res: Response): Promise<v
 
     const connection = await pool.getConnection();
     try {
+      const [prevRows] = await connection.execute(
+        'SELECT estado_moderacion FROM anuncios WHERE id = ?',
+        [id]
+      );
+      const estadoAnterior = ((prevRows as any[])[0]?.estado_moderacion as string) || null;
+
       await connection.execute(
         'UPDATE anuncios SET estado_moderacion = ?, motivo_rechazo = ?, visible = ? WHERE id = ?',
         [nextEstado, notasGuardar, visible, id]
@@ -812,12 +907,75 @@ export const moderarAnuncio = async (req: AuthRequest, res: Response): Promise<v
         );
       }
 
+      await connection.execute(
+        'INSERT INTO moderacion_logs (id, anuncio_id, moderador_id, estado_anterior, estado_nuevo, notas) VALUES (?, ?, ?, ?, ?, ?)',
+        [randomUUID(), id, userId, estadoAnterior, nextEstado, notasGuardar]
+      );
+
       res.status(200).json({ success: true, message: `Anuncio actualizado a ${nextEstado}` });
     } finally {
       connection.release();
     }
   } catch (error) {
     console.error('Error moderando anuncio:', (error as Error).message);
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  }
+};
+
+export const moderarAnunciosBulk = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { ids, estado, notas } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0 || !estado || !['approved', 'rejected', 'pending', 'flagged'].includes(estado)) {
+      res.status(400).json({ success: false, error: 'IDs o estado no válido' });
+      return;
+    }
+
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(401).json({ success: false, error: 'Usuario no autenticado' });
+      return;
+    }
+
+    const visible = estado === 'approved' ? 1 : 0;
+    const notasGuardar = notas || null;
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+      for (const id of ids) {
+        if (!isValidId(id)) continue;
+        const [prevRows] = await connection.execute(
+          'SELECT estado_moderacion FROM anuncios WHERE id = ?',
+          [id]
+        );
+        const estadoAnterior = ((prevRows as any[])[0]?.estado_moderacion as string) || null;
+
+        await connection.execute(
+          'UPDATE anuncios SET estado_moderacion = ?, motivo_rechazo = ?, visible = ? WHERE id = ?',
+          [estado, notasGuardar, visible, id]
+        );
+
+        if (estado === 'approved' || estado === 'rejected') {
+          await connection.execute(
+            "UPDATE reportes_anuncios SET estado = 'resuelto' WHERE anuncio_id = ? AND estado = 'pendiente'",
+            [id]
+          );
+        }
+
+        await connection.execute(
+          'INSERT INTO moderacion_logs (id, anuncio_id, moderador_id, estado_anterior, estado_nuevo, notas) VALUES (?, ?, ?, ?, ?, ?)',
+          [randomUUID(), id, userId, estadoAnterior, estado, notasGuardar]
+        );
+      }
+      await connection.commit();
+      res.status(200).json({ success: true, message: `${ids.length} anuncios actualizados a ${estado}` });
+    } catch (err) {
+      await connection.rollback();
+      throw err;
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error('Error moderando anuncios en bloque:', (error as Error).message);
     res.status(500).json({ success: false, error: 'Error interno del servidor' });
   }
 };

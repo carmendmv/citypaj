@@ -13,6 +13,7 @@ import {
   getAnunciosModeracion,
   getReportesAnuncio,
   moderarAnuncio,
+  moderarAnunciosBulk,
   moderarAnuncioIA,
   getMisAnuncios
 } from '../controllers/anuncios-mysql';
@@ -45,6 +46,9 @@ router.get('/:id/reportes', auth, requireRole(['admin', 'moderador']), getReport
 
 // Moderate ad
 router.post('/:id/moderar', auth, requireRole(['admin', 'moderador']), moderarAnuncio);
+
+// Moderate multiple ads in bulk
+router.post('/moderar-bulk', auth, requireRole(['admin', 'moderador']), moderarAnunciosBulk);
 
 // Moderate ad with IA
 router.post('/:id/moderar-ia', auth, requireRole(['admin', 'moderador']), moderarAnuncioIA);

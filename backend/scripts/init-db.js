@@ -41,16 +41,37 @@ async function main() {
     const migrationsDir = path.join(__dirname, '..', 'migrations');
     if (fs.existsSync(migrationsDir)) {
       const files = fs.readdirSync(migrationsDir).filter(f => f.endsWith('.sql')).sort();
+      const ignorableErrors = new Set([
+        'ER_DUP_FIELDNAME',
+        'ER_DUP_KEYNAME',
+        'ER_TABLE_EXISTS_ERROR',
+        'ER_DUP_ENTRY'
+      ]);
+
       for (const file of files) {
         const filePath = path.join(migrationsDir, file);
-        const sql = fs.readFileSync(filePath, 'utf8');
-        try {
-          await appConnection.query(sql);
-          console.log(`✅ Migración aplicada: ${file}`);
-        } catch (err) {
-          console.error(`❌ Error en migración ${file}:`, err.message);
-          process.exit(1);
+        let sql = fs.readFileSync(filePath, 'utf8');
+        // Eliminar comentarios de bloque /* ... */
+        sql = sql.replace(/\/\*[\s\S]*?\*\//g, '');
+        // Eliminar comentarios de línea --
+        sql = sql.replace(/^\s*--.*$/gm, '');
+        const statements = sql.split(';').map(s => s.trim()).filter(s => s.length > 0);
+
+        let applied = 0;
+        for (const statement of statements) {
+          try {
+            await appConnection.query(statement + ';');
+            applied++;
+          } catch (err) {
+            if (err.code && ignorableErrors.has(err.code)) {
+              console.log(`ℹ️ Migración ${file}: ${err.message} (omitido)`);
+            } else {
+              console.error(`❌ Error en migración ${file}:`, err.message);
+              process.exit(1);
+            }
+          }
         }
+        console.log(`✅ Migración aplicada: ${file} (${applied} sentencias)`);
       }
     }
 
