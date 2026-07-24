@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -8,6 +8,7 @@ import ListingRow from '@/components/ui/ListingRow';
 import EmptyState from '@/components/ui/EmptyState';
 import LoadingRows from '@/components/ui/LoadingRows';
 import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
+import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD } from '@/lib/provinces';
 
 interface Anuncio {
   id: string;
@@ -43,41 +44,52 @@ export default function HomePage() {
   const [estadisticas, setEstadisticas] = useState<Estadisticas | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [comunidad, setComunidad] = useState('');
+  const [provincia, setProvincia] = useState('');
 
-  useEffect(() => {
-    cargarDatos();
-  }, []);
-
-  const cargarDatos = async () => {
+  const fetchAnuncios = useCallback(async (comunidadFiltro = '', provinciaFiltro = '') => {
     try {
       setLoading(true);
       setError(null);
-      const [anunciosRes, statsRes] = await Promise.all([
-        fetch('/api/anuncios?limit=10&ordenar=creado-desc'),
-        fetch('/api/estadisticas/home')
-      ]);
+      const params = new URLSearchParams();
+      params.set('limit', '10');
+      params.set('ordenar', 'creado-desc');
+      if (comunidadFiltro) params.set('comunidad_autonoma', comunidadFiltro);
+      if (provinciaFiltro) params.set('provincia', provinciaFiltro);
 
-      if (anunciosRes.ok) {
-        const anunciosData = await anunciosRes.json();
-        if (anunciosData.success) {
-          setAnuncios(anunciosData.data || []);
-        } else {
-          setError(anunciosData.error || 'Error cargando anuncios');
-        }
+      const res = await fetch(`/api/anuncios?${params.toString()}`);
+      const data = await res.json();
+      if (data.success) {
+        setAnuncios(data.data || []);
       } else {
-        setError('No se pudieron cargar los anuncios');
+        setError(data.error || 'Error cargando anuncios');
       }
+    } catch (err) {
+      setError('No se pudieron cargar los anuncios');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
+  const cargarEstadisticas = async () => {
+    try {
+      const statsRes = await fetch('/api/estadisticas/home');
       if (statsRes.ok) {
         const statsData = await statsRes.json();
         setEstadisticas(statsData.data);
       }
     } catch (err) {
-      setError('No se pudieron cargar los datos');
-    } finally {
-      setLoading(false);
+      console.error('Error cargando estadísticas:', err);
     }
   };
+
+  useEffect(() => {
+    cargarEstadisticas();
+  }, []);
+
+  useEffect(() => {
+    fetchAnuncios(comunidad, provincia);
+  }, [comunidad, provincia, fetchAnuncios]);
 
   const guardar = async (id: string) => {
     try {
@@ -127,17 +139,52 @@ export default function HomePage() {
       {/* Últimos anuncios */}
       <section className="py-16 px-4 sm:px-6 bg-gray-50/50">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-8">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{t('home.latest_ads', 'Últimos anuncios')}</h2>
-              <p className="text-gray-600">{t('home.latest_ads', 'Anuncios recientes de jóvenes y recursos cercanos')}</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 flex flex-wrap items-center gap-2">
+                <span>Últimos anuncios de</span>
+                <select
+                  value={comunidad}
+                  onChange={(e) => { setComunidad(e.target.value); setProvincia(''); }}
+                  className="font-sans text-base sm:text-lg border border-gray-300 rounded-lg px-3 py-1.5 bg-white focus:border-orange-500 focus:outline-none"
+                >
+                  <option value="">Toda España</option>
+                  {COMUNIDADES.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+                {comunidad ? (
+                  <>
+                    <span className="hidden sm:inline text-gray-400">/</span>
+                    <select
+                      value={provincia}
+                      onChange={(e) => setProvincia(e.target.value)}
+                      className="font-sans text-base sm:text-lg border border-gray-300 rounded-lg px-3 py-1.5 bg-white focus:border-orange-500 focus:outline-none"
+                    >
+                      <option value="">Toda {comunidad}</option>
+                      {PROVINCIAS_POR_COMUNIDAD[comunidad]?.map((p) => (
+                        <option key={p} value={p}>{p}</option>
+                      ))}
+                    </select>
+                  </>
+                ) : null}
+              </h2>
+              <p className="text-gray-600">Anuncios recientes de jóvenes y recursos cercanos</p>
             </div>
-            <Link
-              href="/anuncios"
-              className="inline-flex items-center px-5 py-2.5 bg-black text-white text-sm font-medium rounded-full hover:bg-blue-600 transition-colors"
-            >
-              Ver todos
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <button
+                onClick={() => fetchAnuncios(comunidad, provincia)}
+                className="inline-flex items-center justify-center px-5 py-2.5 bg-black text-white text-sm font-medium border border-black hover:bg-orange-500 hover:text-black transition-colors"
+              >
+                Buscar
+              </button>
+              <Link
+                href="/anuncios"
+                className="inline-flex items-center justify-center px-5 py-2.5 border border-black text-black text-sm font-medium hover:bg-black hover:text-white transition-colors"
+              >
+                Ver todos
+              </Link>
+            </div>
           </div>
 
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">

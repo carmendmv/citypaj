@@ -74,27 +74,18 @@ export default function AdminAnunciosPage() {
     return (
       <div className="min-h-screen bg-white flex flex-col">
         <Header />
-        <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-12">
-          <div className="max-w-md mx-auto border border-black p-6">
-            <h2 className="font-serif text-xl font-bold text-black mb-4">Acceso de moderador</h2>
-            <p className="font-sans text-sm text-gray-700 mb-4">
-              Solo los usuarios con rol de administrador o moderador pueden acceder. Usa el usuario demo:
+        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 py-12">
+          <div className="max-w-md w-full border border-black p-8 text-center">
+            <Shield className="w-10 h-10 mx-auto text-orange-500 mb-4" />
+            <h2 className="font-serif text-2xl font-bold text-black mb-2">Acceso restringido</h2>
+            <p className="font-sans text-sm text-gray-700 mb-6">
+              Esta área es solo para moderadores. Inicia sesión en el portal exclusivo de moderación.
             </p>
-            <div className="space-y-2 font-sans text-sm text-black mb-6 border border-gray-200 p-3">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Email:</span>
-                <span className="font-medium">moderador@citypaj.demo</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Contraseña:</span>
-                <span className="font-medium">demo123</span>
-              </div>
-            </div>
             <Link
               href="/moderador/login"
-              className="block w-full text-center bg-black text-white border border-black px-6 py-3 font-sans text-sm hover:bg-orange-500 hover:border-orange-500 transition-colors"
+              className="inline-flex items-center justify-center bg-black text-white border border-black px-6 py-3 font-sans text-sm hover:bg-orange-500 hover:text-black transition-colors"
             >
-              Acceder como moderador
+              Ir al login de moderadores
             </Link>
           </div>
         </main>
@@ -120,23 +111,6 @@ export default function AdminAnunciosPage() {
         await cargar();
       } else {
         setError(data.error || 'Error al moderar');
-      }
-    } catch (err) {
-      setError('Error de conexión');
-    }
-  };
-
-  const moderarIA = async (id: string) => {
-    try {
-      const res = await fetch(`/api/anuncios/${id}/moderar-ia`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${accessToken || ''}` },
-      });
-      const data = await res.json();
-      if (data.success) {
-        await cargar();
-      } else {
-        setError(data.error || 'Error al revisar con IA');
       }
     } catch (err) {
       setError('Error de conexión');
@@ -191,7 +165,7 @@ export default function AdminAnunciosPage() {
             <p className="text-gray-600">No hay anuncios pendientes ni reportados.</p>
           </div>
         ) : (
-          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+          <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -236,29 +210,23 @@ export default function AdminAnunciosPage() {
                       )}
                     </td>
                     <td className="px-4 py-4">
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap sm:flex-nowrap gap-2">
                         <button
                           onClick={() => moderar(a.id, 'aprobar')}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-green-100 text-green-800 rounded hover:bg-green-200"
+                          className="inline-flex items-center justify-center gap-1 px-3 py-1.5 text-xs font-medium bg-green-100 text-green-800 rounded hover:bg-green-200 w-full sm:w-auto"
                         >
                           <CheckCircle className="w-3 h-3" /> Aprobar
                         </button>
                         <button
                           onClick={() => setAccionId(a.id)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-red-100 text-red-800 rounded hover:bg-red-200"
+                          className="inline-flex items-center justify-center gap-1 px-3 py-1.5 text-xs font-medium bg-red-100 text-red-800 rounded hover:bg-red-200 w-full sm:w-auto"
                         >
                           <XCircle className="w-3 h-3" /> Rechazar
-                        </button>
-                        <button
-                          onClick={() => moderarIA(a.id)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-purple-100 text-purple-800 rounded hover:bg-purple-200"
-                        >
-                          <Shield className="w-3 h-3" /> Revisar IA
                         </button>
                         {a.reportes > 0 ? (
                           <button
                             onClick={() => verReportes(a.id)}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-gray-100 text-gray-800 rounded hover:bg-gray-200"
+                            className="inline-flex items-center justify-center gap-1 px-3 py-1.5 text-xs font-medium bg-gray-100 text-gray-800 rounded hover:bg-gray-200 w-full sm:w-auto"
                           >
                             <MessageSquare className="w-3 h-3" /> Ver reportes
                           </button>
@@ -266,7 +234,7 @@ export default function AdminAnunciosPage() {
                         <Link
                           href={`/anuncios/${a.id}`}
                           target="_blank"
-                          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-blue-100 text-blue-800 rounded hover:bg-blue-200"
+                          className="inline-flex items-center justify-center gap-1 px-3 py-1.5 text-xs font-medium bg-blue-100 text-blue-800 rounded hover:bg-blue-200 w-full sm:w-auto"
                         >
                           <Eye className="w-3 h-3" /> Ver
                         </Link>

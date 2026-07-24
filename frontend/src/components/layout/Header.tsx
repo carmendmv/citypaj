@@ -490,8 +490,8 @@ const Header: React.FC<HeaderProps> = memo(({
 
       {/* Modal de confirmación para cerrar sesión */}
       {isLogoutModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white border border-black p-6 w-full max-w-md text-center">
+        <div className="fixed inset-0 z-50 flex p-4">
+          <div className="m-auto bg-white border border-black p-6 w-full max-w-md text-center shadow-lg">
             <div className="flex items-center justify-center gap-3 mb-4">
               <AlertCircle className="w-5 h-5 text-orange-500" />
               <h3 className="font-serif text-lg font-bold text-black">Cerrar sesión</h3>
@@ -502,13 +502,13 @@ const Header: React.FC<HeaderProps> = memo(({
             <div className="flex gap-3 justify-center">
               <button
                 onClick={() => setIsLogoutModalOpen(false)}
-                className="px-4 py-2 font-sans text-sm border border-black text-black hover:bg-gray-50 transition-colors"
+                className="px-4 py-2 font-sans text-sm border border-black text-black hover:bg-black hover:text-white transition-colors"
               >
                 Cancelar
               </button>
               <button
                 onClick={confirmLogout}
-                className="px-4 py-2 font-sans text-sm bg-black text-white border border-black hover:bg-orange-500 hover:border-orange-500 transition-colors"
+                className="px-4 py-2 font-sans text-sm bg-black text-white border border-black hover:bg-white hover:text-black transition-colors"
               >
                 Cerrar sesión
               </button>

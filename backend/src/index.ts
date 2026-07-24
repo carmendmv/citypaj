@@ -1,9 +1,31 @@
 import { app } from './app';
 import { config } from './config';
 import { logger } from './utils/logger';
-import { testConnection } from './config/database';
+import { testConnection, pool } from './config/database';
+import bcrypt from 'bcryptjs';
+import { randomUUID } from 'crypto';
 
 const PORT = config.port;
+
+const DEMO_MODERATOR_EMAIL = process.env.DEMO_MODERATOR_EMAIL || 'moderador@citypaj.demo';
+const DEMO_MODERATOR_PASSWORD = process.env.DEMO_MODERATOR_PASSWORD || 'demo123';
+
+async function seedDemoModerator() {
+  try {
+    const [rows] = await pool.execute('SELECT id FROM usuarios WHERE email = ?', [DEMO_MODERATOR_EMAIL]);
+    if ((rows as any[]).length > 0) return;
+
+    const hash = await bcrypt.hash(DEMO_MODERATOR_PASSWORD, 10);
+    await pool.execute(
+      `INSERT INTO usuarios (id, email, password_hash, nombre, verificado, rol, creado_at, actualizado_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [randomUUID(), DEMO_MODERATOR_EMAIL, hash, 'Moderador Demo', 1, 'moderador', new Date(), new Date()]
+    );
+    logger.info('Usuario moderador demo creado');
+  } catch (error) {
+    logger.error('Error creando moderador demo:', (error as Error).message);
+  }
+}
 
 async function startServer() {
   const dbConnected = await testConnection();
@@ -11,6 +33,8 @@ async function startServer() {
     logger.error('No se pudo conectar a la base de datos. Saliendo.');
     process.exit(1);
   }
+
+  await seedDemoModerator();
 
   const server = app.listen(PORT, '0.0.0.0', () => {
     logger.info(`🚀 CityPaj Backend API running on port ${PORT}`);
