@@ -97,14 +97,6 @@ export default function ModeradorLoginPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center space-y-2">
-            <Link
-              href="/acceder"
-              className="block font-sans text-sm text-gray-600 hover:text-orange-500 underline underline-offset-4"
-            >
-              Volver al acceso de usuarios
-            </Link>
-          </div>
         </div>
       </main>
 

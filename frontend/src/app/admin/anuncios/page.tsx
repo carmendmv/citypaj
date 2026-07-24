@@ -39,8 +39,8 @@ export default function AdminAnunciosPage() {
   const [anuncios, setAnuncios] = useState<AnuncioModeracion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [accionId, setAccionId] = useState<string | null>(null);
-  const [motivoRechazo, setMotivoRechazo] = useState('');
+  const [notas, setNotas] = useState<Record<string, string>>({});
+  const [estados, setEstados] = useState<Record<string, string>>({});
   const [reportesModal, setReportesModal] = useState<{ id: string; reportes: Reporte[] } | null>(null);
 
   const cargar = async () => {
@@ -68,6 +68,18 @@ export default function AdminAnunciosPage() {
     cargar();
   }, [user, accessToken]);
 
+  useEffect(() => {
+    if (anuncios.length === 0) return;
+    const n: Record<string, string> = {};
+    const e: Record<string, string> = {};
+    anuncios.forEach((a) => {
+      n[a.id] = a.motivo_rechazo || '';
+      e[a.id] = a.estado_moderacion;
+    });
+    setNotas(n);
+    setEstados(e);
+  }, [anuncios]);
+
   const esModerador = user && (user.rol === 'admin' || user.rol === 'moderador');
 
   if (!esModerador) {
@@ -94,7 +106,12 @@ export default function AdminAnunciosPage() {
     );
   }
 
-  const moderar = async (id: string, accion: 'aprobar' | 'rechazar') => {
+  const moderar = async (id: string, estadoForzado?: string) => {
+    const estado = estadoForzado || estados[id] || anuncios.find((a) => a.id === id)?.estado_moderacion;
+    if (!estado || !['approved', 'rejected', 'pending', 'flagged'].includes(estado)) {
+      setError('Estado no válido');
+      return;
+    }
     try {
       const res = await fetch(`/api/anuncios/${id}/moderar`, {
         method: 'POST',
@@ -102,12 +119,10 @@ export default function AdminAnunciosPage() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken || ''}`,
         },
-        body: JSON.stringify({ accion, motivo_rechazo: accion === 'rechazar' ? motivoRechazo : undefined }),
+        body: JSON.stringify({ estado, notas: notas[id] || '' }),
       });
       const data = await res.json();
       if (data.success) {
-        setAccionId(null);
-        setMotivoRechazo('');
         await cargar();
       } else {
         setError(data.error || 'Error al moderar');
@@ -165,111 +180,107 @@ export default function AdminAnunciosPage() {
             <p className="text-gray-600">No hay anuncios pendientes ni reportados.</p>
           </div>
         ) : (
-          <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Anuncio</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Autor</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Reportes</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {anuncios.map((a) => (
-                  <tr key={a.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-4">
-                      <div className="font-medium text-gray-900">{a.titulo}</div>
-                      <div className="text-xs text-gray-500 line-clamp-2 max-w-xs">{a.descripcion}</div>
-                      <div className="text-xs text-gray-400 mt-1">{a.categoria} · {a.comunidad_autonoma} · {formatearFecha(a.creado_at)}</div>
-                    </td>
-                    <td className="px-4 py-4 text-sm text-gray-600">
-                      {a.usuario_nombre || 'Anónimo'}<br />
-                      <span className="text-xs text-gray-400">{a.usuario_email}</span>
-                    </td>
-                    <td className="px-4 py-4">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+          <div className="space-y-4">
+            {anuncios.map((a) => (
+              <div key={a.id} className="border border-black p-4 bg-white">
+                <div className="flex flex-col lg:flex-row lg:items-start gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <h3 className="font-serif text-lg font-bold text-black">{a.titulo}</h3>
+                      <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
                         a.estado_moderacion === 'approved' ? 'bg-green-100 text-green-800' :
                         a.estado_moderacion === 'rejected' ? 'bg-red-100 text-red-800' :
                         a.estado_moderacion === 'flagged' ? 'bg-orange-100 text-orange-800' :
                         'bg-yellow-100 text-yellow-800'
                       }`}>
-                        {a.estado_moderacion === 'flagged' ? 'flagged' : a.estado_moderacion}
+                        {a.estado_moderacion === 'flagged' ? 'En revisión' : a.estado_moderacion}
                       </span>
-                      {a.motivo_rechazo ? <p className="text-xs text-red-600 mt-1 max-w-xs">{a.motivo_rechazo}</p> : null}
-                    </td>
-                    <td className="px-4 py-4">
                       {a.reportes > 0 ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-50 text-red-700 text-xs rounded-full">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-50 text-red-700 text-xs rounded-full">
                           <AlertTriangle className="w-3 h-3" />
                           {a.reportes}
                         </span>
-                      ) : (
-                        <span className="text-xs text-gray-400">—</span>
-                      )}
-                    </td>
-                    <td className="px-4 py-4">
-                      <div className="flex flex-wrap sm:flex-nowrap gap-2">
-                        <button
-                          onClick={() => moderar(a.id, 'aprobar')}
-                          className="inline-flex items-center justify-center gap-1 px-3 py-1.5 text-xs font-medium bg-green-100 text-green-800 rounded hover:bg-green-200 w-full sm:w-auto"
-                        >
-                          <CheckCircle className="w-3 h-3" /> Aprobar
-                        </button>
-                        <button
-                          onClick={() => setAccionId(a.id)}
-                          className="inline-flex items-center justify-center gap-1 px-3 py-1.5 text-xs font-medium bg-red-100 text-red-800 rounded hover:bg-red-200 w-full sm:w-auto"
-                        >
-                          <XCircle className="w-3 h-3" /> Rechazar
-                        </button>
-                        {a.reportes > 0 ? (
-                          <button
-                            onClick={() => verReportes(a.id)}
-                            className="inline-flex items-center justify-center gap-1 px-3 py-1.5 text-xs font-medium bg-gray-100 text-gray-800 rounded hover:bg-gray-200 w-full sm:w-auto"
-                          >
-                            <MessageSquare className="w-3 h-3" /> Ver reportes
-                          </button>
-                        ) : null}
-                        <Link
-                          href={`/anuncios/${a.id}`}
-                          target="_blank"
-                          className="inline-flex items-center justify-center gap-1 px-3 py-1.5 text-xs font-medium bg-blue-100 text-blue-800 rounded hover:bg-blue-200 w-full sm:w-auto"
-                        >
-                          <Eye className="w-3 h-3" /> Ver
-                        </Link>
-                      </div>
-
-                      {accionId === a.id ? (
-                        <div className="mt-3 p-3 bg-gray-50 rounded-lg">
-                          <label className="block text-xs font-medium text-gray-700 mb-1">Motivo del rechazo</label>
-                          <input
-                            value={motivoRechazo}
-                            onChange={(e) => setMotivoRechazo(e.target.value)}
-                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded mb-2"
-                            placeholder="Opcional"
-                          />
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => moderar(a.id, 'rechazar')}
-                              className="px-3 py-1.5 text-xs bg-red-600 text-white rounded"
-                            >
-                              Confirmar rechazo
-                            </button>
-                            <button
-                              onClick={() => { setAccionId(null); setMotivoRechazo(''); }}
-                              className="px-3 py-1.5 text-xs border border-gray-300 rounded"
-                            >
-                              Cancelar
-                            </button>
-                          </div>
-                        </div>
                       ) : null}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </div>
+                    <p className="text-sm text-gray-700 break-words mb-3">{a.descripcion}</p>
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 mb-2">
+                      <span className="font-medium">{a.categoria}</span>
+                      <span>{a.comunidad_autonoma}{a.provincia ? ` / ${a.provincia}` : ''}</span>
+                      <span>{formatearFecha(a.creado_at)}</span>
+                    </div>
+                    <div className="text-xs text-gray-500 mb-2">
+                      <span className="font-medium">{a.usuario_nombre || 'Anónimo'}</span>
+                      {a.usuario_email ? <span> · {a.usuario_email}</span> : null}
+                    </div>
+                    {a.motivo_rechazo ? (
+                      <p className="text-xs text-gray-500 italic">Notas previas: {a.motivo_rechazo}</p>
+                    ) : null}
+                  </div>
+
+                  <div className="lg:w-72 flex flex-col gap-2">
+                    <label className="text-xs font-medium text-gray-600">Estado</label>
+                    <select
+                      value={estados[a.id] || a.estado_moderacion}
+                      onChange={(e) => setEstados({ ...estados, [a.id]: e.target.value })}
+                      className="w-full px-2 py-1.5 text-sm border border-black bg-white focus:border-orange-500 focus:outline-none"
+                    >
+                      <option value="pending">Pendiente</option>
+                      <option value="flagged">En revisión</option>
+                      <option value="approved">Aprobado</option>
+                      <option value="rejected">Rechazado</option>
+                    </select>
+
+                    <label className="text-xs font-medium text-gray-600">Notas</label>
+                    <textarea
+                      value={notas[a.id] || ''}
+                      onChange={(e) => setNotas({ ...notas, [a.id]: e.target.value })}
+                      rows={2}
+                      placeholder="Notas internas o motivo"
+                      className="w-full px-2 py-1.5 text-sm border border-black bg-white focus:border-orange-500 focus:outline-none resize-y"
+                    />
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => moderar(a.id, 'approved')}
+                        className="inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-medium bg-black text-white border border-black hover:bg-orange-500 hover:text-black transition-colors"
+                      >
+                        <CheckCircle className="w-3 h-3" /> Aprobar
+                      </button>
+                      <button
+                        onClick={() => moderar(a.id, 'rejected')}
+                        className="inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-medium bg-white text-black border border-black hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors"
+                      >
+                        <XCircle className="w-3 h-3" /> Rechazar
+                      </button>
+                      <button
+                        onClick={() => moderar(a.id)}
+                        className="col-span-2 inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-medium bg-white text-black border border-black hover:bg-gray-100 transition-colors"
+                      >
+                        Guardar estado
+                      </button>
+                    </div>
+
+                    <div className="flex gap-2">
+                      {a.reportes > 0 ? (
+                        <button
+                          onClick={() => verReportes(a.id)}
+                          className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-medium bg-gray-100 text-gray-800 rounded hover:bg-gray-200"
+                        >
+                          <MessageSquare className="w-3 h-3" /> Reportes
+                        </button>
+                      ) : null}
+                      <Link
+                        href={`/anuncios/${a.id}`}
+                        target="_blank"
+                        className={`inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-medium bg-blue-100 text-blue-800 rounded hover:bg-blue-200 ${a.reportes > 0 ? 'flex-1' : 'w-full'}`}
+                      >
+                        <Eye className="w-3 h-3" /> Ver
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 

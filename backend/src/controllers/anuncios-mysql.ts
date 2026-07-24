@@ -729,7 +729,7 @@ export const getAnunciosModeracion = async (req: AuthRequest, res: Response): Pr
         FROM anuncios a
         LEFT JOIN usuarios u ON a.usuario_id = u.id
         LEFT JOIN reportes_anuncios r ON a.id = r.anuncio_id AND r.estado = 'pendiente'
-        WHERE a.estado_moderacion != 'approved' OR r.id IS NOT NULL
+        WHERE a.estado_moderacion IN ('pending', 'flagged') OR (a.estado_moderacion = 'approved' AND r.id IS NOT NULL)
         GROUP BY a.id
         ORDER BY a.creado_at DESC`
       );
@@ -782,29 +782,37 @@ export const moderarAnuncio = async (req: AuthRequest, res: Response): Promise<v
       return;
     }
 
-    const { accion, motivo_rechazo } = req.body;
-    if (!accion || !['aprobar', 'rechazar'].includes(accion)) {
-      res.status(400).json({ success: false, error: 'Acción no válida' });
+    const { accion, estado: estadoBody, notas, motivo_rechazo } = req.body;
+    let nextEstado: string;
+    if (estadoBody && ['approved', 'rejected', 'pending', 'flagged'].includes(estadoBody)) {
+      nextEstado = estadoBody;
+    } else if (accion === 'aprobar') {
+      nextEstado = 'approved';
+    } else if (accion === 'rechazar') {
+      nextEstado = 'rejected';
+    } else {
+      res.status(400).json({ success: false, error: 'Acción o estado no válido' });
       return;
     }
 
-    const aprobado = accion === 'aprobar';
-    const estado = aprobado ? 'approved' : 'rejected';
-    const visible = aprobado ? 1 : 0;
+    const visible = nextEstado === 'approved' ? 1 : 0;
+    const notasGuardar = notas || motivo_rechazo || null;
 
     const connection = await pool.getConnection();
     try {
       await connection.execute(
         'UPDATE anuncios SET estado_moderacion = ?, motivo_rechazo = ?, visible = ? WHERE id = ?',
-        [estado, aprobado ? null : (motivo_rechazo || null), visible, id]
+        [nextEstado, notasGuardar, visible, id]
       );
 
-      await connection.execute(
-        "UPDATE reportes_anuncios SET estado = 'resuelto' WHERE anuncio_id = ? AND estado = 'pendiente'",
-        [id]
-      );
+      if (nextEstado === 'approved' || nextEstado === 'rejected') {
+        await connection.execute(
+          "UPDATE reportes_anuncios SET estado = 'resuelto' WHERE anuncio_id = ? AND estado = 'pendiente'",
+          [id]
+        );
+      }
 
-      res.status(200).json({ success: true, message: aprobado ? 'Anuncio aprobado' : 'Anuncio rechazado' });
+      res.status(200).json({ success: true, message: `Anuncio actualizado a ${nextEstado}` });
     } finally {
       connection.release();
     }

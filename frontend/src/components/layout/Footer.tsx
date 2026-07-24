@@ -103,8 +103,8 @@ const Footer: React.FC = memo(() => {
                 <Link href="/privacidad" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
                   Política de privacidad
                 </Link>
-                <Link href="/admin/sugerencias" className="text-sm font-sans font-bold text-yellow-400 hover:text-yellow-300 transition-colors duration-200">
-                  Panel de moderación
+                <Link href="/moderador/login" className="text-sm font-sans text-gray-300 hover:text-orange-400 transition-colors duration-200">
+                  Acceso moderadores
                 </Link>
               </div>
             </div>

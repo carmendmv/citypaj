@@ -107,10 +107,10 @@ export default function AdminSugerencias() {
     'Murcia', 'Navarra', 'País Vasco', 'La Rioja'
   ];
 
-  // Proteger panel: solo usuarios logueados
+  // Proteger panel: redirigir al login exclusivo de moderadores
   useEffect(() => {
     if (user === null) {
-      router.push('/acceder');
+      router.push('/moderador/login');
     }
   }, [user, router]);
 
