@@ -9,6 +9,7 @@ import { logger } from './utils/logger';
 import { errorHandler } from './middleware/errorHandler';
 import { authRoutes } from './routes/auth';
 import { anunciosRoutes } from './routes/anuncios';
+import { adminRoutes } from './routes/admin';
 import { usuariosRoutes } from './routes/usuarios';
 import { moderacionRoutes } from './routes/moderacion';
 import { reportesRoutes } from './routes/reportes';
@@ -132,6 +133,7 @@ app.get('/api/test-db', testDbHandler);
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/anuncios', anunciosRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/moderacion', moderacionRoutes);
 app.use('/api/reportes', reportesRoutes);
