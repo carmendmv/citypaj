@@ -3,12 +3,9 @@
   "version": "1.0.0",
   "description": "Plataforma de voluntariado y servicios juveniles",
   "scripts": {
-    "predev": "node scripts/clean-dev-ports.js",
     "dev": "concurrently --kill-others \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
-    "check:ports": "node scripts/check-ports.js",
-    "kill:ports": "node scripts/clean-dev-ports.js",
     "build": "cd backend && npm run build && cd ../frontend && npm run build",
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:backend": "cd backend && npm start",

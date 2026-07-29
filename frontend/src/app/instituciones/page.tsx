@@ -16,7 +16,6 @@ export default function InstitucionesPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Aquí iría la lógica para enviar el formulario
-    console.log('Formulario de contacto institucional:', formData);
     alert('Gracias por tu interés. Nos pondremos en contacto contigo pronto.');
     setFormData({
       nombre: '',

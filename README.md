@@ -95,8 +95,7 @@ citypaj/
 │   │   ├── utils/              # Utilidades (logger, etc.)
 │   │   └── index.ts            # Punto de entrada del servidor
 │   ├── migrations/             # Scripts SQL de esquema
-│   ├── scripts/                # init-db.js, seed-demo.js...
-│   ├── check-db.js             # Verificación de conexión
+│   ├── scripts/                # init-db.js, seed-demo.js
 │   └── package.json
 ├── frontend/
 │   ├── src/
@@ -106,10 +105,7 @@ citypaj/
 │   │   └── hooks/              # Hooks personalizados
 │   ├── public/                 # Assets estáticos
 │   └── package.json
-├── scripts/                    # Helpers de arranque y limpieza de puertos
-├── start-all.ps1              # Inicio completo en PowerShell
-├── start-wsl.sh               # Inicio completo en WSL
-└── migrate-to-wsl.sh          # Migración de la base a WSL
+└── README.md                  # Documentación del proyecto
 ```
 
 ---
@@ -227,9 +223,8 @@ Este comando:
 
 ```bash
 cd backend
-npx ts-node scripts/import-dump.ts ../../citypaj_dump.sql
-# o directamente con mysql si tienes el cliente:
-# mysql -u citypaj_user -pcitypaj123 citypaj < citypaj_dump.sql
+# Con el cliente mysql:
+mysql -u citypaj_user -pcitypaj123 citypaj < ../citypaj_dump.sql
 ```
 
 ### 5. Crear usuarios de demo

@@ -22,7 +22,6 @@ export const testConnection = async (): Promise<boolean> => {
     const connection = await pool.getConnection();
     await connection.ping();
     connection.release();
-    console.log('✅ Conexión a MariaDB establecida correctamente');
     return true;
   } catch (error) {
     console.error('❌ Error conectando a MariaDB:', error);

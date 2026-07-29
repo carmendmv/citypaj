@@ -45,7 +45,6 @@ interface QuickActionsProps {
 const useAnalytics = () => {
   const trackEvent = useCallback((eventName: string, properties?: Record<string, any>) => {
     // Simulación de tracking - en producción usar servicio real
-    console.log('Analytics Event:', eventName, properties);
     
     // Ejemplo de implementación real:
     // gtag('event', eventName, {
@@ -158,7 +157,7 @@ const QuickActions: React.FC<QuickActionsProps> = memo(({
       description: 'Crea un nuevo anuncio en segundos',
       color: 'bg-blue-600',
       hoverColor: 'bg-blue-700',
-      onClick: onPublicar || (() => console.log('Publicar anuncio')),
+      onClick: onPublicar || (() => {}),
       analyticsEvent: 'click_publicar_anuncio'
     },
     {
@@ -168,7 +167,7 @@ const QuickActions: React.FC<QuickActionsProps> = memo(({
       description: 'Encuentra lo que necesitas',
       color: 'bg-green-600',
       hoverColor: 'bg-green-700',
-      onClick: onBuscar || (() => console.log('Buscar anuncios')),
+      onClick: onBuscar || (() => {}),
       analyticsEvent: 'click_buscar_anuncios'
     },
     {
@@ -178,7 +177,7 @@ const QuickActions: React.FC<QuickActionsProps> = memo(({
       description: 'Mantente informado',
       color: 'bg-purple-600',
       hoverColor: 'bg-purple-700',
-      onClick: onNotificaciones || (() => console.log('Ver notificaciones')),
+      onClick: onNotificaciones || (() => {}),
       analyticsEvent: 'click_notificaciones'
     },
     {
@@ -188,7 +187,7 @@ const QuickActions: React.FC<QuickActionsProps> = memo(({
       description: 'Guarda tus anuncios preferidos',
       color: 'bg-red-600',
       hoverColor: 'bg-red-700',
-      onClick: onFavoritos || (() => console.log('Ver favoritos')),
+      onClick: onFavoritos || (() => {}),
       analyticsEvent: 'click_favoritos'
     },
     {
@@ -198,7 +197,7 @@ const QuickActions: React.FC<QuickActionsProps> = memo(({
       description: 'Comparte en redes sociales',
       color: 'bg-indigo-600',
       hoverColor: 'bg-indigo-700',
-      onClick: onCompartir || (() => console.log('Compartir')),
+      onClick: onCompartir || (() => {}),
       analyticsEvent: 'click_compartir'
     },
     {
@@ -208,7 +207,7 @@ const QuickActions: React.FC<QuickActionsProps> = memo(({
       description: 'Chatea con otros usuarios',
       color: 'bg-teal-600',
       hoverColor: 'bg-teal-700',
-      onClick: onContactar || (() => console.log('Contactar')),
+      onClick: onContactar || (() => {}),
       analyticsEvent: 'click_contactar'
     },
     {
@@ -218,7 +217,7 @@ const QuickActions: React.FC<QuickActionsProps> = memo(({
       description: 'Deja tu opinión',
       color: 'bg-yellow-600',
       hoverColor: 'bg-yellow-700',
-      onClick: onValorar || (() => console.log('Valorar')),
+      onClick: onValorar || (() => {}),
       analyticsEvent: 'click_valorar'
     },
     {
@@ -228,7 +227,7 @@ const QuickActions: React.FC<QuickActionsProps> = memo(({
       description: 'Destaca tus anuncios',
       color: 'bg-orange-600',
       hoverColor: 'bg-orange-700',
-      onClick: onDestacar || (() => console.log('Destacar')),
+      onClick: onDestacar || (() => {}),
       analyticsEvent: 'click_destacar'
     }
   ];
@@ -309,7 +308,7 @@ const QuickActions: React.FC<QuickActionsProps> = memo(({
         <div className="cp-flex cp-items-center cp-justify-between cp-text-xs cp-text-gray-500">
           <span>Atajos: Ctrl+P (Publicar) • Ctrl+F (Buscar)</span>
           <button 
-            onClick={() => console.log('Ver todos los atajos')}
+            onClick={() => {}}
             className="cp-text-blue-600 hover:cp-text-blue-800 cp-font-medium"
           >
             VER ATAJOS
