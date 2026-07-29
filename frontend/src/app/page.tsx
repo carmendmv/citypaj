@@ -7,8 +7,9 @@ import Footer from '@/components/layout/Footer';
 import ListingRow from '@/components/ui/ListingRow';
 import EmptyState from '@/components/ui/EmptyState';
 import LoadingRows from '@/components/ui/LoadingRows';
+import Pagination from '@/components/ui/Pagination';
 import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
-import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD } from '@/lib/provinces';
+import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD, PROVINCIA_NORMALIZACION } from '@/lib/provinces';
 
 interface Anuncio {
   id: string;
@@ -46,21 +47,26 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const [comunidad, setComunidad] = useState('');
   const [provincia, setProvincia] = useState('');
+  const [pagina, setPagina] = useState(1);
+  const [totalAnuncios, setTotalAnuncios] = useState(0);
+  const totalPaginas = Math.max(1, Math.ceil(totalAnuncios / 10));
 
-  const fetchAnuncios = useCallback(async (comunidadFiltro = '', provinciaFiltro = '') => {
+  const fetchAnuncios = useCallback(async (comunidadFiltro = '', provinciaFiltro = '', paginaFiltro = 1) => {
     try {
       setLoading(true);
       setError(null);
       const params = new URLSearchParams();
       params.set('limit', '10');
       params.set('ordenar', 'creado-desc');
+      params.set('page', String(paginaFiltro));
       if (comunidadFiltro) params.set('comunidad_autonoma', comunidadFiltro);
-      if (provinciaFiltro) params.set('provincia', provinciaFiltro);
+      if (provinciaFiltro) params.set('provincia', PROVINCIA_NORMALIZACION[provinciaFiltro] || provinciaFiltro);
 
       const res = await fetch(`/api/anuncios?${params.toString()}`);
       const data = await res.json();
       if (data.success) {
         setAnuncios(data.data || []);
+        setTotalAnuncios(data.meta?.total || 0);
       } else {
         setError(data.error || 'Error cargando anuncios');
       }
@@ -88,8 +94,8 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    fetchAnuncios(comunidad, provincia);
-  }, [comunidad, provincia, fetchAnuncios]);
+    fetchAnuncios(comunidad, provincia, pagina);
+  }, [comunidad, provincia, pagina, fetchAnuncios]);
 
   const guardar = async (id: string) => {
     try {
@@ -145,7 +151,7 @@ export default function HomePage() {
                 <span>Últimos anuncios de</span>
                 <select
                   value={comunidad}
-                  onChange={(e) => { setComunidad(e.target.value); setProvincia(''); }}
+                  onChange={(e) => { setComunidad(e.target.value); setProvincia(''); setPagina(1); }}
                   className="font-sans text-base sm:text-lg border border-gray-300 rounded-lg px-3 py-1.5 bg-white focus:border-orange-500 focus:outline-none"
                 >
                   <option value="">Toda España</option>
@@ -158,7 +164,7 @@ export default function HomePage() {
                     <span className="hidden sm:inline text-gray-400">/</span>
                     <select
                       value={provincia}
-                      onChange={(e) => setProvincia(e.target.value)}
+                      onChange={(e) => { setProvincia(e.target.value); setPagina(1); }}
                       className="font-sans text-base sm:text-lg border border-gray-300 rounded-lg px-3 py-1.5 bg-white focus:border-orange-500 focus:outline-none"
                     >
                       <option value="">Toda {comunidad}</option>
@@ -173,7 +179,7 @@ export default function HomePage() {
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
               <button
-                onClick={() => fetchAnuncios(comunidad, provincia)}
+                onClick={() => fetchAnuncios(comunidad, provincia, pagina)}
                 className="inline-flex items-center justify-center px-5 py-2.5 bg-black text-white text-sm font-medium border border-black hover:bg-orange-500 hover:text-black transition-colors"
               >
                 Buscar
@@ -217,6 +223,12 @@ export default function HomePage() {
               ))
             )}
           </div>
+
+          {!loading && !error && anuncios.length > 0 && totalPaginas > 1 && (
+            <div className="mt-8">
+              <Pagination currentPage={pagina} totalPages={totalPaginas} onPageChange={(p) => setPagina(p)} />
+            </div>
+          )}
         </div>
       </section>
 

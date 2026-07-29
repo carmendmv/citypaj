@@ -2,41 +2,19 @@
 
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
-
-// Definición de comunidades y provincias
-const COMUNIDADES_AUTONOMAS = [
-  'Andalucía', 'Aragón', 'Asturias', 'Baleares', 'Canarias',
-  'Cantabria', 'Castilla-La Mancha', 'Castilla y León', 'Cataluña',
-  'Comunidad Valenciana', 'Extremadura', 'Galicia', 'Madrid',
-  'Murcia', 'Navarra', 'País Vasco', 'La Rioja'
-];
-
-const PROVINCIAS_POR_COMUNIDAD: Record<string, string[]> = {
-  'Andalucía': ['Almería', 'Cádiz', 'Córdoba', 'Granada', 'Huelva', 'Jaén', 'Málaga', 'Sevilla'],
-  'Aragón': ['Huesca', 'Teruel', 'Zaragoza'],
-  'Asturias': ['Asturias'],
-  'Baleares': ['Baleares'],
-  'Canarias': ['Las Palmas', 'Santa Cruz de Tenerife'],
-  'Cantabria': ['Cantabria'],
-  'Castilla-La Mancha': ['Albacete', 'Ciudad Real', 'Cuenca', 'Guadalajara', 'Toledo'],
-  'Castilla y León': ['Ávila', 'Burgos', 'León', 'Palencia', 'Salamanca', 'Segovia', 'Soria', 'Valladolid', 'Zamora'],
-  'Cataluña': ['Barcelona', 'Girona', 'Lleida', 'Tarragona'],
-  'Comunidad Valenciana': ['Alicante', 'Castellón', 'Valencia'],
-  'Extremadura': ['Badajoz', 'Cáceres'],
-  'Galicia': ['A Coruña', 'Lugo', 'Ourense', 'Pontevedra'],
-  'Madrid': ['Madrid'],
-  'Murcia': ['Murcia'],
-  'Navarra': ['Navarra'],
-  'País Vasco': ['Álava', 'Guipúzcoa', 'Vizcaya'],
-  'La Rioja': ['La Rioja']
-};
+import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD, PROVINCIA_NORMALIZACION } from '@/lib/provinces';
 
 const CATEGORIAS = [
   { value: 'ocio', label: 'Ocio' },
   { value: 'servicios', label: 'Servicios' },
-  { value: 'educacion', label: 'Formación' },
+  { value: 'formacion', label: 'Formación' },
   { value: 'empleo', label: 'Empleo' },
-  { value: 'intercambios', label: 'Comunidad' }
+  { value: 'comunidad', label: 'Comunidad' },
+  { value: 'transporte', label: 'Transporte' },
+  { value: 'vivienda', label: 'Vivienda' },
+  { value: 'salud', label: 'Salud' },
+  { value: 'tecnología', label: 'Tecnología' },
+  { value: 'otros', label: 'Otros' }
 ];
 
 const OPCIONES_ORDENAR = [
@@ -44,8 +22,6 @@ const OPCIONES_ORDENAR = [
   { value: 'creado-asc', label: 'Más antiguos primero' },
   { value: 'titulo-asc', label: 'Título A-Z' },
   { value: 'titulo-desc', label: 'Título Z-A' },
-  { value: 'precio-asc', label: 'Precio menor a mayor' },
-  { value: 'precio-desc', label: 'Precio mayor a menor' },
   { value: 'vistas-desc', label: 'Más vistos' }
 ];
 
@@ -96,7 +72,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     const filters = {
       categoria: categoria || undefined,
       comunidad: comunidad || undefined,
-      provincia: provincia || undefined,
+      provincia: (provincia ? PROVINCIA_NORMALIZACION[provincia] || provincia : undefined) || undefined,
       ordenar: ordenar || undefined,
       busqueda: busqueda || undefined
     };
@@ -157,7 +133,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
           >
             <option value="">Todas</option>
-            {COMUNIDADES_AUTONOMAS.map((com) => (
+            {COMUNIDADES.map((com) => (
               <option key={com} value={com}>
                 {com}
               </option>
