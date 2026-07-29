@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   Shield, CheckCircle, XCircle, AlertTriangle, MessageSquare, Eye, Search,
-  Filter, Download, ChevronLeft, ChevronRight, CheckSquare, Square, X
+  Filter, Download, CheckSquare, Square, X
 } from 'lucide-react';
+import Pagination from '@/components/ui/Pagination';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD } from '@/lib/provinces';
+import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD, PROVINCIA_NORMALIZACION } from '@/lib/provinces';
 
 interface AnuncioModeracion {
   id: string;
@@ -40,7 +41,18 @@ interface Reporte {
   creado: string;
 }
 
-const CATEGORIAS = ['ocio', 'servicios', 'educacion', 'empleo', 'intercambios'];
+const CATEGORIAS = [
+  { value: 'ocio', label: 'Ocio' },
+  { value: 'servicios', label: 'Servicios' },
+  { value: 'formacion', label: 'Formación' },
+  { value: 'empleo', label: 'Empleo' },
+  { value: 'comunidad', label: 'Comunidad' },
+  { value: 'transporte', label: 'Transporte' },
+  { value: 'vivienda', label: 'Vivienda' },
+  { value: 'salud', label: 'Salud' },
+  { value: 'tecnología', label: 'Tecnología' },
+  { value: 'otros', label: 'Otros' },
+];
 
 const PLANTILLAS = [
   { label: 'Spam', texto: 'Spam: contenido no deseado o repetido.' },
@@ -88,12 +100,15 @@ export default function AdminAnunciosPage() {
   const [reportesModal, setReportesModal] = useState<{ id: string; reportes: Reporte[] } | null>(null);
 
   const [filtroTexto, setFiltroTexto] = useState('');
+  const [debouncedText, setDebouncedText] = useState('');
   const [filtroEstado, setFiltroEstado] = useState('');
   const [filtroCategoria, setFiltroCategoria] = useState('');
   const [filtroComunidad, setFiltroComunidad] = useState('');
   const [filtroProvincia, setFiltroProvincia] = useState('');
   const [filtroReportados, setFiltroReportados] = useState('');
   const [filtroOrden, setFiltroOrden] = useState('reciente');
+  const [triggerFiltros, setTriggerFiltros] = useState(0);
+  const solicitudRef = useRef(0);
 
   const [notasBulk, setNotasBulk] = useState('');
   const [estadoBulk, setEstadoBulk] = useState('approved');
@@ -106,41 +121,44 @@ export default function AdminAnunciosPage() {
 
   const cargar = async () => {
     if (!accessToken) return;
+    const id = ++solicitudRef.current;
     setLoading(true);
     setError(null);
     try {
       const params = new URLSearchParams();
-      params.set('pagina', String(pagina));
-      params.set('limite', String(limite));
-      params.set('orden', filtroOrden);
-      if (filtroTexto.trim()) params.set('busqueda', filtroTexto.trim());
+      params.set('page', String(pagina));
+      params.set('limit', String(limite));
+      params.set('ordenar', filtroOrden);
+      if (debouncedText.trim()) params.set('search', debouncedText.trim());
       if (filtroEstado) params.set('estado', filtroEstado);
       if (filtroCategoria) params.set('categoria', filtroCategoria);
       if (filtroComunidad) params.set('comunidad', filtroComunidad);
-      if (filtroProvincia) params.set('provincia', filtroProvincia);
-      if (filtroReportados) params.set('reportados', filtroReportados);
+      if (filtroProvincia) params.set('provincia', PROVINCIA_NORMALIZACION[filtroProvincia] || filtroProvincia);
+      if (filtroReportados) params.set('reportes', filtroReportados);
 
-      const res = await fetch(`/api/anuncios/moderacion?${params.toString()}`, {
+      const res = await fetch(`/api/admin/anuncios?${params.toString()}`, {
         headers: { Authorization: `Bearer ${accessToken || ''}` },
       });
       const data = await res.json();
       if (data.success) {
-        setAnuncios(data.data || []);
-        setTotal(data.meta?.total || 0);
-      } else {
+        if (id === solicitudRef.current) {
+          setAnuncios(data.data || []);
+          setTotal(data.pagination?.total || 0);
+        }
+      } else if (id === solicitudRef.current) {
         setError(data.error || 'Error cargando anuncios');
       }
     } catch (err) {
-      setError('Error de conexión');
+      if (id === solicitudRef.current) setError('Error de conexión');
     } finally {
-      setLoading(false);
+      if (id === solicitudRef.current) setLoading(false);
     }
   };
 
   useEffect(() => {
     if (!user) return;
     cargar();
-  }, [user, accessToken, pagina, limite, filtroOrden]);
+  }, [user, accessToken, pagina, limite, triggerFiltros]);
 
   useEffect(() => {
     const n: Record<string, string> = {};
@@ -160,21 +178,26 @@ export default function AdminAnunciosPage() {
     });
   }, [anuncios]);
 
-  const aplicarFiltros = () => {
+  const refrescar = () => {
     setPagina(1);
-    cargar();
+    setTriggerFiltros((t) => t + 1);
+  };
+
+  const aplicarFiltros = () => {
+    setDebouncedText(filtroTexto);
+    refrescar();
   };
 
   const limpiarFiltros = () => {
     setFiltroTexto('');
+    setDebouncedText('');
     setFiltroEstado('');
     setFiltroCategoria('');
     setFiltroComunidad('');
     setFiltroProvincia('');
     setFiltroReportados('');
     setFiltroOrden('reciente');
-    setPagina(1);
-    setTimeout(() => cargar(), 0);
+    refrescar();
   };
 
   const onComunidadChange = (value: string) => {
@@ -365,9 +388,9 @@ export default function AdminAnunciosPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <Header />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 overflow-x-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
@@ -435,7 +458,7 @@ export default function AdminAnunciosPage() {
                 className="w-full px-2 py-1.5 text-sm border border-black bg-white focus:border-orange-500 focus:outline-none"
               >
                 <option value="">Todas</option>
-                {CATEGORIAS.map((c) => <option key={c} value={c}>{c}</option>)}
+                {CATEGORIAS.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
               </select>
             </div>
 
@@ -447,8 +470,8 @@ export default function AdminAnunciosPage() {
                 className="w-full px-2 py-1.5 text-sm border border-black bg-white focus:border-orange-500 focus:outline-none"
               >
                 <option value="">Todos</option>
-                <option value="si">Con reportes</option>
-                <option value="no">Sin reportes</option>
+                <option value="con">Con reportes</option>
+                <option value="sin">Sin reportes</option>
               </select>
             </div>
 
@@ -481,7 +504,7 @@ export default function AdminAnunciosPage() {
               <label className="block text-xs font-medium text-gray-600 mb-1">Ordenar por</label>
               <select
                 value={filtroOrden}
-                onChange={(e) => { setFiltroOrden(e.target.value); setPagina(1); }}
+                onChange={(e) => setFiltroOrden(e.target.value)}
                 className="w-full px-2 py-1.5 text-sm border border-black bg-white focus:border-orange-500 focus:outline-none"
               >
                 {ORDENES.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -490,20 +513,24 @@ export default function AdminAnunciosPage() {
 
             <div className="flex items-end gap-2">
               <button
+                type="button"
                 onClick={aplicarFiltros}
                 className="flex-1 px-3 py-1.5 text-sm font-medium bg-black text-white border border-black hover:bg-orange-500 hover:text-black transition-colors"
               >
                 Aplicar
               </button>
               <button
+                type="button"
                 onClick={limpiarFiltros}
-                className="px-3 py-1.5 text-sm font-medium border border-black bg-white hover:bg-gray-100"
+                className="flex-1 px-3 py-1.5 text-sm font-medium border border-black bg-white hover:bg-gray-100"
               >
                 Limpiar
               </button>
             </div>
           </div>
-          <div className="text-xs text-gray-500">{total} anuncio{total !== 1 ? 's' : ''} encontrado{total !== 1 ? 's' : ''}</div>
+          <div className="text-xs text-gray-500" aria-live="polite">
+            {total === 0 ? 'No hay anuncios encontrados' : `${total} anuncio${total !== 1 ? 's' : ''} encontrado${total !== 1 ? 's' : ''}`}
+          </div>
         </div>
 
         {seleccionados.size > 0 && (
@@ -518,7 +545,7 @@ export default function AdminAnunciosPage() {
                 value={notasBulk}
                 onChange={(e) => setNotasBulk(e.target.value)}
                 placeholder="Notas para la acción masiva"
-                className="px-2 py-1 text-xs border border-black bg-white focus:border-orange-500 focus:outline-none w-48"
+                className="px-2 py-1 text-xs border border-black bg-white focus:border-orange-500 focus:outline-none w-full sm:w-48"
               />
               <div className="flex flex-wrap gap-1">
                 {PLANTILLAS.map((p) => (
@@ -591,7 +618,7 @@ export default function AdminAnunciosPage() {
             <div className="space-y-4">
               {anuncios.map((a) => (
                 <div key={a.id} className="border border-black p-4 bg-white">
-                  <div className="flex items-start gap-3 mb-2">
+                  <div className="flex flex-col lg:flex-row items-start gap-3 mb-2">
                     <button
                       onClick={() => toggleSeleccion(a.id)}
                       className="mt-1"
@@ -605,7 +632,7 @@ export default function AdminAnunciosPage() {
                     </button>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-2">
-                        <h3 className="font-serif text-lg font-bold text-black">{a.titulo}</h3>
+                        <h3 className="font-serif text-lg font-bold text-black min-w-0 break-words">{a.titulo}</h3>
                         {estadoBadge(a.estado_moderacion)}
                         {a.reportes > 0 ? (
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-50 text-red-700 text-xs rounded-full">
@@ -716,13 +743,6 @@ export default function AdminAnunciosPage() {
                 Página {pagina} de {totalPaginas} · {total} resultados
               </div>
               <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setPagina((p) => Math.max(1, p - 1))}
-                  disabled={pagina <= 1}
-                  className="inline-flex items-center gap-1 px-3 py-2 text-xs border border-black bg-white hover:bg-gray-100 disabled:opacity-40"
-                >
-                  <ChevronLeft className="w-3 h-3" /> Anterior
-                </button>
                 <select
                   value={limite}
                   onChange={(e) => { setLimite(Number(e.target.value)); setPagina(1); }}
@@ -730,13 +750,11 @@ export default function AdminAnunciosPage() {
                 >
                   {ITEMS_POR_PAGINA.map((n) => <option key={n} value={n}>{n}/pág</option>)}
                 </select>
-                <button
-                  onClick={() => setPagina((p) => Math.min(totalPaginas, p + 1))}
-                  disabled={pagina >= totalPaginas}
-                  className="inline-flex items-center gap-1 px-3 py-2 text-xs border border-black bg-white hover:bg-gray-100 disabled:opacity-40"
-                >
-                  Siguiente <ChevronRight className="w-3 h-3" />
-                </button>
+                <Pagination
+                  currentPage={pagina}
+                  totalPages={totalPaginas}
+                  onPageChange={(p) => setPagina(p)}
+                />
               </div>
             </div>
           </>
