@@ -734,7 +734,7 @@ export const getAnunciosModeracion = async (req: AuthRequest, res: Response): Pr
     const limitNum = Math.min(100, Math.max(1, parseInt(limite as string) || 20));
     const offset = (pageNum - 1) * limitNum;
 
-    const whereConditions = ['(a.estado_moderacion IN (\'pending\', \'flagged\') OR (a.estado_moderacion = \'approved\' AND r.id IS NOT NULL))'];
+    const whereConditions: string[] = [];
     const havingConditions: string[] = [];
     const params: any[] = [];
 
@@ -744,9 +744,9 @@ export const getAnunciosModeracion = async (req: AuthRequest, res: Response): Pr
     }
 
     if (busqueda) {
-      whereConditions.push('(a.titulo LIKE ? OR a.descripcion LIKE ? OR a.categoria LIKE ? OR u.email LIKE ? OR u.nombre LIKE ?)');
-      const q = `%${busqueda}%`;
-      params.push(q, q, q, q, q);
+      whereConditions.push('(LOWER(a.titulo) LIKE LOWER(?) OR LOWER(a.descripcion) LIKE LOWER(?) OR LOWER(u.email) LIKE LOWER(?) OR LOWER(u.nombre) LIKE LOWER(?))');
+      const q = `%${(busqueda as string).toLowerCase()}%`;
+      params.push(q, q, q, q);
     }
 
     if (categoria) {
@@ -755,13 +755,13 @@ export const getAnunciosModeracion = async (req: AuthRequest, res: Response): Pr
     }
 
     if (comunidad) {
-      whereConditions.push('a.comunidad_autonoma LIKE ?');
-      params.push(`%${comunidad}%`);
+      whereConditions.push('a.comunidad_autonoma = ?');
+      params.push(comunidad);
     }
 
     if (provincia) {
-      whereConditions.push('a.provincia LIKE ?');
-      params.push(`%${provincia}%`);
+      whereConditions.push('a.provincia = ?');
+      params.push(provincia);
     }
 
     if (reportados === 'si') {
@@ -786,7 +786,7 @@ export const getAnunciosModeracion = async (req: AuthRequest, res: Response): Pr
         break;
     }
 
-    const where = whereConditions.join(' AND ');
+    const where = whereConditions.length ? whereConditions.join(' AND ') : '1=1';
     const having = havingConditions.length ? `HAVING ${havingConditions.join(' AND ')}` : '';
 
     const connection = await pool.getConnection();
@@ -801,15 +801,15 @@ export const getAnunciosModeracion = async (req: AuthRequest, res: Response): Pr
           mu.nombre as moderado_por_nombre
         FROM anuncios a
         LEFT JOIN usuarios u ON a.usuario_id = u.id
-        LEFT JOIN reportes_anuncios r ON a.id = r.anuncio_id AND r.estado = 'pendiente'
+        LEFT JOIN reportes_anuncios r ON a.id = r.anuncio_id
         LEFT JOIN (
-          SELECT l1.anuncio_id, l1.moderador_id, l1.creado_at
-          FROM moderacion_logs l1
-          INNER JOIN (
-            SELECT anuncio_id, MAX(creado_at) AS max_fecha
+          SELECT anuncio_id, moderador_id, creado_at
+          FROM (
+            SELECT anuncio_id, moderador_id, creado_at,
+                   ROW_NUMBER() OVER (PARTITION BY anuncio_id ORDER BY creado_at DESC, id DESC) AS rn
             FROM moderacion_logs
-            GROUP BY anuncio_id
-          ) l2 ON l1.anuncio_id = l2.anuncio_id AND l1.creado_at = l2.max_fecha
+          ) ranked
+          WHERE rn = 1
         ) ml ON ml.anuncio_id = a.id
         LEFT JOIN usuarios mu ON ml.moderador_id = mu.id
         WHERE ${where}
