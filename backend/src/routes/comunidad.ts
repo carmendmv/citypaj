@@ -1,21 +1,39 @@
 import { Router } from 'express';
+import { optionalAuth } from '../middleware/auth';
 import {
+  getTemas,
+  getProvincias,
   getPublicaciones,
   getPublicacionById,
   createPublicacion,
-  createComentario,
+  createRespuesta,
+  likePublicacion,
+  unlikePublicacion,
+  likeRespuesta,
+  unlikeRespuesta,
   reportarPublicacion,
-  getComunidadesProvincias
+  reportarRespuesta
 } from '../controllers/comunidad';
 
 const router = Router();
 
-router.get('/provincias', getComunidadesProvincias);
+// Datos auxiliares
+router.get('/temas', getTemas);
+router.get('/provincias', getProvincias);
+
+// Publicaciones públicas
+router.get('/publicacion/:id', optionalAuth, getPublicacionById);
+router.get('/provincia/:provincia', getPublicaciones);
 router.get('/', getPublicaciones);
-router.get('/:provincia', getPublicaciones);
-router.post('/', createPublicacion);
-router.get('/publicacion/:id', getPublicacionById);
-router.post('/publicacion/:id/comentarios', createComentario);
-router.post('/publicacion/:id/reportar', reportarPublicacion);
+
+// Acciones con autenticación opcional
+router.post('/', optionalAuth, createPublicacion);
+router.post('/publicaciones/:id/respuestas', optionalAuth, createRespuesta);
+router.post('/publicaciones/:id/like', optionalAuth, likePublicacion);
+router.delete('/publicaciones/:id/like', optionalAuth, unlikePublicacion);
+router.post('/publicaciones/:id/reportar', optionalAuth, reportarPublicacion);
+router.post('/respuestas/:id/like', optionalAuth, likeRespuesta);
+router.delete('/respuestas/:id/like', optionalAuth, unlikeRespuesta);
+router.post('/respuestas/:id/reportar', optionalAuth, reportarRespuesta);
 
 export { router as comunidadRoutes };
