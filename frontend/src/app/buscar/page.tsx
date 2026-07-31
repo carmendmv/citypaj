@@ -62,12 +62,12 @@ function BuscarContent() {
                 <Link
                   key={a.id}
                   href={`/anuncios/${a.id}`}
-                  className="group block border border-black p-5 hover:border-orange-500 transition-colors"
+                  className="group block border border-black p-5 hover:border-orange-500 transition-colors card-rise"
                 >
-                  <h3 className="font-serif text-xl font-bold text-black group-hover:text-orange-500 transition-colors">
+                  <h3 className="font-serif text-xl font-bold text-black group-hover:text-black transition-colors">
                     {a.titulo}
                   </h3>
-                  <p className="mt-3 font-sans text-sm text-black/80">{a.descripcion}</p>
+                  <p className="mt-3 font-sans text-sm text-black/80 group-hover:text-black transition-colors">{a.descripcion}</p>
                 </Link>
               ))}
             </div>

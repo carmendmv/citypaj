@@ -163,7 +163,7 @@ a:hover {
 }
 
 /* Enlaces que cambian solo el color al hover deben pasar a un tono bien distinguible */
-a[class*="hover:text-"]:not([class*="hover:bg-"]):hover {
+a[class*="hover:text-"]:not([class*="hover:bg-"]):not([class*="group-hover"]):hover {
   color: #f97316 !important;
   text-decoration: underline;
 }
@@ -217,6 +217,35 @@ img {
   
   .card {
     @apply bg-white rounded-lg shadow-sm border border-gray-200;
+  }
+  
+  .card-rise {
+    @apply relative overflow-hidden;
+  }
+  
+  .card-rise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(249, 115, 22, 0.9);
+    transform: translateY(100%);
+    transition: transform 0.5s ease-out;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  .card-rise:hover::before {
+    transform: translateY(0);
+  }
+  
+  .card-rise > * {
+    position: relative;
+    z-index: 10;
+  }
+  
+  .card-rise .space-y-2 a:hover {
+    color: #000 !important;
+    text-decoration: underline;
   }
   
   .input {

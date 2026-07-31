@@ -65,13 +65,13 @@ export default function AyudasPage() {
                 href={enlace.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group border border-black p-5 hover:bg-orange-50 transition-colors"
+                className="group border border-black p-5 hover:border-orange-500 transition-colors card-rise"
               >
                 <div className="flex items-start justify-between">
-                  <h3 className="font-serif text-lg font-bold text-black group-hover:text-orange-600">{enlace.titulo}</h3>
-                  <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-orange-600" />
+                  <h3 className="font-serif text-lg font-bold text-black group-hover:text-black transition-colors">{enlace.titulo}</h3>
+                  <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-black transition-colors" />
                 </div>
-                <p className="mt-2 font-sans text-sm text-gray-600">{enlace.descripcion}</p>
+                <p className="mt-2 font-sans text-sm text-gray-600 group-hover:text-black transition-colors">{enlace.descripcion}</p>
               </a>
             ))}
           </div>
@@ -81,14 +81,14 @@ export default function AyudasPage() {
           <h2 className="font-serif text-2xl font-bold text-black mb-6">Por comunidad autónoma</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {COMUNIDADES_AUTONOMAS.map((ccaa) => (
-              <div key={ccaa} className="border border-gray-200 rounded-xl p-4 hover:shadow-sm transition-shadow">
-                <h3 className="font-serif text-lg font-bold text-black mb-3">{ccaa}</h3>
+              <div key={ccaa} className="border border-gray-200 rounded-xl p-4 hover:shadow-sm transition-shadow card-rise group">
+                <h3 className="font-serif text-lg font-bold text-black mb-3 group-hover:text-black transition-colors">{ccaa}</h3>
                 <div className="space-y-2">
                   <a
                     href={searchUrl('ayudas jóvenes', ccaa)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 font-sans text-sm text-blue-700 hover:underline"
+                    className="flex items-center gap-2 font-sans text-sm text-blue-700 group-hover:text-black transition-colors hover:underline"
                   >
                     <ExternalLink className="w-3 h-3" />
                     Ayudas para jóvenes
@@ -97,7 +97,7 @@ export default function AyudasPage() {
                     href={searchUrl('extranjería', ccaa)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 font-sans text-sm text-blue-700 hover:underline"
+                    className="flex items-center gap-2 font-sans text-sm text-blue-700 group-hover:text-black transition-colors hover:underline"
                   >
                     <ExternalLink className="w-3 h-3" />
                     Extranjería
@@ -106,7 +106,7 @@ export default function AyudasPage() {
                     href={empleoUrl(ccaa)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 font-sans text-sm text-blue-700 hover:underline"
+                    className="flex items-center gap-2 font-sans text-sm text-blue-700 group-hover:text-black transition-colors hover:underline"
                   >
                     <ExternalLink className="w-3 h-3" />
                     {empleoLabel(ccaa)}
