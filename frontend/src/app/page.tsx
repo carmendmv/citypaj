@@ -10,6 +10,8 @@ import LoadingRows from '@/components/ui/LoadingRows';
 import Pagination from '@/components/ui/Pagination';
 import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
 import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD, PROVINCIA_NORMALIZACION } from '@/lib/provinces';
+import { ArrowRight } from 'lucide-react';
+import CommunitySketch from '@/components/illustrations/CommunitySketch';
 
 interface Anuncio {
   id: string;
@@ -123,21 +125,43 @@ export default function HomePage() {
       <Header />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-purple-50/40 px-4 sm:px-6 py-16 sm:py-24 border-b border-gray-200">
-        <div className="absolute top-0 right-0 w-72 h-72 bg-purple-300/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-yellow-300/30 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3"></div>
+      <section className="relative overflow-hidden bg-white text-slate-900">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 lg:py-24">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="space-y-8">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold leading-tight tracking-tight">
+                Encuentra tu lugar en la ciudad.
+              </h1>
 
-        <div className="relative max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-black leading-tight mb-8 tracking-tight">
-            Encuentra tu lugar en la ciudad.
-          </h1>
-          <div className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-10 space-y-4">
-            <p>
-              CityPAJ es el punto de encuentro joven donde descubrir oportunidades, recursos, anuncios y comunidad en tu provincia.
-            </p>
-            <p>
-              Aquí puedes buscar empleo, formación, vivienda, cultura o ayudas, pero también compartir lo que falta, proponer ideas y conectar con otras personas jóvenes que quieren vivir su ciudad de una forma más activa, útil y cercana.
-            </p>
+              <div className="text-lg sm:text-xl text-slate-600 leading-relaxed max-w-2xl space-y-4">
+                <p>
+                  CityPAJ es el punto de encuentro joven donde descubrir oportunidades, recursos, anuncios y comunidad en tu provincia.
+                </p>
+                <p>
+                  Busca empleo, formación, vivienda, cultura o ayudas, y conecta con otras personas jóvenes para vivir tu ciudad de forma más activa.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/anuncios"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-colors"
+                >
+                  Descubrir oportunidades
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href="/comunidad"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full border border-slate-300 text-slate-900 font-semibold hover:bg-slate-50 transition-colors"
+                >
+                  Entrar en comunidad
+                </Link>
+              </div>
+            </div>
+
+            <div className="flex justify-center items-center">
+              <CommunitySketch className="w-full max-w-md text-slate-900" />
+            </div>
           </div>
         </div>
       </section>
