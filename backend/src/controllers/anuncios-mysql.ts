@@ -17,13 +17,13 @@ interface ResultadoModeracion {
   motivo?: string;
 }
 
-function moderarConIA(texto: string): ResultadoModeracion {
+function moderarConFiltro(texto: string): ResultadoModeracion {
   const lower = texto.toLowerCase();
   const encontradas = PALABRAS_PROHIBIDAS.filter((palabra) => lower.includes(palabra));
   if (encontradas.length > 0) {
     return {
       aprobado: false,
-      motivo: `Contenido potencialmente inapropiado detectado por la IA: ${encontradas.join(', ')}`
+      motivo: `Contenido potencialmente inapropiado detectado por el filtro automático: ${encontradas.join(', ')}`
     };
   }
   return { aprobado: true };
@@ -403,11 +403,11 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       }
 
       const textoCompleto = `${titulo} ${descripcion}`;
-      const resultadoIA = moderarConIA(textoCompleto);
-      // La IA no rechaza; solo aprueba o marca para revisión humana
-      const estadoModeracion = resultadoIA.aprobado ? 'approved' : 'flagged';
-      const motivoRechazo = resultadoIA.aprobado ? null : resultadoIA.motivo;
-      const visible = resultadoIA.aprobado ? 1 : 0;
+      const resultadoFiltro = moderarConFiltro(textoCompleto);
+      // El filtro automático no rechaza; solo aprueba o marca para revisión humana
+      const estadoModeracion = resultadoFiltro.aprobado ? 'approved' : 'flagged';
+      const motivoRechazo = resultadoFiltro.aprobado ? null : resultadoFiltro.motivo;
+      const visible = resultadoFiltro.aprobado ? 1 : 0;
 
       await connection.execute(
         `INSERT INTO anuncios (
@@ -1007,8 +1007,8 @@ export const moderarAnuncioIA = async (req: AuthRequest, res: Response): Promise
         return;
       }
 
-      const resultado = moderarConIA(`${anuncio.titulo} ${anuncio.descripcion}`);
-      // La IA nunca aplica rejected; solo aprueba o marca para revisión humana
+      const resultado = moderarConFiltro(`${anuncio.titulo} ${anuncio.descripcion}`);
+      // El filtro automático nunca aplica rejected; solo aprueba o marca para revisión humana
       const estado = resultado.aprobado ? 'approved' : 'flagged';
       const visible = resultado.aprobado ? 1 : 0;
 
@@ -1027,7 +1027,7 @@ export const moderarAnuncioIA = async (req: AuthRequest, res: Response): Promise
       connection.release();
     }
   } catch (error) {
-    console.error('Error moderando anuncio con IA:', (error as Error).message);
+    console.error('Error moderando anuncio con filtro automático:', (error as Error).message);
     res.status(500).json({ success: false, error: 'Error interno del servidor' });
   }
 };

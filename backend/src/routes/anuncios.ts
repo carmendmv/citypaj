@@ -50,7 +50,7 @@ router.post('/:id/moderar', auth, requireRole(['admin', 'moderador']), moderarAn
 // Moderate multiple ads in bulk
 router.post('/moderar-bulk', auth, requireRole(['admin', 'moderador']), moderarAnunciosBulk);
 
-// Moderate ad with IA
+// Moderar anuncio con filtro automático
 router.post('/:id/moderar-ia', auth, requireRole(['admin', 'moderador']), moderarAnuncioIA);
 
 // Delete anuncio

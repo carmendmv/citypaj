@@ -32,7 +32,7 @@ Plataforma web dirigida a jóvenes para publicar y descubrir anuncios, recursos,
 
 ## Descripción
 
-CityPAJ es una aplicación full-stack que permite a los usuarios publicar anuncios juveniles, buscar contenido por comunidad autónoma y provincia, y participar en secciones como comunidad, buzón de sugerencias y ayudas. Los anuncios pasan por un flujo de moderación humana con ayuda de un filtro interno de IA que marca contenido dudoso para revisión.
+CityPAJ es una aplicación full-stack que permite a los usuarios publicar anuncios juveniles, buscar contenido por comunidad autónoma y provincia, y participar en secciones como comunidad, buzón de sugerencias y ayudas. Los anuncios pasan por un flujo de moderación humana con ayuda de un filtro interno automático que detecta palabras inapropiadas y marca contenido dudoso para revisión.
 
 El objetivo del proyecto es ofrecer una experiencia moderna, accesible desde móvil, con un panel de moderación profesional y totalmente separado del acceso de usuarios normales.
 
@@ -44,7 +44,7 @@ El objetivo del proyecto es ofrecer una experiencia moderna, accesible desde mó
 - **Página principal**: sección "Últimos anuncios" con filtros dinámicos y ordenación de más reciente a más antiguo.
 - **Autenticación**: registro, login, JWT access/refresh, logout y eliminación de cuenta.
 - **Moderación humana**: panel exclusivo para moderadores con selector de estado, notas y acciones de aprobar/rechazar/ver.
-- **Filtro interno de IA**: detecta palabras inapropiadas y marca anuncios como `flagged` (en revisión); nunca rechaza automáticamente.
+- **Filtro interno automático**: detecta palabras inapropiadas y marca anuncios como `flagged` (en revisión); nunca rechaza automáticamente.
 - **Responsive**: panel de moderación y toda la interfaz adaptada a móvil.
 - **Buzón de sugerencias**: formulario público con panel de lectura para moderadores.
 - **Página de ayudas**: directorio de recursos nacionales y por comunidad autónoma.
@@ -158,7 +158,7 @@ NEXT_PUBLIC_API_URL=http://localhost:3002
 - `REDIS_HOST` / `REDIS_PORT` para cache y sesiones.
 - `EMAIL_*` para envío de correos de verificación.
 - `S3_*` para almacenar imágenes en S3 en producción.
-- `MODERATION_*` para conectar un servicio externo de IA/ML.
+- `MODERATION_*` para conectar un servicio externo de moderación (opcional).
 - `RATE_LIMIT_*` para ajustar límites de peticiones.
 
 ---
@@ -581,7 +581,7 @@ No. El frontend solo consume la API del backend. Es el backend quien gestiona el
 
 Sí. Toda la interfaz, incluido `/admin/anuncios`, está pensada para pantallas pequeñas.
 
-**¿La IA rechaza anuncios sola?**
+**¿El sistema rechaza anuncios automáticamente?**
 
 No. El filtro interno solo marca anuncios como `flagged`. Un moderador humano decide después aprobar o rechazar.
 

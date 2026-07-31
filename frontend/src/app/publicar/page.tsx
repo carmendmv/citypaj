@@ -95,7 +95,7 @@ export default function PublicarPage() {
       const estado = json?.data?.estado_moderacion;
       const motivo = json?.data?.motivo_rechazo;
 
-      // rejected solo lo aplica un moderador humano; la IA marca flagged para revisión
+      // rejected solo lo aplica un moderador humano; el filtro automático marca flagged para revisión
       setResultado({
         id: json?.data?.id,
         estado,
