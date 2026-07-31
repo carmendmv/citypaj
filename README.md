@@ -496,6 +496,66 @@ npm test
 
 ## Despliegue
 
+### Opción recomendada: Docker Compose (despliegue completo con datos)
+
+Este comando levanta MySQL, el backend y el frontend, y carga automáticamente los datos reales del proyecto desde `citypaj_dump.sql`.
+
+Requisitos en el servidor:
+- Docker y Docker Compose instalados.
+- Puertos `3001` y `3002` libres (MySQL no se expone fuera de Docker).
+
+Pasos:
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/carmendmv/anuncios-juvenil.git
+cd anuncios-juvenil
+
+# 2. Levantar todo (compilar imágenes e iniciar contenedores)
+docker compose up --build -d
+
+# 3. Esperar a que MySQL termine de importar los datos
+#    Esto puede tardar un minuto o dos la primera vez.
+#    Puedes comprobar el progreso con:
+docker logs -f citypaj-mysql
+
+# 4. (Opcional) Crear usuarios de demo para login
+#    Admin/moderador/usuario con contraseña demo123:
+docker compose exec backend npm run db:seed:demo
+```
+
+Acceso una vez iniciado:
+
+- Frontend: `http://IP_DEL_SERVIDOR:3001`
+- Backend API: `http://IP_DEL_SERVIDOR:3002`
+- La base de datos **no está expuesta** al exterior (solo accesible dentro de los contenedores).
+
+Datos que se muestran:
+
+- `docker compose` monta automáticamente `citypaj_dump.sql` en el contenedor de MySQL.
+- Al arrancar por primera vez, MySQL ejecuta las migraciones y el volcado, por lo que la demo muestra los mismos anuncios y datos que tienes en producción.
+- Si el volcado cambia en el futuro, basta con rehacer el volumen para recargarlo:
+
+```bash
+docker compose down -v
+docker compose up --build -d
+```
+
+### Variables de entorno (opcional)
+
+Puedes crear un archivo `.env` en la raíz para cambiar contraseñas y secrets:
+
+```env
+MYSQL_ROOT_PASSWORD=RootSeguro2025!
+MYSQL_PASSWORD=UserSeguro2025!
+JWT_SECRET=mi-clave-jwt-segura
+JWT_REFRESH_SECRET=mi-clave-refresh-segura
+```
+
+Si no creas `.env`, el `docker-compose.yml` usa unos valores por defecto para poder probarlo inmediatamente.
+
+### Opción manual (sin Docker)
+
 1. Configura las variables de entorno en el servidor (`.env.production` como guía).
 2. Asegúrate de que MySQL/Redis sean accesibles.
 3. Ejecuta `npm run build`.
