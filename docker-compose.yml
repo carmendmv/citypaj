@@ -2,17 +2,16 @@ services:
   mysql:
     image: mysql:8.0
     container_name: citypaj-mysql
-    ports:
-      - "3306:3306"
     environment:
       MYSQL_DATABASE: citypaj
       MYSQL_USER: citypaj_user
-      MYSQL_PASSWORD: citypaj123
-      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-CityPajUser2025!}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-CityPajRoot2025!}
       MYSQL_ALLOW_EMPTY_ROOT_PASSWORD: "no"
     volumes:
       - citypaj_mysql_data:/var/lib/mysql
-      - ./backend/migrations:/docker-entrypoint-initdb.d
+      - ./backend/migrations:/docker-entrypoint-initdb.d:ro
+      - ./citypaj_dump.sql:/docker-entrypoint-initdb.d/999_data.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
@@ -35,7 +34,7 @@ services:
       DB_PORT: 3306
       DB_NAME: citypaj
       DB_USER: citypaj_user
-      DB_PASSWORD: citypaj123
+      DB_PASSWORD: ${MYSQL_PASSWORD:-CityPajUser2025!}
       JWT_SECRET: ${JWT_SECRET:-cambia-esta-clave-en-produccion}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-cambia-esta-clave-refresh-en-produccion}
     depends_on:
