@@ -9,6 +9,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const rawEmail = (req.body.email || '').trim().toLowerCase();
     const password = req.body.password || '';
+    const requestedRole = req.body.role || null;
     const email = rawEmail;
 
     if (!email || !password) {
@@ -45,6 +46,14 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         res.status(401).json({
           success: false,
           error: 'Credenciales inválidas'
+        });
+        return;
+      }
+
+      if (requestedRole && user.rol !== requestedRole) {
+        res.status(401).json({
+          success: false,
+          error: 'No tienes permisos para este acceso'
         });
         return;
       }

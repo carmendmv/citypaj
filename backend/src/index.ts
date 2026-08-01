@@ -27,6 +27,23 @@ async function seedDemoModerator() {
   }
 }
 
+async function seedDemoAdmin() {
+  try {
+    const [rows] = await pool.execute('SELECT id FROM usuarios WHERE email = ?', [process.env.DEMO_ADMIN_EMAIL || 'admin@citypaj.demo']);
+    if ((rows as any[]).length > 0) return;
+
+    const hash = await bcrypt.hash(process.env.DEMO_ADMIN_PASSWORD || 'demo123', 10);
+    await pool.execute(
+      `INSERT INTO usuarios (id, email, password_hash, nombre, verificado, rol, creado_at, actualizado_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [randomUUID(), process.env.DEMO_ADMIN_EMAIL || 'admin@citypaj.demo', hash, 'Administrador Demo', 1, 'admin', new Date(), new Date()]
+    );
+    logger.info('Usuario admin demo creado');
+  } catch (error) {
+    logger.error('Error creando admin demo:', (error as Error).message);
+  }
+}
+
 async function startServer() {
   const dbConnected = await testConnection();
   if (!dbConnected) {
@@ -35,6 +52,7 @@ async function startServer() {
   }
 
   await seedDemoModerator();
+  await seedDemoAdmin();
 
   const server = app.listen(PORT, '0.0.0.0', () => {
     logger.info(`🚀 CityPaj Backend API running on port ${PORT}`);

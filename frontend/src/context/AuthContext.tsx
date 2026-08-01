@@ -19,7 +19,7 @@ type StoredAuth = {
 type AuthState = {
   user: AuthUser | null;
   accessToken: string | null;
-  login: (payload: { email: string; password: string }) => Promise<void>;
+  login: (payload: { email: string; password: string; role?: string }) => Promise<void>;
   register: (payload: { nombre: string; email: string; password: string; turnstileToken?: string }) => Promise<void>;
   logout: () => Promise<void>;
 };
@@ -141,11 +141,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval);
   }, [accessToken, refreshAccessToken]);
 
-  const login = useCallback(async ({ email, password }: { email: string; password: string }) => {
+  const login = useCallback(async ({ email, password, role }: { email: string; password: string; role?: string }) => {
     const res = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, role }),
     });
 
     if (!res.ok) {
