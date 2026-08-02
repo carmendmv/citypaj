@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -58,8 +58,29 @@ interface AdminNavProps {
 
 export default function AdminNav({ isAdmin }: AdminNavProps) {
   const pathname = usePathname();
-  const { user, logout } = useAuth();
+  const { user, logout, accessToken } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [unread, setUnread] = useState(0);
+
+  useEffect(() => {
+    const fetchNoLeidos = async () => {
+      if (!accessToken) return;
+      try {
+        const res = await fetch('/api/admin/mensajes/no-leidos', {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUnread(data.data?.total || 0);
+        }
+      } catch {
+        // ignorar errores de red
+      }
+    };
+    fetchNoLeidos();
+    const interval = setInterval(fetchNoLeidos, 30000);
+    return () => clearInterval(interval);
+  }, [accessToken]);
 
   const items = isAdmin ? [...navBase, ...navAdmin] : navBase;
 
@@ -101,7 +122,12 @@ export default function AdminNav({ isAdmin }: AdminNavProps) {
               }`}
             >
               <Icon className="w-4 h-4" />
-              {item.label}
+              <span className="flex-1">{item.label}</span>
+              {item.href === '/admin/mensajes' && unread > 0 && (
+                <span className="ml-auto bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[1.25rem] text-center">
+                  {unread > 99 ? '99+' : unread}
+                </span>
+              )}
             </Link>
           );
         })}

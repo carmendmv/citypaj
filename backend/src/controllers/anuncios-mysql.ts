@@ -113,6 +113,8 @@ export const getAnuncios = async (req: Request, res: Response): Promise<void> =>
         a.estado_moderacion,
         a.motivo_rechazo,
         a.vistas,
+        a.cartel_url,
+        a.precio,
         a.creado_at,
         a.actualizado_at,
         u.nombre as usuario_nombre,
@@ -294,6 +296,7 @@ export const getAnuncioById = async (req: Request, res: Response): Promise<void>
         a.contacto_telefono,
         a.contacto_anonimo,
         a.cartel_url,
+        a.precio,
         a.visible,
         a.estado_moderacion,
         a.motivo_rechazo,
@@ -362,7 +365,8 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       comunidad_autonoma,
       provincia,
       modalidad,
-      cartel_url
+      cartel_url,
+      precio
     } = req.body;
 
     const userId = req.user?.id || ANON_USER_ID;
@@ -413,15 +417,17 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       const motivoRechazo = resultadoFiltro.aprobado ? null : resultadoFiltro.motivo;
       const visible = resultadoFiltro.aprobado ? 1 : 0;
 
+      const precioValor = precio !== undefined && precio !== '' ? Number(precio) : null;
+
       await connection.execute(
         `INSERT INTO anuncios (
           id, usuario_id, titulo, descripcion, categoria, comunidad_autonoma,
-          comunidad_id, provincia, provincia_id, modalidad, visible, estado_moderacion, motivo_rechazo, ip_creador, cartel_url, creado_at, actualizado_at, vistas
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          comunidad_id, provincia, provincia_id, modalidad, visible, estado_moderacion, motivo_rechazo, ip_creador, cartel_url, precio, creado_at, actualizado_at, vistas
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           anuncioId, userId, titulo.trim(), descripcion.trim(), categoria,
           comunidad_autonoma, comunidadId, provinciaNombre, provinciaId, modalidad || 'servicio',
-          visible, estadoModeracion, motivoRechazo, ip_creador, cartel_url || null, now, now, 0
+          visible, estadoModeracion, motivoRechazo, ip_creador, cartel_url || null, precioValor, now, now, 0
         ]
       );
 

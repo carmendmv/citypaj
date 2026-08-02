@@ -50,7 +50,7 @@ export const getAdminUsuarios = async (req: AuthRequest, res: Response): Promise
       },
     });
   } catch (error) {
-    logger.error('Error en getAdminUsuarios:', (error as Error).message);
+    logger.error('Error en getAdminUsuarios: %j', error);
     res.status(500).json({ success: false, error: 'Error interno del servidor' });
   }
 };

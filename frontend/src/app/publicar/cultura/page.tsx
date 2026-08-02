@@ -15,6 +15,7 @@ export default function PublicarCulturaPage() {
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [cartelUrl, setCartelUrl] = useState('');
+  const [precio, setPrecio] = useState('');
   const [nombre, setNombre] = useState('');
   const [comunidadAutonoma, setComunidadAutonoma] = useState('');
   const [provincia, setProvincia] = useState('');
@@ -69,6 +70,7 @@ export default function PublicarCulturaPage() {
           categoria: 'Cultura',
           subcategoria: 'Evento',
           cartel_url: cartelUrl || undefined,
+          precio: precio ? Number(precio) : undefined,
           nombre,
           comunidad_autonoma: comunidadAutonoma,
           provincia,
@@ -154,17 +156,32 @@ export default function PublicarCulturaPage() {
               />
             </div>
 
-            <div>
-              <label className="block font-sans text-xs text-gray-600 mb-2">Cartel del evento (URL de la imagen)</label>
-              <input
-                value={cartelUrl}
-                onChange={(e) => setCartelUrl(e.target.value)}
-                placeholder="https://..."
-                className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
-              />
-              {cartelUrl && (
-                <img src={cartelUrl} alt="Vista previa del cartel" className="mt-3 max-h-48 border border-black" />
-              )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block font-sans text-xs text-gray-600 mb-2">Cartel del evento (URL de la imagen)</label>
+                <input
+                  value={cartelUrl}
+                  onChange={(e) => setCartelUrl(e.target.value)}
+                  placeholder="https://..."
+                  className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
+                />
+                {cartelUrl && (
+                  <img src={cartelUrl} alt="Vista previa del cartel" className="mt-3 max-h-48 border border-black" />
+                )}
+              </div>
+              <div>
+                <label className="block font-sans text-xs text-gray-600 mb-2">Precio (€)</label>
+                <input
+                  type="number"
+                  min={0}
+                  step={0.01}
+                  value={precio}
+                  onChange={(e) => setPrecio(e.target.value)}
+                  placeholder="0.00"
+                  className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
+                />
+                <p className="mt-1 text-xs text-gray-500 font-sans">Dejar en 0 o vacío para eventos gratuitos.</p>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

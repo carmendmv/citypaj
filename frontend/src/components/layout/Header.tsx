@@ -47,8 +47,8 @@ const MENU_PRINCIPAL = [
   {
     categoria: 'cultura',
     label: 'Cultura',
-    descripcion: 'Publicar y ver eventos culturales',
-    href: '/publicar/cultura'
+    descripcion: 'Ver y publicar eventos culturales',
+    href: '/cultura'
   }
 ];
 

@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
       email, 
       telefono,
       cartel_url,
+      precio,
       turnstile_token 
     } = await request.json();
 
@@ -54,7 +55,7 @@ export async function POST(request: NextRequest) {
         subcategoria: subcategoria || null,
         comunidad_autonoma: comunidad_autonoma.trim(),
         provincia: (provincia || comunidad_autonoma).trim(),
-        precio: null,
+        precio: precio !== undefined && precio !== '' ? Number(precio) : undefined,
         modalidad: 'servicio',
         nombre: nombre.trim(),
         email: email.trim(),
