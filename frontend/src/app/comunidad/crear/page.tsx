@@ -7,7 +7,8 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import NombreModal from '@/components/comunidad/NombreModal';
 import { TEMAS_COMUNIDAD } from '@/lib/comunidad';
-import { PROVINCIA_NORMALIZACION } from '@/lib/provinces';
+import { COMUNIDADES } from '@/lib/provinces';
+import SelectProvincia from '@/components/ui/SelectProvincia';
 
 const NOMBRE_STORAGE_KEY = 'citypaj_nombre_comunidad';
 
@@ -16,6 +17,7 @@ export default function CrearConversacionPage() {
 
   const [titulo, setTitulo] = useState('');
   const [contenido, setContenido] = useState('');
+  const [comunidadAutonoma, setComunidadAutonoma] = useState('');
   const [provincia, setProvincia] = useState('');
   const [tema, setTema] = useState('');
   const [loading, setLoading] = useState(false);
@@ -49,8 +51,8 @@ export default function CrearConversacionPage() {
       setError('El contenido es demasiado corto.');
       return;
     }
-    if (!provincia || !tema) {
-      setError('Provincia y tema son obligatorios.');
+    if (!comunidadAutonoma || !provincia || !tema) {
+      setError('Comunidad autónoma, provincia y tema son obligatorios.');
       return;
     }
 
@@ -63,7 +65,7 @@ export default function CrearConversacionPage() {
         body: JSON.stringify({
           titulo: tituloLimpio,
           contenido: contenidoLimpio,
-          provincia: PROVINCIA_NORMALIZACION[provincia] || provincia,
+          provincia,
           tema,
           nombre_usuario: nombre
         })
@@ -133,17 +135,33 @@ export default function CrearConversacionPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Provincia</label>
-              <input
-                type="text"
-                value={provincia}
-                onChange={(e) => setProvincia(e.target.value)}
-                placeholder="Ej. Zaragoza"
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none"
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Comunidad autónoma</label>
+              <select
+                value={comunidadAutonoma}
+                onChange={(e) => { setComunidadAutonoma(e.target.value); setProvincia(''); }}
                 required
-              />
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+              >
+                <option value="">Selecciona CCAA</option>
+                {COMUNIDADES.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
             </div>
 
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Provincia</label>
+              <SelectProvincia
+                comunidadAutonoma={comunidadAutonoma}
+                provincia={provincia}
+                onProvinciaChange={setProvincia}
+                placeholder="Selecciona provincia"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1.5">Tema</label>
               <select

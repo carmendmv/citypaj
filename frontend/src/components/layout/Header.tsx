@@ -27,12 +27,6 @@ interface HeaderProps {
 
 const MENU_PRINCIPAL = [
   {
-    categoria: 'cultura',
-    label: 'Cultura',
-    descripcion: 'Publicar y ver eventos culturales',
-    href: '/publicar/cultura'
-  },
-  {
     categoria: 'empleo',
     label: 'Empleo',
     descripcion: 'Ofertas laborales y prácticas',
@@ -49,6 +43,12 @@ const MENU_PRINCIPAL = [
     label: 'Ayudas',
     descripcion: 'Ayudas para jóvenes y extranjería',
     href: '/ayudas'
+  },
+  {
+    categoria: 'cultura',
+    label: 'Cultura',
+    descripcion: 'Publicar y ver eventos culturales',
+    href: '/publicar/cultura'
   }
 ];
 
