@@ -13,11 +13,12 @@ interface Usuario {
   email: string;
   verificado: number;
   rol: string;
+  activo: number;
   creado_at: string;
 }
 
 const ROLES = [
-  { value: 'user', label: 'Usuario' },
+  { value: 'usuario', label: 'Usuario' },
   { value: 'moderador', label: 'Moderador' },
   { value: 'admin', label: 'Administrador' },
 ];
@@ -82,6 +83,27 @@ export default function AdminUsuariosPage() {
       }
     } catch (err) {
       setError('Error de conexión al actualizar rol');
+    }
+  };
+
+  const cambiarActivo = async (id: string, activo: boolean) => {
+    try {
+      const res = await fetch(`/api/admin/usuarios/${id}/estado`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken || ''}`,
+        },
+        body: JSON.stringify({ activo }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        await cargar();
+      } else {
+        setError(json.error || 'Error actualizando estado');
+      }
+    } catch (err) {
+      setError('Error de conexión al actualizar estado');
     }
   };
 
@@ -213,6 +235,12 @@ export default function AdminUsuariosPage() {
                               ))}
                             </select>
                             {u.rol === 'admin' && <Shield className="w-4 h-4 text-orange-500" />}
+                          <button
+                            onClick={() => cambiarActivo(u.id, !u.activo)}
+                            className={`text-xs px-2 py-1 border ${u.activo ? 'border-green-500 text-green-700 bg-green-50' : 'border-gray-400 text-gray-600 bg-gray-50'}`}
+                          >
+                            {u.activo ? 'Activo' : 'Inactivo'}
+                          </button>
                           </div>
                         </td>
                         <td className="px-4 py-3 text-gray-500">

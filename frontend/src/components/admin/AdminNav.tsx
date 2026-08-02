@@ -16,6 +16,8 @@ import {
   Home,
   ExternalLink,
   Mail,
+  BarChart3,
+  ClipboardList,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
@@ -29,6 +31,9 @@ const navBase = [
 
 const navAdmin = [
   { href: '/admin/usuarios', icon: Users, label: 'Usuarios' },
+  { href: '/admin/moderadores', icon: Shield, label: 'Moderadores' },
+  { href: '/admin/estadisticas', icon: BarChart3, label: 'Estadísticas' },
+  { href: '/admin/actividad', icon: ClipboardList, label: 'Logs' },
 ];
 
 interface AdminNavProps {

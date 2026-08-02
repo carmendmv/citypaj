@@ -1,4 +1,7 @@
 import { Response } from 'express';
+import fs from 'fs';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 import { AuthRequest } from '../middleware/auth';
 import { pool } from '../config/database';
 import { logger } from '../utils/logger';
@@ -13,7 +16,7 @@ export const listarMensajes = async (req: AuthRequest, res: Response): Promise<v
         `SELECT m.*, u.email AS destinatario_email, u.nombre AS destinatario_nombre
          FROM mensajes_staff m
          LEFT JOIN usuarios u ON m.destinatario_id = u.id
-         WHERE m.remitente_id = ?
+         WHERE m.remitente_id = ? AND m.eliminado_remitente = 0
          ORDER BY m.creado_at DESC`,
         [userId]
       );
@@ -25,7 +28,7 @@ export const listarMensajes = async (req: AuthRequest, res: Response): Promise<v
       `SELECT m.*, u.email AS remitente_email, u.nombre AS remitente_nombre
        FROM mensajes_staff m
        LEFT JOIN usuarios u ON m.remitente_id = u.id
-       WHERE m.destinatario_id = ?
+       WHERE m.destinatario_id = ? AND m.eliminado_destinatario = 0
        ORDER BY m.creado_at DESC`,
       [userId]
     );
@@ -40,7 +43,7 @@ export const contarNoLeidos = async (req: AuthRequest, res: Response): Promise<v
   try {
     const userId = req.user!.id;
     const [rows] = await pool.execute(
-      'SELECT COUNT(*) AS total FROM mensajes_staff WHERE destinatario_id = ? AND leido = 0',
+      'SELECT COUNT(*) AS total FROM mensajes_staff WHERE destinatario_id = ? AND leido = 0 AND eliminado_destinatario = 0',
       [userId]
     );
     res.json({ success: true, data: { total: (rows as any[])[0].total } });
@@ -52,28 +55,58 @@ export const contarNoLeidos = async (req: AuthRequest, res: Response): Promise<v
 
 export const enviarMensaje = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { destinatario_id, asunto, cuerpo } = req.body;
+    const { destinatario_id, asunto, cuerpo, anuncio_id, padre_id, prioridad } = req.body;
 
     if (!destinatario_id || !asunto?.trim() || !cuerpo?.trim()) {
       res.status(400).json({ success: false, error: 'Destinatario, asunto y cuerpo son obligatorios' });
       return;
     }
 
-    // Verificar que el destinatario es admin o moderador
+    // Verificar que el destinatario es admin o moderador y activo
     const [staffRows] = await pool.execute(
-      'SELECT id, rol FROM usuarios WHERE id = ? AND rol IN (?, ?)',
+      'SELECT id, rol FROM usuarios WHERE id = ? AND activo = 1 AND rol IN (?, ?)',
       [destinatario_id, 'admin', 'moderador']
     );
 
     if ((staffRows as any[]).length === 0) {
-      res.status(400).json({ success: false, error: 'Destinatario no válido' });
+      res.status(400).json({ success: false, error: 'Destinatario no válido o inactivo' });
       return;
     }
 
+    // Validar anuncio adjunto si se envía
+    if (anuncio_id) {
+      const [anuncioRows] = await pool.execute('SELECT id FROM anuncios WHERE id = ?', [anuncio_id]);
+      if ((anuncioRows as any[]).length === 0) {
+        res.status(400).json({ success: false, error: 'Anuncio adjunto no existe' });
+        return;
+      }
+    }
+
+    // Validar mensaje padre si es respuesta
+    if (padre_id) {
+      const [padreRows] = await pool.execute(
+        'SELECT id, destinatario_id, remitente_id FROM mensajes_staff WHERE id = ?',
+        [padre_id]
+      );
+      const padre = (padreRows as any[])[0];
+      if (!padre) {
+        res.status(400).json({ success: false, error: 'Mensaje padre no encontrado' });
+        return;
+      }
+      // Responder al interlocutor del hilo
+      const interlocutor = padre.remitente_id === req.user!.id ? padre.destinatario_id : padre.remitente_id;
+      if (interlocutor !== destinatario_id) {
+        res.status(400).json({ success: false, error: 'El destinatario debe ser el interlocutor del hilo' });
+        return;
+      }
+    }
+
+    const prioridadValue = ['baja', 'normal', 'alta', 'urgente'].includes(prioridad) ? prioridad : 'normal';
+
     const [result] = await pool.execute(
-      `INSERT INTO mensajes_staff (remitente_id, destinatario_id, asunto, cuerpo, leido)
-       VALUES (?, ?, ?, ?, 0)`,
-      [Number(req.user!.id), destinatario_id, asunto.trim(), cuerpo.trim()]
+      `INSERT INTO mensajes_staff (remitente_id, destinatario_id, asunto, cuerpo, leido, anuncio_id, padre_id, prioridad)
+       VALUES (?, ?, ?, ?, 0, ?, ?, ?)`,
+      [req.user!.id, destinatario_id, asunto.trim(), cuerpo.trim(), anuncio_id || null, padre_id || null, prioridadValue]
     ) as any;
 
     res.json({ success: true, data: { id: result.insertId } });
@@ -113,10 +146,33 @@ export const eliminarMensaje = async (req: AuthRequest, res: Response): Promise<
   try {
     const { id } = req.params;
     const userId = req.user!.id;
-    await pool.execute(
-      'DELETE FROM mensajes_staff WHERE id = ? AND (destinatario_id = ? OR remitente_id = ?)',
-      [id, userId, userId]
+
+    const [rows] = await pool.execute(
+      'SELECT remitente_id, destinatario_id FROM mensajes_staff WHERE id = ?',
+      [id]
     );
+    const m = (rows as any[])[0];
+    if (!m) {
+      res.status(404).json({ success: false, error: 'Mensaje no encontrado' });
+      return;
+    }
+    if (m.remitente_id !== userId && m.destinatario_id !== userId) {
+      res.status(403).json({ success: false, error: 'No tienes permisos' });
+      return;
+    }
+
+    if (m.remitente_id === userId) {
+      await pool.execute('UPDATE mensajes_staff SET eliminado_remitente = 1 WHERE id = ?', [id]);
+    }
+    if (m.destinatario_id === userId) {
+      await pool.execute('UPDATE mensajes_staff SET eliminado_destinatario = 1 WHERE id = ?', [id]);
+    }
+    // Si ambos lo borran, se elimina físicamente
+    await pool.execute(
+      'DELETE FROM mensajes_staff WHERE id = ? AND eliminado_remitente = 1 AND eliminado_destinatario = 1',
+      [id]
+    );
+
     res.json({ success: true, data: { id } });
   } catch (error) {
     logger.error('Error eliminando mensaje: %s', error instanceof Error ? error.message : String(error));
@@ -127,12 +183,145 @@ export const eliminarMensaje = async (req: AuthRequest, res: Response): Promise<
 export const listarStaff = async (_req: AuthRequest, res: Response): Promise<void> => {
   try {
     const [rows] = await pool.execute(
-      `SELECT id, email, nombre, rol FROM usuarios WHERE rol IN (?, ?) ORDER BY rol, nombre`,
+      `SELECT id, email, nombre, rol FROM usuarios WHERE rol IN (?, ?) AND activo = 1 ORDER BY rol, nombre`,
       ['admin', 'moderador']
     );
     res.json({ success: true, data: rows });
   } catch (error) {
     logger.error('Error listando staff: %s', error instanceof Error ? error.message : String(error));
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  }
+};
+
+export const verMensaje = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const userId = req.user!.id;
+
+    const [rows] = await pool.execute(
+      `SELECT m.*,
+        r.nombre AS remitente_nombre, r.email AS remitente_email,
+        d.nombre AS destinatario_nombre, d.email AS destinatario_email,
+        a.titulo AS anuncio_titulo, a.categoria AS anuncio_categoria, a.provincia AS anuncio_provincia,
+        a.estado_moderacion AS anuncio_estado, a.visible AS anuncio_visible
+      FROM mensajes_staff m
+      LEFT JOIN usuarios r ON m.remitente_id = r.id
+      LEFT JOIN usuarios d ON m.destinatario_id = d.id
+      LEFT JOIN anuncios a ON m.anuncio_id = a.id
+      WHERE m.id = ? AND (m.remitente_id = ? OR m.destinatario_id = ?)
+        AND (m.remitente_id != ? OR m.eliminado_remitente = 0)
+        AND (m.destinatario_id != ? OR m.eliminado_destinatario = 0)`,
+      [id, userId, userId, userId, userId]
+    );
+    const m = (rows as any[])[0];
+    if (!m) {
+      res.status(404).json({ success: false, error: 'Mensaje no encontrado' });
+      return;
+    }
+
+    const [adjuntos] = await pool.execute(
+      'SELECT id, nombre_original, tipo_mime, tamano, creado_at FROM mensajes_adjuntos WHERE mensaje_id = ?',
+      [id]
+    );
+
+    res.json({ success: true, data: { ...m, adjuntos } });
+  } catch (error) {
+    logger.error('Error obteniendo mensaje: %s', error instanceof Error ? error.message : String(error));
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  }
+};
+
+const MIME_PERMITIDOS = new Set([
+  'application/pdf',
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'text/plain',
+]);
+
+const EXT_PERMITIDAS = new Set(['.pdf', '.png', '.jpg', '.jpeg', '.webp', '.doc', '.docx', '.txt']);
+
+export const subirAdjunto = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { mensaje_id } = req.params;
+    const userId = req.user!.id;
+
+    if (!req.file) {
+      res.status(400).json({ success: false, error: 'No se ha enviado ningún archivo' });
+      return;
+    }
+
+    const [mRows] = await pool.execute(
+      'SELECT remitente_id, destinatario_id FROM mensajes_staff WHERE id = ?',
+      [mensaje_id]
+    );
+    const m = (mRows as any[])[0];
+    if (!m || (m.remitente_id !== userId && m.destinatario_id !== userId)) {
+      res.status(403).json({ success: false, error: 'No tienes permisos sobre este mensaje' });
+      return;
+    }
+
+    const file = req.file as any;
+    const ext = path.extname(file.originalname).toLowerCase();
+    const mime = file.mimetype;
+    const size = file.size;
+
+    if (!EXT_PERMITIDAS.has(ext) || !MIME_PERMITIDOS.has(mime) || size > 5 * 1024 * 1024) {
+      res.status(400).json({ success: false, error: 'Tipo o tamaño de archivo no permitido' });
+      return;
+    }
+
+    const nombreGuardado = `${uuidv4()}_${file.originalname}`;
+    const ruta = path.join('uploads', 'mensajes', nombreGuardado);
+    const destino = path.join(__dirname, '..', '..', ruta);
+    fs.mkdirSync(path.dirname(destino), { recursive: true });
+    fs.writeFileSync(destino, file.buffer);
+
+    const [result] = await pool.execute(
+      `INSERT INTO mensajes_adjuntos (mensaje_id, nombre_original, nombre_guardado, tipo_mime, tamano, ruta_storage, subido_por)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [mensaje_id, file.originalname, nombreGuardado, mime, size, ruta, userId]
+    ) as any;
+
+    res.json({ success: true, data: { id: result.insertId, nombre_original: file.originalname, tamano: size } });
+  } catch (error) {
+    logger.error('Error subiendo adjunto: %s', error instanceof Error ? error.message : String(error));
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  }
+};
+
+export const descargarAdjunto = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { adjuntoId } = req.params;
+    const userId = req.user!.id;
+
+    const [rows] = await pool.execute(
+      `SELECT a.*, m.remitente_id, m.destinatario_id
+       FROM mensajes_adjuntos a
+       JOIN mensajes_staff m ON a.mensaje_id = m.id
+       WHERE a.id = ?`,
+      [adjuntoId]
+    );
+    const a = (rows as any[])[0];
+    if (!a || (a.remitente_id !== userId && a.destinatario_id !== userId)) {
+      res.status(403).json({ success: false, error: 'No tienes permisos' });
+      return;
+    }
+
+    const filePath = path.join(__dirname, '..', '..', a.ruta_storage);
+    if (!fs.existsSync(filePath)) {
+      res.status(404).json({ success: false, error: 'Archivo no encontrado' });
+      return;
+    }
+
+    res.setHeader('Content-Disposition', `attachment; filename="${a.nombre_original}"`);
+    res.setHeader('Content-Type', a.tipo_mime);
+    res.sendFile(path.resolve(filePath));
+  } catch (error) {
+    logger.error('Error descargando adjunto: %s', error instanceof Error ? error.message : String(error));
     res.status(500).json({ success: false, error: 'Error interno del servidor' });
   }
 };
