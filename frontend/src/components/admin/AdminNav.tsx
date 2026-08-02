@@ -18,6 +18,11 @@ import {
   Mail,
   BarChart3,
   ClipboardList,
+  Building2,
+  FileStack,
+  Megaphone,
+  CheckSquare,
+  AlertTriangle,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
@@ -32,6 +37,11 @@ const navBase = [
 const navAdmin = [
   { href: '/admin/usuarios', icon: Users, label: 'Usuarios' },
   { href: '/admin/moderadores', icon: Shield, label: 'Moderadores' },
+  { href: '/admin/instituciones/contactos', icon: Building2, label: 'Agenda' },
+  { href: '/admin/plantillas', icon: FileStack, label: 'Plantillas' },
+  { href: '/admin/comunicaciones', icon: Megaphone, label: 'Comunicaciones' },
+  { href: '/admin/tareas', icon: CheckSquare, label: 'Tareas' },
+  { href: '/admin/necesidades', icon: AlertTriangle, label: 'Necesidades' },
   { href: '/admin/estadisticas', icon: BarChart3, label: 'Estadísticas' },
   { href: '/admin/actividad', icon: ClipboardList, label: 'Logs' },
 ];

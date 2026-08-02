@@ -9,29 +9,50 @@ import { logger } from '../utils/logger';
 export const listarMensajes = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const userId = req.user!.id;
-    const tipo = req.query.tipo === 'enviados' ? 'enviados' : 'recibidos';
+    const tipo = req.query.tipo as string || 'recibidos';
 
-    if (tipo === 'enviados') {
-      const [rows] = await pool.execute(
-        `SELECT m.*, u.email AS destinatario_email, u.nombre AS destinatario_nombre
+    let query = '';
+    let values: any[] = [userId, userId];
+
+    switch (tipo) {
+      case 'enviados':
+        query = `SELECT m.*, u.email AS destinatario_email, u.nombre AS destinatario_nombre
          FROM mensajes_staff m
          LEFT JOIN usuarios u ON m.destinatario_id = u.id
-         WHERE m.remitente_id = ? AND m.eliminado_remitente = 0
-         ORDER BY m.creado_at DESC`,
-        [userId]
-      );
-      res.json({ success: true, data: rows });
-      return;
+         WHERE m.remitente_id = ? AND m.eliminado_remitente = 0 AND m.estado != 'borrador'
+         ORDER BY m.creado_at DESC`;
+        values = [userId];
+        break;
+      case 'borradores':
+        query = `SELECT m.*, u.email AS destinatario_email, u.nombre AS destinatario_nombre
+         FROM mensajes_staff m
+         LEFT JOIN usuarios u ON m.destinatario_id = u.id
+         WHERE m.remitente_id = ? AND m.estado = 'borrador'
+         ORDER BY m.creado_at DESC`;
+        values = [userId];
+        break;
+      case 'archivados':
+        query = `SELECT m.*,
+          CASE WHEN m.remitente_id = ? THEN r.nombre ELSE s.nombre END AS interlocutor_nombre,
+          CASE WHEN m.remitente_id = ? THEN r.email ELSE s.email END AS interlocutor_email
+         FROM mensajes_staff m
+         LEFT JOIN usuarios r ON m.remitente_id = r.id
+         LEFT JOIN usuarios s ON m.destinatario_id = s.id
+         WHERE (m.remitente_id = ? AND m.archivado_remitente = 1 AND m.eliminado_remitente = 0)
+            OR (m.destinatario_id = ? AND m.archivado_destinatario = 1 AND m.eliminado_destinatario = 0)
+         ORDER BY m.creado_at DESC`;
+        values = [userId, userId, userId, userId];
+        break;
+      default:
+        query = `SELECT m.*, u.email AS remitente_email, u.nombre AS remitente_nombre
+         FROM mensajes_staff m
+         LEFT JOIN usuarios u ON m.remitente_id = u.id
+         WHERE m.destinatario_id = ? AND m.eliminado_destinatario = 0 AND m.estado = 'enviado'
+         ORDER BY m.creado_at DESC`;
+        values = [userId];
     }
 
-    const [rows] = await pool.execute(
-      `SELECT m.*, u.email AS remitente_email, u.nombre AS remitente_nombre
-       FROM mensajes_staff m
-       LEFT JOIN usuarios u ON m.remitente_id = u.id
-       WHERE m.destinatario_id = ? AND m.eliminado_destinatario = 0
-       ORDER BY m.creado_at DESC`,
-      [userId]
-    );
+    const [rows] = await pool.execute(query, values);
     res.json({ success: true, data: rows });
   } catch (error) {
     logger.error('Error listando mensajes: %s', error instanceof Error ? error.message : String(error));
@@ -54,28 +75,39 @@ export const contarNoLeidos = async (req: AuthRequest, res: Response): Promise<v
 };
 
 export const enviarMensaje = async (req: AuthRequest, res: Response): Promise<void> => {
+  const conn = await pool.getConnection();
   try {
-    const { destinatario_id, asunto, cuerpo, anuncio_id, padre_id, prioridad } = req.body;
+    const { destinatario_id, asunto, cuerpo, anuncio_id, padre_id, prioridad, entidades, estado } = req.body;
+    const esBorrador = estado === 'borrador';
 
-    if (!destinatario_id || !asunto?.trim() || !cuerpo?.trim()) {
-      res.status(400).json({ success: false, error: 'Destinatario, asunto y cuerpo son obligatorios' });
+    if (!asunto?.trim() || !cuerpo?.trim()) {
+      res.status(400).json({ success: false, error: 'Asunto y cuerpo son obligatorios' });
       return;
     }
 
-    // Verificar que el destinatario es admin o moderador y activo
-    const [staffRows] = await pool.execute(
-      'SELECT id, rol FROM usuarios WHERE id = ? AND activo = 1 AND rol IN (?, ?)',
-      [destinatario_id, 'admin', 'moderador']
-    );
-
-    if ((staffRows as any[]).length === 0) {
-      res.status(400).json({ success: false, error: 'Destinatario no válido o inactivo' });
+    if (!esBorrador && !destinatario_id) {
+      res.status(400).json({ success: false, error: 'Destinatario es obligatorio para enviar' });
       return;
+    }
+
+    let finalDestinatario = destinatario_id || null;
+
+    // Verificar que el destinatario es admin o moderador y activo
+    if (finalDestinatario) {
+      const [staffRows] = await conn.execute(
+        'SELECT id, rol FROM usuarios WHERE id = ? AND activo = 1 AND rol IN (?, ?)',
+        [finalDestinatario, 'admin', 'moderador']
+      );
+
+      if ((staffRows as any[]).length === 0) {
+        res.status(400).json({ success: false, error: 'Destinatario no válido o inactivo' });
+        return;
+      }
     }
 
     // Validar anuncio adjunto si se envía
     if (anuncio_id) {
-      const [anuncioRows] = await pool.execute('SELECT id FROM anuncios WHERE id = ?', [anuncio_id]);
+      const [anuncioRows] = await conn.execute('SELECT id, titulo FROM anuncios WHERE id = ?', [anuncio_id]);
       if ((anuncioRows as any[]).length === 0) {
         res.status(400).json({ success: false, error: 'Anuncio adjunto no existe' });
         return;
@@ -84,7 +116,7 @@ export const enviarMensaje = async (req: AuthRequest, res: Response): Promise<vo
 
     // Validar mensaje padre si es respuesta
     if (padre_id) {
-      const [padreRows] = await pool.execute(
+      const [padreRows] = await conn.execute(
         'SELECT id, destinatario_id, remitente_id FROM mensajes_staff WHERE id = ?',
         [padre_id]
       );
@@ -93,25 +125,136 @@ export const enviarMensaje = async (req: AuthRequest, res: Response): Promise<vo
         res.status(400).json({ success: false, error: 'Mensaje padre no encontrado' });
         return;
       }
-      // Responder al interlocutor del hilo
       const interlocutor = padre.remitente_id === req.user!.id ? padre.destinatario_id : padre.remitente_id;
-      if (interlocutor !== destinatario_id) {
+      if (!esBorrador && interlocutor !== finalDestinatario) {
         res.status(400).json({ success: false, error: 'El destinatario debe ser el interlocutor del hilo' });
         return;
       }
     }
 
     const prioridadValue = ['baja', 'normal', 'alta', 'urgente'].includes(prioridad) ? prioridad : 'normal';
+    const estadoValue = esBorrador ? 'borrador' : 'enviado';
 
-    const [result] = await pool.execute(
-      `INSERT INTO mensajes_staff (remitente_id, destinatario_id, asunto, cuerpo, leido, anuncio_id, padre_id, prioridad)
-       VALUES (?, ?, ?, ?, 0, ?, ?, ?)`,
-      [req.user!.id, destinatario_id, asunto.trim(), cuerpo.trim(), anuncio_id || null, padre_id || null, prioridadValue]
+    await conn.beginTransaction();
+
+    const [result] = await conn.execute(
+      `INSERT INTO mensajes_staff (remitente_id, destinatario_id, asunto, cuerpo, leido, anuncio_id, padre_id, prioridad, estado)
+       VALUES (?, ?, ?, ?, 0, ?, ?, ?, ?)`,
+      [req.user!.id, finalDestinatario, asunto.trim(), cuerpo.trim(), anuncio_id || null, padre_id || null, prioridadValue, estadoValue]
     ) as any;
 
-    res.json({ success: true, data: { id: result.insertId } });
+    const mensajeId = result.insertId;
+
+    const listaEntidades = (entidades as any[] || []);
+    for (const ent of listaEntidades) {
+      if (ent?.entidad_tipo && ent?.entidad_id) {
+        await conn.execute(
+          `INSERT INTO mensajes_entidades_adjuntas (mensaje_id, entidad_tipo, entidad_id, titulo)
+           VALUES (?, ?, ?, ?)`,
+          [mensajeId, ent.entidad_tipo, ent.entidad_id, ent.titulo || null]
+        );
+      }
+    }
+
+    await conn.commit();
+
+    res.json({ success: true, data: { id: mensajeId } });
   } catch (error) {
+    await conn.rollback();
     logger.error('Error enviando mensaje: %s', error instanceof Error ? error.message : String(error));
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  } finally {
+    conn.release();
+  }
+};
+
+export const responderMensaje = async (req: AuthRequest, res: Response): Promise<void> => {
+  const conn = await pool.getConnection();
+  try {
+    const { id } = req.params;
+    const { cuerpo, entidades } = req.body;
+    const userId = req.user!.id;
+
+    if (!cuerpo?.trim()) {
+      res.status(400).json({ success: false, error: 'El cuerpo de la respuesta es obligatorio' });
+      return;
+    }
+
+    const [padreRows] = await conn.execute(
+      'SELECT * FROM mensajes_staff WHERE id = ?',
+      [id]
+    );
+    const padre = (padreRows as any[])[0];
+    if (!padre) {
+      res.status(404).json({ success: false, error: 'Mensaje no encontrado' });
+      return;
+    }
+
+    if (padre.remitente_id !== userId && padre.destinatario_id !== userId) {
+      res.status(403).json({ success: false, error: 'No tienes permisos' });
+      return;
+    }
+
+    const destinatario_id = padre.remitente_id === userId ? padre.destinatario_id : padre.remitente_id;
+
+    await conn.beginTransaction();
+
+    const [result] = await conn.execute(
+      `INSERT INTO mensajes_staff (remitente_id, destinatario_id, asunto, cuerpo, leido, padre_id, prioridad, estado)
+       VALUES (?, ?, CONCAT('RE: ', ?), ?, 0, ?, ?, 'enviado')`,
+      [userId, destinatario_id, padre.asunto, cuerpo.trim(), id, padre.prioridad]
+    ) as any;
+
+    const mensajeId = result.insertId;
+
+    const listaEntidades = (entidades as any[] || []);
+    for (const ent of listaEntidades) {
+      if (ent?.entidad_tipo && ent?.entidad_id) {
+        await conn.execute(
+          `INSERT INTO mensajes_entidades_adjuntas (mensaje_id, entidad_tipo, entidad_id, titulo)
+           VALUES (?, ?, ?, ?)`,
+          [mensajeId, ent.entidad_tipo, ent.entidad_id, ent.titulo || null]
+        );
+      }
+    }
+
+    await conn.commit();
+
+    res.json({ success: true, data: { id: mensajeId } });
+  } catch (error) {
+    await conn.rollback();
+    logger.error('Error respondiendo mensaje: %s', error instanceof Error ? error.message : String(error));
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  } finally {
+    conn.release();
+  }
+};
+
+export const archivarMensaje = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const userId = req.user!.id;
+
+    const [rows] = await pool.execute(
+      'SELECT remitente_id, destinatario_id FROM mensajes_staff WHERE id = ?',
+      [id]
+    );
+    const m = (rows as any[])[0];
+    if (!m) {
+      res.status(404).json({ success: false, error: 'Mensaje no encontrado' });
+      return;
+    }
+
+    if (m.remitente_id === userId) {
+      await pool.execute('UPDATE mensajes_staff SET archivado_remitente = 1 WHERE id = ?', [id]);
+    }
+    if (m.destinatario_id === userId) {
+      await pool.execute('UPDATE mensajes_staff SET archivado_destinatario = 1 WHERE id = ?', [id]);
+    }
+
+    res.json({ success: true, data: { id } });
+  } catch (error) {
+    logger.error('Error archivando mensaje: %s', error instanceof Error ? error.message : String(error));
     res.status(500).json({ success: false, error: 'Error interno del servidor' });
   }
 };
@@ -224,7 +367,12 @@ export const verMensaje = async (req: AuthRequest, res: Response): Promise<void>
       [id]
     );
 
-    res.json({ success: true, data: { ...m, adjuntos } });
+    const [entidades] = await pool.execute(
+      'SELECT entidad_tipo, entidad_id, titulo FROM mensajes_entidades_adjuntas WHERE mensaje_id = ?',
+      [id]
+    );
+
+    res.json({ success: true, data: { ...m, adjuntos, entidades } });
   } catch (error) {
     logger.error('Error obteniendo mensaje: %s', error instanceof Error ? error.message : String(error));
     res.status(500).json({ success: false, error: 'Error interno del servidor' });

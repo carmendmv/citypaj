@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import AdminNav from '@/components/admin/AdminNav';
+import DashboardAcciones from '@/components/admin/DashboardAcciones';
 
 interface ResumenData {
   usuarios: number;
@@ -285,6 +286,8 @@ export default function AdminDashboardPage() {
                   <StatCard label="Admin/Moderadores" value={resumen?.staff ?? 0} icon={Shield} color="text-gray-700" />
                 </div>
               </section>
+
+              <DashboardAcciones />
 
               <section className="mb-8">
                 <h2 className="text-lg font-bold text-black mb-4 flex items-center gap-2">
