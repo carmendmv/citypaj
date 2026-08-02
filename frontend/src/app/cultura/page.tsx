@@ -84,7 +84,7 @@ export default function CulturaPage() {
       >
         <Link
           href="/publicar/cultura"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-black text-white text-sm font-medium hover:bg-orange-500 transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-black text-white text-sm font-medium hover:bg-orange-500 hover:scale-105 active:scale-95 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200"
         >
           <Plus className="w-4 h-4" />
           Publicar evento
@@ -188,7 +188,7 @@ export default function CulturaPage() {
                   </div>
                   <Link
                     href={`/anuncios/${evento.id}`}
-                    className="mt-auto w-full text-center px-4 py-2.5 bg-black text-white text-sm font-sans hover:bg-orange-500 transition-colors"
+                    className="mt-auto w-full text-center px-4 py-2.5 bg-black text-white text-sm font-sans hover:bg-orange-500 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200"
                   >
                     Ver evento
                   </Link>
