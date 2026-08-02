@@ -7,7 +7,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageHeader from '@/components/ui/PageHeader';
 import EmptyState from '@/components/ui/EmptyState';
-import { PROVINCIAS_POR_COMUNIDAD } from '@/lib/provinces';
+import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD } from '@/lib/provinces';
 
 interface EventoCultura {
   id: string;
@@ -25,17 +25,19 @@ const provincias = Object.values(PROVINCIAS_POR_COMUNIDAD).flat().sort();
 
 export default function CulturaPage() {
   const [eventos, setEventos] = useState<EventoCultura[]>([]);
+  const [comunidadAutonoma, setComunidadAutonoma] = useState('');
   const [provincia, setProvincia] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const cargarEventos = async (provinciaFiltro: string) => {
+  const cargarEventos = async (ccaa: string, provinciaFiltro: string) => {
     setLoading(true);
     setError(null);
     try {
       const params = new URLSearchParams();
       params.set('categoria', 'Cultura');
       params.set('limit', '60');
+      if (ccaa) params.set('comunidad_autonoma', ccaa);
       if (provinciaFiltro) params.set('provincia', provinciaFiltro);
       const res = await fetch(`/api/anuncios?${params.toString()}`);
       const data = await res.json();
@@ -52,8 +54,8 @@ export default function CulturaPage() {
   };
 
   useEffect(() => {
-    cargarEventos(provincia);
-  }, [provincia]);
+    cargarEventos(comunidadAutonoma, provincia);
+  }, [comunidadAutonoma, provincia]);
 
   const formatFecha = (fecha?: string) => {
     if (!fecha) return '';
@@ -78,7 +80,7 @@ export default function CulturaPage() {
 
       <PageHeader
         titulo="Eventos de cultura"
-        subtitulo="Descubre actividades, conciertos, talleres y exposiciones en tu provincia."
+        subtitulo="Descubre conciertos, eventos, quedadas grupales y planes culturales en tu provincia."
       >
         <Link
           href="/publicar/cultura"
@@ -90,20 +92,34 @@ export default function CulturaPage() {
       </PageHeader>
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        <div className="border border-black p-4 mb-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-          <label className="font-sans text-sm font-medium text-gray-700">
-            Filtrar por provincia
-          </label>
-          <select
-            value={provincia}
-            onChange={(e) => setProvincia(e.target.value)}
-            className="w-full sm:w-72 px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
-          >
-            <option value="">Todas las provincias</option>
-            {provincias.map((p) => (
-              <option key={p} value={p}>{p}</option>
-            ))}
-          </select>
+        <div className="border border-black p-4 mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block font-sans text-sm font-medium text-gray-700 mb-2">Comunidad autónoma</label>
+            <select
+              value={comunidadAutonoma}
+              onChange={(e) => { setComunidadAutonoma(e.target.value); setProvincia(''); }}
+              className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
+            >
+              <option value="">Todas</option>
+              {COMUNIDADES.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block font-sans text-sm font-medium text-gray-700 mb-2">Provincia</label>
+            <select
+              value={provincia}
+              onChange={(e) => setProvincia(e.target.value)}
+              disabled={!comunidadAutonoma}
+              className={`w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500 ${!comunidadAutonoma ? 'bg-gray-100 text-gray-400' : ''}`}
+            >
+              <option value="">Todas las provincias</option>
+              {(comunidadAutonoma ? PROVINCIAS_POR_COMUNIDAD[comunidadAutonoma] || [] : []).map((p) => (
+                <option key={p} value={p}>{p}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {loading ? (

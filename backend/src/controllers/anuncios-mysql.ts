@@ -362,6 +362,7 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       titulo,
       descripcion,
       categoria,
+      subcategoria,
       comunidad_autonoma,
       provincia,
       modalidad,
@@ -421,11 +422,11 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
       await connection.execute(
         `INSERT INTO anuncios (
-          id, usuario_id, titulo, descripcion, categoria, comunidad_autonoma,
+          id, usuario_id, titulo, descripcion, categoria, subcategoria, comunidad_autonoma,
           comunidad_id, provincia, provincia_id, modalidad, visible, estado_moderacion, motivo_rechazo, ip_creador, cartel_url, precio, creado_at, actualizado_at, vistas
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
-          anuncioId, userId, titulo.trim(), descripcion.trim(), categoria,
+          anuncioId, userId, titulo.trim(), descripcion.trim(), categoria, subcategoria || null,
           comunidad_autonoma, comunidadId, provinciaNombre, provinciaId, modalidad || 'servicio',
           visible, estadoModeracion, motivoRechazo, ip_creador, cartel_url || null, precioValor, now, now, 0
         ]

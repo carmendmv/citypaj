@@ -10,7 +10,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
 import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD } from '@/lib/provinces';
 
-type Categoria = 'ocio' | 'servicios' | 'educacion' | 'empleo' | 'intercambios';
+type Categoria = 'ocio' | 'servicios' | 'educacion' | 'empleo' | 'intercambios' | 'cultura';
 
 export default function PublicarPage() {
   const router = useRouter();
@@ -26,6 +26,8 @@ export default function PublicarPage() {
   const [provincia, setProvincia] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
+  const [cartelUrl, setCartelUrl] = useState('');
+  const [precio, setPrecio] = useState('');
   const [acceptedRules, setAcceptedRules] = useState(false);
 
   const provinciasDisponibles = comunidadAutonoma ? PROVINCIAS_POR_COMUNIDAD[comunidadAutonoma] || [] : [];
@@ -82,6 +84,11 @@ export default function PublicarPage() {
           provincia,
           email,
           telefono: telefono || undefined,
+          ...(categoria === 'cultura' ? {
+            subcategoria: 'Evento',
+            cartel_url: cartelUrl || undefined,
+            precio: precio ? Number(precio) : undefined,
+          } : {}),
         }),
       });
 
@@ -223,6 +230,7 @@ export default function PublicarPage() {
                     <option value="educacion">Formación</option>
                     <option value="empleo">Empleo</option>
                     <option value="intercambios">Comunidad</option>
+                    <option value="cultura">Cultura / Evento</option>
                   </select>
                 </div>
 
@@ -320,6 +328,39 @@ export default function PublicarPage() {
                   />
                 </div>
               </div>
+
+              {categoria === 'cultura' && (
+                <div className="border border-orange-200 p-4 bg-orange-50">
+                  <div className="font-serif text-base font-bold text-black mb-4">Datos del evento</div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block font-sans text-xs text-gray-600 mb-2">Cartel del evento (URL de la imagen)</label>
+                      <input
+                        value={cartelUrl}
+                        onChange={(e) => setCartelUrl(e.target.value)}
+                        placeholder="https://..."
+                        className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
+                      />
+                      {cartelUrl && (
+                        <img src={cartelUrl} alt="Vista previa" className="mt-3 max-h-40 border border-black" />
+                      )}
+                    </div>
+                    <div>
+                      <label className="block font-sans text-xs text-gray-600 mb-2">Precio (€)</label>
+                      <input
+                        type="number"
+                        min={0}
+                        step={0.01}
+                        value={precio}
+                        onChange={(e) => setPrecio(e.target.value)}
+                        placeholder="0.00"
+                        className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
+                      />
+                      <p className="mt-1 text-xs text-gray-500 font-sans">Dejar en 0 o vacío para eventos gratuitos.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="border border-black p-4">
                 <div className="font-serif text-base font-bold text-black">{t('publish.rules_title', 'Normas de publicación')}</div>

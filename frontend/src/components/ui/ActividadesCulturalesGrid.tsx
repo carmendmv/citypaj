@@ -33,42 +33,23 @@ export default function ActividadesCulturalesGrid({ comunidadAutonoma, className
   const [actividades, setActividades] = useState<ActividadCultural[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isFallback, setIsFallback] = useState(false);
 
   useEffect(() => {
     const fetchActividades = async () => {
       setLoading(true);
       setError(null);
-      
       try {
-        // Intentar obtener datos de la API
         const response = await fetch(`/api/actividades-culturales?ccaa=${encodeURIComponent(comunidadAutonoma)}&limit=6`);
-        
         if (response.ok) {
           const data = await response.json();
           setActividades(data.actividades || []);
-          setIsFallback(data.isFallback || false);
         } else {
           throw new Error('Error al cargar actividades');
         }
       } catch (err) {
         console.error('Error cargando actividades culturales:', err);
-        
-        // Cargar datos fallback si la API falla
-        try {
-          const fallbackResponse = await fetch('/api/actividades-culturales/fallback');
-          if (fallbackResponse.ok) {
-            const data = await fallbackResponse.json();
-            setActividades(data.actividades.slice(0, 6) || []);
-            setIsFallback(true);
-          } else {
-            throw new Error('Error cargando datos fallback');
-          }
-        } catch (fallbackErr) {
-          console.error('Error cargando datos fallback:', fallbackErr);
-          setError('No se pudieron cargar las actividades culturales');
-          setActividades([]);
-        }
+        setError('No se pudieron cargar las actividades culturales');
+        setActividades([]);
       } finally {
         setLoading(false);
       }
@@ -104,11 +85,6 @@ export default function ActividadesCulturalesGrid({ comunidadAutonoma, className
             <p className="font-sans text-sm text-gray-600 mb-4">
               {error || 'No hay actividades culturales disponibles en este momento.'}
             </p>
-            {isFallback && (
-              <p className="font-sans text-xs text-gray-500">
-                Datos fallback — última actualización manual
-              </p>
-            )}
           </div>
         </div>
       </section>
@@ -125,14 +101,6 @@ export default function ActividadesCulturalesGrid({ comunidadAutonoma, className
         <p className="font-sans text-sm text-gray-600">
           Eventos culturales, formativos y de voluntariado en tu comunidad
         </p>
-        {isFallback && (
-          <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 bg-yellow-50 border border-yellow-200 rounded">
-            <AlertCircle className="w-3 h-3 text-yellow-600" />
-            <span className="text-xs text-yellow-800 font-sans">
-              Datos fallback — última actualización manual
-            </span>
-          </div>
-        )}
       </div>
 
       {/* Grid de tarjetas */}

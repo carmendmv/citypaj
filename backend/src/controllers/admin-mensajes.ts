@@ -379,18 +379,18 @@ export const verMensaje = async (req: AuthRequest, res: Response): Promise<void>
   }
 };
 
-const MIME_PERMITIDOS = new Set([
-  'application/pdf',
-  'image/png',
-  'image/jpeg',
-  'image/jpg',
-  'image/webp',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'text/plain',
+const MIME_BLOQUEADOS = new Set([
+  'application/x-msdownload',
+  'application/x-exe',
+  'application/x-msdos-program',
+  'application/x-bat',
+  'application/x-sh',
+  'application/x-cmd',
+  'application/x-scr',
+  'text/x-sh',
 ]);
 
-const EXT_PERMITIDAS = new Set(['.pdf', '.png', '.jpg', '.jpeg', '.webp', '.doc', '.docx', '.txt']);
+const EXT_BLOQUEADAS = new Set(['.exe', '.bat', '.sh', '.cmd', '.scr', '.msi', '.com', '.dll']);
 
 export const subirAdjunto = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
@@ -414,11 +414,11 @@ export const subirAdjunto = async (req: AuthRequest, res: Response): Promise<voi
 
     const file = req.file as any;
     const ext = path.extname(file.originalname).toLowerCase();
-    const mime = file.mimetype;
+    const mime = file.mimetype || 'application/octet-stream';
     const size = file.size;
 
-    if (!EXT_PERMITIDAS.has(ext) || !MIME_PERMITIDOS.has(mime) || size > 5 * 1024 * 1024) {
-      res.status(400).json({ success: false, error: 'Tipo o tamaño de archivo no permitido' });
+    if (MIME_BLOQUEADOS.has(mime) || EXT_BLOQUEADAS.has(ext) || size > 20 * 1024 * 1024) {
+      res.status(400).json({ success: false, error: 'Tipo o tamaño de archivo no permitido (máx. 20 MB)' });
       return;
     }
 

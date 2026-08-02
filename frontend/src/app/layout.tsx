@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { AuthProvider } from '@/context/AuthContext'
 import Providers from './providers';
+import CommunitySketch from '@/components/illustrations/CommunitySketch';
 
 export const metadata: Metadata = {
   title: 'CityPaj - Tu ciudad, tus anuncios, tu comunidad',
@@ -75,9 +76,12 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <body className="antialiased" suppressHydrationWarning>
+      <body className="antialiased relative" suppressHydrationWarning>
         <div id="root">
           <Providers>{children}</Providers>
+        </div>
+        <div className="fixed bottom-0 right-0 w-72 sm:w-96 pointer-events-none opacity-[0.07] text-orange-500 z-0 -mb-8 -mr-8" aria-hidden="true">
+          <CommunitySketch />
         </div>
       </body>
     </html>

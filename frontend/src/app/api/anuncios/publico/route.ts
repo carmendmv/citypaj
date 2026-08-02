@@ -7,6 +7,7 @@ export const dynamic = 'force-dynamic';
 const CATEGORIA_MAP: Record<string, string> = {
   educacion: 'formacion',
   intercambios: 'comunidad',
+  cultura: 'Cultura',
 };
 
 export async function POST(request: NextRequest) {

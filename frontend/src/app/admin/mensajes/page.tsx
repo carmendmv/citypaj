@@ -43,6 +43,7 @@ export default function AdminMensajesPage() {
   const [entidades, setEntidades] = useState<EntidadAdjunta[]>([]);
   const [nuevaEntidad, setNuevaEntidad] = useState<EntidadAdjunta>({ entidad_tipo: 'anuncio', entidad_id: '', titulo: '' });
   const [form, setForm] = useState({ asunto: '', cuerpo: '', prioridad: 'normal' });
+  const [adjuntos, setAdjuntos] = useState<File[]>([]);
 
   const isAdmin = user?.rol === 'admin';
   const isStaff = user?.rol === 'admin' || user?.rol === 'moderador';
@@ -72,6 +73,25 @@ export default function AdminMensajesPage() {
     fetchMensajes(activeTab);
   }, [user, router, activeTab]);
 
+  const subirAdjuntos = async (mensajeId: number, files: File[]) => {
+    if (files.length === 0) return;
+    const resultados = await Promise.all(
+      files.map(async (file) => {
+        const data = new FormData();
+        data.append('archivo', file);
+        const res = await fetch(`/api/admin/mensajes/${mensajeId}/adjuntos`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${accessToken}` },
+          body: data,
+        });
+        return res.ok;
+      })
+    );
+    if (!resultados.every(Boolean)) {
+      setError('El mensaje se envió, pero algunos adjuntos no se pudieron subir.');
+    }
+  };
+
   const enviarMensaje = async (comoBorrador: boolean) => {
     setSending(true);
     setError(null);
@@ -91,9 +111,11 @@ export default function AdminMensajesPage() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Error enviando mensaje');
+      await subirAdjuntos(json.data.id as number, adjuntos);
       setForm({ asunto: '', cuerpo: '', prioridad: 'normal' });
       setDestinatario(null);
       setEntidades([]);
+      setAdjuntos([]);
       setActiveTab(comoBorrador ? 'borradores' : 'enviados');
     } catch (err: any) {
       setError(err.message);
@@ -315,6 +337,35 @@ export default function AdminMensajesPage() {
                     Añadir
                   </button>
                 </div>
+              </div>
+
+              <div className="border border-slate-200 rounded-lg p-4 bg-slate-50">
+                <div className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
+                  <Paperclip className="w-4 h-4" />
+                  Archivos adjuntos
+                </div>
+                <input
+                  type="file"
+                  multiple
+                  onChange={(e) => setAdjuntos(Array.from(e.target.files || []))}
+                  className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-black file:text-white hover:file:bg-orange-500 cursor-pointer"
+                />
+                {adjuntos.length > 0 && (
+                  <ul className="mt-3 space-y-1">
+                    {adjuntos.map((f, i) => (
+                      <li key={i} className="flex items-center justify-between text-xs text-gray-600 bg-white border border-slate-200 px-2 py-1 rounded">
+                        <span className="truncate max-w-[70%]">{f.name} ({(f.size / 1024 / 1024).toFixed(2)} MB)</span>
+                        <button
+                          type="button"
+                          onClick={() => setAdjuntos(adjuntos.filter((_, idx) => idx !== i))}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
 
               <div className="flex items-center gap-3">
