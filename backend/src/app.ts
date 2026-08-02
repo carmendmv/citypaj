@@ -46,9 +46,9 @@ app.use(cors({
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: config.rateLimit.general, // limit each IP to 100 requests per windowMs
+  max: config.env === 'development' ? 10000 : config.rateLimit.general,
   message: {
-    error: 'Too many requests from this IP, please try again later.',
+    error: 'Demasiadas peticiones, por favor inténtalo más tarde.',
   },
   standardHeaders: true,
   legacyHeaders: false,
@@ -57,9 +57,9 @@ const limiter = rateLimit({
 // Stricter rate limiting for auth endpoints
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: config.rateLimit.auth, // limit each IP to 5 requests per windowMs
+  max: config.env === 'development' ? 100 : config.rateLimit.auth,
   message: {
-    error: 'Too many authentication attempts, please try again later.',
+    error: 'Demasiados intentos de autenticación, por favor inténtalo más tarde.',
   },
   standardHeaders: true,
   legacyHeaders: false,

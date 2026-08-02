@@ -63,6 +63,13 @@ import {
   cambiarEstadoTarea,
   eliminarTarea,
 } from '../controllers/admin-tareas';
+import {
+  listarNotas,
+  getNota,
+  crearNota,
+  actualizarNota,
+  eliminarNota,
+} from '../controllers/admin-agenda';
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
@@ -120,13 +127,13 @@ router.put('/contactos-institucionales/:id', auth, requireRole(['admin']), actua
 router.patch('/contactos-institucionales/:id/verificar', auth, requireRole(['admin']), verificarContacto);
 router.delete('/contactos-institucionales/:id', auth, requireRole(['admin']), eliminarContacto);
 
-// Plantillas de comunicación
-router.get('/plantillas', auth, requireRole(['admin']), listarPlantillas);
-router.get('/plantillas/:id', auth, requireRole(['admin']), getPlantilla);
+// Plantillas de comunicación (lectura también para moderadores)
+router.get('/plantillas', auth, requireRole(['admin', 'moderador']), listarPlantillas);
+router.get('/plantillas/:id', auth, requireRole(['admin', 'moderador']), getPlantilla);
 router.post('/plantillas', auth, requireRole(['admin']), crearPlantilla);
+router.post('/plantillas/:id/generar-borrador', auth, requireRole(['admin', 'moderador']), generarBorrador);
 router.put('/plantillas/:id', auth, requireRole(['admin']), actualizarPlantilla);
 router.delete('/plantillas/:id', auth, requireRole(['admin']), eliminarPlantilla);
-router.post('/plantillas/:id/generar-borrador', auth, requireRole(['admin']), generarBorrador);
 
 // Comunicaciones institucionales
 router.get('/comunicaciones', auth, requireRole(['admin']), listarComunicaciones);
@@ -145,5 +152,12 @@ router.post('/tareas', auth, requireRole(['admin']), crearTarea);
 router.put('/tareas/:id', auth, requireRole(['admin']), actualizarTarea);
 router.patch('/tareas/:id/estado', auth, requireRole(['admin', 'moderador']), cambiarEstadoTarea);
 router.delete('/tareas/:id', auth, requireRole(['admin']), eliminarTarea);
+
+// Agenda compartida (admin y moderador)
+router.get('/agenda', auth, requireRole(['admin', 'moderador']), listarNotas);
+router.get('/agenda/:id', auth, requireRole(['admin', 'moderador']), getNota);
+router.post('/agenda', auth, requireRole(['admin', 'moderador']), crearNota);
+router.put('/agenda/:id', auth, requireRole(['admin', 'moderador']), actualizarNota);
+router.delete('/agenda/:id', auth, requireRole(['admin', 'moderador']), eliminarNota);
 
 export { router as adminRoutes };

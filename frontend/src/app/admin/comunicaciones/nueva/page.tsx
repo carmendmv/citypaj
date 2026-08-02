@@ -110,14 +110,14 @@ export default function NuevaComunicacionPage() {
         method: 'POST',
         headers: { ...headers, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          plantilla_id: plantillaId ? parseInt(plantillaId) : null,
-          contacto_id: destinatario?.tipo_destinatario === 'institucional' ? destinatario.id : null,
+          plantilla_id: null,
+          contacto_id: null,
           asunto,
           cuerpo,
           provincia: variables.provincia,
-          institucion: destinatario?.nombre || variables.institucion,
-          area: destinatario?.area,
-          email_destino: destinatario?.email,
+          institucion: variables.institucion,
+          area: null,
+          email_destino: null,
           entidades,
           variables,
         }),
@@ -157,30 +157,6 @@ export default function NuevaComunicacionPage() {
           {success && <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-lg">{success}</div>}
 
           <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Plantilla</label>
-              <select
-                value={plantillaId}
-                onChange={(e) => usarPlantilla(e.target.value)}
-                className="w-full px-3 py-2 text-sm border border-black bg-white"
-              >
-                <option value="">Selecciona una plantilla (opcional)</option>
-                {plantillasConContenido.map((p) => (
-                  <option key={p.id} value={p.id}>{p.nombre}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <RecipientInput
-                tipo="todos"
-                selected={destinatario}
-                onSelect={setDestinatario}
-                label="Destinatario institucional"
-                placeholder="Escribe institución, área, provincia, email, admin o moderador..."
-              />
-            </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Provincia</label>
@@ -319,26 +295,13 @@ export default function NuevaComunicacionPage() {
               </button>
               <button
                 onClick={() => guardar(true)}
-                disabled={sending || !destinatario}
+                disabled={sending}
                 className="inline-flex items-center gap-2 bg-orange-500 text-white border border-orange-500 px-6 py-2 text-sm hover:bg-black hover:text-white transition-colors disabled:opacity-50"
               >
                 <Send className="w-4 h-4" />
                 {sending ? 'Guardando...' : 'Marcar como enviada'}
               </button>
-              {!destinatario && <span className="text-xs text-slate-500">Selecciona un destinatario para marcar como enviado.</span>}
             </div>
-
-            {destinatario?.email && (
-              <a
-                href={`mailto:${encodeURIComponent(destinatario.email)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-orange-600 hover:underline"
-              >
-                <FileText className="w-4 h-4" />
-                Abrir borrador en el cliente de correo
-              </a>
-            )}
           </div>
         </div>
       </main>

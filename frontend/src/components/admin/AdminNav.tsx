@@ -23,6 +23,7 @@ import {
   Megaphone,
   CheckSquare,
   AlertTriangle,
+  CalendarDays,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
@@ -32,13 +33,14 @@ const navBase = [
   { href: '/admin/comunidad', icon: MessageSquare, label: 'Comunidad' },
   { href: '/admin/sugerencias', icon: Lightbulb, label: 'Sugerencias' },
   { href: '/admin/mensajes', icon: Mail, label: 'Mensajes' },
+  { href: '/admin/plantillas', icon: FileStack, label: 'Plantillas' },
+  { href: '/admin/agenda', icon: CalendarDays, label: 'Agenda' },
 ];
 
 const navAdmin = [
   { href: '/admin/usuarios', icon: Users, label: 'Usuarios' },
   { href: '/admin/moderadores', icon: Shield, label: 'Moderadores' },
   { href: '/admin/instituciones/contactos', icon: Building2, label: 'Agenda' },
-  { href: '/admin/plantillas', icon: FileStack, label: 'Plantillas' },
   { href: '/admin/comunicaciones', icon: Megaphone, label: 'Comunicaciones' },
   { href: '/admin/tareas', icon: CheckSquare, label: 'Tareas' },
   { href: '/admin/necesidades', icon: AlertTriangle, label: 'Necesidades' },

@@ -20,6 +20,7 @@ export default function AdminPlantillasPage() {
   const router = useRouter();
   const { user, accessToken } = useAuth();
   const isAdmin = user?.rol === 'admin';
+  const isStaff = user?.rol === 'admin' || user?.rol === 'moderador';
 
   const [plantillas, setPlantillas] = useState<Plantilla[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,9 +48,9 @@ export default function AdminPlantillasPage() {
 
   useEffect(() => {
     if (!user) { router.replace('/admin/acceder'); return; }
-    if (!isAdmin) { router.replace('/admin'); return; }
+    if (!isStaff) { router.replace('/admin'); return; }
     fetchPlantillas();
-  }, [user, q, isAdmin, router, accessToken]);
+  }, [user, q, isStaff, router, accessToken]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
