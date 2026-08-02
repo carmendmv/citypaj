@@ -10,6 +10,7 @@ import EmptyState from '@/components/ui/EmptyState';
 import LoadingRows from '@/components/ui/LoadingRows';
 import ReportModal from '@/components/ui/ReportModal';
 import NombreModal from './NombreModal';
+import ComunidadSketch from '@/components/illustrations/ComunidadSketch';
 import { TEMAS_COMUNIDAD, ORDENES_COMUNIDAD } from '@/lib/comunidad';
 import { PROVINCIAS_POR_COMUNIDAD, COMUNIDADES, PROVINCIA_NORMALIZACION } from '@/lib/provinces';
 
@@ -197,6 +198,9 @@ export default function ComunidadVista({
                 </button>
               )}
             </div>
+          </div>
+          <div className="absolute right-0 bottom-0 w-64 sm:w-80 md:w-96 opacity-10 text-white pointer-events-none z-0" aria-hidden="true">
+            <ComunidadSketch />
           </div>
         </section>
 
