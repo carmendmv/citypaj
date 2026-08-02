@@ -109,7 +109,7 @@ export default function AdminCalendarioPage() {
     const firstDay = new Date(year, month, 1);
     const startDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1; // Lunes primero
     const totalDays = new Date(year, month + 1, 0).getDate();
-    const cells: { day: number; items: CalItem[] }[] = [];
+    const cells: { day: number; items: CalItem[]; fecha: string }[] = [];
 
     for (let i = 0; i < 42; i++) {
       const d = i - startDay + 1;
