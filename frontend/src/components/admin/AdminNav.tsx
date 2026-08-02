@@ -25,6 +25,7 @@ import {
   AlertTriangle,
   CalendarDays,
   Palette,
+  Calendar,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
@@ -36,6 +37,7 @@ const navBase = [
   { href: '/admin/mensajes', icon: Mail, label: 'Mensajes' },
   { href: '/admin/plantillas', icon: FileStack, label: 'Plantillas' },
   { href: '/admin/cultura', icon: Palette, label: 'Cultura' },
+  { href: '/admin/calendario', icon: Calendar, label: 'Calendario' },
   { href: '/admin/agenda', icon: CalendarDays, label: 'Agenda' },
 ];
 
