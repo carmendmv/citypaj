@@ -12,6 +12,7 @@ interface Plantilla {
   nombre: string;
   asunto: string;
   cuerpo: string;
+  tipo: string;
 }
 
 interface EntidadAdjunta {
@@ -68,9 +69,9 @@ export default function NuevaComunicacionPage() {
   };
 
   const usarPlantilla = (id: string) => {
-    const p = plantillas.find((x) => String(x.id) === id);
-    if (!p) return;
     setPlantillaId(id);
+    const p = plantillasConContenido.find((x) => String(x.id) === id);
+    if (!p) return;
     let a = p.asunto;
     let c = p.cuerpo;
     Object.entries(variables).forEach(([k, v]) => {
@@ -83,7 +84,7 @@ export default function NuevaComunicacionPage() {
 
   const reemplazarEnTiempoReal = (vars: Record<string, string>) => {
     if (!plantillaId) return;
-    const p = plantillas.find((x) => String(x.id) === plantillaId);
+    const p = plantillasConContenido.find((x) => String(x.id) === plantillaId);
     if (!p) return;
     let a = p.asunto;
     let c = p.cuerpo;
@@ -94,6 +95,12 @@ export default function NuevaComunicacionPage() {
     setAsunto(a);
     setCuerpo(c);
   };
+
+  const plantillasConContenido = plantillas.filter((p) =>
+    p.tipo === 'institucional' &&
+    p.asunto?.trim() &&
+    p.cuerpo?.trim()
+  );
 
   const guardar = async (comoEnviado: boolean) => {
     setSending(true);
@@ -158,7 +165,7 @@ export default function NuevaComunicacionPage() {
                 className="w-full px-3 py-2 text-sm border border-black bg-white"
               >
                 <option value="">Selecciona una plantilla (opcional)</option>
-                {plantillas.map((p) => (
+                {plantillasConContenido.map((p) => (
                   <option key={p.id} value={p.id}>{p.nombre}</option>
                 ))}
               </select>

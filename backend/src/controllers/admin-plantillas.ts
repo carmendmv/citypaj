@@ -172,7 +172,11 @@ export const listarPlantillas = async (
     const q = (req.query.q as string || '').trim();
     const activa = req.query.activa as string | undefined;
 
-    const conditions: string[] = ['eliminada = 0'];
+    const conditions: string[] = [
+      "eliminada = 0",
+      "asunto IS NOT NULL AND asunto != ''",
+      "cuerpo IS NOT NULL AND cuerpo != ''",
+    ];
     const values: any[] = [];
 
     if (q) {
@@ -187,7 +191,7 @@ export const listarPlantillas = async (
     const where = conditions.join(' AND ');
 
     const [rows] = await pool.execute(
-      `SELECT id, nombre, asunto, descripcion, tipo, activa, creado_at
+      `SELECT id, nombre, asunto, cuerpo, descripcion, tipo, activa, creado_at
        FROM plantillas_comunicacion
        WHERE ${where}
        ORDER BY creado_at DESC
