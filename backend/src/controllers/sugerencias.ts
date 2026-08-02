@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { pool } from '../config/database';
+import { getClientIp } from '../utils/ip';
 
 export interface Sugerencia {
   id?: number;
@@ -40,11 +41,13 @@ export const createSugerencia = async (req: Request, res: Response): Promise<voi
       return;
     }
 
+    const ip_creador = getClientIp(req);
+
     const [result] = await pool.execute(
       `INSERT INTO sugerencias (
         nombre, email, edad, titulo, descripcion, categoria, prioridad,
-        anonimo, comunidad_autonoma, fecha, solicitud_ayuntamiento, estado
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, 'pendiente')`,
+        anonimo, comunidad_autonoma, fecha, solicitud_ayuntamiento, ip_creador, estado
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, 'pendiente')`,
       [
         anonimo ? null : (nombre?.trim() || null),
         anonimo ? null : (email?.trim() || null),
@@ -55,7 +58,8 @@ export const createSugerencia = async (req: Request, res: Response): Promise<voi
         prioridad,
         anonimo ? 1 : 0,
         comunidad_autonoma,
-        solicitud_ayuntamiento || null
+        solicitud_ayuntamiento || null,
+        ip_creador
       ]
     ) as any;
 

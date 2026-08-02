@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { pool } from '../config/database';
+import { getClientIp } from '../utils/ip';
 
 export const getPropuestas = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -93,10 +94,12 @@ export const createPropuesta = async (req: Request, res: Response): Promise<void
       return;
     }
 
+    const ip_creador = getClientIp(req);
+
     const [result] = await pool.execute(
-      `INSERT INTO propuestas (usuario_id, titulo, descripcion, provincia, categoria, apoyos, visible, estado_moderacion)
-       VALUES (?, ?, ?, ?, ?, 0, 1, 'approved')`,
-      [usuario_id || null, titulo.trim(), descripcion.trim(), provincia, categoria]
+      `INSERT INTO propuestas (usuario_id, titulo, descripcion, provincia, categoria, ip_creador, apoyos, visible, estado_moderacion)
+       VALUES (?, ?, ?, ?, ?, ?, 0, 1, 'approved')`,
+      [usuario_id || null, titulo.trim(), descripcion.trim(), provincia, categoria, ip_creador]
     ) as any;
 
     res.status(201).json({

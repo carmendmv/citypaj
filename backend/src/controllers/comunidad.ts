@@ -240,9 +240,9 @@ export const createPublicacion = async (req: AuthRequest, res: Response): Promis
 
     const [result] = await pool.execute(
       `INSERT INTO comunidad_publicaciones
-       (usuario_id, autor_nombre, ip, titulo, contenido, provincia, tema, visible, estado_moderacion)
-       VALUES (?, ?, ?, ?, ?, ?, ?, 1, 'approved')`,
-      [usuarioId || null, autorNombre.trim(), ip, tituloLimpio, contenidoLimpio, provincia, tema]
+       (usuario_id, autor_nombre, ip, ip_creador, titulo, contenido, provincia, tema, visible, estado_moderacion)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 'approved')`,
+      [usuarioId || null, autorNombre.trim(), ip, ip, tituloLimpio, contenidoLimpio, provincia, tema]
     ) as any;
 
     res.status(201).json({

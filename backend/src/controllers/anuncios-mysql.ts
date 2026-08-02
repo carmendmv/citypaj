@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { randomUUID } from 'crypto';
 import { AuthRequest } from '../middleware/auth';
 import { pool } from '../config/database';
+import { getClientIp } from '../utils/ip';
 
 const isValidId = (id: any): id is string =>
   typeof id === 'string' && id.trim() !== '' && id !== 'undefined' && id !== 'null';
@@ -378,6 +379,7 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
     try {
       const anuncioId = randomUUID();
       const now = new Date();
+      const ip_creador = getClientIp(req);
 
       // Resolver IDs de comunidad y provincia
       let comunidadId = 0;
@@ -412,12 +414,12 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       await connection.execute(
         `INSERT INTO anuncios (
           id, usuario_id, titulo, descripcion, categoria, comunidad_autonoma,
-          comunidad_id, provincia, provincia_id, modalidad, visible, estado_moderacion, motivo_rechazo, creado_at, actualizado_at, vistas
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          comunidad_id, provincia, provincia_id, modalidad, visible, estado_moderacion, motivo_rechazo, ip_creador, creado_at, actualizado_at, vistas
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           anuncioId, userId, titulo.trim(), descripcion.trim(), categoria,
           comunidad_autonoma, comunidadId, provinciaNombre, provinciaId, modalidad || 'servicio',
-          visible, estadoModeracion, motivoRechazo, now, now, 0
+          visible, estadoModeracion, motivoRechazo, ip_creador, now, now, 0
         ]
       );
 

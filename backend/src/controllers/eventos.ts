@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { pool } from '../config/database';
+import { getClientIp } from '../utils/ip';
 
 export const getEventos = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -65,10 +66,12 @@ export const createEvento = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
+    const ip_creador = getClientIp(req);
+
     const [result] = await pool.execute(
-      `INSERT INTO eventos (usuario_id, titulo, descripcion, categoria, provincia, fecha_inicio, fecha_fin, precio, ubicacion, url, visible)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
-      [usuario_id || null, titulo.trim(), descripcion?.trim() || null, categoria, provincia, fecha_inicio, fecha_fin || null, precio || 0, ubicacion || null, url || null]
+      `INSERT INTO eventos (usuario_id, titulo, descripcion, categoria, provincia, fecha_inicio, fecha_fin, precio, ubicacion, url, ip_creador, visible)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
+      [usuario_id || null, titulo.trim(), descripcion?.trim() || null, categoria, provincia, fecha_inicio, fecha_fin || null, precio || 0, ubicacion || null, url || null, ip_creador]
     ) as any;
 
     res.status(201).json({
