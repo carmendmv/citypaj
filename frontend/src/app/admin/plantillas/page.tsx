@@ -49,7 +49,7 @@ export default function AdminPlantillasPage() {
     if (!user) { router.replace('/admin/acceder'); return; }
     if (!isAdmin) { router.replace('/admin'); return; }
     fetchPlantillas();
-  }, [user, q, isAdmin, router]);
+  }, [user, q, isAdmin, router, accessToken]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

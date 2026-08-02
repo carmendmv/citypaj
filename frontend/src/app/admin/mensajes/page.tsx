@@ -153,10 +153,10 @@ export default function AdminMensajesPage() {
 
   const tabs = [
     { key: 'recibidos', label: 'Recibidos', icon: Inbox },
+    { key: 'nuevo', label: 'Nuevo', icon: Send },
     { key: 'enviados', label: 'Enviados', icon: EnviadosIcon },
     { key: 'borradores', label: 'Borradores', icon: Save },
     { key: 'archivados', label: 'Archivados', icon: Archive },
-    { key: 'nuevo', label: 'Nuevo', icon: Send },
   ] as const;
 
   const prioridadColor: Record<string, string> = {

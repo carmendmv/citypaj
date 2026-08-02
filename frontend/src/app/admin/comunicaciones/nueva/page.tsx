@@ -58,7 +58,7 @@ export default function NuevaComunicacionPage() {
       setEntidades([{ entidad_tipo: preselectedTipo as any, entidad_id: preselectedId }]);
     }
     fetchPlantillas();
-  }, [user, isAdmin, router, preselectedTipo, preselectedId]);
+  }, [user, isAdmin, router, preselectedTipo, preselectedId, accessToken]);
 
   const fetchPlantillas = async () => {
     try {
