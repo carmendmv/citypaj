@@ -293,6 +293,7 @@ export const getAnuncioById = async (req: Request, res: Response): Promise<void>
         a.contacto_email,
         a.contacto_telefono,
         a.contacto_anonimo,
+        a.cartel_url,
         a.visible,
         a.estado_moderacion,
         a.motivo_rechazo,
@@ -360,7 +361,8 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       categoria,
       comunidad_autonoma,
       provincia,
-      modalidad
+      modalidad,
+      cartel_url
     } = req.body;
 
     const userId = req.user?.id || ANON_USER_ID;
@@ -414,12 +416,12 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       await connection.execute(
         `INSERT INTO anuncios (
           id, usuario_id, titulo, descripcion, categoria, comunidad_autonoma,
-          comunidad_id, provincia, provincia_id, modalidad, visible, estado_moderacion, motivo_rechazo, ip_creador, creado_at, actualizado_at, vistas
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          comunidad_id, provincia, provincia_id, modalidad, visible, estado_moderacion, motivo_rechazo, ip_creador, cartel_url, creado_at, actualizado_at, vistas
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           anuncioId, userId, titulo.trim(), descripcion.trim(), categoria,
           comunidad_autonoma, comunidadId, provinciaNombre, provinciaId, modalidad || 'servicio',
-          visible, estadoModeracion, motivoRechazo, ip_creador, now, now, 0
+          visible, estadoModeracion, motivoRechazo, ip_creador, cartel_url || null, now, now, 0
         ]
       );
 

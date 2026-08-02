@@ -26,6 +26,8 @@ interface Anuncio {
 
   categoria: string;
 
+  cartel_url?: string;
+
   comunidad_autonoma: string;
 
   provincia: string;
@@ -577,6 +579,14 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
             <section className="border border-black p-6">
 
               <h2 className="font-serif text-xl font-bold text-black">Descripción</h2>
+
+              {anuncio.cartel_url && (
+                <img
+                  src={anuncio.cartel_url}
+                  alt="Cartel del evento"
+                  className="mt-4 w-full max-w-md border border-black"
+                />
+              )}
 
               <p className="mt-4 font-sans text-base text-black/80 leading-relaxed whitespace-pre-line">
 

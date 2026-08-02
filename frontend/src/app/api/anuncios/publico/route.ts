@@ -15,10 +15,13 @@ export async function POST(request: NextRequest) {
       titulo, 
       descripcion, 
       categoria, 
+      subcategoria,
       nombre, 
       comunidad_autonoma, 
+      provincia,
       email, 
       telefono,
+      cartel_url,
       turnstile_token 
     } = await request.json();
 
@@ -48,13 +51,15 @@ export async function POST(request: NextRequest) {
         titulo: titulo.trim(),
         descripcion: descripcion.trim(),
         categoria: categoriaBackend,
+        subcategoria: subcategoria || null,
         comunidad_autonoma: comunidad_autonoma.trim(),
-        provincia: comunidad_autonoma, // Por ahora usamos la misma comunidad como provincia
+        provincia: (provincia || comunidad_autonoma).trim(),
         precio: null,
         modalidad: 'servicio',
         nombre: nombre.trim(),
         email: email.trim(),
         telefono: telefono || undefined,
+        cartel_url: cartel_url || undefined,
         turnstile_token
       }),
     });
