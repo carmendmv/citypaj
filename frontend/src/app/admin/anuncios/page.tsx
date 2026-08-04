@@ -10,7 +10,6 @@ import {
 import Pagination from '@/components/ui/Pagination';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD, PROVINCIA_NORMALIZACION } from '@/lib/provinces';
 
 interface AnuncioModeracion {
@@ -386,7 +385,6 @@ export default function AdminAnunciosPage() {
             </Link>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -867,7 +865,6 @@ export default function AdminAnunciosPage() {
         </div>
       )}
 
-      <Footer />
     </div>
   );
 }

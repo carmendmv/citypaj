@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Shield, Users } from 'lucide-react';
 import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import PasswordInput from '@/components/ui/PasswordInput';
 import { useAuth } from '@/context/AuthContext';
 
@@ -165,7 +164,6 @@ export default function AdminLoginPage() {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 }

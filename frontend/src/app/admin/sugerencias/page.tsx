@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { Printer, Trash2 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import Footer from '@/components/layout/Footer';
 import Pagination from '@/components/ui/Pagination';
 
 interface Estadisticas {
@@ -521,6 +520,5 @@ export default function AdminSugerencias() {
         )}
       </div>
     </div>
-    <Footer />
   </>);
 }

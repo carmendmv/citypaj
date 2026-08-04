@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import Footer from '@/components/layout/Footer';
 import { TEMAS_COMUNIDAD } from '@/lib/comunidad';
 
 interface PublicacionAdmin {
@@ -253,6 +252,5 @@ export default function AdminComunidadPage() {
         )}
       </div>
     </div>
-    <Footer />
   </>);
 }

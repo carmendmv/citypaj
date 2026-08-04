@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { Users, Shield, Search, AlertTriangle } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import AdminNav from '@/components/admin/AdminNav';
-import Footer from '@/components/layout/Footer';
 import Pagination from '@/components/ui/Pagination';
 
 interface Usuario {
@@ -272,7 +271,6 @@ export default function AdminUsuariosPage() {
             </div>
           )}
         </div>
-      <Footer />
       </main>
     </div>
   );

@@ -20,7 +20,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import AdminNav from '@/components/admin/AdminNav';
-import Footer from '@/components/layout/Footer';
 import DashboardAcciones from '@/components/admin/DashboardAcciones';
 
 interface ResumenData {
@@ -430,7 +429,6 @@ export default function AdminDashboardPage() {
             </>
           )}
         </div>
-      <Footer />
       </main>
     </div>
   );
