@@ -40,16 +40,16 @@ export const AnuncioCard: React.FC<AnuncioCardProps> = ({
 
   const getIconoCategoria = (categoria: string) => {
     const iconos: Record<string, string> = {
-      'educacion': '📚',
-      'empleo': '💼',
-      'vivienda': '🏠',
-      'ocio': '🎮',
-      'servicios': '🔧',
-      'intercambios': '🔄',
-      'venta': '🛍️',
-      'regalo': '🎁',
+      'educacion': '',
+      'empleo': '',
+      'vivienda': '',
+      'ocio': '',
+      'servicios': '',
+      'intercambios': '',
+      'venta': '️',
+      'regalo': '',
     };
-    return iconos[categoria.toLowerCase()] || '📄';
+    return iconos[categoria.toLowerCase()] || '';
   };
 
   const getColorModalidad = (modalidad: string) => {
@@ -168,7 +168,7 @@ export const AnuncioCard: React.FC<AnuncioCardProps> = ({
                 <PhoneIcon className="w-4 h-4 text-gray-400" title="Contacto por teléfono" />
               )}
               {anuncio.contacto_anonimo && (
-                <span className="text-xs text-gray-500" title="Contacto anónimo">🔒</span>
+                <span className="text-xs text-gray-500" title="Contacto anónimo"></span>
               )}
             </div>
           </div>

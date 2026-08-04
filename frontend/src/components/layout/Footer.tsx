@@ -115,7 +115,7 @@ const Footer: React.FC = memo(() => {
         <div className="py-6 border-t border-gray-800">
           <div className="text-center">
             <div className="text-xs font-sans text-gray-400">
-              © {currentYear} CityPaj. Todos los derechos reservados.
+               {currentYear} CityPaj. Todos los derechos reservados.
             </div>
           </div>
         </div>

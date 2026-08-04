@@ -24,7 +24,7 @@ async function tableExists(table: string): Promise<boolean> {
 async function createTableIfMissing(name: string, ddl: string) {
   if (!(await tableExists(name))) {
     await pool.execute(ddl);
-    console.log(`✅ Creada tabla: ${name}`);
+    console.log(` Creada tabla: ${name}`);
   }
 }
 
@@ -49,7 +49,7 @@ function daysAgo(d: number): string {
 }
 
 async function main() {
-  console.log('⚙️  Generando datos de ejemplo para moderación...');
+  console.log('️  Generando datos de ejemplo para moderación...');
 
   // Asegurar tablas de moderación
   await createTableIfMissing('comunidad_publicaciones', `
@@ -288,10 +288,10 @@ async function main() {
       try {
         await insertRow('anuncios', base);
       } catch (err: any) {
-        console.log(`⚠️ Anuncio ${titulo}: ${err.message}`);
+        console.log(`️ Anuncio ${titulo}: ${err.message}`);
       }
     }
-    console.log('✅ Anuncios de ejemplo creados');
+    console.log(' Anuncios de ejemplo creados');
 
     // reportes sobre anuncios
     if (await count('reportes_anuncios') < 10) {
@@ -305,7 +305,7 @@ async function main() {
           creado: daysAgo(i + 2),
         });
       }
-      console.log('✅ Reportes de anuncios creados');
+      console.log(' Reportes de anuncios creados');
     }
 
     // logs de moderación
@@ -349,7 +349,7 @@ async function main() {
       });
       posts.push((result as any).insertId);
     }
-    console.log('✅ Publicaciones de comunidad creadas');
+    console.log(' Publicaciones de comunidad creadas');
 
     // comentarios
     if (await count('comunidad_comentarios') < 30) {
@@ -369,7 +369,7 @@ async function main() {
           actualizado_at: daysAgo(i),
         });
       }
-      console.log('✅ Comentarios de comunidad creados');
+      console.log(' Comentarios de comunidad creados');
     }
 
     // likes
@@ -380,7 +380,7 @@ async function main() {
         ip: '127.0.0.' + (1 + (i % 255)),
       });
     }
-    console.log('✅ Likes de comunidad creados');
+    console.log(' Likes de comunidad creados');
 
     // reportes de comunidad
     if (await count('comunidad_reportes') < 10) {
@@ -402,7 +402,7 @@ async function main() {
           revisado: i >= 6 ? daysAgo(i) : null,
         });
       }
-      console.log('✅ Reportes de comunidad creados');
+      console.log(' Reportes de comunidad creados');
     }
   }
 
@@ -439,7 +439,7 @@ async function main() {
         creado_at: daysAgo(i * 2 + 1),
       });
     }
-    console.log('✅ Sugerencias creadas');
+    console.log(' Sugerencias creadas');
   }
 
   // 4. PROPUESTAS
@@ -474,7 +474,7 @@ async function main() {
       });
       propIds.push((result as any).insertId);
     }
-    console.log('✅ Propuestas creadas');
+    console.log(' Propuestas creadas');
 
     // apoyos
     for (let i = 0; i < 15; i++) {
@@ -485,7 +485,7 @@ async function main() {
         ip: '127.0.0.1',
       });
     }
-    console.log('✅ Apoyos de propuestas creados');
+    console.log(' Apoyos de propuestas creados');
   }
 
   // 5. RECURSOS Y EVENTOS
@@ -511,7 +511,7 @@ async function main() {
         creado_at: daysAgo(i + 10),
       });
     }
-    console.log('✅ Recursos creados');
+    console.log(' Recursos creados');
   }
 
   if (await count('eventos') < 5) {
@@ -540,7 +540,7 @@ async function main() {
         creado_at: daysAgo(i + 3),
       });
     }
-    console.log('✅ Eventos creados');
+    console.log(' Eventos creados');
   }
 
   // 6. LOGS DE ACTIVIDAD
@@ -567,10 +567,10 @@ async function main() {
         creado_at: daysAgo(i),
       });
     }
-    console.log('✅ Logs de actividad creados');
+    console.log(' Logs de actividad creados');
   }
 
-  console.log('🎉 Datos de ejemplo generados correctamente.');
+  console.log(' Datos de ejemplo generados correctamente.');
   process.exit(0);
 }
 

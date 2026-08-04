@@ -168,7 +168,7 @@ const AnuncioItem = memo(({ anuncio, index }: { anuncio: Anuncio; index: number 
                 className="cp-btn cp-btn--secondary cp-text-sm cp-px-4 cp-py-2"
                 aria-label={`Añadir ${anuncio.titulo} a favoritos`}
               >
-                ❤️ Favorito
+                ️ Favorito
               </button>
             </div>
           </div>
@@ -197,7 +197,7 @@ const LoadingState = () => (
 const ErrorState = ({ error }: { error: string }) => (
   <div className="cp-text-center cp-py-12" role="alert">
     <div className="cp-text-red-600 cp-mb-4">
-      <span className="cp-text-4xl">⚠️</span>
+      <span className="cp-text-4xl">️</span>
     </div>
     <h3 className="cp-text-lg cp-font-semibold cp-text-gray-900 cp-mb-2">
       Error al cargar los anuncios
@@ -212,7 +212,7 @@ const ErrorState = ({ error }: { error: string }) => (
 const EmptyState = () => (
   <div className="cp-text-center cp-py-12" role="status">
     <div className="cp-text-gray-400 cp-mb-4">
-      <span className="cp-text-4xl">📭</span>
+      <span className="cp-text-4xl"></span>
     </div>
     <h3 className="cp-text-lg cp-font-semibold cp-text-gray-900 cp-mb-2">
       No hay anuncios disponibles

@@ -24,7 +24,7 @@ export const testConnection = async (): Promise<boolean> => {
     connection.release();
     return true;
   } catch (error) {
-    console.error('❌ Error conectando a MariaDB:', error);
+    console.error(' Error conectando a MariaDB:', error);
     return false;
   }
 };

@@ -64,18 +64,18 @@ async function main() {
   for (const sql of statements) {
     try {
       await pool.execute(sql);
-      console.log('✅ Aplicado:', sql.split('\n')[0].trim());
+      console.log(' Aplicado:', sql.split('\n')[0].trim());
     } catch (err) {
       const message = (err as Error).message;
       if (message.includes('Duplicate') || message.includes('already exists')) {
         console.log('ℹ️ Ya existe o duplicado:', message);
       } else {
-        console.error('❌ Error:', message);
+        console.error(' Error:', message);
         process.exit(1);
       }
     }
   }
-  console.log('🎉 Esquema de comunidad corregido');
+  console.log(' Esquema de comunidad corregido');
   process.exit(0);
 }
 

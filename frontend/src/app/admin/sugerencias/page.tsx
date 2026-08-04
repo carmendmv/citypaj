@@ -489,10 +489,10 @@ export default function AdminSugerencias() {
 
             {/* Insights automáticos */}
             <div className="mt-8 bg-white border border-black p-6 print:hidden">
-              <h3 className="text-lg font-semibold text-black mb-4">📊 Insights Automáticos</h3>
+              <h3 className="text-lg font-semibold text-black mb-4"> Insights Automáticos</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-4 bg-red-50 border border-red-200">
-                  <h4 className="font-medium text-red-800 mb-2">⚠️ Prioridades Críticas</h4>
+                  <h4 className="font-medium text-red-800 mb-2">️ Prioridades Críticas</h4>
                   <p className="text-sm text-red-700">
                     {estadisticas.porPrioridad
                       ? estadisticas.porPrioridad.find(p => p.prioridad === 'critica')?.count || 0
@@ -501,7 +501,7 @@ export default function AdminSugerencias() {
                 </div>
 
                 <div className="p-4 bg-blue-50 border border-blue-200">
-                  <h4 className="font-medium text-blue-800 mb-2">🎯 Categoría más Demandada</h4>
+                  <h4 className="font-medium text-blue-800 mb-2"> Categoría más Demandada</h4>
                   <p className="text-sm text-blue-700">
                     {estadisticas.porCategoria && estadisticas.porCategoria.length > 0
                       ? estadisticas.porCategoria.reduce((max, curr) => curr.count > max.count ? curr : max).categoria

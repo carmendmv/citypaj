@@ -115,7 +115,7 @@ export function RecipientInput({
             className="text-slate-500 hover:text-slate-700"
             aria-label="Cambiar destinatario"
           >
-            ✕
+            
           </button>
         </div>
       ) : (

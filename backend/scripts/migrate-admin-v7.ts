@@ -19,7 +19,7 @@ async function getOrCreateComunidad(comunidadId: number) {
 }
 
 async function main() {
-  console.log('⚙️  Preparando tablas y datos de ejemplo para el panel de administración...');
+  console.log('️  Preparando tablas y datos de ejemplo para el panel de administración...');
 
   const provincia = await getOrCreateProvincia();
   const comunidad = await getOrCreateComunidad(provincia.comunidad_id);
@@ -47,7 +47,7 @@ async function main() {
     ];
     for (const t of tablas) {
       await conn.execute(`DROP TABLE IF EXISTS ${t}`);
-      console.log(`🗑️  Tabla recreada: ${t}`);
+      console.log(`️  Tabla recreada: ${t}`);
     }
     await conn.execute('SET FOREIGN_KEY_CHECKS = 1');
   } finally {
@@ -72,7 +72,7 @@ async function main() {
        password_hash = VALUES(password_hash), nombre = VALUES(nombre), rol = VALUES(rol), activo = 1, verificado = 1`,
       [u.id, u.email, hash, u.nombre, u.rol, provincia.nombre]
     );
-    console.log(`✅ Staff: ${u.email} (${u.rol})`);
+    console.log(` Staff: ${u.email} (${u.rol})`);
   }
 
   const [dbStaff] = await pool.execute(
@@ -101,9 +101,6 @@ async function main() {
       creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       actualizado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
-
-
-
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
   `);
 
@@ -122,7 +119,7 @@ async function main() {
       [titulo, descripcion, estado, prioridad, asignado, creador, entidad_tipo, entidad_id, vencimiento]
     );
   }
-  console.log('✅ Tareas de administración creadas');
+  console.log(' Tareas de administración creadas');
 
   // 4. Tabla de contactos institucionales
   await pool.execute(`
@@ -146,9 +143,6 @@ async function main() {
       creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       actualizado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
-
-
-
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
   `);
 
@@ -166,7 +160,7 @@ async function main() {
       [institucion, tipo, area, prov, ccaa, email, telefono, web, persona, adminId, adminId]
     );
   }
-  console.log('✅ Contactos institucionales creados');
+  console.log(' Contactos institucionales creados');
 
   // 5. Tabla de agenda / notas
   await pool.execute(`
@@ -179,7 +173,6 @@ async function main() {
       usuario_id VARCHAR(36) NOT NULL,
       creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       actualizado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-
 
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
   `);
@@ -197,7 +190,7 @@ async function main() {
       [titulo, cuerpo, fecha, color, usuarioId]
     );
   }
-  console.log('✅ Notas de agenda creadas');
+  console.log(' Notas de agenda creadas');
 
   // 6. Plantillas de comunicación
   await pool.execute(`
@@ -215,8 +208,6 @@ async function main() {
       creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       actualizado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
-
-
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
   `);
 
@@ -233,7 +224,7 @@ async function main() {
       [nombre, asunto, cuerpo, descripcion, tipo, adminId]
     );
   }
-  console.log('✅ Plantillas de comunicación creadas');
+  console.log(' Plantillas de comunicación creadas');
 
   // 7. Comunicaciones institucionales
   await pool.execute(`
@@ -252,9 +243,6 @@ async function main() {
       email_destino VARCHAR(255) NULL,
       creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       actualizado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-
-
-
 
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
   `);
@@ -283,7 +271,7 @@ async function main() {
        VALUES (?, ?, ?, ?, ?, 'borrador', ?, ?, ?, ?, ?)`,
       [plantillaId, contacto.id, adminId, contacto.institucion, `Borrador de comunicación con ${contacto.institucion}`, contacto.provincia, contacto.comunidad_autonoma, contacto.institucion, contacto.area_departamento, contacto.email_oficial]
     );
-    console.log('✅ Comunicaciones institucionales de ejemplo creadas');
+    console.log(' Comunicaciones institucionales de ejemplo creadas');
   }
 
   // 8. Mensajería de staff
@@ -327,9 +315,6 @@ async function main() {
       archivado_destinatario TINYINT(1) DEFAULT 0,
       creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
-
-
-
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
   `);
 
@@ -359,7 +344,7 @@ async function main() {
       [remitente, destinatario, asunto, cuerpo, prioridad]
     );
   }
-  console.log('✅ Mensajes de staff creados');
+  console.log(' Mensajes de staff creados');
 
   // 9. Logs de actividad
   await pool.execute(`
@@ -372,8 +357,6 @@ async function main() {
       detalles TEXT NULL,
       ip VARCHAR(64) NULL,
       creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
-
 
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
   `);
@@ -392,7 +375,7 @@ async function main() {
       [usuario, accion, entidad, entidadId, detalles, ip]
     );
   }
-  console.log('✅ Logs de actividad creados');
+  console.log(' Logs de actividad creados');
 
   // 10. Seed sugerencias y propuestas si están vacías
   const [[{ total: totalSugerencias }]] = await pool.execute('SELECT COUNT(*) as total FROM sugerencias') as any[];
@@ -409,7 +392,7 @@ async function main() {
         [titulo, descripcion, ccaa, categoria]
       );
     }
-    console.log('✅ Sugerencias de ejemplo creadas');
+    console.log(' Sugerencias de ejemplo creadas');
   }
 
   const [[{ total: totalPropuestas }]] = await pool.execute('SELECT COUNT(*) as total FROM propuestas') as any[];
@@ -425,10 +408,10 @@ async function main() {
         [titulo, descripcion, prov, categoria]
       );
     }
-    console.log('✅ Propuestas de ejemplo creadas');
+    console.log(' Propuestas de ejemplo creadas');
   }
 
-  console.log('🎉 Migración v7 completada: panel de administración con datos de ejemplo.');
+  console.log(' Migración v7 completada: panel de administración con datos de ejemplo.');
   process.exit(0);
 }
 

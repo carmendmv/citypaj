@@ -1,13 +1,13 @@
-# 🗄️ INFORMACIÓN DE LA BASE DE DATOS - CITYPAJ
+# ️ INFORMACIÓN DE LA BASE DE DATOS - CITYPAJ
 
-## 📊 DATOS DE CONEXIÓN
+##  DATOS DE CONEXIÓN
 - **Nombre de la Base de Datos**: `citypaj`
 - **Host**: `localhost`
 - **Puerto**: `3306`
 - **Usuario**: `citypaj_user`
 - **Contraseña**: `citypaj123`
 
-## 🏗️ ESTRUCTURA DE LA BASE DE DATOS
+## ️ ESTRUCTURA DE LA BASE DE DATOS
 
 ### Tablas Principales:
 - `anuncios` - 1913 anuncios reales
@@ -41,7 +41,7 @@
 - actualizado_at: timestamp (NOT NULL)
 ```
 
-## 📈 ESTADÍSTICAS DE DATOS
+##  ESTADÍSTICAS DE DATOS
 
 ### Distribución por Categorías:
 - **ocio**: 367 anuncios
@@ -60,7 +60,7 @@
 - **50 Provincias** representadas
 - **Datos geográficos completos** para todos los anuncios
 
-## 🚀 COMANDOS PARA INICIAR EL PROYECTO
+##  COMANDOS PARA INICIAR EL PROYECTO
 
 ### Backend (con datos reales):
 ```bash
@@ -79,12 +79,12 @@ npm run dev
 npm run dev
 ```
 
-## 📝 NOTAS IMPORTANTES
+##  NOTAS IMPORTANTES
 - Se utiliza la base de datos `citypaj` como base principal
 - Los datos se cargan desde la base de datos MySQL configurada
 - El servidor inicia la conexión y el contenido se consulta dinámicamente
 
-## 🔐 SEGURIDAD
+##  SEGURIDAD
 - Usuario dedicado `citypaj_user` con privilegios limitados
 - Contraseña segura: `citypaj123`
 - Conexión solo desde localhost

@@ -55,9 +55,9 @@ async function startServer() {
   await seedDemoAdmin();
 
   const server = app.listen(PORT, '0.0.0.0', () => {
-    logger.info(`🚀 CityPaj Backend API running on port ${PORT}`);
-    logger.info(`📚 Environment: ${config.env}`);
-    logger.info(`🔗 Health check: http://localhost:${PORT}/health`);
+    logger.info(` CityPaj Backend API running on port ${PORT}`);
+    logger.info(` Environment: ${config.env}`);
+    logger.info(` Health check: http://localhost:${PORT}/health`);
   });
 
   process.on('SIGTERM', () => {
