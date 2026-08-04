@@ -1,7 +1,5 @@
 'use client';
 
-
-
 import React, { useState, useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
@@ -15,8 +13,6 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
 import { useGuardados } from '@/hooks/useGuardados';
-
-
 
 interface Anuncio {
 
@@ -66,8 +62,6 @@ interface Anuncio {
 
 }
 
-
-
 interface ReportForm {
 
   motivo: string;
@@ -76,15 +70,11 @@ interface ReportForm {
 
 }
 
-
-
 export default function AnuncioDetallePage({ params }: { params: { id: string } }) {
 
   const router = useRouter();
 
   const { id } = params;
-
-
 
   const [anuncio, setAnuncio] = useState<Anuncio | null>(null);
 
@@ -100,15 +90,11 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
   const isSaved = estaGuardado(id);
   const [shareMessage, setShareMessage] = useState('');
 
-
-
   useEffect(() => {
 
     fetchAnuncio();
 
   }, [id]);
-
-
 
   const fetchAnuncio = async () => {
 
@@ -144,15 +130,11 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
   };
 
-
-
   const handleSave = () => {
     toggleGuardado(id);
     setShareMessage(isSaved ? 'Anuncio eliminado de guardados' : 'Anuncio guardado correctamente');
     setTimeout(() => setShareMessage(''), 3000);
   };
-
-
 
   const handleShare = async () => {
 
@@ -200,8 +182,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
   };
 
-
-
   const handleReport = async () => {
 
     if (!reportForm.motivo.trim()) {
@@ -213,8 +193,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
       return;
 
     }
-
-
 
     try {
 
@@ -239,8 +217,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
         })
 
       });
-
-
 
       if (response.ok) {
 
@@ -270,8 +246,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
   };
 
-
-
   const formatDate = (dateString: string) => {
 
     return new Date(dateString).toLocaleDateString('es-ES', {
@@ -286,13 +260,9 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
   };
 
-
-
   useEffect(() => {
 
     let cancelled = false;
-
-
 
     const run = async () => {
 
@@ -300,13 +270,9 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
       setError(null);
 
-
-
       const controller = new AbortController();
 
       const timeoutId = setTimeout(() => controller.abort(), 7000);
-
-
 
       try {
 
@@ -315,8 +281,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
           signal: controller.signal,
 
         });
-
-
 
         if (!response.ok) {
 
@@ -328,13 +292,9 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
         }
 
-
-
         const json = await response.json();
 
         const data = json?.data as Anuncio | undefined;
-
-
 
         if (!cancelled) {
 
@@ -362,11 +322,7 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
     };
 
-
-
     void run();
-
-
 
     return () => {
 
@@ -376,15 +332,11 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
   }, [id]);
 
-
-
   return (
 
     <div className="min-h-screen bg-white">
 
       <Header />
-
-
 
       <div className="w-[90%] sm:w-[80%] max-w-6xl mx-auto px-6 py-10">
 
@@ -401,8 +353,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
             Volver a anuncios
 
           </Link>
-
-
 
           {loading ? (
 
@@ -484,8 +434,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
               </div>
 
-
-
               <div className="mt-3 font-sans text-sm text-[#666666]">
 
                 <span>{formatDate(anuncio.creado_at)}</span>
@@ -510,8 +458,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
         </div>
 
-
-
         {!loading && !error && anuncio ? (
 
           <div className="py-10">
@@ -535,8 +481,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
               </p>
 
             </section>
-
-
 
             <section className="mt-8 border border-black p-6">
 
@@ -578,13 +522,9 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
             </section>
 
-
-
             <section className="mt-8 border border-black p-6">
 
               <h2 className="font-serif text-xl font-bold text-black">Contacto</h2>
-
-
 
               <div className="mt-4 space-y-4 font-sans text-sm text-black">
 
@@ -597,8 +537,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
                   <span className="text-gray-900">{anuncio.usuario_nombre || 'Usuario'}</span>
 
                 </div>
-
-
 
                 {/* Email - SIEMPRE visible (obligatorio) */}
 
@@ -633,8 +571,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
                   </button>
 
                 </div>
-
-
 
                 {/* Teléfono - Siempre visible, mostrando "No disponible" si no hay */}
 
@@ -682,8 +618,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
                 </div>
 
-
-
                 {anuncio.contacto_anonimo && (
 
                   <div className="text-sm text-gray-600">
@@ -702,8 +636,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
         ) : null}
 
-
-
         {/* Mensajes de acción */}
 
         {shareMessage && (
@@ -715,8 +647,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
           </div>
 
         )}
-
-
 
         {/* Modal de reportar */}
 
@@ -766,8 +696,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
                 </div>
 
-
-
                 <div>
 
                   <label className="block font-sans text-sm text-gray-700 mb-2">
@@ -793,8 +721,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
                 </div>
 
               </div>
-
-
 
               <div className="flex gap-3 mt-6">
 
@@ -837,8 +763,6 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
         )}
 
       </div>
-
-
 
       <Footer />
 

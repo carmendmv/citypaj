@@ -1,6 +1,6 @@
-# 🗄️ DIAGRAMA COMPLETO DE LA BASE DE DATOS MYSQL - CITYPAJ
+# ️ DIAGRAMA COMPLETO DE LA BASE DE DATOS MYSQL - CITYPAJ
 
-## 📋 RESUMEN DE TABLAS (8 tablas principales):
+##  RESUMEN DE TABLAS (8 tablas principales):
 
 1. **`usuarios`** - Usuarios registrados
 2. **`comunidades`** - Comunidades autónomas de España
@@ -13,7 +13,7 @@
 
 ---
 
-## 🔗 DIAGRAMA DE RELACIONES (ASCII):
+##  DIAGRAMA DE RELACIONES (ASCII):
 
 ```
 ┌─────────────────┐       ┌──────────────────┐       ┌─────────────────┐
@@ -76,9 +76,9 @@
 
 ---
 
-## 📊 DETALLE COMPLETO DE CADA TABLA:
+##  DETALLE COMPLETO DE CADA TABLA:
 
-### 🧑 1. TABLA `usuarios`
+###  1. TABLA `usuarios`
 
 | Campo | Tipo | Nulo | PK/FK | Default | Descripción |
 |-------|------|------|-------|---------|-------------|
@@ -92,7 +92,7 @@
 
 ---
 
-### 🏛️ 2. TABLA `comunidades`
+### ️ 2. TABLA `comunidades`
 
 | Campo | Tipo | Nulo | PK/FK | Default | Descripción |
 |-------|------|------|-------|---------|-------------|
@@ -103,7 +103,7 @@
 
 ---
 
-### 📍 3. TABLA `provincias`
+###  3. TABLA `provincias`
 
 | Campo | Tipo | Nulo | PK/FK | Default | Descripción |
 |-------|------|------|-------|---------|-------------|
@@ -115,7 +115,7 @@
 
 ---
 
-### 📢 4. TABLA `anuncios`
+###  4. TABLA `anuncios`
 
 | Campo | Tipo | Nulo | PK/FK | Default | Descripción |
 |-------|------|------|-------|---------|-------------|
@@ -142,7 +142,7 @@
 
 ---
 
-### 🖼️ 5. TABLA `anuncio_imagenes`
+### ️ 5. TABLA `anuncio_imagenes`
 
 | Campo | Tipo | Nulo | PK/FK | Default | Descripción |
 |-------|------|------|-------|---------|-------------|
@@ -155,7 +155,7 @@
 
 ---
 
-### ❤️ 6. TABLA `favoritos`
+### ️ 6. TABLA `favoritos`
 
 | Campo | Tipo | Nulo | PK/FK | Default | Descripción |
 |-------|------|------|-------|---------|-------------|
@@ -168,7 +168,7 @@
 
 ---
 
-### 💡 7. TABLA `sugerencias`
+###  7. TABLA `sugerencias`
 
 | Campo | Tipo | Nulo | PK/FK | Default | Descripción |
 |-------|------|------|-------|---------|-------------|
@@ -180,7 +180,7 @@
 
 ---
 
-### 📬 8. TABLA `buzon_sugerencias`
+###  8. TABLA `buzon_sugerencias`
 
 | Campo | Tipo | Nulo | PK/FK | Default | Descripción |
 |-------|------|------|-------|---------|-------------|
@@ -193,7 +193,7 @@
 
 ---
 
-## 🔗 RELACIONES EXPLICADAS:
+##  RELACIONES EXPLICADAS:
 
 ### Relaciones 1:N (Uno a Muchos):
 
@@ -214,20 +214,20 @@
 
 ---
 
-## 🎯 CARACTERÍSTICAS IMPORTANTES:
+##  CARACTERÍSTICAS IMPORTANTES:
 
-✅ **Base de datos MySQL** con charset UTF-8  
-✅ **IDs UUID** para usuarios y anuncios  
-✅ **IDs numéricos** para comunidades y provincias  
-✅ **Timestamps automáticos** con `ON UPDATE CURRENT_TIMESTAMP`  
-✅ **Índices optimizados** para búsquedas y filtros  
-✅ **Búsqueda full-text** en títulos y descripciones  
-✅ **Cascading deletes** en imágenes de anuncios  
-✅ **Restricciones UNIQUE** para evitar duplicados  
+ **Base de datos MySQL** con charset UTF-8  
+ **IDs UUID** para usuarios y anuncios  
+ **IDs numéricos** para comunidades y provincias  
+ **Timestamps automáticos** con `ON UPDATE CURRENT_TIMESTAMP`  
+ **Índices optimizados** para búsquedas y filtros  
+ **Búsqueda full-text** en títulos y descripciones  
+ **Cascading deletes** en imágenes de anuncios  
+ **Restricciones UNIQUE** para evitar duplicados  
 
 ---
 
-## 📝 FOREIGN KEYS (Claves Foráneas):
+##  FOREIGN KEYS (Claves Foráneas):
 
 | Tabla | Campo | Referencia | Acción |
 |-------|-------|------------|--------|
@@ -241,7 +241,7 @@
 
 ---
 
-## 🚀 GENERADO POR:
+##  GENERADO POR:
 
 **Sistema CityPaj - Base de Datos MySQL**  
 **Fecha:** $(date)  

@@ -1,20 +1,48 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { HeartIcon, FlagIcon, PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
+import { HeartIcon, FlagIcon, PhoneIcon, EnvelopeIcon, ShareIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
 import { AnuncioCardProps } from '../types';
+import { useGuardados } from '@/hooks/useGuardados';
+import ReportModal from './ui/ReportModal';
 
 export const AnuncioCard: React.FC<AnuncioCardProps> = ({
   anuncio,
   onFavorito,
   onReportar,
   onContactar,
-  esFavorito = false,
+  esFavorito,
   className = '',
 }) => {
+  const { estaGuardado, toggleGuardado } = useGuardados();
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [reportLoading, setReportLoading] = useState(false);
+  const favorito = esFavorito ?? estaGuardado(anuncio.id);
+
+  const handleReportSubmit = async (motivo: string, descripcionReporte: string) => {
+    setReportLoading(true);
+    try {
+      const res = await fetch(`/api/anuncios/${anuncio.id}/reportar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ motivo, descripcion: descripcionReporte })
+      });
+      if (res.ok) {
+        alert('Anuncio reportado. Será revisado por moderación.');
+      } else {
+        alert('No se pudo enviar el reporte.');
+      }
+    } catch {
+      alert('Error al enviar el reporte.');
+    } finally {
+      setReportLoading(false);
+      setReportModalOpen(false);
+    }
+  };
+
   const formatoPrecio = (precio?: number) => {
     if (!precio) return '';
     return new Intl.NumberFormat('es-ES', {
@@ -40,16 +68,16 @@ export const AnuncioCard: React.FC<AnuncioCardProps> = ({
 
   const getIconoCategoria = (categoria: string) => {
     const iconos: Record<string, string> = {
-      'educacion': '📚',
-      'empleo': '💼',
-      'vivienda': '🏠',
-      'ocio': '🎮',
-      'servicios': '🔧',
-      'intercambios': '🔄',
-      'venta': '🛍️',
-      'regalo': '🎁',
+      'educacion': '',
+      'empleo': '',
+      'vivienda': '',
+      'ocio': '',
+      'servicios': '',
+      'intercambios': '',
+      'venta': '️',
+      'regalo': '',
     };
-    return iconos[categoria.toLowerCase()] || '📄';
+    return iconos[categoria.toLowerCase()] || '';
   };
 
   const getColorModalidad = (modalidad: string) => {
@@ -63,7 +91,8 @@ export const AnuncioCard: React.FC<AnuncioCardProps> = ({
   };
 
   return (
-    <Link 
+    <>
+      <Link 
       href={`/anuncios/${anuncio.id}`}
       className={clsx(
         'block bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200',
@@ -122,12 +151,16 @@ export const AnuncioCard: React.FC<AnuncioCardProps> = ({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onFavorito?.(anuncio.id);
+                if (onFavorito) {
+                  onFavorito(anuncio.id);
+                } else {
+                  toggleGuardado(anuncio.id);
+                }
               }}
               className="ml-2 p-2 text-gray-400 hover:text-red-500 transition-colors"
-              aria-label={esFavorito ? 'Quitar de favoritos' : 'Añadir a favoritos'}
+              aria-label={favorito ? 'Quitar de favoritos' : 'Añadir a favoritos'}
             >
-              {esFavorito ? (
+              {favorito ? (
                 <HeartSolidIcon className="w-5 h-5 text-red-500" />
               ) : (
                 <HeartIcon className="w-5 h-5" />
@@ -168,7 +201,7 @@ export const AnuncioCard: React.FC<AnuncioCardProps> = ({
                 <PhoneIcon className="w-4 h-4 text-gray-400" title="Contacto por teléfono" />
               )}
               {anuncio.contacto_anonimo && (
-                <span className="text-xs text-gray-500" title="Contacto anónimo">🔒</span>
+                <span className="text-xs text-gray-500" title="Contacto anónimo"></span>
               )}
             </div>
           </div>
@@ -191,11 +224,30 @@ export const AnuncioCard: React.FC<AnuncioCardProps> = ({
           >
             Contactar
           </button>
+          <button
+            onClick={async (e) => {
+              e.stopPropagation();
+              const url = `${window.location.origin}/anuncios/${anuncio.id}`;
+              if (navigator.share) {
+                await navigator.share({ title: anuncio.titulo, text: anuncio.descripcion, url });
+              } else {
+                await navigator.clipboard.writeText(url);
+              }
+            }}
+            className="p-2 rounded-full text-gray-400 hover:text-blue-500 hover:bg-blue-50 transition-colors"
+            aria-label="Compartir anuncio"
+          >
+            <ShareIcon className="w-4 h-4" />
+          </button>
           
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onReportar?.(anuncio.id);
+              if (onReportar) {
+                onReportar(anuncio.id);
+              } else {
+                setReportModalOpen(true);
+              }
             }}
             className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           >
@@ -205,6 +257,14 @@ export const AnuncioCard: React.FC<AnuncioCardProps> = ({
         </div>
       </div>
     </Link>
+
+    <ReportModal
+      isOpen={reportModalOpen}
+      onClose={() => setReportModalOpen(false)}
+      onSubmit={handleReportSubmit}
+      loading={reportLoading}
+    />
+    </>
   );
 };
 

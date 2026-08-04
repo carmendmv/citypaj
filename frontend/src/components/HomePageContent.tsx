@@ -53,16 +53,16 @@ type Categoria = 'servicios' | 'formacion' | 'empleo' | 'comunidad' | 'ocio' | '
 const CATEGORIAS: Categoria[] = ['servicios', 'formacion', 'empleo', 'comunidad', 'ocio', 'transporte', 'vivienda', 'salud', 'tecnología', 'otros'];
 
 const CATEGORIAS_COMPLETAS = [
-  { id: 'servicios', nombre: 'Servicios', icon: '🔧' },
-  { id: 'formacion', nombre: 'Formación', icon: '📚' },
-  { id: 'empleo', nombre: 'Empleo', icon: '💼' },
-  { id: 'comunidad', nombre: 'Comunidad', icon: '🤝' },
-  { id: 'ocio', nombre: 'Ocio', icon: '🎮' },
-  { id: 'transporte', nombre: 'Transporte', icon: '🚗' },
-  { id: 'vivienda', nombre: 'Vivienda', icon: '🏠' },
-  { id: 'salud', nombre: 'Salud', icon: '🏥' },
-  { id: 'tecnología', nombre: 'Tecnología', icon: '💻' },
-  { id: 'otros', nombre: 'Otros', icon: '📦' }
+  { id: 'servicios', nombre: 'Servicios', icon: '' },
+  { id: 'formacion', nombre: 'Formación', icon: '' },
+  { id: 'empleo', nombre: 'Empleo', icon: '' },
+  { id: 'comunidad', nombre: 'Comunidad', icon: '' },
+  { id: 'ocio', nombre: 'Ocio', icon: '' },
+  { id: 'transporte', nombre: 'Transporte', icon: '' },
+  { id: 'vivienda', nombre: 'Vivienda', icon: '' },
+  { id: 'salud', nombre: 'Salud', icon: '' },
+  { id: 'tecnología', nombre: 'Tecnología', icon: '' },
+  { id: 'otros', nombre: 'Otros', icon: '' }
 ];
 
 export default function HomePageContent() {
@@ -245,7 +245,7 @@ export default function HomePageContent() {
                     </p>
                     
                     <div className="flex items-center text-sm text-gray-500 mb-4">
-                      <span>📍 {anuncio.provincia}</span>
+                      <span> {anuncio.provincia}</span>
                     </div>
                     
                     <div className="flex justify-between items-center">

@@ -11,7 +11,7 @@ const DB_USER = process.env.DB_USER || 'citypaj_user';
 const DB_PASSWORD = process.env.DB_PASSWORD || 'citypaj123';
 
 async function main() {
-  console.log(`🔌 Conectando a MySQL en ${DB_HOST}:${DB_PORT} como ${DB_ROOT_USER}...`);
+  console.log(` Conectando a MySQL en ${DB_HOST}:${DB_PORT} como ${DB_ROOT_USER}...`);
   const rootConnection = await mysql.createConnection({
     host: DB_HOST,
     port: DB_PORT,
@@ -22,12 +22,12 @@ async function main() {
 
   try {
     await rootConnection.execute(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
-    console.log(`✅ Base de datos ${DB_NAME} verificada/creada`);
+    console.log(` Base de datos ${DB_NAME} verificada/creada`);
 
     await rootConnection.execute(`CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';`);
     await rootConnection.execute(`GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '${DB_USER}'@'%';`);
     await rootConnection.execute('FLUSH PRIVILEGES;');
-    console.log(`✅ Usuario ${DB_USER} verificado`);
+    console.log(` Usuario ${DB_USER} verificado`);
 
     const appConnection = await mysql.createConnection({
       host: DB_HOST,
@@ -66,19 +66,19 @@ async function main() {
             if (err.code && ignorableErrors.has(err.code)) {
               console.log(`ℹ️ Migración ${file}: ${err.message} (omitido)`);
             } else {
-              console.error(`❌ Error en migración ${file}:`, err.message);
+              console.error(` Error en migración ${file}:`, err.message);
               process.exit(1);
             }
           }
         }
-        console.log(`✅ Migración aplicada: ${file} (${applied} sentencias)`);
+        console.log(` Migración aplicada: ${file} (${applied} sentencias)`);
       }
     }
 
     await appConnection.end();
-    console.log('🎉 Base de datos inicializada correctamente');
+    console.log(' Base de datos inicializada correctamente');
   } catch (error) {
-    console.error('❌ Error inicializando base de datos:', error.message);
+    console.error(' Error inicializando base de datos:', error.message);
     process.exit(1);
   } finally {
     await rootConnection.end();

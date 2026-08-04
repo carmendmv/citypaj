@@ -15,7 +15,6 @@ const COMUNIDADES_AUTONOMAS = [
   'Murcia', 'Navarra', 'País Vasco', 'La Rioja'
 ];
 
-
 interface HeaderProps {
   onComunidadChange?: (comunidad: string) => void;
   onSearch?: (codigo: string) => void;

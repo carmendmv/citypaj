@@ -15,8 +15,10 @@
  * @returns {JSX.Element} Lista de anuncios con estilo NY Times
  */
 
-import React, { memo, useCallback, useMemo } from 'react';
-import { Calendar, MapPin, Euro, User, Eye } from 'lucide-react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
+import { Calendar, MapPin, Euro, User, Eye, Heart, Share2, Flag } from 'lucide-react';
+import { useGuardados } from '@/hooks/useGuardados';
+import ReportModal from '@/components/ui/ReportModal';
 
 // Interface para tipado estricto de anuncios
 interface Anuncio {
@@ -45,6 +47,11 @@ interface AnuncioListProps {
  * Utiliza useCallback para manejadores de eventos
  */
 const AnuncioItem = memo(({ anuncio, index }: { anuncio: Anuncio; index: number }) => {
+  const { estaGuardado, toggleGuardado } = useGuardados();
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [reportLoading, setReportLoading] = useState(false);
+  const esFav = estaGuardado(String(anuncio.id));
+
   /**
    * Manejador de clic funcional - navega al detalle del anuncio
    */
@@ -58,18 +65,58 @@ const AnuncioItem = memo(({ anuncio, index }: { anuncio: Anuncio; index: number 
    */
   const handleContactar = useCallback((e: React.MouseEvent) => {
     e.stopPropagation(); // Evita que se dispare el clic del padre
-    // Abrir modal de contacto o navegar a página de contacto
-    alert(`Contactar con: ${anuncio.autor || 'Anónimo'}\nAnuncio: ${anuncio.titulo}`);
-  }, [anuncio]);
+    window.location.href = `/anuncios/${anuncio.id}`;
+  }, [anuncio.id]);
 
   /**
    * Manejador de favoritos - toggle de favorito
    */
   const handleFavorito = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    // Lógica para añadir a favoritos
-    alert(`Añadido a favoritos: ${anuncio.titulo}`);
-  }, [anuncio.titulo]);
+    toggleGuardado(String(anuncio.id));
+  }, [anuncio.id, toggleGuardado]);
+
+  /**
+   * Manejador de compartir
+   */
+  const handleCompartir = useCallback(async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}/anuncios/${anuncio.id}`;
+    if (navigator.share) {
+      await navigator.share({ title: anuncio.titulo, text: anuncio.descripcion, url });
+    } else {
+      await navigator.clipboard.writeText(url);
+    }
+  }, [anuncio]);
+
+  /**
+   * Manejador de reportar
+   */
+  const handleReportar = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setReportModalOpen(true);
+  }, []);
+
+  const handleReportSubmit = useCallback(async (motivo: string, descripcionReporte: string) => {
+    setReportLoading(true);
+    try {
+      const res = await fetch(`/api/anuncios/${anuncio.id}/reportar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ motivo, descripcion: descripcionReporte })
+      });
+      if (res.ok) {
+        alert('Anuncio reportado. Será revisado por moderación.');
+      } else {
+        alert('No se pudo enviar el reporte.');
+      }
+    } catch {
+      alert('Error al enviar el reporte.');
+    } finally {
+      setReportLoading(false);
+      setReportModalOpen(false);
+    }
+  }, [anuncio.id]);
 
   /**
    * Formateador de fecha optimizado - cacheado para evitar recreación
@@ -83,7 +130,8 @@ const AnuncioItem = memo(({ anuncio, index }: { anuncio: Anuncio; index: number 
   }, [anuncio.creado]);
 
   return (
-    <article 
+    <>
+      <article 
       className="cp-anuncio-item cp-border-b cp-border-gray-300 cp-pb-8 cp-mb-8 hover:cp-bg-gray-50 cp-transition-all cp-cursor-pointer cp-rounded-lg"
       onClick={handleAnuncioClick}
       aria-labelledby={`anuncio-${anuncio.id}-titulo`}
@@ -165,16 +213,38 @@ const AnuncioItem = memo(({ anuncio, index }: { anuncio: Anuncio; index: number 
               </button>
               <button
                 onClick={handleFavorito}
-                className="cp-btn cp-btn--secondary cp-text-sm cp-px-4 cp-py-2"
-                aria-label={`Añadir ${anuncio.titulo} a favoritos`}
+                className={`cp-btn cp-text-sm cp-px-4 cp-py-2 ${esFav ? 'cp-text-red-600' : ''}`}
+                aria-label={esFav ? `Quitar ${anuncio.titulo} de favoritos` : `Añadir ${anuncio.titulo} a favoritos`}
               >
-                ❤️ Favorito
+                <Heart className="w-4 h-4 cp-mr-1" /> {esFav ? 'Guardado' : 'Favorito'}
+              </button>
+              <button
+                onClick={handleCompartir}
+                className="cp-btn cp-btn--secondary cp-text-sm cp-px-4 cp-py-2"
+                aria-label={`Compartir ${anuncio.titulo}`}
+              >
+                <Share2 className="w-4 h-4 cp-mr-1" /> Compartir
+              </button>
+              <button
+                onClick={handleReportar}
+                className="cp-btn cp-btn--secondary cp-text-sm cp-px-4 cp-py-2"
+                aria-label={`Reportar ${anuncio.titulo}`}
+              >
+                <Flag className="w-4 h-4 cp-mr-1" /> Reportar
               </button>
             </div>
           </div>
         </div>
       </div>
     </article>
+
+    <ReportModal
+      isOpen={reportModalOpen}
+      onClose={() => setReportModalOpen(false)}
+      onSubmit={handleReportSubmit}
+      loading={reportLoading}
+    />
+    </>
   );
 });
 
@@ -197,7 +267,7 @@ const LoadingState = () => (
 const ErrorState = ({ error }: { error: string }) => (
   <div className="cp-text-center cp-py-12" role="alert">
     <div className="cp-text-red-600 cp-mb-4">
-      <span className="cp-text-4xl">⚠️</span>
+      <span className="cp-text-4xl">️</span>
     </div>
     <h3 className="cp-text-lg cp-font-semibold cp-text-gray-900 cp-mb-2">
       Error al cargar los anuncios
@@ -212,7 +282,7 @@ const ErrorState = ({ error }: { error: string }) => (
 const EmptyState = () => (
   <div className="cp-text-center cp-py-12" role="status">
     <div className="cp-text-gray-400 cp-mb-4">
-      <span className="cp-text-4xl">📭</span>
+      <span className="cp-text-4xl"></span>
     </div>
     <h3 className="cp-text-lg cp-font-semibold cp-text-gray-900 cp-mb-2">
       No hay anuncios disponibles

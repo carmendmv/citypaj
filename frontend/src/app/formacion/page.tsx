@@ -53,7 +53,6 @@ export default function FormacionPage() {
           <p className="mt-2 font-sans text-sm text-[#666666]">Cursos, talleres, becas y recursos educativos.</p>
         </div>
 
-
         <AnuncioList 
           anuncios={anuncios}
           loading={loading}
