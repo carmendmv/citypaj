@@ -1,17 +1,5 @@
 'use client';
 
-/**
- * StatsCard Component - Componente de estadísticas de plataforma
- * 
- * Propósito: Mostrar métricas y estadísticas clave de CityPaj
- * Arquitectura: Componente funcional con animaciones de contador
- * Optimización: Memoización y animaciones CSS eficientes
- * Accesibilidad: Datos semánticos y lectores de pantalla
- * 
- * @component StatsCard
- * @returns {JSX.Element} Tarjeta de estadísticas con animaciones
- */
-
 import React, { memo, useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, Minus, Users, FileText, Calendar, BarChart3, Activity } from 'lucide-react';
 
@@ -30,10 +18,6 @@ interface StatsCardProps {
   className?: string;
 }
 
-/**
- * Hook personalizado para animación de contadores
- * Crea animación suave desde 0 hasta el valor final
- */
 const useCounter = (targetValue: number, duration: number = 2000) => {
   const [count, setCount] = useState(0);
 
@@ -66,11 +50,6 @@ const useCounter = (targetValue: number, duration: number = 2000) => {
   return count;
 };
 
-/**
- * Componente StatItem - Item individual de estadística
- * 
- * Optimizado con memoización y animaciones eficientes
- */
 const StatItem = memo(({ 
   label, 
   value, 
@@ -82,9 +61,6 @@ const StatItem = memo(({
 }: StatItem) => {
   const animatedValue = useCounter(value);
 
-  /**
-   * Obtener indicador de tendencia
-   */
   const getTrendIndicator = () => {
     if (!trend || !trendValue) return null;
 
@@ -134,15 +110,6 @@ const StatItem = memo(({
 
 StatItem.displayName = 'StatItem';
 
-/**
- * Componente StatsCard principal
- * 
- * Características:
- * - Animaciones suaves de contadores
- * - Indicadores de tendencia
- * - Diseño responsive y accesible
- * - Datos en tiempo real
- */
 const StatsCard: React.FC<StatsCardProps> = memo(({ className = '' }) => {
   const [displayValue, setDisplayValue] = useState(0);
   
@@ -203,9 +170,6 @@ const StatsCard: React.FC<StatsCardProps> = memo(({ className = '' }) => {
     requestAnimationFrame(animate);
   }, []);
 
-  /**
-   * Formatear número para visualización
-   */
   const formatNumber = (num: number) => {
     return num.toLocaleString('es-ES');
   };

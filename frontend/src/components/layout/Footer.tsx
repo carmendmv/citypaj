@@ -1,31 +1,8 @@
 'use client';
 
-/**
- * Footer Component - Componente de pie de página moderno y minimalista
- * 
- * Propósito: Proporcionar navegación secundaria, información legal y branding
- * Arquitectura: Componente funcional con diseño limpio y moderno
- * Optimización: Memoizado y estructura semántica SEO
- * Accesibilidad: Navegación con ARIA labels y estructura clara
- * 
- * @component Footer
- * @returns {JSX.Element} Footer moderno con diseño minimalista
- */
-
 import React, { memo } from 'react';
 import Link from 'next/link';
 
-/**
- * Componente Footer - Pie de página moderno y elegante
- * 
- * Características principales:
- * - Diseño minimalista y moderno
- * - Gradiente sutil de fondo
- * - Enlaces con hover effects mejorados
- * - Espaciado optimizado
- * - Branding del TFG
- * - Diseño responsive y accesible
- */
 const Footer: React.FC = memo(() => {
   const currentYear = new Date().getFullYear();
 

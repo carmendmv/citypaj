@@ -1,17 +1,5 @@
 'use client';
 
-/**
- * StatusCard Component - Componente de estado de plataforma
- * 
- * Propósito: Mostrar estado operativo de los servicios de CityPaj
- * Arquitectura: Componente funcional con animaciones y transiciones
- * Optimización: Memoización y CSS-in-JS para rendimiento
- * Accesibilidad: Indicadores visuales y semánticos
- * 
- * @component StatusCard
- * @returns {JSX.Element} Tarjeta de estado con indicadores en tiempo real
- */
-
 import React, { memo, useState, useEffect } from 'react';
 import { CheckCircle, AlertCircle, XCircle, Activity, Database, Server, Globe } from 'lucide-react';
 
@@ -28,10 +16,6 @@ interface StatusCardProps {
   className?: string;
 }
 
-/**
- * Hook personalizado para simulación de estado de servicios
- * En producción, esto conectaría con APIs reales de monitoreo
- */
 const useServiceStatus = () => {
   const [services, setServices] = useState<ServiceStatus[]>([
     {
@@ -80,15 +64,7 @@ const useServiceStatus = () => {
   return services;
 };
 
-/**
- * Componente ServiceIndicator - Indicador individual de servicio
- * 
- * Optimizado con memoización para evitar re-renders
- */
 const ServiceIndicator = memo(({ service }: { service: ServiceStatus }) => {
-  /**
-   * Obtener icono según estado - memoizado
-   */
   const getStatusIcon = () => {
     switch (service.status) {
       case 'healthy':
@@ -104,9 +80,6 @@ const ServiceIndicator = memo(({ service }: { service: ServiceStatus }) => {
     }
   };
 
-  /**
-   * Obtener color de texto según estado
-   */
   const getStatusColor = () => {
     switch (service.status) {
       case 'healthy':
@@ -122,9 +95,6 @@ const ServiceIndicator = memo(({ service }: { service: ServiceStatus }) => {
     }
   };
 
-  /**
-   * Obtener texto de estado
-   */
   const getStatusText = () => {
     switch (service.status) {
       case 'healthy':
@@ -169,24 +139,12 @@ const ServiceIndicator = memo(({ service }: { service: ServiceStatus }) => {
 
 ServiceIndicator.displayName = 'ServiceIndicator';
 
-/**
- * Componente StatusCard principal
- * 
- * Características:
- * - Monitoreo en tiempo real de servicios
- * - Animaciones y transiciones suaves
- * - Diseño profesional y accesible
- * - Actualización automática cada 30 segundos
- */
 const StatusCard: React.FC<StatusCardProps> = memo(({ className = '' }) => {
   const services = useServiceStatus();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
   const [expandedServices, setExpandedServices] = useState<string[]>([]);
 
-  /**
-   * Calcular estado general de la plataforma
-   */
   const getOverallStatus = () => {
     const hasError = services.some(s => s.status === 'error');
     const hasWarning = services.some(s => s.status === 'warning');
@@ -198,9 +156,6 @@ const StatusCard: React.FC<StatusCardProps> = memo(({ className = '' }) => {
     return { status: 'loading', text: 'Verificando', color: 'blue' };
   };
 
-  /**
-   * Toggle expanded state para servicios individuales
-   */
   const toggleExpanded = (serviceId: string) => {
     setExpandedServices(prev => 
       prev.includes(serviceId) 

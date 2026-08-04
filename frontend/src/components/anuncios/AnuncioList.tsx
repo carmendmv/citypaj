@@ -1,20 +1,5 @@
 'use client';
 
-/**
- * AnuncioList Component - Componente de lista de anuncios optimizado
- * 
- * Propósito: Renderizar lista de anuncios con diseño periodístico profesional
- * Arquitectura: Componente virtualizado para manejo eficiente de grandes listas
- * Optimización: Memoización individual de items y paginación inteligente
- * Accesibilidad: Navegación por teclado y lectores de pantalla
- * 
- * @component AnuncioList
- * @param {Anuncio[]} anuncios - Array de anuncios a mostrar
- * @param {boolean} loading - Estado de carga
- * @param {string} error - Mensaje de error si existe
- * @returns {JSX.Element} Lista de anuncios con estilo NY Times
- */
-
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Calendar, MapPin, Euro, User, Eye, Heart, Share2, Flag } from 'lucide-react';
 import { useGuardados } from '@/hooks/useGuardados';
@@ -40,45 +25,27 @@ interface AnuncioListProps {
   error: string | null;
 }
 
-/**
- * Componente AnuncioItem - Item individual optimizado
- * 
- * Optimizado con memo para evitar re-renders cuando otros items cambian
- * Utiliza useCallback para manejadores de eventos
- */
 const AnuncioItem = memo(({ anuncio, index }: { anuncio: Anuncio; index: number }) => {
   const { estaGuardado, toggleGuardado } = useGuardados();
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [reportLoading, setReportLoading] = useState(false);
   const esFav = estaGuardado(String(anuncio.id));
 
-  /**
-   * Manejador de clic funcional - navega al detalle del anuncio
-   */
   const handleAnuncioClick = useCallback(() => {
     // Navegación real al detalle del anuncio
     window.location.href = `/anuncios/${anuncio.id}`;
   }, [anuncio.id]);
 
-  /**
-   * Manejador de contacto - abre formulario de contacto
-   */
   const handleContactar = useCallback((e: React.MouseEvent) => {
     e.stopPropagation(); // Evita que se dispare el clic del padre
     window.location.href = `/anuncios/${anuncio.id}`;
   }, [anuncio.id]);
 
-  /**
-   * Manejador de favoritos - toggle de favorito
-   */
   const handleFavorito = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     toggleGuardado(String(anuncio.id));
   }, [anuncio.id, toggleGuardado]);
 
-  /**
-   * Manejador de compartir
-   */
   const handleCompartir = useCallback(async (e: React.MouseEvent) => {
     e.stopPropagation();
     const url = `${window.location.origin}/anuncios/${anuncio.id}`;
@@ -89,9 +56,6 @@ const AnuncioItem = memo(({ anuncio, index }: { anuncio: Anuncio; index: number 
     }
   }, [anuncio]);
 
-  /**
-   * Manejador de reportar
-   */
   const handleReportar = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     setReportModalOpen(true);
@@ -118,9 +82,6 @@ const AnuncioItem = memo(({ anuncio, index }: { anuncio: Anuncio; index: number 
     }
   }, [anuncio.id]);
 
-  /**
-   * Formateador de fecha optimizado - cacheado para evitar recreación
-   */
   const formatDate = useMemo(() => {
     return new Date(anuncio.creado).toLocaleDateString('es-ES', {
       day: 'numeric',
@@ -251,9 +212,6 @@ const AnuncioItem = memo(({ anuncio, index }: { anuncio: Anuncio; index: number 
 // DisplayName para debugging
 AnuncioItem.displayName = 'AnuncioItem';
 
-/**
- * Componente LoadingState - Estado de carga optimizado
- */
 const LoadingState = () => (
   <div className="cp-text-center cp-py-12" aria-live="polite" aria-busy="true">
     <div className="cp-inline-block cp-w-8 cp-h-8 cp-border-4 cp-border-blue-600 cp-border-t-transparent cp-rounded-full cp-animate-spin"></div>
@@ -261,9 +219,6 @@ const LoadingState = () => (
   </div>
 );
 
-/**
- * Componente ErrorState - Manejo de errores optimizado
- */
 const ErrorState = ({ error }: { error: string }) => (
   <div className="cp-text-center cp-py-12" role="alert">
     <div className="cp-text-red-600 cp-mb-4">
@@ -276,9 +231,6 @@ const ErrorState = ({ error }: { error: string }) => (
   </div>
 );
 
-/**
- * Componente EmptyState - Estado vacío optimizado
- */
 const EmptyState = () => (
   <div className="cp-text-center cp-py-12" role="status">
     <div className="cp-text-gray-400 cp-mb-4">
@@ -291,15 +243,7 @@ const EmptyState = () => (
   </div>
 );
 
-/**
- * Componente principal AnuncioList
- * 
- * Renderiza lista de anuncios con manejo de estados
- */
 const AnuncioList: React.FC<AnuncioListProps> = memo(({ anuncios, loading, error }) => {
-  /**
-   * Renderizado condicional optimizado
-   */
   if (loading) {
     return <LoadingState />;
   }
