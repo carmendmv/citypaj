@@ -283,7 +283,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="bg-gradient-to-br from-blue-50 to-violet-50 rounded-3xl p-8 sm:p-12">
-              <div className="text-5xl mb-4">️</div>
+              <div className="text-5xl mb-4"></div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Tu voz importa</h3>
               <p className="text-gray-600 mb-6">
                 Miles de jóvenes ya participan para mejorar sus provincias. Envía sugerencias y propuestas reales.

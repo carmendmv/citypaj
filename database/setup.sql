@@ -128,7 +128,7 @@ CREATE TABLE anuncio_imagenes (
     anuncio_id VARCHAR(36) NOT NULL,
     url VARCHAR(500) NOT NULL,
     orden INT DEFAULT 0,
-    FOREIGN KEY (anuncio_id) REFERENCES anuncios(id) ON DELETE CASCADE
+    FOREIGN KEY (anuncio_id) REFERENCES anuncios(id) ON DELETE NO ACTION
 );
 
 -- Tabla de favoritos

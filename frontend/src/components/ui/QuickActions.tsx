@@ -1,17 +1,5 @@
 'use client';
 
-/**
- * QuickActions Component - Componente de acciones rápidas
- * 
- * Propósito: Proporcionar acceso directo a las funciones principales de CityPaj
- * Arquitectura: Componente funcional con análisis de eventos
- * Optimización: Memoización y tracking de interacciones
- * Accesibilidad: Botones accesibles con feedback visual
- * 
- * @component QuickActions
- * @returns {JSX.Element} Panel de acciones rápidas con analytics
- */
-
 import React, { memo, useCallback } from 'react';
 import { PlusCircle, Search, Bell, Heart, Share2, MessageSquare, Star, Zap } from 'lucide-react';
 
@@ -38,10 +26,6 @@ interface QuickActionsProps {
   onDestacar?: () => void;
 }
 
-/**
- * Hook personalizado para tracking de analytics
- * En producción, esto conectaría con Google Analytics o similar
- */
 const useAnalytics = () => {
   const trackEvent = useCallback((eventName: string, properties?: Record<string, any>) => {
     // Simulación de tracking - en producción usar servicio real
@@ -57,11 +41,6 @@ const useAnalytics = () => {
   return { trackEvent };
 };
 
-/**
- * Componente ActionButton - Botón individual de acción
- * 
- * Optimizado con memoización y tracking integrado
- */
 const ActionButton = memo(({ 
   label, 
   icon, 
@@ -73,9 +52,6 @@ const ActionButton = memo(({
 }: ActionButton) => {
   const { trackEvent } = useAnalytics();
 
-  /**
-   * Manejador de clic con tracking
-   */
   const handleClick = useCallback(() => {
     // Trackear evento antes de ejecutar acción
     trackEvent(analyticsEvent, { label, timestamp: Date.now() });
@@ -127,15 +103,6 @@ const ActionButton = memo(({
 
 ActionButton.displayName = 'ActionButton';
 
-/**
- * Componente QuickActions principal
- * 
- * Características:
- * - 8 acciones principales accesibles
- * - Tracking de interacciones
- * - Diseño responsive y accesible
- * - Feedback visual y microinteracciones
- */
 const QuickActions: React.FC<QuickActionsProps> = memo(({
   onPublicar,
   onBuscar,
@@ -146,9 +113,6 @@ const QuickActions: React.FC<QuickActionsProps> = memo(({
   onValorar,
   onDestacar
 }) => {
-  /**
-   * Configuración de acciones con analytics integrado
-   */
   const actions: ActionButton[] = [
     {
       id: 'publicar',
@@ -232,9 +196,6 @@ const QuickActions: React.FC<QuickActionsProps> = memo(({
     }
   ];
 
-  /**
-   * Manejador para acciones rápidas con teclado
-   */
   const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
     // Atajos de teclado para acciones principales
     if (event.ctrlKey || event.metaKey) {

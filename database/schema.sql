@@ -27,7 +27,7 @@ CREATE TABLE usuarios (
 -- Tabla de anuncios
 CREATE TABLE anuncios (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    usuario_id UUID REFERENCES usuarios(id) ON DELETE CASCADE,
+    usuario_id UUID REFERENCES usuarios(id) ON DELETE NO ACTION,
     titulo VARCHAR(200) NOT NULL,
     descripcion TEXT NOT NULL,
     categoria VARCHAR(50) NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE anuncios (
 -- Tabla de imágenes
 CREATE TABLE imagenes (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    anuncio_id UUID REFERENCES anuncios(id) ON DELETE CASCADE,
+    anuncio_id UUID REFERENCES anuncios(id) ON DELETE NO ACTION,
     url VARCHAR(500) NOT NULL,
     url_thumbnail VARCHAR(500),
     orden INTEGER NOT NULL,
@@ -65,8 +65,8 @@ CREATE TABLE imagenes (
 -- Tabla de favoritos
 CREATE TABLE favoritos (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    usuario_id UUID REFERENCES usuarios(id) ON DELETE CASCADE,
-    anuncio_id UUID REFERENCES anuncios(id) ON DELETE CASCADE,
+    usuario_id UUID REFERENCES usuarios(id) ON DELETE NO ACTION,
+    anuncio_id UUID REFERENCES anuncios(id) ON DELETE NO ACTION,
     creado TIMESTAMP DEFAULT NOW(),
     UNIQUE(usuario_id, anuncio_id)
 );
@@ -74,8 +74,8 @@ CREATE TABLE favoritos (
 -- Tabla de reportes
 CREATE TABLE reportes (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    anuncio_id UUID REFERENCES anuncios(id) ON DELETE CASCADE,
-    usuario_id UUID REFERENCES usuarios(id) ON DELETE CASCADE,
+    anuncio_id UUID REFERENCES anuncios(id) ON DELETE NO ACTION,
+    usuario_id UUID REFERENCES usuarios(id) ON DELETE NO ACTION,
     motivo VARCHAR(100) NOT NULL CHECK (motivo IN ('spam', 'inapropiado', 'fraude', 'duplicado', 'otro')),
     comentario TEXT,
     estado VARCHAR(20) DEFAULT 'pending' CHECK (estado IN ('pending', 'revisado', 'resuelto', 'descartado')),
@@ -87,8 +87,8 @@ CREATE TABLE reportes (
 -- Tabla de acciones de moderación
 CREATE TABLE acciones_moderacion (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    anuncio_id UUID REFERENCES anuncios(id) ON DELETE CASCADE,
-    moderador_id UUID REFERENCES usuarios(id) ON DELETE CASCADE,
+    anuncio_id UUID REFERENCES anuncios(id) ON DELETE NO ACTION,
+    moderador_id UUID REFERENCES usuarios(id) ON DELETE NO ACTION,
     accion VARCHAR(20) NOT NULL CHECK (accion IN ('aprobar', 'rechazar', 'ocultar', 'eliminar', 'flag')),
     motivo TEXT,
     anterior_estado VARCHAR(20),
@@ -99,7 +99,7 @@ CREATE TABLE acciones_moderacion (
 -- Tabla de alertas de búsqueda
 CREATE TABLE alertas_busqueda (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    usuario_id UUID REFERENCES usuarios(id) ON DELETE CASCADE,
+    usuario_id UUID REFERENCES usuarios(id) ON DELETE NO ACTION,
     termino_busqueda VARCHAR(500) NOT NULL,
     filtros JSONB,
     activa BOOLEAN DEFAULT TRUE,
@@ -110,7 +110,7 @@ CREATE TABLE alertas_busqueda (
 -- Tabla de sesiones (para JWT refresh tokens)
 CREATE TABLE sesiones (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    usuario_id UUID REFERENCES usuarios(id) ON DELETE CASCADE,
+    usuario_id UUID REFERENCES usuarios(id) ON DELETE NO ACTION,
     refresh_token_hash VARCHAR(255) NOT NULL,
     expires_at TIMESTAMP NOT NULL,
     creado TIMESTAMP DEFAULT NOW()

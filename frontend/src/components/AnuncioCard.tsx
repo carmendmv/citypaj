@@ -74,7 +74,7 @@ export const AnuncioCard: React.FC<AnuncioCardProps> = ({
       'ocio': '',
       'servicios': '',
       'intercambios': '',
-      'venta': '️',
+      'venta': '',
       'regalo': '',
     };
     return iconos[categoria.toLowerCase()] || '';

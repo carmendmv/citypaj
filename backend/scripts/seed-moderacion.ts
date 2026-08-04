@@ -49,7 +49,7 @@ function daysAgo(d: number): string {
 }
 
 async function main() {
-  console.log('️  Generando datos de ejemplo para moderación...');
+  console.log('  Generando datos de ejemplo para moderación...');
 
   // Asegurar tablas de moderación
   await createTableIfMissing('comunidad_publicaciones', `
@@ -288,7 +288,7 @@ async function main() {
       try {
         await insertRow('anuncios', base);
       } catch (err: any) {
-        console.log(`️ Anuncio ${titulo}: ${err.message}`);
+        console.log(` Anuncio ${titulo}: ${err.message}`);
       }
     }
     console.log(' Anuncios de ejemplo creados');

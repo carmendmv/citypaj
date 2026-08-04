@@ -68,7 +68,7 @@ async function main() {
     } catch (err) {
       const message = (err as Error).message;
       if (message.includes('Duplicate') || message.includes('already exists')) {
-        console.log('ℹ️ Ya existe o duplicado:', message);
+        console.log('ℹ Ya existe o duplicado:', message);
       } else {
         console.error(' Error:', message);
         process.exit(1);
