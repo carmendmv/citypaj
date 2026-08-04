@@ -64,7 +64,7 @@ async function main() {
             applied++;
           } catch (err) {
             if (err.code && ignorableErrors.has(err.code)) {
-              console.log(`ℹ️ Migración ${file}: ${err.message} (omitido)`);
+              console.log(`ℹ Migración ${file}: ${err.message} (omitido)`);
             } else {
               console.error(` Error en migración ${file}:`, err.message);
               process.exit(1);

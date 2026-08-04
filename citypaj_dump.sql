@@ -111,8 +111,8 @@ CREATE TABLE `comunidad_comentarios` (
   PRIMARY KEY (`id`),
   KEY `publicacion_id` (`publicacion_id`),
   KEY `usuario_id` (`usuario_id`),
-  CONSTRAINT `comunidad_comentarios_ibfk_1` FOREIGN KEY (`publicacion_id`) REFERENCES `comunidad_publicaciones` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `comunidad_comentarios_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+  CONSTRAINT `comunidad_comentarios_ibfk_1` FOREIGN KEY (`publicacion_id`) REFERENCES `comunidad_publicaciones` (`id`) ON DELETE NO ACTION,
+  CONSTRAINT `comunidad_comentarios_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -147,7 +147,7 @@ CREATE TABLE `comunidad_publicaciones` (
   KEY `idx_provincia` (`provincia`),
   KEY `idx_tema` (`tema`),
   KEY `usuario_id` (`usuario_id`),
-  CONSTRAINT `comunidad_publicaciones_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+  CONSTRAINT `comunidad_publicaciones_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -302,8 +302,8 @@ CREATE TABLE `propuestas_apoyos` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_apoyo` (`propuesta_id`,`usuario_id`),
   KEY `usuario_id` (`usuario_id`),
-  CONSTRAINT `propuestas_apoyos_ibfk_1` FOREIGN KEY (`propuesta_id`) REFERENCES `propuestas` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `propuestas_apoyos_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+  CONSTRAINT `propuestas_apoyos_ibfk_1` FOREIGN KEY (`propuesta_id`) REFERENCES `propuestas` (`id`) ON DELETE NO ACTION,
+  CONSTRAINT `propuestas_apoyos_ibfk_2` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

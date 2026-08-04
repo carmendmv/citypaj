@@ -1,4 +1,4 @@
-# ️ INFORMACIÓN DE LA BASE DE DATOS - CITYPAJ
+#  INFORMACIÓN DE LA BASE DE DATOS - CITYPAJ
 
 ##  DATOS DE CONEXIÓN
 - **Nombre de la Base de Datos**: `citypaj`
@@ -7,7 +7,7 @@
 - **Usuario**: `citypaj_user`
 - **Contraseña**: `citypaj123`
 
-## ️ ESTRUCTURA DE LA BASE DE DATOS
+##  ESTRUCTURA DE LA BASE DE DATOS
 
 ### Tablas Principales:
 - `anuncios` - 1913 anuncios reales

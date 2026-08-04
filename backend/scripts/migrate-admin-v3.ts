@@ -14,7 +14,7 @@ const migrationQueries = [
     titulo VARCHAR(255) NULL,
     INDEX idx_mensaje (mensaje_id),
     INDEX idx_entidad (entidad_tipo, entidad_id),
-    CONSTRAINT fk_mensaje_entidad_mensaje FOREIGN KEY (mensaje_id) REFERENCES mensajes_staff(id) ON DELETE CASCADE
+    CONSTRAINT fk_mensaje_entidad_mensaje FOREIGN KEY (mensaje_id) REFERENCES mensajes_staff(id) ON DELETE NO ACTION
   )`,
 
   // 3. Sugerencias: marcado de trasladado
@@ -116,7 +116,7 @@ const migrationQueries = [
     subido_por VARCHAR(36) NOT NULL,
     creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_comunicacion (comunicacion_id),
-    CONSTRAINT fk_com_adj_com FOREIGN KEY (comunicacion_id) REFERENCES comunicaciones_institucionales(id) ON DELETE CASCADE
+    CONSTRAINT fk_com_adj_com FOREIGN KEY (comunicacion_id) REFERENCES comunicaciones_institucionales(id) ON DELETE NO ACTION
   )`,
 
   // 9. Entidades de CityPAJ vinculadas a comunicaciones institucionales
@@ -128,7 +128,7 @@ const migrationQueries = [
     titulo VARCHAR(255) NULL,
     INDEX idx_comunicacion (comunicacion_id),
     INDEX idx_entidad (entidad_tipo, entidad_id),
-    CONSTRAINT fk_com_entidad_com FOREIGN KEY (comunicacion_id) REFERENCES comunicaciones_institucionales(id) ON DELETE CASCADE
+    CONSTRAINT fk_com_entidad_com FOREIGN KEY (comunicacion_id) REFERENCES comunicaciones_institucionales(id) ON DELETE NO ACTION
   )`,
 
   // 10. Tareas de seguimiento del admin

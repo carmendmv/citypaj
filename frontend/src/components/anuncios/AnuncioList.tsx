@@ -222,7 +222,7 @@ const LoadingState = () => (
 const ErrorState = ({ error }: { error: string }) => (
   <div className="cp-text-center cp-py-12" role="alert">
     <div className="cp-text-red-600 cp-mb-4">
-      <span className="cp-text-4xl">️</span>
+      <span className="cp-text-4xl"></span>
     </div>
     <h3 className="cp-text-lg cp-font-semibold cp-text-gray-900 cp-mb-2">
       Error al cargar los anuncios

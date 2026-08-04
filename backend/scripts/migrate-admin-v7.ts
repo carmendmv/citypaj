@@ -19,7 +19,7 @@ async function getOrCreateComunidad(comunidadId: number) {
 }
 
 async function main() {
-  console.log('️  Preparando tablas y datos de ejemplo para el panel de administración...');
+  console.log('  Preparando tablas y datos de ejemplo para el panel de administración...');
 
   const provincia = await getOrCreateProvincia();
   const comunidad = await getOrCreateComunidad(provincia.comunidad_id);
@@ -47,7 +47,7 @@ async function main() {
     ];
     for (const t of tablas) {
       await conn.execute(`DROP TABLE IF EXISTS ${t}`);
-      console.log(`️  Tabla recreada: ${t}`);
+      console.log(`  Tabla recreada: ${t}`);
     }
     await conn.execute('SET FOREIGN_KEY_CHECKS = 1');
   } finally {

@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS provincias (
     comunidad_autonoma_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (comunidad_autonoma_id) REFERENCES comunidades_autonomas(id) ON DELETE CASCADE,
+    FOREIGN KEY (comunidad_autonoma_id) REFERENCES comunidades_autonomas(id) ON DELETE NO ACTION,
     UNIQUE KEY unique_provincia_comunidad (nombre, comunidad_autonoma_id)
 );
 

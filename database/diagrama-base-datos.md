@@ -1,4 +1,4 @@
-# ️ DIAGRAMA COMPLETO DE LA BASE DE DATOS MYSQL - CITYPAJ
+#  DIAGRAMA COMPLETO DE LA BASE DE DATOS MYSQL - CITYPAJ
 
 ##  RESUMEN DE TABLAS (8 tablas principales):
 
@@ -92,7 +92,7 @@
 
 ---
 
-### ️ 2. TABLA `comunidades`
+###  2. TABLA `comunidades`
 
 | Campo | Tipo | Nulo | PK/FK | Default | Descripción |
 |-------|------|------|-------|---------|-------------|
@@ -142,7 +142,7 @@
 
 ---
 
-### ️ 5. TABLA `anuncio_imagenes`
+###  5. TABLA `anuncio_imagenes`
 
 | Campo | Tipo | Nulo | PK/FK | Default | Descripción |
 |-------|------|------|-------|---------|-------------|
@@ -151,11 +151,11 @@
 | `url` | VARCHAR(500) | NOT NULL | - | - | URL de la imagen |
 | `orden` | INT | - | - | 0 | Orden de visualización |
 
-**Relación:** `ON DELETE CASCADE` - Si se borra el anuncio, se borran sus imágenes
+**Relación:** `ON DELETE NO ACTION` - Si se borra el anuncio, se borran sus imágenes
 
 ---
 
-### ️ 6. TABLA `favoritos`
+###  6. TABLA `favoritos`
 
 | Campo | Tipo | Nulo | PK/FK | Default | Descripción |
 |-------|------|------|-------|---------|-------------|
@@ -234,7 +234,7 @@
 | `anuncios` | `usuario_id` | `usuarios.id` | - |
 | `anuncios` | `comunidad_id` | `comunidades.id` | - |
 | `anuncios` | `provincia_id` | `provincias.id` | - |
-| `anuncio_imagenes` | `anuncio_id` | `anuncios.id` | CASCADE |
+| `anuncio_imagenes` | `anuncio_id` | `anuncios.id` | NO ACTION |
 | `favoritos` | `usuario_id` | `usuarios.id` | - |
 | `favoritos` | `anuncio_id` | `anuncios.id` | - |
 | `provincias` | `comunidad_id` | `comunidades.id` | - |

@@ -42,7 +42,7 @@ CREATE TABLE anuncios (
     vistas INT DEFAULT 0,
     creado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     actualizado TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE NO ACTION
 );
 
 -- Tabla de imágenes
@@ -52,7 +52,7 @@ CREATE TABLE imagenes (
     url VARCHAR(500) NOT NULL,
     orden INT DEFAULT 0,
     creado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (anuncio_id) REFERENCES anuncios(id) ON DELETE CASCADE
+    FOREIGN KEY (anuncio_id) REFERENCES anuncios(id) ON DELETE NO ACTION
 );
 
 -- Tabla de favoritos
@@ -62,8 +62,8 @@ CREATE TABLE favoritos (
     anuncio_id CHAR(36) NOT NULL,
     creado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY unique_favorito (usuario_id, anuncio_id),
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (anuncio_id) REFERENCES anuncios(id) ON DELETE CASCADE
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE NO ACTION,
+    FOREIGN KEY (anuncio_id) REFERENCES anuncios(id) ON DELETE NO ACTION
 );
 
 -- Tabla de reportes
@@ -75,7 +75,7 @@ CREATE TABLE reportes (
     descripcion TEXT,
     estado VARCHAR(20) DEFAULT 'pending' CHECK (estado IN ('pending', 'reviewed', 'resolved', 'dismissed')),
     creado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (anuncio_id) REFERENCES anuncios(id) ON DELETE CASCADE,
+    FOREIGN KEY (anuncio_id) REFERENCES anuncios(id) ON DELETE NO ACTION,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
 );
 
@@ -90,7 +90,7 @@ CREATE TABLE alertas_busqueda (
     precio_maximo DECIMAL(10,2),
     activa BOOLEAN DEFAULT TRUE,
     creado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE NO ACTION
 );
 
 -- Índices para mejor rendimiento

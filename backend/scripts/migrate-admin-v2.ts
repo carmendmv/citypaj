@@ -26,7 +26,7 @@ const migrationQueries = [
     subido_por VARCHAR(36) NOT NULL,
     creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_mensaje (mensaje_id),
-    CONSTRAINT fk_adjunto_mensaje FOREIGN KEY (mensaje_id) REFERENCES mensajes_staff(id) ON DELETE CASCADE
+    CONSTRAINT fk_adjunto_mensaje FOREIGN KEY (mensaje_id) REFERENCES mensajes_staff(id) ON DELETE NO ACTION
   )`,
   // 4. Logs de actividad administrativa
   `CREATE TABLE IF NOT EXISTS admin_activity_logs (

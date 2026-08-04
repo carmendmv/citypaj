@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS comunidad_publicaciones (
   actualizado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_provincia (provincia),
   INDEX idx_tema (tema),
-  FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS comunidad_comentarios (
@@ -24,8 +24,8 @@ CREATE TABLE IF NOT EXISTS comunidad_comentarios (
   contenido TEXT NOT NULL,
   visible TINYINT(1) DEFAULT 1,
   creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (publicacion_id) REFERENCES comunidad_publicaciones(id) ON DELETE CASCADE,
-  FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+  FOREIGN KEY (publicacion_id) REFERENCES comunidad_publicaciones(id) ON DELETE NO ACTION,
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS propuestas (
@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS propuestas_apoyos (
   usuario_id VARCHAR(36) NOT NULL,
   creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY unique_apoyo (propuesta_id, usuario_id),
-  FOREIGN KEY (propuesta_id) REFERENCES propuestas(id) ON DELETE CASCADE,
-  FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+  FOREIGN KEY (propuesta_id) REFERENCES propuestas(id) ON DELETE NO ACTION,
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS recursos (
