@@ -14,6 +14,8 @@ import Header from '@/components/layout/Header';
 
 import Footer from '@/components/layout/Footer';
 
+import { useGuardados } from '@/hooks/useGuardados';
+
 
 
 interface Anuncio {
@@ -94,8 +96,8 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
   const [reportForm, setReportForm] = useState<ReportForm>({ motivo: '', descripcion: '' });
 
-  const [isSaved, setIsSaved] = useState(false);
-
+  const { estaGuardado, toggleGuardado } = useGuardados();
+  const isSaved = estaGuardado(id);
   const [shareMessage, setShareMessage] = useState('');
 
 
@@ -144,72 +146,10 @@ export default function AnuncioDetallePage({ params }: { params: { id: string } 
 
 
 
-  const handleSave = async () => {
-
-    try {
-
-      // Obtener token del localStorage
-
-      const authData = localStorage.getItem('citypaj_auth');
-
-      if (!authData) {
-
-        setShareMessage('Debes iniciar sesión para guardar anuncios');
-
-        setTimeout(() => setShareMessage(''), 3000);
-
-        return;
-
-      }
-
-
-
-      const { accessToken } = JSON.parse(authData);
-
-      
-
-      const response = await fetch('/api/anuncios/guardar', {
-
-        method: 'POST',
-
-        headers: {
-
-          'Content-Type': 'application/json',
-
-          'Authorization': `Bearer ${accessToken}`
-
-        },
-
-        body: JSON.stringify({ anuncio_id: id })
-
-      });
-
-
-
-      if (response.ok) {
-
-        setIsSaved(!isSaved);
-
-        setShareMessage(isSaved ? 'Anuncio eliminado de guardados' : 'Anuncio guardado correctamente');
-
-      } else {
-
-        const error = await response.json();
-
-        setShareMessage(error.error || 'Error al guardar anuncio');
-
-      }
-
-    } catch (error) {
-
-      console.error('Error guardando anuncio:', error);
-
-      setShareMessage('Error al guardar anuncio');
-
-    }
-
+  const handleSave = () => {
+    toggleGuardado(id);
+    setShareMessage(isSaved ? 'Anuncio eliminado de guardados' : 'Anuncio guardado correctamente');
     setTimeout(() => setShareMessage(''), 3000);
-
   };
 
 
