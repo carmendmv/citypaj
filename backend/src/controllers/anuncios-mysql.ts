@@ -3,6 +3,7 @@ import { randomUUID } from 'crypto';
 import { AuthRequest } from '../middleware/auth';
 import { pool } from '../config/database';
 import { getClientIp } from '../utils/ip';
+import { logAdminActivity } from '../utils/audit';
 
 const isValidId = (id: any): id is string =>
   typeof id === 'string' && id.trim() !== '' && id !== 'undefined' && id !== 'null';
@@ -431,6 +432,13 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
           visible, estadoModeracion, motivoRechazo, ip_creador, cartel_url || null, precioValor, now, now, 0
         ]
       );
+
+      if (userId && userId !== ANON_USER_ID) {
+        await connection.execute(
+          'UPDATE usuarios SET ultima_ip = ? WHERE id = ?',
+          [ip_creador, userId]
+        );
+      }
 
       // Obtener el anuncio creado para devolverlo completo
       const [result] = await connection.execute(
@@ -923,6 +931,8 @@ export const moderarAnuncio = async (req: AuthRequest, res: Response): Promise<v
         [randomUUID(), id, userId, estadoAnterior, nextEstado, notasGuardar]
       );
 
+      await logAdminActivity(userId, 'moderar_anuncio', 'anuncios', id, `Anuncio moderado a ${nextEstado}`);
+
       res.status(200).json({ success: true, message: `Anuncio actualizado a ${nextEstado}` });
     } finally {
       connection.release();
@@ -978,6 +988,7 @@ export const moderarAnunciosBulk = async (req: AuthRequest, res: Response): Prom
         );
       }
       await connection.commit();
+      await logAdminActivity(userId, 'moderar_anuncios_bulk', 'anuncios', 'bulk', `Bulk de ${ids.length} anuncios a ${estado}`);
       res.status(200).json({ success: true, message: `${ids.length} anuncios actualizados a ${estado}` });
     } catch (err) {
       await connection.rollback();
@@ -991,54 +1002,3 @@ export const moderarAnunciosBulk = async (req: AuthRequest, res: Response): Prom
   }
 };
 
-export const moderarAnuncioIA = async (req: AuthRequest, res: Response): Promise<void> => {
-  try {
-    const { id } = req.params;
-    if (!isValidId(id)) {
-      res.status(400).json({ success: false, message: 'ID de anuncio no válido' });
-      return;
-    }
-
-    const userId = req.user?.id;
-    if (!userId) {
-      res.status(401).json({ success: false, error: 'Usuario no autenticado' });
-      return;
-    }
-
-    const connection = await pool.getConnection();
-    try {
-      const [rows] = await connection.execute(
-        'SELECT titulo, descripcion FROM anuncios WHERE id = ?',
-        [id]
-      );
-
-      const anuncio = (rows as any[])[0];
-      if (!anuncio) {
-        res.status(404).json({ success: false, error: 'Anuncio no encontrado' });
-        return;
-      }
-
-      const resultado = moderarConFiltro(`${anuncio.titulo} ${anuncio.descripcion}`);
-      // El filtro automático nunca aplica rejected; solo aprueba o marca para revisión humana
-      const estado = resultado.aprobado ? 'approved' : 'flagged';
-      const visible = resultado.aprobado ? 1 : 0;
-
-      await connection.execute(
-        'UPDATE anuncios SET estado_moderacion = ?, motivo_rechazo = ?, visible = ? WHERE id = ?',
-        [estado, resultado.aprobado ? null : (resultado.motivo ?? null), visible, id]
-      );
-
-      await connection.execute(
-        "UPDATE reportes_anuncios SET estado = 'resuelto' WHERE anuncio_id = ? AND estado = 'pendiente'",
-        [id]
-      );
-
-      res.status(200).json({ success: true, message: resultado.aprobado ? 'Anuncio aprobado' : 'Marcado para revisión humana', data: { estado, motivo: resultado.motivo } });
-    } finally {
-      connection.release();
-    }
-  } catch (error) {
-    console.error('Error moderando anuncio con filtro automático:', (error as Error).message);
-    res.status(500).json({ success: false, error: 'Error interno del servidor' });
-  }
-};

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Megaphone, Plus, Search, Eye, Send, FileText, X } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import AdminNav from '@/components/admin/AdminNav';
@@ -134,6 +135,13 @@ export default function AdminComunicacionesPage() {
                       )}
                     </div>
                     <div className="flex items-center gap-2">
+                      <Link
+                        href={`/admin/comunicaciones/${c.id}`}
+                        title="Ver detalle"
+                        className="p-2 text-slate-600 hover:text-orange-500 hover:bg-orange-50 border border-gray-200"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Link>
                       {c.estado !== 'enviado' && (
                         <button
                           onClick={() => marcarEnviada(c.id)}

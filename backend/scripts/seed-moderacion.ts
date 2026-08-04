@@ -49,7 +49,7 @@ function daysAgo(d: number): string {
 }
 
 async function main() {
-  console.log('⚙️  Generando datos mock de moderación...');
+  console.log('⚙️  Generando datos de ejemplo para moderación...');
 
   // Asegurar tablas de moderación
   await createTableIfMissing('comunidad_publicaciones', `
@@ -205,12 +205,12 @@ async function main() {
   if (normalUsers.length < 5) {
     for (let i = 0; i < 5 - normalUsers.length; i++) {
       const id = randomUUID();
-      const nombre = `Usuario Mock ${i + 1}`;
+      const nombre = `Usuario de ejemplo ${i + 1}`;
       const pass = await bcrypt.hash('Test1234!', 10);
       await pool.execute(
         `INSERT IGNORE INTO usuarios (id, nombre, email, password_hash, rol, verificado, activo, creado_at, actualizado_at)
          VALUES (?, ?, ?, ?, 'usuario', 1, 1, NOW(), NOW())`,
-        [id, nombre, `usermock${i}@example.com`, pass]
+        [id, nombre, `usuario-ejemplo${i}@example.com`, pass]
       );
       normalUsers.push({ id, nombre });
     }
@@ -291,7 +291,7 @@ async function main() {
         console.log(`⚠️ Anuncio ${titulo}: ${err.message}`);
       }
     }
-    console.log('✅ Anuncios de prueba creados');
+    console.log('✅ Anuncios de ejemplo creados');
 
     // reportes sobre anuncios
     if (await count('reportes_anuncios') < 10) {
@@ -300,7 +300,7 @@ async function main() {
         await insertRow('reportes_anuncios', {
           anuncio_id: anuncioId,
           motivo: ['Contenido inapropiado', 'Spam', 'Datos personales', 'Estafa sospechosa', 'Fraude'][i % 5],
-          descripcion: 'Este anuncio ha sido reportado automáticamente por el sistema de pruebas.',
+          descripcion: 'Este anuncio ha sido reportado automáticamente por el sistema de ejemplo.',
           estado: i < 7 ? 'pendiente' : 'revisado',
           creado: daysAgo(i + 2),
         });
@@ -319,7 +319,7 @@ async function main() {
         accion: ['aprobacion', 'rechazo', 'revision', 'revision'][i % 4],
         estado_previo: prev,
         estado_nuevo: next,
-        motivo: 'Decisión de moderación de prueba',
+        motivo: 'Decisión de moderación de ejemplo',
         creado_at: daysAgo(i),
       });
     }
@@ -338,8 +338,8 @@ async function main() {
         autor_nombre: u.nombre,
         ip: '127.0.0.1',
         ip_creador: '127.0.0.1',
-        titulo: `Publicación de prueba ${i + 1} sobre ${temas[i % temas.length]}`,
-        contenido: `Este es un contenido de prueba generado para el panel de moderación. Tema: ${temas[i % temas.length]}.`,
+        titulo: `Publicación de ejemplo ${i + 1} sobre ${temas[i % temas.length]}`,
+        contenido: `Contenido de ejemplo para el panel de moderación. Tema: ${temas[i % temas.length]}.`,
         provincia: DEFAULT_PROV,
         tema: temas[i % temas.length],
         visible,
@@ -362,7 +362,7 @@ async function main() {
           usuario_id: u.id,
           autor_nombre: u.nombre,
           ip: '127.0.0.1',
-          contenido: `Respuesta de prueba ${i + 1} a la publicación ${publicacionId}.`,
+          contenido: `Respuesta de ejemplo ${i + 1} a la publicación ${publicacionId}.`,
           visible: estado === 'approved' ? 1 : 0,
           estado_moderacion: estado,
           creado_at: daysAgo(i + 1),
@@ -570,7 +570,7 @@ async function main() {
     console.log('✅ Logs de actividad creados');
   }
 
-  console.log('🎉 Datos mock de moderación generados correctamente.');
+  console.log('🎉 Datos de ejemplo generados correctamente.');
   process.exit(0);
 }
 

@@ -15,6 +15,7 @@ CREATE TABLE usuarios (
     provincia VARCHAR(50),
     avatar_url VARCHAR(500),
     bio TEXT,
+    ultima_ip VARCHAR(64),
     creado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     actualizado TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

@@ -27,6 +27,7 @@ export default function AdminNecesidadesPage() {
   const [loading, setLoading] = useState(true);
   const [provincia, setProvincia] = useState('');
   const [tema, setTema] = useState('');
+  const [mensaje, setMensaje] = useState<string | null>(null);
 
   const headers: Record<string, string> = {};
   if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
@@ -45,6 +46,33 @@ export default function AdminNecesidadesPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const crearTarea = async (n: Necesidad) => {
+    if (!isAdmin) return;
+    try {
+      const res = await fetch('/api/admin/tareas', {
+        method: 'POST',
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          titulo: `Seguimiento: ${n.provincia} — ${n.tema}`,
+          descripcion: `Necesidad juvenil agrupada en ${n.provincia} sobre ${n.tema}. Prioridad ${n.prioridad}.`,
+          prioridad: n.prioridad,
+          entidad_tipo: 'necesidad',
+          entidad_id: `${n.provincia}|${n.tema}`,
+          estado: 'pendiente',
+        }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setMensaje('Tarea creada correctamente.');
+      } else {
+        setMensaje(json.data?.error || 'Error creando la tarea');
+      }
+    } catch {
+      setMensaje('Error de conexión al crear la tarea');
+    }
+    setTimeout(() => setMensaje(null), 3000);
   };
 
   useEffect(() => {
@@ -98,7 +126,13 @@ export default function AdminNecesidadesPage() {
           ) : necesidades.length === 0 ? (
             <div className="p-8 text-center text-gray-500 bg-white border border-gray-200 rounded-xl">No se han detectado necesidades con los filtros aplicados.</div>
           ) : (
-            <div className="space-y-3">
+            <>
+              {mensaje && (
+                <div className="mb-4 p-3 text-sm border border-black bg-white text-black">
+                  {mensaje}
+                </div>
+              )}
+              <div className="space-y-3">
               {necesidades.map((n, idx) => (
                 <div key={idx} className="bg-white border border-gray-200 rounded-xl p-4">
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
@@ -125,7 +159,7 @@ export default function AdminNecesidadesPage() {
                         Generar comunicación
                       </button>
                       <button
-                        onClick={() => { /* pendiente: crear tarea */ }}
+                        onClick={() => crearTarea(n)}
                         className="inline-flex items-center gap-1 px-3 py-2 text-xs bg-white text-black border border-black hover:bg-slate-100"
                       >
                         <CheckSquare className="w-3 h-3" />
@@ -136,6 +170,7 @@ export default function AdminNecesidadesPage() {
                 </div>
               ))}
             </div>
+            </>
           )}
         </div>
       </main>

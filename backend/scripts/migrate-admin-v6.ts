@@ -8,7 +8,7 @@ async function main() {
   );
   console.log('Columna cartel_url añadida/verificada en anuncios');
 
-  // 2. Datos de prueba: eventos culturales
+  // 2. Datos de ejemplo: eventos culturales
   const provincias = await pool.execute('SELECT id, nombre, comunidad_id FROM provincias LIMIT 1');
   const provincia = (provincias as any[])[0]?.[0];
   const comunidad = provincia
@@ -35,7 +35,7 @@ async function main() {
     console.log(`Evento creado: ${titulo}`);
   }
 
-  // 3. Datos de prueba: anuncios de cultura
+  // 3. Datos de ejemplo: anuncios de cultura
   const usuarios = await pool.execute('SELECT id FROM usuarios LIMIT 1');
   const usuario = (usuarios as any[])[0]?.[0];
   const usuarioId = usuario?.id || randomUUID();
@@ -63,7 +63,7 @@ async function main() {
     console.log(`Anuncio creado: ${titulo}`);
   }
 
-  console.log('Migración v6 aplicada: eventos/cultura de prueba y cartel_url');
+  console.log('Migración v6 aplicada: eventos/cultura de ejemplo y cartel_url');
   process.exit(0);
 }
 

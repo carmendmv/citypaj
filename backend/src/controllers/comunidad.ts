@@ -141,6 +141,7 @@ export const getPublicaciones = async (req: Request, res: Response): Promise<voi
       meta: { page: pageNum, limit: limitNum, total, totalPages, hasNext: pageNum < totalPages, hasPrev: pageNum > 1 }
     });
   } catch (error) {
+    console.error('Error en getPublicaciones:', (error as Error).message);
     res.status(500).json({ success: false, error: 'Error interno del servidor' });
   }
 };
@@ -244,6 +245,10 @@ export const createPublicacion = async (req: AuthRequest, res: Response): Promis
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 'approved')`,
       [usuarioId || null, autorNombre.trim(), ip, ip, tituloLimpio, contenidoLimpio, provincia, tema]
     ) as any;
+
+    if (usuarioId) {
+      await pool.execute('UPDATE usuarios SET ultima_ip = ? WHERE id = ?', [ip, usuarioId]);
+    }
 
     res.status(201).json({
       success: true,

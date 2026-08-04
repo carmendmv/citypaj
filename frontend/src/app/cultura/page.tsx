@@ -84,7 +84,7 @@ export default function CulturaPage() {
       >
         <Link
           href="/publicar/cultura"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-black text-white text-sm font-medium hover:bg-orange-500 hover:scale-105 active:scale-95 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-black text-white text-sm font-medium hover:bg-orange-500 hover:text-white hover:scale-105 active:scale-95 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200"
         >
           <Plus className="w-4 h-4" />
           Publicar evento
@@ -143,7 +143,7 @@ export default function CulturaPage() {
                 key={evento.id}
                 className="group border border-black bg-white hover:border-orange-500 transition-all duration-200 flex flex-col h-full"
               >
-                <div className="relative h-52 overflow-hidden bg-gray-50">
+                <div className="relative h-48 sm:h-56 overflow-hidden bg-white">
                   {evento.cartel_url ? (
                     <img
                       src={evento.cartel_url}
@@ -152,10 +152,10 @@ export default function CulturaPage() {
                       loading="lazy"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                    <div className="w-full h-full flex items-center justify-center bg-white border-b border-black">
                       <div className="text-center p-4">
-                        <ImageOff className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                        <p className="text-xs text-gray-500 font-sans">Sin cartel</p>
+                        <ImageOff className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+                        <p className="text-xs text-gray-400 font-sans">Se espera imagen</p>
                       </div>
                     </div>
                   )}
@@ -188,7 +188,7 @@ export default function CulturaPage() {
                   </div>
                   <Link
                     href={`/anuncios/${evento.id}`}
-                    className="mt-auto w-full text-center px-4 py-2.5 bg-black text-white text-sm font-sans hover:bg-orange-500 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200"
+                    className="mt-auto w-full text-center px-4 py-2.5 bg-black text-white text-sm font-sans hover:bg-orange-500 hover:text-white hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200"
                   >
                     Ver evento
                   </Link>

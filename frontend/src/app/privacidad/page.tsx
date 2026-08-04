@@ -111,7 +111,24 @@ export default function PrivacidadPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-serif text-black mb-4">9. Contacto</h2>
+            <h2 className="text-2xl font-serif text-black mb-4">9. Dirección IP y logs técnicos</h2>
+            <p className="mb-4">
+              Cuando navegas por CityPAJ recopilamos automáticamente tu dirección IP junto a otros datos técnicos como el
+              navegador, el sistema operativo y las páginas visitadas. Esto se hace por motivos de seguridad, prevención de
+              abuso y correcto funcionamiento del servicio.
+            </p>
+            <p className="mb-4">
+              La IP se conserva durante el tiempo estrictamente necesario para esas finalidades y se almacena de forma
+              enmascarada o limitada siempre que sea posible. No se utiliza para elaborar perfiles comerciales ni se cede a
+              terceros fuera de los supuestos legales.
+            </p>
+            <p className="mb-4">
+              Puedes consultar el uso más detallado en los <Link href="/terminos" className="underline hover:text-orange-500">Términos y condiciones</Link>.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-serif text-black mb-4">10. Contacto</h2>
             <p className="mb-4">
               Si tienes preguntas sobre esta política de privacidad, puedes contactarnos en:
             </p>

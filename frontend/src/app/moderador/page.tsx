@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Shield, MessageSquare, FileText, Users, LogOut, AlertTriangle } from 'lucide-react';
 import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/context/AuthContext';
 
 const ROL_MODERADOR = ['admin', 'moderador'];
@@ -138,7 +137,6 @@ export default function ModeradorPanelPage() {
             </div>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -260,8 +258,6 @@ export default function ModeradorPanelPage() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

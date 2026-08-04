@@ -49,11 +49,11 @@
 - **formacion**: 416 anuncios
 - **empleo**: 404 anuncios
 - **comunidad**: 390 anuncios
-- **transporte**: 100 anuncios ✨ (NUEVA)
-- **vivienda**: 100 anuncios ✨ (NUEVA)
-- **salud**: 100 anuncios ✨ (NUEVA)
-- **tecnología**: 100 anuncios ✨ (NUEVA)
-- **otros**: 100 anuncios ✨ (NUEVA)
+- **transporte**: 100 anuncios
+- **vivienda**: 100 anuncios
+- **salud**: 100 anuncios
+- **tecnología**: 100 anuncios
+- **otros**: 100 anuncios
 
 ### Distribución Geográfica:
 - **17 Comunidades Autónomas** completas
@@ -64,8 +64,8 @@
 
 ### Backend (con datos reales):
 ```bash
-cd backend/src
-node server-final-real.js
+cd backend
+npm run dev
 ```
 
 ### Frontend:
@@ -74,12 +74,15 @@ cd frontend
 npm run dev
 ```
 
+### Ambos a la vez:
+```bash
+npm run dev
+```
+
 ## 📝 NOTAS IMPORTANTES
-- La base de datos `citypaj_db` ha sido eliminada
-- Solo se utiliza `citypaj` como base de datos principal
-- Todos los datos son reales y están cacheados para máximo rendimiento
-- El servidor carga 1913 anuncios reales al iniciar
-- No se utiliza datos de ejemplo en producción
+- Se utiliza la base de datos `citypaj` como base principal
+- Los datos se cargan desde la base de datos MySQL configurada
+- El servidor inicia la conexión y el contenido se consulta dinámicamente
 
 ## 🔐 SEGURIDAD
 - Usuario dedicado `citypaj_user` con privilegios limitados

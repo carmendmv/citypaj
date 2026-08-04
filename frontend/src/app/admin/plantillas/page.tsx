@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { FileStack, Plus, Search, Eye, Trash, Copy } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import AdminNav from '@/components/admin/AdminNav';
@@ -169,6 +170,13 @@ export default function AdminPlantillasPage() {
                       <p className="text-xs text-slate-400 mt-1">{p.descripcion || '—'}</p>
                     </div>
                     <div className="flex items-center gap-2">
+                      <Link
+                        href={`/admin/plantillas/${p.id}`}
+                        className="p-2 text-slate-600 hover:text-orange-500 hover:bg-orange-50 border border-gray-200 text-sm"
+                        title="Editar plantilla"
+                      >
+                        Editar
+                      </Link>
                       <button
                         onClick={() => setPreview(p)}
                         className="p-2 text-slate-600 hover:bg-slate-100 border border-gray-200"

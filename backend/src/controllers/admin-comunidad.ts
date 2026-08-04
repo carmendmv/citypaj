@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { pool } from '../config/database';
+import { logAdminActivity } from '../utils/audit';
 
 const ORDENES_ADMIN: Record<string, string> = {
   reciente: 'cp.creado_at DESC',
@@ -61,9 +62,10 @@ export const getAdminPublicaciones = async (req: Request, res: Response): Promis
     const countQuery = `SELECT COUNT(*) as total FROM comunidad_publicaciones cp WHERE ${whereClause}`;
     const listQuery = `
       SELECT
-        cp.id, cp.usuario_id, cp.autor_nombre, cp.ip, cp.titulo, cp.contenido, cp.provincia, cp.tema,
+        cp.id, cp.usuario_id, cp.autor_nombre, cp.ip, cp.ip_creador, cp.titulo, cp.contenido, cp.provincia, cp.tema,
         cp.visible, cp.estado_moderacion, cp.creado_at, cp.actualizado_at,
         COALESCE(cp.autor_nombre, u.nombre, 'Anónimo') as usuario_nombre,
+        u.ultima_ip as usuario_ultima_ip,
         (SELECT COUNT(*) FROM comunidad_comentarios cc WHERE cc.publicacion_id = cp.id) as respuestas_count,
         (SELECT COUNT(*) FROM comunidad_likes cl WHERE cl.tipo = 'publicacion' AND cl.objeto_id = cp.id) as likes_count,
         (SELECT COUNT(*) FROM comunidad_reportes cr WHERE cr.tipo = 'publicacion' AND cr.objeto_id = cp.id AND cr.estado = 'pendiente') as reportes_pendientes,
@@ -171,6 +173,8 @@ export const updatePublicacionEstado = async (req: AuthRequest, res: Response): 
       [...params, id]
     );
 
+    await logAdminActivity(req.user!.id, 'actualizar_publicacion', 'comunidad_publicaciones', id, `visible=${visible}, estado=${estado_moderacion}`);
+
     res.status(200).json({ success: true, message: 'Publicación actualizada.' });
   } catch (error) {
     res.status(500).json({ success: false, error: 'Error al actualizar la publicación.' });
@@ -203,6 +207,8 @@ export const updateRespuestaEstado = async (req: AuthRequest, res: Response): Pr
       `UPDATE comunidad_comentarios SET ${sets.join(', ')} WHERE id = ?`,
       [...params, id]
     );
+
+    await logAdminActivity(req.user!.id, 'actualizar_respuesta', 'comunidad_comentarios', id, `visible=${visible}, estado=${estado_moderacion}`);
 
     res.status(200).json({ success: true, message: 'Respuesta actualizada.' });
   } catch (error) {
@@ -277,6 +283,8 @@ export const revisarReporte = async (req: AuthRequest, res: Response): Promise<v
       'UPDATE comunidad_reportes SET estado = ?, nota_moderacion = ?, revisado = NOW() WHERE id = ?',
       [estado, nota_moderacion || '', id]
     );
+
+    await logAdminActivity(req.user!.id, 'revisar_reporte', 'comunidad_reportes', id, `Nuevo estado: ${estado}`);
 
     res.status(200).json({ success: true, message: 'Reporte actualizado.' });
   } catch (error) {

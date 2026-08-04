@@ -14,7 +14,6 @@ import {
   getReportesAnuncio,
   moderarAnuncio,
   moderarAnunciosBulk,
-  moderarAnuncioIA,
   getMisAnuncios
 } from '../controllers/anuncios-mysql';
 
@@ -49,9 +48,6 @@ router.post('/:id/moderar', auth, requireRole(['admin', 'moderador']), moderarAn
 
 // Moderate multiple ads in bulk
 router.post('/moderar-bulk', auth, requireRole(['admin', 'moderador']), moderarAnunciosBulk);
-
-// Moderar anuncio con filtro automático
-router.post('/:id/moderar-ia', auth, requireRole(['admin', 'moderador']), moderarAnuncioIA);
 
 // Delete anuncio
 router.delete('/:id', auth, deleteAnuncio);

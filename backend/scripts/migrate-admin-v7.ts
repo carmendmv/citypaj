@@ -19,7 +19,7 @@ async function getOrCreateComunidad(comunidadId: number) {
 }
 
 async function main() {
-  console.log('⚙️  Preparando tablas y datos mock para el panel de administración...');
+  console.log('⚙️  Preparando tablas y datos de ejemplo para el panel de administración...');
 
   const provincia = await getOrCreateProvincia();
   const comunidad = await getOrCreateComunidad(provincia.comunidad_id);
@@ -162,7 +162,7 @@ async function main() {
     await pool.execute(
       `INSERT IGNORE INTO contactos_institucionales
        (institucion, tipo, area_departamento, provincia, comunidad_autonoma, email_oficial, telefono, web, persona_contacto, estado, verificado, verificado_at, verificado_por, notas_internas, creado_por)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'verificado', 1, NOW(), ?, 'Contacto verificado de prueba', ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'verificado', 1, NOW(), ?, 'Contacto verificado de ejemplo', ?)`,
       [institucion, tipo, area, prov, ccaa, email, telefono, web, persona, adminId, adminId]
     );
   }
@@ -283,7 +283,7 @@ async function main() {
        VALUES (?, ?, ?, ?, ?, 'borrador', ?, ?, ?, ?, ?)`,
       [plantillaId, contacto.id, adminId, contacto.institucion, `Borrador de comunicación con ${contacto.institucion}`, contacto.provincia, contacto.comunidad_autonoma, contacto.institucion, contacto.area_departamento, contacto.email_oficial]
     );
-    console.log('✅ Comunicaciones institucionales de prueba creadas');
+    console.log('✅ Comunicaciones institucionales de ejemplo creadas');
   }
 
   // 8. Mensajería de staff
@@ -409,7 +409,7 @@ async function main() {
         [titulo, descripcion, ccaa, categoria]
       );
     }
-    console.log('✅ Sugerencias de prueba creadas');
+    console.log('✅ Sugerencias de ejemplo creadas');
   }
 
   const [[{ total: totalPropuestas }]] = await pool.execute('SELECT COUNT(*) as total FROM propuestas') as any[];
@@ -425,10 +425,10 @@ async function main() {
         [titulo, descripcion, prov, categoria]
       );
     }
-    console.log('✅ Propuestas de prueba creadas');
+    console.log('✅ Propuestas de ejemplo creadas');
   }
 
-  console.log('🎉 Migración v7 completada: panel de administración con datos mock.');
+  console.log('🎉 Migración v7 completada: panel de administración con datos de ejemplo.');
   process.exit(0);
 }
 

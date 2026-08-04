@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Mail, Send, Inbox, Send as EnviadosIcon, Trash2, Check, Plus, X, Archive, Save, Paperclip } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import AdminNav from '@/components/admin/AdminNav';
@@ -460,6 +461,13 @@ export default function AdminMensajesPage() {
                             <Archive className="w-4 h-4" />
                           </button>
                         )}
+                        <Link
+                          href={`/admin/mensajes/${m.id}`}
+                          title="Ver detalle"
+                          className="p-2 text-gray-600 hover:text-orange-500 hover:bg-orange-50 border border-gray-200 text-sm"
+                        >
+                          Ver
+                        </Link>
                         <button
                           onClick={() => eliminarMensaje(m.id)}
                           title="Eliminar"

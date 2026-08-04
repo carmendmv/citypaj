@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { auth, requireRole } from '../middleware/auth';
 import {
   getSugerencias,
   createSugerencia,
@@ -22,10 +23,10 @@ router.get('/estadisticas', getEstadisticasSugerencias);
 // Get sugerencia by ID
 router.get('/:id', getSugerenciaById);
 
-// Update sugerencia (status)
-router.put('/:id', updateSugerencia);
+// Update sugerencia (status) - admin / moderador
+router.put('/:id', auth, requireRole(['admin', 'moderador']), updateSugerencia);
 
-// Delete sugerencia
-router.delete('/:id', deleteSugerencia);
+// Delete sugerencia - admin / moderador
+router.delete('/:id', auth, requireRole(['admin', 'moderador']), deleteSugerencia);
 
 export default router;

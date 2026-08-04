@@ -31,6 +31,8 @@ interface AnuncioModeracion {
   reportes: number;
   moderado_at: string | null;
   moderado_por_nombre: string | null;
+  ip_creador: string | null;
+  usuario_ultima_ip: string | null;
 }
 
 interface Reporte {
@@ -79,7 +81,7 @@ const ORDENES = [
   { value: 'titulo-desc', label: 'Título Z-A' },
 ];
 
-const ITEMS_POR_PAGINA = [10, 20, 50];
+const ITEMS_POR_PAGINA = [10, 15];
 
 export default function AdminAnunciosPage() {
   const router = useRouter();
@@ -88,7 +90,7 @@ export default function AdminAnunciosPage() {
   const [anuncios, setAnuncios] = useState<AnuncioModeracion[]>([]);
   const [total, setTotal] = useState(0);
   const [pagina, setPagina] = useState(1);
-  const [limite, setLimite] = useState(20);
+  const [limite, setLimite] = useState(10);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -101,7 +103,7 @@ export default function AdminAnunciosPage() {
 
   const [filtroTexto, setFiltroTexto] = useState('');
   const [debouncedText, setDebouncedText] = useState('');
-  const [filtroEstado, setFiltroEstado] = useState('');
+  const [filtroEstado, setFiltroEstado] = useState('pending');
   const [filtroCategoria, setFiltroCategoria] = useState('');
   const [filtroComunidad, setFiltroComunidad] = useState('');
   const [filtroProvincia, setFiltroProvincia] = useState('');
@@ -322,7 +324,7 @@ export default function AdminAnunciosPage() {
 
   const exportarCSV = () => {
     if (anuncios.length === 0) return;
-    const headers = ['ID', 'Titulo', 'Descripcion', 'Categoria', 'Comunidad', 'Provincia', 'Estado', 'Reportes', 'Autor', 'Email', 'Creado', 'Moderado por', 'Moderado el', 'Notas'];
+    const headers = ['ID', 'Titulo', 'Descripcion', 'Categoria', 'Comunidad', 'Provincia', 'Estado', 'Reportes', 'Autor', 'Email', 'IP publicacion', 'IP usuario', 'Creado', 'Moderado por', 'Moderado el', 'Notas'];
     const filas = anuncios.map((a) => [
       a.id,
       a.titulo,
@@ -334,6 +336,8 @@ export default function AdminAnunciosPage() {
       a.reportes,
       a.usuario_nombre || '',
       a.usuario_email || '',
+      a.ip_creador || '',
+      a.usuario_ultima_ip || '',
       formatearFecha(a.creado_at),
       a.moderado_por_nombre || '',
       a.moderado_at ? formatearFechaHora(a.moderado_at) : '',
@@ -650,6 +654,8 @@ export default function AdminAnunciosPage() {
                       <div className="text-xs text-gray-500 mb-2">
                         <span className="font-medium">{a.usuario_nombre || 'Anónimo'}</span>
                         {a.usuario_email ? <span> · {a.usuario_email}</span> : null}
+                        {a.ip_creador ? <span className="block text-gray-400 mt-0.5">IP publicación: {a.ip_creador}</span> : null}
+                        {a.usuario_ultima_ip ? <span className="block text-gray-400">IP usuario: {a.usuario_ultima_ip}</span> : null}
                       </div>
                       {a.moderado_at ? (
                         <p className="text-xs text-gray-500 italic">
@@ -786,6 +792,8 @@ export default function AdminAnunciosPage() {
               <div><span className="font-medium">Categoría:</span> {preview.categoria}</div>
               <div><span className="font-medium">Ubicación:</span> {preview.comunidad_autonoma}{preview.provincia ? ` / ${preview.provincia}` : ''}</div>
               <div><span className="font-medium">Autor:</span> {preview.usuario_nombre || 'Anónimo'}{preview.usuario_email ? ` · ${preview.usuario_email}` : ''}</div>
+              <div><span className="font-medium">IP publicación:</span> {preview.ip_creador || '-'}</div>
+              <div><span className="font-medium">IP usuario:</span> {preview.usuario_ultima_ip || '-'}</div>
               <div><span className="font-medium">Publicado:</span> {formatearFechaHora(preview.creado_at)}</div>
             </div>
             {preview.moderado_at ? (

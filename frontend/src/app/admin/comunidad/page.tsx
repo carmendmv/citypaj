@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import Footer from '@/components/layout/Footer';
 import { TEMAS_COMUNIDAD } from '@/lib/comunidad';
 
 interface PublicacionAdmin {
@@ -18,6 +19,8 @@ interface PublicacionAdmin {
   likes_count: number;
   reportes_pendientes: number;
   reportes_total: number;
+  ip?: string;
+  usuario_ultima_ip?: string;
 }
 
 interface ReporteAdmin {
@@ -109,7 +112,7 @@ export default function AdminComunidadPage() {
     } catch {}
   };
 
-  return (
+  return (<>
     <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl font-bold text-gray-900 mb-6">Moderación de Comunidad</h1>
@@ -178,6 +181,13 @@ export default function AdminComunidadPage() {
                       <div>
                         <p className="text-sm font-semibold text-gray-900">{p.titulo}</p>
                         <p className="text-xs text-gray-500 mb-1">{p.provincia} · {p.tema} · {p.usuario_nombre || 'Anónimo'}</p>
+                        {(p.ip || p.usuario_ultima_ip) && (
+                          <p className="text-xs text-gray-400 mt-0.5">
+                            {p.ip ? `IP publicación: ${p.ip}` : ''}
+                            {p.ip && p.usuario_ultima_ip ? ' · ' : ''}
+                            {p.usuario_ultima_ip ? `IP usuario: ${p.usuario_ultima_ip}` : ''}
+                          </p>
+                        )}
                         <p className="text-sm text-gray-700 line-clamp-2">{p.contenido}</p>
                         <p className="text-xs text-gray-400 mt-1">
                           {p.respuestas_count} respuestas · {p.likes_count} likes · {p.reportes_pendientes} reportes pendientes
@@ -243,5 +253,6 @@ export default function AdminComunidadPage() {
         )}
       </div>
     </div>
-  );
+    <Footer />
+  </>);
 }

@@ -1,6 +1,6 @@
 # CityPAJ
 
-Plataforma web dirigida a jóvenes para publicar y descubrir anuncios, recursos, eventos, propuestas y participación ciudadana.
+Proyecto de fin de ciclo del 2º curso de DAW. Una plataforma web dirigida a jóvenes para publicar y descubrir anuncios, recursos, eventos, propuestas y participación ciudadana.
 
 ---
 
@@ -32,9 +32,11 @@ Plataforma web dirigida a jóvenes para publicar y descubrir anuncios, recursos,
 
 ## Descripción
 
-CityPAJ es una aplicación full-stack que permite a los usuarios publicar anuncios juveniles, buscar contenido por comunidad autónoma y provincia, y participar en secciones como comunidad, buzón de sugerencias y ayudas. Los anuncios pasan por un flujo de moderación humana con ayuda de un filtro interno automático que detecta palabras inapropiadas y marca contenido dudoso para revisión.
+CityPAJ es una aplicación full-stack que construyo mientras aprendo. Permite a los usuarios publicar anuncios juveniles, buscar contenido por comunidad autónoma y provincia, y participar en secciones como comunidad, buzón de sugerencias y ayudas.
 
-El objetivo del proyecto es ofrecer una experiencia moderna, accesible desde móvil, con un panel de moderación profesional y totalmente separado del acceso de usuarios normales.
+Durante el desarrollo descubro cómo encajan el frontend con React y Next.js, el backend con Express y TypeScript, y una base de datos MySQL. El flujo de moderación humana, con un filtro interno automático que marca contenido dudoso, me sirve para entender cómo gestionar permisos, estados y responsabilidad de contenido en una aplicación real.
+
+El objetivo es ofrecer una experiencia moderna y accesible desde el móvil, con un panel de moderación separado del acceso de los usuarios normales.
 
 ---
 
@@ -655,21 +657,38 @@ Es opcional. Se puede usar para cache, rate limiting distribuido y sesiones. Sin
 
 ---
 
+## Protección de datos y dirección IP
+
+A lo largo del proyecto tengo que mirar cómo se tratan los datos personales en una web real. Según lo que consulto en fuentes oficiales, resumo lo básico:
+
+- **Dirección IP**: la Agencia Española de Protección de Datos (AEPD) indica que la dirección IP puede considerarse un dato personal cuando permite identificar, directa o indirectamente, a una persona. Por eso en CityPAJ la recopilamos de forma limitada, solo para seguridad y prevención de abusos, y no se usa para publicidad.
+- **Base jurídica**: siguiendo lo que dice el Reglamento General de Protección de Datos (RGPD) y la LOPDGDD, el uso de la IP y otros datos técnicos se basa en el **interés legítimo** y la **ejecución del servicio**, siempre informando al usuario.
+- **Derechos del usuario**: en la plataforma puedes acceder, corregir y eliminar tus datos. También puedes pedir que se borre tu cuenta desde el perfil.
+- **Conservación**: los datos técnicos, incluidos los logs con IP, se guardan solo el tiempo necesario para resolver incidencias o problemas de seguridad.
+
+> **Fuentes consultadas**:
+> - Agencia Española de Protección de Datos (AEPD): [aepd.es](https://www.aepd.es)
+> - Reglamento General de Protección de Datos (RGPD), artículos 6, 13 y 17.
+> - Ley Orgánica 3/2018, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
+
 ## Seguridad
 
-- Las contraseñas nunca se almacenan en texto plano; usan `bcrypt`.
-- Los tokens JWT tienen expiración corta (15 min) y se refrescan.
-- El rate limiting protege rutas de autenticación y subida de archivos.
+Voy aprendiendo sobre seguridad web a medida que avanzo. Estas son las medidas que tiene el proyecto:
+
+- Las contraseñas no se guardan en texto plano; se hashean con `bcrypt`.
+- Los tokens JWT duran poco (15 min) y hay tokens de refresco.
+- Rate limiting en login y subida de archivos para evitar abusos.
 - Helmet añade cabeceras de seguridad HTTP.
-- CORS está configurado por lista blanca de orígenes.
-- En producción cambia siempre `JWT_SECRET`, `JWT_REFRESH_SECRET` y `SESSION_SECRET`.
+- CORS limitado a orígenes permitidos.
+- En producción hay que cambiar `JWT_SECRET`, `JWT_REFRESH_SECRET` y `SESSION_SECRET` por valores seguros.
 
 ---
 
 ## Licencia y autor
 
 - **Proyecto**: CityPAJ
-- **Autor**: Carmen (TFG 2º DAW)
+- **Autora**: Carmen
+- **Contexto**: Trabajo de Fin de Grado del 2º curso del Ciclo Superior de Desarrollo de Aplicaciones Web (DAW).
 - **Licencia**: MIT
 
-Para dudas o mejoras, abre un issue en el repositorio.
+Si tienes dudas o ves algo que se pueda mejorar, puedes abrir un issue en el repositorio.

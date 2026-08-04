@@ -27,10 +27,10 @@ interface HeaderProps {
 
 const MENU_PRINCIPAL = [
   {
-    categoria: 'empleo',
-    label: 'Empleo',
-    descripcion: 'Ofertas laborales y prácticas',
-    href: '/anuncios?categoria=empleo'
+    categoria: 'anuncios',
+    label: 'Anuncios',
+    descripcion: 'Todos los anuncios publicados',
+    href: '/anuncios'
   },
   {
     categoria: 'comunidad',

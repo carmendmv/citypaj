@@ -1,6 +1,6 @@
 -- Base de datos para CityPaj
-CREATE DATABASE IF NOT EXISTS citypaj_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE citypaj_db;
+CREATE DATABASE IF NOT EXISTS citypaj CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE citypaj;
 
 -- Tabla de usuarios
 CREATE TABLE usuarios (

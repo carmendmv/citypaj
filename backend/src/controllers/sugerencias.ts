@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
+import { AuthRequest } from '../middleware/auth';
 import { pool } from '../config/database';
 import { getClientIp } from '../utils/ip';
+import { logAdminActivity } from '../utils/audit';
 
 export interface Sugerencia {
   id?: number;
@@ -201,7 +203,7 @@ export const getSugerenciaById = async (req: Request, res: Response): Promise<vo
   }
 };
 
-export const updateSugerencia = async (req: Request, res: Response): Promise<void> => {
+export const updateSugerencia = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     const { estado } = req.body;
@@ -219,6 +221,8 @@ export const updateSugerencia = async (req: Request, res: Response): Promise<voi
       [estado, id]
     );
 
+    await logAdminActivity(req.user!.id, 'cambio_estado_sugerencia', 'sugerencias', id, `Estado: ${estado}`);
+
     res.status(200).json({
       success: true,
       message: 'Sugerencia actualizada correctamente',
@@ -233,7 +237,7 @@ export const updateSugerencia = async (req: Request, res: Response): Promise<voi
   }
 };
 
-export const deleteSugerencia = async (req: Request, res: Response): Promise<void> => {
+export const deleteSugerencia = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
 
@@ -246,6 +250,8 @@ export const deleteSugerencia = async (req: Request, res: Response): Promise<voi
       });
       return;
     }
+
+    await logAdminActivity(req.user!.id, 'eliminar_sugerencia', 'sugerencias', id, 'Sugerencia eliminada');
 
     res.status(200).json({
       success: true,

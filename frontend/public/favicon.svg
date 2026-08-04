@@ -1,22 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#f97316"/>
-  <g fill="none" stroke="#ffffff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="256" cy="186" r="42"/>
-    <path d="M256 236 L256 320"/>
-    <path d="M216 282 L256 236 L296 282"/>
-    <path d="M296 250 L364 220"/>
-    <circle cx="394" cy="206" r="34"/>
-    <path d="M394 244 L394 320"/>
-    <path d="M394 320 L430 360"/>
-    <path d="M394 320 L358 360"/>
-    <path d="M394 260 L434 290"/>
-    <path d="M216 250 L148 220"/>
-    <circle cx="118" cy="206" r="34"/>
-    <path d="M118 244 L118 320"/>
-    <path d="M118 320 L82 360"/>
-    <path d="M118 320 L154 360"/>
-    <path d="M118 260 L78 290"/>
-    <path d="M256 282 L216 250"/>
-    <path d="M256 282 L296 250"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="cp" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0a0a0a"/>
+  <circle cx="32" cy="32" r="23" fill="url(#cp)"/>
+  <text
+    x="32"
+    y="47"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-size="36"
+    font-weight="800"
+    fill="#ffffff"
+  >C</text>
 </svg>

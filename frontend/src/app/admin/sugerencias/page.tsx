@@ -4,8 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
-import { Printer } from 'lucide-react';
+import { Printer, Trash2 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import Footer from '@/components/layout/Footer';
 import Pagination from '@/components/ui/Pagination';
 
 interface Estadisticas {
@@ -77,6 +78,8 @@ const PRIORIDAD_CLASSES: Record<string, string> = {
   critica: 'bg-red-700 text-white'
 };
 
+const ESTADOS = ['pendiente', 'revisada', 'en_progreso', 'resuelta', 'rechazada'];
+
 const ESTADO_CLASSES: Record<string, string> = {
   resuelta: 'bg-green-100 text-green-800',
   en_progreso: 'bg-blue-100 text-blue-800',
@@ -88,7 +91,7 @@ const ESTADO_CLASSES: Record<string, string> = {
 const STORAGE_NOTES_KEY = 'citypaj_admin_notes';
 
 export default function AdminSugerencias() {
-  const { user } = useAuth();
+  const { user, accessToken } = useAuth();
   const router = useRouter();
 
   const [estadisticas, setEstadisticas] = useState<Estadisticas | null>(null);
@@ -135,6 +138,47 @@ export default function AdminSugerencias() {
 
   const actualizarNota = (id: number, valor: string) => {
     guardarNotas({ ...notas, [id]: valor });
+  };
+
+  const cambiarEstado = async (id: number, nuevoEstado: string) => {
+    try {
+      const res = await fetch(`/api/sugerencias/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken || ''}`,
+        },
+        body: JSON.stringify({ estado: nuevoEstado }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        await fetchSugerencias(page);
+        await fetchEstadisticas();
+      } else {
+        setError(json.error || 'Error actualizando estado');
+      }
+    } catch (err) {
+      setError('Error de conexión al actualizar estado');
+    }
+  };
+
+  const eliminarSugerencia = async (id: number) => {
+    if (!confirm('¿Eliminar esta sugerencia? Esta acción no se puede deshacer.')) return;
+    try {
+      const res = await fetch(`/api/sugerencias/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${accessToken || ''}` },
+      });
+      const json = await res.json();
+      if (json.success) {
+        await fetchSugerencias(page);
+        await fetchEstadisticas();
+      } else {
+        setError(json.error || 'Error eliminando sugerencia');
+      }
+    } catch (err) {
+      setError('Error de conexión al eliminar sugerencia');
+    }
   };
 
   const fetchEstadisticas = async () => {
@@ -197,7 +241,7 @@ export default function AdminSugerencias() {
     );
   }
 
-  return (
+  return (<>
     <div className="min-h-screen bg-gray-50 p-8 print:bg-white print:p-0">
       <div className="max-w-7xl mx-auto">
         {/* Encabezado visible solo en impresión/PDF */}
@@ -363,6 +407,7 @@ export default function AdminSugerencias() {
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider print:hidden">Notas del moderador</th>
                       <th className="hidden print:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nota</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider print:hidden">Acciones</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -407,6 +452,26 @@ export default function AdminSugerencias() {
                         </td>
                         <td className="hidden print:table-cell px-4 py-4 text-sm text-gray-700 align-top">
                           {notas[sugerencia.id] || 'Sin notas'}
+                        </td>
+                        <td className="px-4 py-4 print:hidden">
+                          <div className="flex items-center gap-2">
+                            <select
+                              value={sugerencia.estado}
+                              onChange={(e) => cambiarEstado(sugerencia.id, e.target.value)}
+                              className="text-xs px-2 py-1 border border-black focus:border-orange-500 focus:outline-none"
+                            >
+                              {ESTADOS.map((e) => (
+                                <option key={e} value={e}>{e.replace('_', ' ')}</option>
+                              ))}
+                            </select>
+                            <button
+                              onClick={() => eliminarSugerencia(sugerencia.id)}
+                              className="p-1 text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors"
+                              title="Eliminar sugerencia"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -456,5 +521,6 @@ export default function AdminSugerencias() {
         )}
       </div>
     </div>
-  );
+    <Footer />
+  </>);
 }

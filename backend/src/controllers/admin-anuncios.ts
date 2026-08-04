@@ -99,7 +99,8 @@ export const getAdminAnuncios = async (req: AuthRequest, res: Response): Promise
         `SELECT SQL_CALC_FOUND_ROWS
           a.id, a.usuario_id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
           a.provincia, a.estado_moderacion, a.motivo_rechazo, a.creado_at, a.actualizado_at, a.visible,
-          u.nombre as usuario_nombre, u.email as usuario_email,
+          a.ip_creador,
+          u.nombre as usuario_nombre, u.email as usuario_email, u.ultima_ip as usuario_ultima_ip,
           COUNT(r.id) as reportes,
           ml.creado_at as moderado_at,
           mu.nombre as moderado_por_nombre
@@ -151,6 +152,8 @@ export const getAdminAnuncios = async (req: AuthRequest, res: Response): Promise
         moderado_at: a.moderado_at,
         moderado_por_nombre: a.moderado_por_nombre,
         motivo_rechazo: a.motivo_rechazo,
+        ip_creador: a.ip_creador,
+        usuario_ultima_ip: a.usuario_ultima_ip,
       }));
 
       res.status(200).json({
