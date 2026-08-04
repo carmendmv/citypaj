@@ -300,7 +300,7 @@ async function main() {
         await insertRow('reportes_anuncios', {
           anuncio_id: anuncioId,
           motivo: ['Contenido inapropiado', 'Spam', 'Datos personales', 'Estafa sospechosa', 'Fraude'][i % 5],
-          descripcion: 'Este anuncio ha sido reportado automáticamente por el sistema de ejemplo.',
+          descripcion: 'Este anuncio ha sido reportado durante la carga de datos de ejemplo.',
           estado: i < 7 ? 'pendiente' : 'revisado',
           creado: daysAgo(i + 2),
         });
@@ -395,7 +395,7 @@ async function main() {
           tipo,
           objeto_id: objetoId,
           motivo: ['Contenido ofensivo', 'Spam', 'Información falsa', 'Acoso', 'Otro'][i % 5],
-          descripcion: 'Reporte generado automáticamente para pruebas de moderación.',
+          descripcion: 'Reporte para pruebas de moderación.',
           estado: i < 6 ? 'pendiente' : 'revisado',
           nota_moderacion: i >= 6 ? 'Revisado por moderador' : null,
           creado: daysAgo(i + 3),
