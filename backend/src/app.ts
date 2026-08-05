@@ -18,6 +18,8 @@ import { propuestasRoutes } from './routes/propuestas';
 import { recursosRoutes } from './routes/recursos';
 import { eventosRoutes } from './routes/eventos';
 import { estadisticasRoutes } from './routes/estadisticas';
+import territoriosRoutes from './routes/territorios';
+import provinciasRoutes from './routes/provincias';
 import sugerenciasRoutes from './routes/sugerencias';
 import { pool } from './config/database';
 
@@ -143,6 +145,8 @@ app.use('/api/propuestas', propuestasRoutes);
 app.use('/api/recursos', recursosRoutes);
 app.use('/api/eventos', eventosRoutes);
 app.use('/api/estadisticas', estadisticasRoutes);
+app.use('/api/territorios', territoriosRoutes);
+app.use('/api/provincias', provinciasRoutes);
 
 // 404 handler
 app.use('*', (req: Request, res: Response) => {

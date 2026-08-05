@@ -31,21 +31,23 @@ CREATE TABLE IF NOT EXISTS provincias (
 INSERT INTO comunidades_autonomas (nombre, codigo) VALUES
 ('Andalucía', 'AN'),
 ('Aragón', 'AR'),
-('Asturias', 'AS'),
-('Baleares', 'IB'),
+('Principado de Asturias', 'AS'),
+('Illes Balears', 'IB'),
 ('Canarias', 'CN'),
 ('Cantabria', 'CB'),
 ('Castilla-La Mancha', 'CM'),
 ('Castilla y León', 'CL'),
 ('Cataluña', 'CT'),
-('Comunidad Valenciana', 'VC'),
+('Comunitat Valenciana', 'VC'),
 ('Extremadura', 'EX'),
 ('Galicia', 'GA'),
-('Madrid', 'MD'),
-('Murcia', 'MC'),
-('Navarra', 'NC'),
-('País Vasco', 'PV'),
-('La Rioja', 'RI');
+('Comunidad de Madrid', 'MD'),
+('Región de Murcia', 'MC'),
+('Comunidad Foral de Navarra', 'NC'),
+('País Vasco / Euskadi', 'PV'),
+('La Rioja', 'RI'),
+('Ceuta', 'CE'),
+('Melilla', 'ML');
 
 -- Insertar Provincias por Comunidad Autónoma
 
@@ -72,7 +74,7 @@ INSERT INTO provincias (nombre, codigo, comunidad_autonoma_id) VALUES
 
 -- Baleares
 INSERT INTO provincias (nombre, codigo, comunidad_autonoma_id) VALUES
-('Baleares', 'IB', 4);
+('Illes Balears', 'IB', 4);
 
 -- Canarias
 INSERT INTO provincias (nombre, codigo, comunidad_autonoma_id) VALUES
@@ -114,7 +116,7 @@ INSERT INTO provincias (nombre, codigo, comunidad_autonoma_id) VALUES
 INSERT INTO provincias (nombre, codigo, comunidad_autonoma_id) VALUES
 ('Alicante', 'AL', 10),
 ('Castellón', 'CS', 10),
-('Valencia', 'VA', 10);
+('Valencia/València', 'VA', 10);
 
 -- Extremadura
 INSERT INTO provincias (nombre, codigo, comunidad_autonoma_id) VALUES
@@ -144,7 +146,7 @@ INSERT INTO provincias (nombre, codigo, comunidad_autonoma_id) VALUES
 INSERT INTO provincias (nombre, codigo, comunidad_autonoma_id) VALUES
 ('Álava', 'AL', 16),
 ('Guipúzcoa', 'GU', 16),
-('Vizcaya', 'BI', 16);
+('Bizkaia', 'BI', 16);
 
 -- La Rioja
 INSERT INTO provincias (nombre, codigo, comunidad_autonoma_id) VALUES
