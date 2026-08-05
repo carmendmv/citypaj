@@ -1,3 +1,5 @@
+@import '../styles/citypaj-professional.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
