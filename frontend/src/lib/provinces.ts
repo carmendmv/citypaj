@@ -1,7 +1,7 @@
 import { TERRITORIOS_ESPANA } from '../data/territorios';
 
 export const PROVINCIAS_POR_COMUNIDAD: Record<string, string[]> = TERRITORIOS_ESPANA.reduce((acc, comunidad) => {
-  acc[comunidad.nombre] = comunidad.provincias.map(p => p.nombre);
+  acc[comunidad.nombre] = comunidad.provincias.flatMap(p => [p.nombre, ...(p.islas || [])]);
   return acc;
 }, {} as Record<string, string[]>);
 

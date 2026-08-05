@@ -111,6 +111,7 @@ export interface Comunidad {
 export interface Provincia {
   id: string;
   nombre: string;
+  islas?: string[];
 }
 
 export interface Reporte {

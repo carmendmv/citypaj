@@ -1,6 +1,7 @@
 export interface Provincia {
   id: string;
   nombre: string;
+  islas?: string[];
 }
 
 export interface ComunidadAutonoma {
@@ -49,7 +50,7 @@ export const TERRITORIOS_ESPANA: ComunidadAutonoma[] = [
     nombre: 'Illes Balears',
     tipo: 'comunidad_autonoma',
     provincias: [
-      { id: 'illes-balears', nombre: 'Illes Balears' }
+      { id: 'illes-balears', nombre: 'Illes Balears', islas: ['Mallorca', 'Menorca', 'Ibiza/Eivissa', 'Formentera', 'Cabrera'] }
     ]
   },
   {
@@ -57,8 +58,8 @@ export const TERRITORIOS_ESPANA: ComunidadAutonoma[] = [
     nombre: 'Canarias',
     tipo: 'comunidad_autonoma',
     provincias: [
-      { id: 'las-palmas', nombre: 'Las Palmas' },
-      { id: 'santa-cruz-de-tenerife', nombre: 'Santa Cruz de Tenerife' }
+      { id: 'las-palmas', nombre: 'Las Palmas', islas: ['Gran Canaria', 'Lanzarote', 'Fuerteventura', 'La Graciosa'] },
+      { id: 'santa-cruz-de-tenerife', nombre: 'Santa Cruz de Tenerife', islas: ['Tenerife', 'La Palma', 'La Gomera', 'El Hierro'] }
     ]
   },
   {

@@ -10,7 +10,7 @@ import LoadingRows from '@/components/ui/LoadingRows';
 import Pagination from '@/components/ui/Pagination';
 import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
 import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD, PROVINCIA_NORMALIZACION } from '@/lib/provinces';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 import CommunitySketch from '@/components/illustrations/CommunitySketch';
 
 interface Anuncio {
@@ -173,29 +173,35 @@ export default function HomePage() {
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 flex flex-wrap items-center gap-2">
                 <span>Últimos anuncios de</span>
-                <select
-                  value={comunidad}
-                  onChange={(e) => { setComunidad(e.target.value); setProvincia(''); setPagina(1); }}
-                  className="font-sans text-base sm:text-lg border border-gray-300 rounded-lg px-3 py-1.5 bg-white focus:border-orange-500 focus:outline-none"
-                >
-                  <option value="">Toda España</option>
-                  {COMUNIDADES.map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
+                <div className="relative inline-flex items-center">
+                  <select
+                    value={comunidad}
+                    onChange={(e) => { setComunidad(e.target.value); setProvincia(''); setPagina(1); }}
+                    className="appearance-none font-sans text-base sm:text-lg border border-gray-300 rounded-full px-4 py-2 pr-10 bg-white hover:border-orange-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none cursor-pointer shadow-sm transition-all"
+                  >
+                    <option value="">Toda España</option>
+                    {COMUNIDADES.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 w-4 h-4 text-gray-500 pointer-events-none" />
+                </div>
                 {comunidad ? (
                   <>
                     <span className="hidden sm:inline text-gray-400">/</span>
-                    <select
-                      value={provincia}
-                      onChange={(e) => { setProvincia(e.target.value); setPagina(1); }}
-                      className="font-sans text-base sm:text-lg border border-gray-300 rounded-lg px-3 py-1.5 bg-white focus:border-orange-500 focus:outline-none"
-                    >
-                      <option value="">Toda {comunidad}</option>
-                      {PROVINCIAS_POR_COMUNIDAD[comunidad]?.map((p) => (
-                        <option key={p} value={p}>{p}</option>
-                      ))}
-                    </select>
+                    <div className="relative inline-flex items-center">
+                      <select
+                        value={provincia}
+                        onChange={(e) => { setProvincia(e.target.value); setPagina(1); }}
+                        className="appearance-none font-sans text-base sm:text-lg border border-gray-300 rounded-full px-4 py-2 pr-10 bg-white hover:border-orange-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none cursor-pointer shadow-sm transition-all"
+                      >
+                        <option value="">Toda {comunidad}</option>
+                        {PROVINCIAS_POR_COMUNIDAD[comunidad]?.map((p) => (
+                          <option key={p} value={p}>{p}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-3 w-4 h-4 text-gray-500 pointer-events-none" />
+                    </div>
                   </>
                 ) : null}
               </h2>

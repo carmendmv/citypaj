@@ -46,7 +46,7 @@ El objetivo es ofrecer una experiencia moderna y accesible desde el móvil, con 
 - **Página principal**: sección "Últimos anuncios" con filtros dinámicos y ordenación de más reciente a más antiguo.
 - **Autenticación**: registro, login, JWT access/refresh, logout y eliminación de cuenta.
 - **Moderación humana**: panel exclusivo para moderadores con selector de estado, notas y acciones de aprobar/rechazar/ver.
-- **Filtro interno automático**: detecta palabras inapropiadas y marca anuncios como `flagged` (en revisión); nunca rechaza automáticamente.
+- **Filtro interno de palabras inapropiadas**: detecta contenido dudoso y marca anuncios como `flagged` (en revisión); nunca rechaza automáticamente.
 - **Responsive**: panel de moderación y toda la interfaz adaptada a móvil.
 - **Buzón de sugerencias**: formulario público con panel de lectura para moderadores.
 - **Página de ayudas**: directorio de recursos nacionales y por comunidad autónoma.
@@ -91,6 +91,7 @@ citypaj/
 │   ├── src/
 │   │   ├── config/             # Configuración (DB, env, logger)
 │   │   ├── controllers/        # Lógica de negocio (anuncios, auth, sugerencias...)
+│   │   ├── lib/                # Datos oficiales (territorios.ts)
 │   │   ├── routes/             # Definición de rutas Express
 │   │   ├── middleware/         # Autenticación, validación, errores
 │   │   ├── models/             # Tipos y helpers
@@ -103,7 +104,8 @@ citypaj/
 │   ├── src/
 │   │   ├── app/                # Rutas y páginas de Next.js (App Router)
 │   │   ├── components/         # Componentes React reutilizables
-│   │   ├── lib/                # Utilidades, API y datos (provincias.ts)
+│   │   ├── data/               # Datos oficiales (territorios.ts)
+│   │   ├── lib/                # Utilidades y API (provinces.ts)
 │   │   └── hooks/              # Hooks personalizados
 │   ├── public/                 # Assets estáticos
 │   └── package.json
@@ -395,7 +397,7 @@ El acceso a la moderación está **desvinculado** del login de usuarios normales
 ### Flujo
 
 1. Un usuario publica un anuncio.
-2. El sistema ejecuta un filtro interno (`moderarConIA`) que puede marcarlo como `flagged` si detecta palabras inapropiadas. **Nunca lo rechaza automáticamente**; solo lo deja en revisión humana.
+2. El sistema ejecuta un filtro interno de palabras inapropiadas que puede marcarlo como `flagged` si detecta contenido dudoso. **Nunca lo rechaza automáticamente**; solo lo deja en revisión humana.
 3. Los moderadores ven en `/admin/anuncios` los anuncios en estado `pending` o `flagged`, y también los `approved` que tengan reportes pendientes.
 4. Desde el panel se puede:
    - Ver la descripción completa del anuncio.
@@ -450,6 +452,10 @@ El acceso a la moderación está **desvinculado** del login de usuarios normales
 | `POST` | `/api/sugerencias` | Enviar sugerencia |
 | `GET` | `/api/sugerencias/estadisticas` | Estadísticas de sugerencias |
 | `GET/POST` | `/api/comunidad` | Publicaciones y comentarios de comunidad |
+| `GET` | `/api/territorios` | Listado completo de comunidades y provincias |
+| `GET` | `/api/territorios/comunidades` | Listado de comunidades autónomas |
+| `GET` | `/api/territorios/provincias?comunidad=ID` | Provincias de una comunidad |
+| `GET` | `/api/provincias/:comunidad` | Provincias de una comunidad (compatibilidad) |
 | `GET/POST` | `/api/recursos` | Recursos / ayudas |
 | `GET/POST` | `/api/eventos` | Eventos |
 | `GET` | `/api/usuarios/perfil` | Perfil del usuario |

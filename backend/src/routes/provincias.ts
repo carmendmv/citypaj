@@ -13,7 +13,10 @@ router.get('/:comunidad', (req: Request, res: Response) => {
     success: true,
     data: {
       comunidad: comunidad.nombre,
-      provincias: comunidad.provincias.map(p => p.nombre)
+      provincias: comunidad.provincias.map(p => ({
+        nombre: p.nombre,
+        islas: p.islas
+      }))
     }
   });
 });
