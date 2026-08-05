@@ -4,36 +4,9 @@ import React, { useState } from 'react';
 import { FunnelIcon, XMarkIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { FiltroSidebarProps, Categoria, Comunidad } from '../types';
+import { TERRITORIOS_ESPANA } from '../data/territorios';
 
-const COMUNIDADES_ESPANA: Comunidad[] = [
-  {
-    id: 'aragon',
-    nombre: 'Aragón',
-    provincias: [
-      { id: 'huesca', nombre: 'Huesca' },
-      { id: 'teruel', nombre: 'Teruel' },
-      { id: 'zaragoza', nombre: 'Zaragoza' },
-    ],
-  },
-  {
-    id: 'cataluna',
-    nombre: 'Cataluña',
-    provincias: [
-      { id: 'barcelona', nombre: 'Barcelona' },
-      { id: 'girona', nombre: 'Girona' },
-      { id: 'lleida', nombre: 'Lleida' },
-      { id: 'tarragona', nombre: 'Tarragona' },
-    ],
-  },
-  {
-    id: 'madrid',
-    nombre: 'Comunidad de Madrid',
-    provincias: [
-      { id: 'madrid', nombre: 'Madrid' },
-    ],
-  },
-  // ... resto de comunidades
-];
+const COMUNIDADES_ESPANA: Comunidad[] = TERRITORIOS_ESPANA.map(({ id, nombre, provincias }) => ({ id, nombre, provincias }));
 
 const CATEGORIAS: Categoria[] = [
   {

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { pool } from '../config/database';
+import { getComunidades } from '@/lib/territorios';
 
 const TEMAS = [
   'Empleo', 'Formación', 'Vivienda', 'Cultura', 'Ocio', 'Transporte',
@@ -35,22 +36,15 @@ export const getTemas = async (_req: Request, res: Response): Promise<void> => {
 
 export const getProvincias = async (_req: Request, res: Response): Promise<void> => {
   try {
-    const [comunidades] = await pool.execute(
-      'SELECT id, nombre FROM comunidades ORDER BY nombre ASC'
-    );
-    const [provincias] = await pool.execute(
-      'SELECT id, nombre, comunidad_id FROM provincias ORDER BY nombre ASC'
-    );
-
-    const data = (comunidades as any[]).map((comunidad) => ({
-      id: comunidad.id,
-      nombre: comunidad.nombre,
-      provincias: (provincias as any[])
-        .filter((p) => p.comunidad_id === comunidad.id)
-        .map((p) => p.nombre)
-    }));
-
-    res.status(200).json({ success: true, data });
+    res.status(200).json({
+      success: true,
+      data: getComunidades().map((comunidad) => ({
+        id: comunidad.id,
+        nombre: comunidad.nombre,
+        tipo: comunidad.tipo,
+        provincias: comunidad.provincias.map((p) => p.nombre)
+      }))
+    });
   } catch (error) {
     res.status(500).json({ success: false, error: 'Error interno del servidor' });
   }
