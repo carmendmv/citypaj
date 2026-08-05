@@ -8,6 +8,8 @@ const nextConfig = {
       'localhost',
       'citypaj.s3.amazonaws.com',
       'images.citypaj.es',
+      'citypaj.es',
+      'www.citypaj.es',
     ],
     formats: ['image/webp', 'image/avif'],
   },
@@ -16,6 +18,12 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'citypaj.es' }],
+        destination: 'https://www.citypaj.es/:path*',
+        permanent: true,
+      },
       { source: '/ocio', destination: '/anuncios?categoria=ocio', permanent: false },
       { source: '/servicios', destination: '/anuncios?categoria=servicios', permanent: false },
       { source: '/educacion', destination: '/anuncios?categoria=formacion', permanent: false },
