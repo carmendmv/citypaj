@@ -1,0 +1,90 @@
+# Dependencies
+node_modules/
+*/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+.next/
+dist/
+build/
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.config
+
+# Logs
+logs/
+*.log
+nohup.out
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.dockerignore
+
+# Database
+*.sqlite
+*.db
+*.sqlite3
+
+# Cache and data files
+real-data-cache.json
+cache/
+*.cache
+
+# Security files
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Temporary files
+tmp/
+temp/
+anuncios-juvenil/
+nohup.out
+
+# Test files
+test-results/
+junit.xml
+
+# Backend specific
+backend/logs/
+backend/dist/
+
+# Frontend specific
+frontend/.next/
+frontend/out/

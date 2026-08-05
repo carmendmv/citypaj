@@ -1,0 +1,36 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false,
+    "noImplicitAny": false,
+    "strict": false,
+    "noImplicitThis": false,
+    "exactOptionalPropertyTypes": false,
+    "noImplicitOverride": false,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": true
+  },
+  "ts-node": {
+    "files": true,
+    "require": ["tsconfig-paths/register"]
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "src/scripts/*",
+    "src/index-json-db.ts",
+    "src/controllers/anuncios-mysql-realtime-working.ts",
+    "src/controllers/anuncios-mysql-realtime.ts",
+    "src/controllers/anuncios-simple-v2.ts",
+    "src/controllers/anuncios.ts",
+    "src/controllers/auth-mysql.ts",
+    "src/controllers/database.ts",
+    "src/data/*",
+    "src/**/*.js"
+  ]
+}

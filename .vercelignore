@@ -1,0 +1,11 @@
+# Excluir del despliegue en Vercel lo que no es el frontend
+backend/
+database/
+docs/
+screenshots/
+nohup.out
+*.log
+*.tsbuildinfo
+.github/
+.vscode/
+.idea/

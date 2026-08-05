@@ -1,0 +1,41 @@
+{
+  "name": "citypaj",
+  "version": "1.0.0",
+  "description": "Plataforma de voluntariado y servicios juveniles",
+  "scripts": {
+    "predev": "npx -y kill-port 3001 3002 && npx -y rimraf frontend/.next",
+    "dev": "concurrently --kill-others \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "cd backend && npm run build && cd ../frontend && npm run build",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm run dev",
+    "setup": "npm run db:up && npm run db:init && npm run install:all && npm run build",
+    "setup:docker": "docker compose up -d mysql && npm run install:all && npm run build",
+    "db:up": "docker compose up -d mysql",
+    "db:down": "docker compose down",
+    "db:init": "cd backend && npm run db:init",
+    "db:check": "cd backend && npm run db:check",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "test": "cd backend && npm test && cd ../frontend && npm test"
+  },
+  "keywords": [
+    "voluntariado",
+    "juvenil",
+    "servicios",
+    "comunidad"
+  ],
+  "author": "CityPaj Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "uuid": "^14.0.0"
+  }
+}
