@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { BACKEND_URL } from '@/lib/api';
+const BACKEND_URL = 'http://backend:3002';
 
 export async function GET(
   request: NextRequest,

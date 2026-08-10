@@ -33,20 +33,8 @@ const nextConfig = {
     ];
   },
   async rewrites() {
-    const apiUrlRaw = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
-    const apiUrlCandidate = apiUrlRaw.replace(/\/api\/?$/, '');
-    const isDocker = fs.existsSync('/.dockerenv');
-    let apiUrl = apiUrlCandidate;
-    
-    // En desarrollo local, usar siempre localhost:3002
-    if (!isDocker) {
-      apiUrl = 'http://localhost:3002';
-    }
-    
-    // En Docker, usar backend:3002 si está disponible
-    if (isDocker && process.env.NODE_ENV === 'production') {
-      apiUrl = process.env.API_URL_DOCKER || 'http://backend:3002';
-    }
+    // En contenedor usar el backend interno; en local permitir sobreescribir con API_URL_DOCKER
+    const apiUrl = process.env.API_URL_DOCKER || 'http://backend:3002';
     
     return [
       {
