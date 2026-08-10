@@ -11,12 +11,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint src/**/*.ts --fix",
-    "db:init": "node scripts/init-db.js",
-    "db:check": "node check-db.js",
-    "db:verify": "node verify-db.js",
-    "db:seed:demo": "node scripts/seed-demo.js",
-    "db:seed:comunidad": "npx ts-node --project tsconfig.dev.json scripts/seed-comunidad.ts"
+    "lint:fix": "eslint src/**/*.ts --fix"
   },
   "dependencies": {
     "bcryptjs": "^2.4.0",
@@ -68,6 +63,6 @@
     "typescript": "^5.2.0"
   },
   "engines": {
-    "node": "24.x"
+    "node": ">=20.0.0"
   }
 }
