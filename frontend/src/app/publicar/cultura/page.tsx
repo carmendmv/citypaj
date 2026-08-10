@@ -24,6 +24,7 @@ export default function PublicarCulturaPage() {
   const [acceptedRules, setAcceptedRules] = useState(false);
 
   const [loading, setLoading] = useState(false);
+  const [subiendoCartel, setSubiendoCartel] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [resultado, setResultado] = useState<{ id?: string; estado?: string; motivo?: string } | null>(null);
@@ -36,6 +37,25 @@ export default function PublicarCulturaPage() {
       setNombre(user.nombre || '');
     }
   }, [user]);
+
+  const handleCartelUpload = async (file: File) => {
+    setSubiendoCartel(true);
+    try {
+      const formData = new FormData();
+      formData.append('imagen', file);
+      const res = await fetch('/api/upload/imagen', { method: 'POST', body: formData });
+      const json = await res.json();
+      if (json.success) {
+        setCartelUrl(json.url);
+      } else {
+        setError(json.error || 'Error al subir el cartel.');
+      }
+    } catch {
+      setError('Error al subir el cartel.');
+    } finally {
+      setSubiendoCartel(false);
+    }
+  };
 
   const onSubmit = async () => {
     setError(null);
@@ -67,7 +87,7 @@ export default function PublicarCulturaPage() {
         body: JSON.stringify({
           titulo,
           descripcion,
-          categoria: 'Cultura',
+          categoria: 'cultura',
           subcategoria: 'Evento',
           cartel_url: cartelUrl || undefined,
           precio: precio ? Number(precio) : undefined,
@@ -158,12 +178,22 @@ export default function PublicarCulturaPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block font-sans text-xs text-gray-600 mb-2">Cartel del evento (URL de la imagen)</label>
+                <label className="block font-sans text-xs text-gray-600 mb-2">Cartel del evento (imagen)</label>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) void handleCartelUpload(file);
+                  }}
+                  className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
+                />
+                {subiendoCartel && <p className="text-xs text-gray-500 mt-1">Subiendo cartel...</p>}
                 <input
                   value={cartelUrl}
                   onChange={(e) => setCartelUrl(e.target.value)}
                   placeholder="https://..."
-                  className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
+                  className="w-full px-3 py-2 mt-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
                 />
                 {cartelUrl && (
                   <img src={cartelUrl} alt="Vista previa del cartel" className="mt-3 max-h-48 border border-black" />

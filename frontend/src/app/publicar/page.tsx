@@ -10,7 +10,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
 import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD } from '@/lib/provinces';
 
-type Categoria = 'ocio' | 'servicios' | 'educacion' | 'empleo' | 'intercambios' | 'cultura';
+type Categoria = 'ocio' | 'servicios' | 'educacion' | 'empleo' | 'intercambios' | 'cultura' | 'vivienda';
 
 export default function PublicarPage() {
   const router = useRouter();
@@ -33,6 +33,7 @@ export default function PublicarPage() {
   const provinciasDisponibles = comunidadAutonoma ? PROVINCIAS_POR_COMUNIDAD[comunidadAutonoma] || [] : [];
 
   const [loading, setLoading] = useState(false);
+  const [subiendoCartel, setSubiendoCartel] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [resultado, setResultado] = useState<{ id?: string; estado?: string; motivo?: string } | null>(null);
@@ -46,6 +47,25 @@ export default function PublicarPage() {
       // El comunidad autónoma se podría autocompletar si está disponible en el usuario
     }
   }, [user]);
+
+  const handleCartelUpload = async (file: File) => {
+    setSubiendoCartel(true);
+    try {
+      const formData = new FormData();
+      formData.append('imagen', file);
+      const res = await fetch('/api/upload/imagen', { method: 'POST', body: formData });
+      const json = await res.json();
+      if (json.success) {
+        setCartelUrl(json.url);
+      } else {
+        setError(json.error || 'Error al subir el cartel.');
+      }
+    } catch {
+      setError('Error al subir el cartel.');
+    } finally {
+      setSubiendoCartel(false);
+    }
+  };
 
   const onSubmit = async () => {
     setError(null);
@@ -230,6 +250,7 @@ export default function PublicarPage() {
                     <option value="educacion">Formación</option>
                     <option value="empleo">Empleo</option>
                     <option value="intercambios">Comunidad</option>
+                    <option value="vivienda">Vivienda</option>
                     <option value="cultura">Cultura / Evento</option>
                   </select>
                 </div>
@@ -334,12 +355,22 @@ export default function PublicarPage() {
                   <div className="font-serif text-base font-bold text-black mb-4">Datos del evento</div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block font-sans text-xs text-gray-600 mb-2">Cartel del evento (URL de la imagen)</label>
+                      <label className="block font-sans text-xs text-gray-600 mb-2">Cartel del evento (imagen)</label>
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) void handleCartelUpload(file);
+                        }}
+                        className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
+                      />
+                      {subiendoCartel && <p className="text-xs text-gray-500 mt-1">Subiendo cartel...</p>}
                       <input
                         value={cartelUrl}
                         onChange={(e) => setCartelUrl(e.target.value)}
                         placeholder="https://..."
-                        className="w-full px-3 py-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
+                        className="w-full px-3 py-2 mt-2 text-sm font-sans border border-black bg-white focus:outline-none focus:border-orange-500"
                       />
                       {cartelUrl && (
                         <img src={cartelUrl} alt="Vista previa" className="mt-3 max-h-40 border border-black" />
