@@ -10,6 +10,7 @@ import LoadingRows from '@/components/ui/LoadingRows';
 import Pagination from '@/components/ui/Pagination';
 import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
 import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD, PROVINCIA_NORMALIZACION } from '@/lib/provinces';
+import { esCategoriaCultura } from '@/lib/categorias';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import CommunitySketch from '@/components/illustrations/CommunitySketch';
 
@@ -63,11 +64,13 @@ export default function HomePage() {
       params.set('page', String(paginaFiltro));
       if (comunidadFiltro) params.set('comunidad_autonoma', comunidadFiltro);
       if (provinciaFiltro) params.set('provincia', PROVINCIA_NORMALIZACION[provinciaFiltro] || provinciaFiltro);
+      params.set('excluirCultura', 'true');
 
       const res = await fetch(`/api/anuncios?${params.toString()}`);
       const data = await res.json();
       if (data.success) {
-        setAnuncios(data.data || []);
+        const generales = (data.data || []).filter((a: Anuncio) => !esCategoriaCultura(a.categoria));
+        setAnuncios(generales);
         setTotalAnuncios(data.meta?.total || 0);
       } else {
         setError(data.error || 'Error cargando anuncios');
