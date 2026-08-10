@@ -4,6 +4,7 @@ import { AuthRequest } from '../middleware/auth';
 import { pool } from '../config/database';
 import { getClientIp } from '../utils/ip';
 import { logAdminActivity } from '../utils/audit';
+import { CATEGORIAS_CULTURA } from '../utils/categorias';
 
 const isValidId = (id: any): id is string =>
   typeof id === 'string' && id.trim() !== '' && id !== 'undefined' && id !== 'null';
@@ -40,7 +41,8 @@ export const getAnuncios = async (req: Request, res: Response): Promise<void> =>
       comunidad_autonoma,
       provincia,
       ordenar = 'creado-desc',
-      busqueda
+      busqueda,
+      excluirCultura
     } = req.query;
 
     const offset = (parseInt(page as string) - 1) * parseInt(limit as string);
@@ -68,6 +70,11 @@ export const getAnuncios = async (req: Request, res: Response): Promise<void> =>
     if (busqueda) {
       whereConditions.push('(a.titulo LIKE ? OR a.descripcion LIKE ? OR a.categoria LIKE ?)');
       queryParams.push(`%${busqueda}%`, `%${busqueda}%`, `%${busqueda}%`);
+    }
+
+    if (excluirCultura === 'true') {
+      whereConditions.push(`LOWER(a.categoria) NOT IN (${CATEGORIAS_CULTURA.map(() => '?').join(',')})`);
+      queryParams.push(...CATEGORIAS_CULTURA);
     }
 
     // Construir ORDER BY basado en columnas reales
@@ -141,8 +148,8 @@ export const getAnuncios = async (req: Request, res: Response): Promise<void> =>
 
     try {
       const [[anunciosRows], [countRows]] = await Promise.all([
-        connection.execute(query, queryParams),
-        connection.execute(countQuery, queryParams.slice(0, -2))
+        connection.query(query, queryParams),
+        connection.query(countQuery, queryParams.slice(0, -2))
       ]);
 
       const total = (countRows as any[])[0]?.total ?? 0;
@@ -197,7 +204,7 @@ export const getMisAnuncios = async (req: AuthRequest, res: Response): Promise<v
 
     const connection = await pool.getConnection();
     try {
-      const [rows] = await connection.execute(
+      const [rows] = await connection.query(
         `SELECT 
           a.id, a.usuario_id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
           a.provincia, a.estado_moderacion, a.visible, a.creado_at, a.actualizado_at, a.vistas,
@@ -249,7 +256,7 @@ export const getAnunciosGuardados = async (req: Request, res: Response): Promise
 
     const connection = await pool.getConnection();
     try {
-      const [rows] = await connection.execute(query, validIds);
+      const [rows] = await connection.query(query, validIds);
       const processed = (rows as any[]).map((anuncio: any) => ({
         ...anuncio,
         contacto_email: Boolean(anuncio.contacto_email),
@@ -315,7 +322,7 @@ export const getAnuncioById = async (req: Request, res: Response): Promise<void>
     const connection = await pool.getConnection();
     
     try {
-      const [result] = await connection.execute(query, [id]);
+      const [result] = await connection.query(query, [id]);
 
       if ((result as any[]).length === 0) {
         res.status(404).json({
@@ -326,7 +333,7 @@ export const getAnuncioById = async (req: Request, res: Response): Promise<void>
       }
 
       // Incrementar vistas
-      await connection.execute('UPDATE anuncios SET vistas = vistas + 1 WHERE id = ?', [id]);
+      await connection.query('UPDATE anuncios SET vistas = vistas + 1 WHERE id = ?', [id]);
 
       // Convertir booleanos
       const processedAnuncio = {
@@ -394,14 +401,14 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       let provinciaId = 0;
       let provinciaNombre = provincia || comunidad_autonoma;
 
-      const [comunidadRows] = await connection.execute(
+      const [comunidadRows] = await connection.query(
         'SELECT id FROM comunidades WHERE nombre = ? LIMIT 1',
         [comunidad_autonoma]
       );
       const comunidadRow = (comunidadRows as any[])[0];
       if (comunidadRow) {
         comunidadId = comunidadRow.id;
-        const [provinciaRows] = await connection.execute(
+        const [provinciaRows] = await connection.query(
           'SELECT id, nombre FROM provincias WHERE comunidad_id = ? LIMIT 1',
           [comunidadId]
         );
@@ -421,7 +428,7 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
       const precioValor = precio !== undefined && precio !== '' ? Number(precio) : null;
 
-      await connection.execute(
+      await connection.query(
         `INSERT INTO anuncios (
           id, usuario_id, titulo, descripcion, categoria, subcategoria, comunidad_autonoma,
           comunidad_id, provincia, provincia_id, modalidad, visible, estado_moderacion, motivo_rechazo, ip_creador, cartel_url, precio, creado_at, actualizado_at, vistas
@@ -434,14 +441,14 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       );
 
       if (userId && userId !== ANON_USER_ID) {
-        await connection.execute(
+        await connection.query(
           'UPDATE usuarios SET ultima_ip = ? WHERE id = ?',
           [ip_creador, userId]
         );
       }
 
       // Obtener el anuncio creado para devolverlo completo
-      const [result] = await connection.execute(
+      const [result] = await connection.query(
         `SELECT
           a.id, a.usuario_id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
           a.provincia, a.modalidad, a.visible, a.estado_moderacion, a.motivo_rechazo, a.creado_at, a.actualizado_at, a.vistas,
@@ -503,7 +510,7 @@ export const updateAnuncio = async (req: AuthRequest, res: Response): Promise<vo
     
     try {
       // Verificar que el anuncio pertenece al usuario
-      const [ownershipCheck] = await connection.execute(
+      const [ownershipCheck] = await connection.query(
         'SELECT usuario_id FROM anuncios WHERE id = ?',
         [id]
       );
@@ -525,7 +532,7 @@ export const updateAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       }
 
       // Actualizar anuncio
-      await connection.execute(
+      await connection.query(
         `UPDATE anuncios SET 
           titulo = ?, descripcion = ?, categoria = ?, comunidad_autonoma = ?,
           provincia = ?, modalidad = ?, actualizado_at = ?
@@ -534,7 +541,7 @@ export const updateAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       );
 
       // Obtener el anuncio actualizado
-      const [result] = await connection.execute(
+      const [result] = await connection.query(
         `SELECT 
           a.id, a.usuario_id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
           a.provincia, a.modalidad, a.visible, a.estado_moderacion, a.creado_at, a.actualizado_at, a.vistas,
@@ -587,7 +594,7 @@ export const deleteAnuncio = async (req: AuthRequest, res: Response): Promise<vo
     
     try {
       // Verificar que el anuncio pertenece al usuario
-      const [ownershipCheck] = await connection.execute(
+      const [ownershipCheck] = await connection.query(
         'SELECT usuario_id FROM anuncios WHERE id = ?',
         [id]
       );
@@ -609,7 +616,7 @@ export const deleteAnuncio = async (req: AuthRequest, res: Response): Promise<vo
       }
 
       // Marcar como no visible (borrado lógico)
-      await connection.execute(
+      await connection.query(
         'UPDATE anuncios SET visible = 0, actualizado_at = ? WHERE id = ?',
         [new Date(), id]
       );
@@ -650,7 +657,7 @@ export const guardarAnuncio = async (req: AuthRequest, res: Response): Promise<v
 
     const connection = await pool.getConnection();
     try {
-      await connection.execute(
+      await connection.query(
         'INSERT IGNORE INTO favoritos (usuario_id, anuncio_id) VALUES (?, ?)',
         [userId, id]
       );
@@ -682,7 +689,7 @@ export const eliminarGuardado = async (req: AuthRequest, res: Response): Promise
 
     const connection = await pool.getConnection();
     try {
-      await connection.execute(
+      await connection.query(
         'DELETE FROM favoritos WHERE usuario_id = ? AND anuncio_id = ?',
         [userId, id]
       );
@@ -715,7 +722,7 @@ export const reportarAnuncio = async (req: Request, res: Response): Promise<void
     const connection = await pool.getConnection();
     try {
       const reporteId = randomUUID();
-      await connection.execute(
+      await connection.query(
         'INSERT INTO reportes_anuncios (id, anuncio_id, motivo, descripcion) VALUES (?, ?, ?, ?)',
         [reporteId, id, motivo, descripcion || null]
       );
@@ -810,7 +817,7 @@ export const getAnunciosModeracion = async (req: AuthRequest, res: Response): Pr
 
     const connection = await pool.getConnection();
     try {
-      const [rows] = await connection.execute(
+      const [rows] = await connection.query(
         `SELECT SQL_CALC_FOUND_ROWS
           a.id, a.usuario_id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
           a.provincia, a.estado_moderacion, a.motivo_rechazo, a.creado_at, a.actualizado_at, a.visible,
@@ -839,7 +846,7 @@ export const getAnunciosModeracion = async (req: AuthRequest, res: Response): Pr
         [...params, limitNum, offset]
       );
 
-      const [countRows] = await connection.execute('SELECT FOUND_ROWS() as total');
+      const [countRows] = await connection.query('SELECT FOUND_ROWS() as total');
       const total = ((countRows as any[])[0]?.total as number) || 0;
 
       res.status(200).json({ success: true, data: rows, meta: { page: pageNum, limit: limitNum, total } });
@@ -862,7 +869,7 @@ export const getReportesAnuncio = async (req: Request, res: Response): Promise<v
 
     const connection = await pool.getConnection();
     try {
-      const [rows] = await connection.execute(
+      const [rows] = await connection.query(
         'SELECT id, motivo, descripcion, estado, creado FROM reportes_anuncios WHERE anuncio_id = ? ORDER BY creado DESC',
         [id]
       );
@@ -908,25 +915,25 @@ export const moderarAnuncio = async (req: AuthRequest, res: Response): Promise<v
 
     const connection = await pool.getConnection();
     try {
-      const [prevRows] = await connection.execute(
+      const [prevRows] = await connection.query(
         'SELECT estado_moderacion FROM anuncios WHERE id = ?',
         [id]
       );
       const estadoAnterior = ((prevRows as any[])[0]?.estado_moderacion as string) || null;
 
-      await connection.execute(
+      await connection.query(
         'UPDATE anuncios SET estado_moderacion = ?, motivo_rechazo = ?, visible = ? WHERE id = ?',
         [nextEstado, notasGuardar, visible, id]
       );
 
       if (nextEstado === 'approved' || nextEstado === 'rejected') {
-        await connection.execute(
+        await connection.query(
           "UPDATE reportes_anuncios SET estado = 'resuelto' WHERE anuncio_id = ? AND estado = 'pendiente'",
           [id]
         );
       }
 
-      await connection.execute(
+      await connection.query(
         'INSERT INTO moderacion_logs (id, anuncio_id, moderador_id, estado_anterior, estado_nuevo, notas) VALUES (?, ?, ?, ?, ?, ?)',
         [randomUUID(), id, userId, estadoAnterior, nextEstado, notasGuardar]
       );
@@ -964,25 +971,25 @@ export const moderarAnunciosBulk = async (req: AuthRequest, res: Response): Prom
       await connection.beginTransaction();
       for (const id of ids) {
         if (!isValidId(id)) continue;
-        const [prevRows] = await connection.execute(
+        const [prevRows] = await connection.query(
           'SELECT estado_moderacion FROM anuncios WHERE id = ?',
           [id]
         );
         const estadoAnterior = ((prevRows as any[])[0]?.estado_moderacion as string) || null;
 
-        await connection.execute(
+        await connection.query(
           'UPDATE anuncios SET estado_moderacion = ?, motivo_rechazo = ?, visible = ? WHERE id = ?',
           [estado, notasGuardar, visible, id]
         );
 
         if (estado === 'approved' || estado === 'rejected') {
-          await connection.execute(
+          await connection.query(
             "UPDATE reportes_anuncios SET estado = 'resuelto' WHERE anuncio_id = ? AND estado = 'pendiente'",
             [id]
           );
         }
 
-        await connection.execute(
+        await connection.query(
           'INSERT INTO moderacion_logs (id, anuncio_id, moderador_id, estado_anterior, estado_nuevo, notas) VALUES (?, ?, ?, ?, ?, ?)',
           [randomUUID(), id, userId, estadoAnterior, estado, notasGuardar]
         );
