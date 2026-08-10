@@ -7,40 +7,52 @@ import { randomUUID } from 'crypto';
 
 const PORT = config.port;
 
-const DEMO_MODERATOR_EMAIL = process.env.DEMO_MODERATOR_EMAIL || 'moderador@citypaj.demo';
-const DEMO_MODERATOR_PASSWORD = process.env.DEMO_MODERATOR_PASSWORD || 'demo123';
-
-async function seedDemoModerator() {
-  try {
-    const [rows] = await pool.execute('SELECT id FROM usuarios WHERE email = ?', [DEMO_MODERATOR_EMAIL]);
-    if ((rows as any[]).length > 0) return;
-
-    const hash = await bcrypt.hash(DEMO_MODERATOR_PASSWORD, 10);
-    await pool.execute(
-      `INSERT INTO usuarios (id, email, password_hash, nombre, verificado, rol, creado_at, actualizado_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [randomUUID(), DEMO_MODERATOR_EMAIL, hash, 'Moderador Demo', 1, 'moderador', new Date(), new Date()]
-    );
-    logger.info('Usuario moderador demo creado');
-  } catch (error) {
-    logger.error('Error creando moderador demo:', (error as Error).message);
-  }
+interface DemoUser {
+  email: string;
+  password: string;
+  nombre: string;
+  rol: 'admin' | 'moderador' | 'usuario';
 }
 
-async function seedDemoAdmin() {
-  try {
-    const [rows] = await pool.execute('SELECT id FROM usuarios WHERE email = ?', [process.env.DEMO_ADMIN_EMAIL || 'admin@citypaj.demo']);
-    if ((rows as any[]).length > 0) return;
+const demoUsers: DemoUser[] = [
+  {
+    email: process.env.DEMO_ADMIN_EMAIL || 'admin@citypaj.local',
+    password: process.env.DEMO_ADMIN_PASSWORD || 'Admin1234',
+    nombre: 'Administrador Demo',
+    rol: 'admin',
+  },
+  {
+    email: process.env.DEMO_MODERATOR_EMAIL || 'moderador@citypaj.local',
+    password: process.env.DEMO_MODERATOR_PASSWORD || 'Moderador1234',
+    nombre: 'Moderador Demo',
+    rol: 'moderador',
+  },
+  {
+    email: process.env.DEMO_USUARIO_EMAIL || 'usuario@citypaj.local',
+    password: process.env.DEMO_USUARIO_PASSWORD || 'Usuario1234',
+    nombre: 'Usuario Demo',
+    rol: 'usuario',
+  },
+];
 
-    const hash = await bcrypt.hash(process.env.DEMO_ADMIN_PASSWORD || 'demo123', 10);
-    await pool.execute(
-      `INSERT INTO usuarios (id, email, password_hash, nombre, verificado, rol, creado_at, actualizado_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [randomUUID(), process.env.DEMO_ADMIN_EMAIL || 'admin@citypaj.demo', hash, 'Administrador Demo', 1, 'admin', new Date(), new Date()]
-    );
-    logger.info('Usuario admin demo creado');
+async function seedDemoUsers() {
+  try {
+    for (const user of demoUsers) {
+      const hash = await bcrypt.hash(user.password, 10);
+      await pool.execute(
+        `INSERT INTO usuarios (id, email, password_hash, nombre, email_verificado, rol, creado, actualizado)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+         ON DUPLICATE KEY UPDATE
+           password_hash = VALUES(password_hash),
+           nombre = VALUES(nombre),
+           rol = VALUES(rol),
+           actualizado = VALUES(actualizado)`,
+        [randomUUID(), user.email, hash, user.nombre, 1, user.rol, new Date(), new Date()]
+      );
+      logger.info(`Usuario demo asegurado: ${user.email} (${user.rol})`);
+    }
   } catch (error) {
-    logger.error('Error creando admin demo:', (error as Error).message);
+    logger.error('Error creando usuarios demo:', (error as Error).message);
   }
 }
 
@@ -51,8 +63,7 @@ async function startServer() {
     process.exit(1);
   }
 
-  await seedDemoModerator();
-  await seedDemoAdmin();
+  await seedDemoUsers();
 
   const server = app.listen(PORT, '0.0.0.0', () => {
     logger.info(` CityPaj Backend API running on port ${PORT}`);

@@ -1,3 +1,4 @@
+import path from 'path';
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -9,6 +10,7 @@ import { logger } from './utils/logger';
 import { errorHandler } from './middleware/errorHandler';
 import { authRoutes } from './routes/auth';
 import { anunciosRoutes } from './routes/anuncios';
+import { uploadRoutes } from './routes/upload';
 import { adminRoutes } from './routes/admin';
 import { usuariosRoutes } from './routes/usuarios';
 import { moderacionRoutes } from './routes/moderacion';
@@ -32,7 +34,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
+      imgSrc: ["'self'", "data:", "http:", "https:"],
     },
   },
 }));
@@ -88,25 +90,30 @@ app.use('/api', limiter);
 app.use('/api/auth', authLimiter);
 
 // Health check endpoints
-app.get('/health', (_req: Request, res: Response) => {
-  res.status(200).json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    environment: config.env,
-    version: process.env.npm_package_version || '1.0.0',
-  });
-});
+async function healthHandler(_req: Request, res: Response) {
+  try {
+    const [rows] = await pool.execute('SELECT 1 AS ok, DATABASE() AS db');
+    res.status(200).json({
+      status: 'ok',
+      database: 'connected',
+      db: (rows as any[])[0]?.db,
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      environment: config.env,
+      version: process.env.npm_package_version || '1.0.0',
+    });
+  } catch (error) {
+    res.status(503).json({
+      status: 'error',
+      database: 'disconnected',
+      error: error instanceof Error ? error.message : 'Error de conexion a MySQL',
+      timestamp: new Date().toISOString(),
+    });
+  }
+}
 
-app.get('/api/health', (_req: Request, res: Response) => {
-  res.status(200).json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    environment: config.env,
-    version: process.env.npm_package_version || '1.0.0',
-  });
-});
+app.get('/health', healthHandler);
+app.get('/api/health', healthHandler);
 
 async function testDbHandler(_req: Request, res: Response) {
   try {
@@ -135,6 +142,8 @@ app.get('/api/test-db', testDbHandler);
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/anuncios', anunciosRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/api/admin', adminRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/moderacion', moderacionRoutes);
