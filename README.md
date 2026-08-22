@@ -101,7 +101,7 @@ docker compose down -v
 
 ## 9. Cómo reiniciar la base de datos
 
-Si se modifica `database/init.sql` y se quieren aplicar los cambios:
+Los seeds se encuentran en `database/init/` y se ejecutan automáticamente en orden alfabético. Si se modifica alguno de los scripts y se quieren aplicar los cambios:
 
 ```bash
 docker compose down -v
@@ -118,13 +118,26 @@ La organización de carpetas refleja las distintas partes del sistema:
 citypaj/
 ├── backend/              # API Express y lógica de negocio
 ├── database/             # Schema y datos iniciales
-│   └── init.sql
+│   ├── 01_schema.sql            # Esquema de la base de datos
+│   ├── 02_seed_demo.sql         # Datos base (usuarios, comunidades, provincias)
+│   └── 03_seed_territorial.sql  # Anuncios demo de todas las provincias y categorías
 ├── docker-compose.yml    # Orquestación de contenedores
 ├── frontend/             # Aplicación Next.js
 └── README.md             # Este documento
 ```
 
-## 11. Decisiones técnicas y aprendizajes
+## 11. Datos de prueba
+
+El repositorio incluye un seed territorial (`database/init/03_seed_territorial.sql`) que asegura que:
+
+- Todas las comunidades autónomas y provincias (incluidas Ceuta y Melilla) están representadas.
+- Toda categoría principal tiene anuncios.
+- Los anuncios culturales tienen fechas de creación anteriores al resto.
+- El seed es idempotente: no duplica anuncios si se ejecuta más de una vez.
+
+El generador del seed se encuentra en `backend/scripts/seed-anuncios-territoriales.js` y puede modificarse para ampliar los datos de prueba.
+
+## 12. Decisiones técnicas y aprendizajes
 
 Durante el desarrollo me encontré con varios retos que me hicieron aprender:
 
@@ -133,7 +146,7 @@ Durante el desarrollo me encontré con varios retos que me hicieron aprender:
 - **Subida de imágenes**: implementé un endpoint con Multer en el backend para recibir carteles, y serví los archivos estáticos desde la propia aplicación.
 - **Moderación y roles**: separé las vistas de administrador, moderador y usuario, y añadí un flujo de aprobación de anuncios antes de que sean visibles.
 
-## 12. Solución de errores frecuentes
+## 13. Solución de errores frecuentes
 
 ### Docker Desktop no responde
 
