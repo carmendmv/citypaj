@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { AuthRequest } from '../middleware/auth';
 import { pool } from '../config/database';
 import { config } from '../config';
+import { logger } from '../utils/logger';
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -93,7 +94,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }
 
   } catch (error) {
-    console.error('Error en login:', (error as Error).message);
+    logger.error('Error en login:', error);
     res.status(500).json({
       success: false,
       error: 'Error interno del servidor'

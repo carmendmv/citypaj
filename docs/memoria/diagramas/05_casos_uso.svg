@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+<defs>
+<marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+<polygon points="0 0, 10 3.5, 0 7" fill="#333333"/>
+</marker>
+</defs>
+<rect width="800" height="600" fill="#ffffff"/>
+<text x="400" y="30" font-family="Calibri,Arial,sans-serif" font-size="16" text-anchor="middle" font-weight="bold">Casos de uso</text>
+<rect x="60" y="100" width="120" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="120.0" y="125.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Visitante</text><rect x="60" y="200" width="120" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="120.0" y="225.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Usuario</text><rect x="60" y="300" width="120" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="120.0" y="325.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Moderador</text><rect x="60" y="400" width="120" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="120.0" y="425.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Administrador</text><rect x="300" y="120" width="180" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="390.0" y="145.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Consultar anuncios</text><rect x="300" y="220" width="180" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="390.0" y="245.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Publicar y comentar</text><rect x="300" y="320" width="180" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="390.0" y="345.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Revisar reportes</text><rect x="300" y="420" width="180" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="390.0" y="445.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Gestionar usuarios</text></svg>

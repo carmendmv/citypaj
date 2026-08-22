@@ -115,6 +115,29 @@ async function healthHandler(_req: Request, res: Response) {
 app.get('/health', healthHandler);
 app.get('/api/health', healthHandler);
 
+app.get('/api/demo/status', async (_req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.execute('SELECT DATABASE() AS db');
+    const [counts] = await pool.execute(
+      'SELECT (SELECT COUNT(*) FROM anuncios) AS anuncios, (SELECT COUNT(*) FROM usuarios) AS usuarios'
+    );
+    const data = counts as any[];
+    res.status(200).json({
+      database: ((rows as any[])[0]?.db) || 'citypaj',
+      demoData: true,
+      anuncios: Number(data[0]?.anuncios) || 0,
+      usuariosDemo: Number(data[0]?.usuarios) || 0,
+      nota: 'Datos ficticios para demostración académica',
+    });
+  } catch (error) {
+    res.status(503).json({
+      database: 'desconocida',
+      demoData: false,
+      error: error instanceof Error ? error.message : 'Error de conexion a MySQL',
+    });
+  }
+});
+
 async function testDbHandler(_req: Request, res: Response) {
   try {
     const [rows] = await pool.execute('SELECT 1 AS ok, DATABASE() AS db');

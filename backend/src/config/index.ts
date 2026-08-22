@@ -11,7 +11,7 @@ export const config = {
     port: parseInt(process.env.DB_PORT || '3306'),
     name: process.env.DB_NAME || 'citypaj',
     user: process.env.DB_USER || 'citypaj_user',
-    password: process.env.DB_PASSWORD || 'citypaj123',
+    password: process.env.DB_PASSWORD ?? 'citypaj123',
     ssl: process.env.DB_SSL === 'true',
     pool: {
       min: parseInt(process.env.DB_POOL_MIN || '2'),

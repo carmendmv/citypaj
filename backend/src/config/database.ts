@@ -8,6 +8,7 @@ const dbConfig = {
   user: config.database.user,
   password: config.database.password,
   database: config.database.name,
+  charset: 'utf8mb4',
   waitForConnections: true,
   connectionLimit: config.database.pool.max,
   queueLimit: 0,

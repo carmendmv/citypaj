@@ -1,0 +1,50 @@
+# Auditoría del repositorio CityPAJ
+Repositorio: https://github.com/carmendmv/citypaj
+Rama: main
+Commits revisados: 141
+Tablas en init.sql: 28
+## Tecnologías
+- frontend/package.json
+- backend/package.json
+- docker-compose.yml
+## Diagramas existentes
+- 01_arquitectura_general.svg
+- 02_flujo_usuario_frontend_backend_bbdd.svg
+- 03_modelo_entidad_relacion.svg
+- 04_modelo_relacional.svg
+- 05_casos_uso.svg
+- 06_flujo_publicacion_anuncio.svg
+- 07_flujo_login_autenticacion.svg
+- 08_flujo_moderacion.svg
+- 09_arquitectura_docker.svg
+- 10_estructura_modulos_frontend.svg
+- 11_estructura_modulos_backend.svg
+## Tablas
+- admin_activity_logs
+- admin_tareas
+- agenda_notas
+- anuncios
+- anuncios_guardados
+- comunicaciones_adjuntos
+- comunicaciones_entidades
+- comunicaciones_institucionales
+- comunidad_comentarios
+- comunidad_likes
+- comunidad_publicaciones
+- comunidad_reportes
+- comunidades
+- contactos_institucionales
+- eventos
+- favoritos
+- mensajes_adjuntos
+- mensajes_entidades_adjuntas
+- mensajes_staff
+- moderacion_logs
+- plantillas_comunicacion
+- propuestas
+- propuestas_apoyos
+- provincias
+- recursos
+- reportes_anuncios
+- sugerencias
+- usuarios

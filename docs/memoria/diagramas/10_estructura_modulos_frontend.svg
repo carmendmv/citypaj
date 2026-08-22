@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+<defs>
+<marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+<polygon points="0 0, 10 3.5, 0 7" fill="#333333"/>
+</marker>
+</defs>
+<rect width="800" height="600" fill="#ffffff"/>
+<text x="400" y="30" font-family="Calibri,Arial,sans-serif" font-size="16" text-anchor="middle" font-weight="bold">Estructura de módulos del frontend</text>
+<rect x="100" y="100" width="140" height="50" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="170.0" y="130.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">src/app</text><line x1="240" y1="125" x2="300" y2="125" stroke="#333333" stroke-width="1.2" marker-end="url(#arrowhead)"/><rect x="300" y="100" width="140" height="50" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="370.0" y="130.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Páginas</text><rect x="300" y="180" width="140" height="50" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="370.0" y="210.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">components</text><rect x="300" y="260" width="140" height="50" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="370.0" y="290.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">hooks</text><rect x="300" y="340" width="140" height="50" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="370.0" y="370.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">context</text></svg>

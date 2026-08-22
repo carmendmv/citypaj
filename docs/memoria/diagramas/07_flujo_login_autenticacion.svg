@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+<defs>
+<marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+<polygon points="0 0, 10 3.5, 0 7" fill="#333333"/>
+</marker>
+</defs>
+<rect width="800" height="600" fill="#ffffff"/>
+<text x="400" y="30" font-family="Calibri,Arial,sans-serif" font-size="16" text-anchor="middle" font-weight="bold">Flujo de login y autenticación</text>
+<rect x="100" y="100" width="160" height="50" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="180.0" y="130.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Formulario login</text><line x1="260" y1="125" x2="360" y2="125" stroke="#333333" stroke-width="1.2" marker-end="url(#arrowhead)"/><rect x="360" y="100" width="160" height="50" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="440.0" y="130.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">POST /api/auth/login</text><line x1="520" y1="125" x2="620" y2="125" stroke="#333333" stroke-width="1.2" marker-end="url(#arrowhead)"/><rect x="620" y="100" width="160" height="50" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="700.0" y="130.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Verificación bcrypt</text><rect x="100" y="220" width="160" height="50" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="180.0" y="250.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Generación JWT</text><line x1="260" y1="245" x2="360" y2="245" stroke="#333333" stroke-width="1.2" marker-end="url(#arrowhead)"/><rect x="360" y="220" width="160" height="50" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="440.0" y="250.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Respuesta token</text><line x1="520" y1="245" x2="620" y2="245" stroke="#333333" stroke-width="1.2" marker-end="url(#arrowhead)"/><rect x="620" y="220" width="160" height="50" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="700.0" y="250.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Acceso a rutas</text></svg>

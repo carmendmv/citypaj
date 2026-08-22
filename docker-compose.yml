@@ -10,7 +10,7 @@ services:
       MYSQL_ALLOW_EMPTY_ROOT_PASSWORD: "no"
     volumes:
       - citypaj_mysql_data:/var/lib/mysql
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./database/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "mysql -u citypaj_user -pcitypaj_password -D citypaj -e 'SELECT 1 FROM usuarios LIMIT 1' > /dev/null 2>&1 || exit 1"]
       interval: 10s

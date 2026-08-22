@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CityPAJ - Proyecto de fin de ciclo DAW</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --azul: #1a4d7a;
+      --azul-claro: #2e7dc8;
+      --cian: #4aa3c2;
+      --blanco: #ffffff;
+      --gris: #f4f6f8;
+      --gris-oscuro: #333333;
+      --sombra: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--gris-oscuro);
+      line-height: 1.6;
+      background: var(--blanco);
+    }
+
+    a {
+      color: var(--azul-claro);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      z-index: 1000;
+    }
+
+    .nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav a.logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--azul);
+    }
+
+    .nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      font-size: 0.92rem;
+    }
+
+    .nav a {
+      color: var(--gris-oscuro);
+      font-weight: 500;
+    }
+
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #e9f3fb 0%, #f4f9ff 100%);
+      padding-top: 90px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      line-height: 1.1;
+      color: var(--azul);
+      margin-bottom: 18px;
+    }
+
+    .hero p.lead {
+      font-size: 1.2rem;
+      color: #445;
+      margin-bottom: 32px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--azul);
+      color: var(--blanco);
+    }
+
+    .btn-secondary {
+      background: var(--blanco);
+      color: var(--azul);
+      border: 2px solid var(--azul);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--sombra);
+      text-decoration: none;
+    }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-card {
+      background: var(--blanco);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: var(--sombra);
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .hero-card h3 {
+      font-size: 1rem;
+      color: var(--azul-claro);
+      margin-bottom: 12px;
+    }
+
+    .hero-card .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.92rem;
+    }
+
+    .hero-card .row:last-child {
+      border-bottom: none;
+    }
+
+    .section {
+      padding: 80px 0;
+    }
+
+    .section:nth-child(even) {
+      background: var(--gris);
+    }
+
+    .section h2 {
+      font-size: 2rem;
+      color: var(--azul);
+      margin-bottom: 18px;
+    }
+
+    .section .subtitle {
+      color: #556;
+      max-width: 720px;
+      margin-bottom: 42px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--blanco);
+      border-radius: 14px;
+      padding: 26px;
+      box-shadow: var(--sombra);
+    }
+
+    .card h3 {
+      color: var(--azul);
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .feature {
+      background: var(--blanco);
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: var(--sombra);
+    }
+
+    .feature h4 {
+      color: var(--azul);
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .diagram {
+      background: var(--blanco);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: var(--sombra);
+      text-align: center;
+    }
+
+    .diagram .boxes {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .box {
+      background: #e9f3fb;
+      border: 2px solid var(--azul-claro);
+      border-radius: 10px;
+      padding: 16px 28px;
+      font-weight: 600;
+      color: var(--azul);
+      min-width: 140px;
+    }
+
+    .arrow {
+      font-size: 1.4rem;
+      color: var(--azul-claro);
+    }
+
+    .screenshots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+    }
+
+    .shot {
+      background: #e2e8f0;
+      border-radius: 12px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #678;
+      font-weight: 500;
+      border: 1px dashed #cbd5e1;
+    }
+
+    .tech-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .tech {
+      background: var(--blanco);
+      border: 1px solid #dbe4ea;
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-weight: 500;
+      color: var(--azul);
+    }
+
+    .install code {
+      display: block;
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 18px 22px;
+      border-radius: 10px;
+      margin: 14px 0;
+      overflow-x: auto;
+      font-size: 0.9rem;
+    }
+
+    .footer {
+      background: var(--azul);
+      color: var(--blanco);
+      padding: 34px 0;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 760px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .nav ul {
+        display: none;
+      }
+
+      .diagram .boxes {
+        flex-direction: column;
+      }
+
+      .arrow {
+        transform: rotate(90deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Navegación principal">
+    <div class="container">
+      <a class="logo" href="#">CityPAJ</a>
+      <ul>
+        <li><a href="#problema">Problema</a></li>
+        <li><a href="#solucion">Solución</a></li>
+        <li><a href="#funcionalidades">Funciones</a></li>
+        <li><a href="#arquitectura">Arquitectura</a></li>
+        <li><a href="#instalacion">Instalación</a></li>
+        <li><a href="#autora">Autora</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero" id="inicio">
+    <div class="container hero-grid">
+      <div>
+        <h1>CityPAJ</h1>
+        <p class="lead">Plataforma web juvenil territorial para anuncios, recursos y participación ciudadana.</p>
+        <div class="btn-group">
+          <a class="btn btn-primary" href="https://github.com/carmendmv/citypaj" target="_blank">Ver repositorio</a>
+          <a class="btn btn-secondary" href="#instalacion">Probar demo</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <h3>Datos demo conectados</h3>
+          <div class="row"><span>Usuarios demo</span><strong>3</strong></div>
+          <div class="row"><span>Anuncios de prueba</span><strong>10+</strong></div>
+          <div class="row"><span>Base de datos</span><strong>MySQL 8.0</strong></div>
+          <div class="row"><span>Despliegue</span><strong>Docker Compose</strong></div>
+          <div class="row"><span>Health check</span><strong>/health</strong></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" id="problema">
+    <div class="container">
+      <h2>Problema</h2>
+      <p class="subtitle">La información juvenil útil está dispersa en múltiples canales, lo que dificulta encontrar oportunidades de empleo, formación, vivienda, ocio o recursos cercanas.</p>
+      <div class="grid-3">
+        <div class="card"><h3>Dispersión</h3><p>Los jóvenes consultan portales, redes, tablones y grupos sin un punto central.</p></div>
+        <div class="card"><h3>Filtro territorial</h3><p>Resulta complicado localizar contenido relevante por provincia o comunidad.</p></div>
+        <div class="card"><h3>Participación</h3><p>Faltan canales sencillos para proponer ideas, sugerencias y consultar actividades locales.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="solucion" style="background:var(--gris);">
+    <div class="container">
+      <h2>Solución</h2>
+      <p class="subtitle">CityPAJ centraliza la información juvenil en una aplicación web con filtros por territorio, categoría y tipo de contenido, además de espacios de participación y moderación.</p>
+      <div class="features">
+        <div class="feature"><h4>Anuncios</h4><p>Publicación y consulta de ofertas de empleo, formación, vivienda, ocio y servicios.</p></div>
+        <div class="feature"><h4>Filtros territoriales</h4><p>Selección por comunidad autónoma y provincia para mostrar contenido relevante.</p></div>
+        <div class="feature"><h4>Comunidad</h4><p>Espacio de publicaciones locales y comentarios por provincia.</p></div>
+        <div class="feature"><h4>Sugerencias</h4><p>Buzón para enviar mejoras o nuevas ideas a la plataforma.</p></div>
+        <div class="feature"><h4>Propuestas</h4><p>Consulta y apoyo a propuestas ciudadanas juveniles.</p></div>
+        <div class="feature"><h4>Cultura y eventos</h4><p>Actividades, convocatorias y recursos culturales organizados.</p></div>
+        <div class="feature"><h4>Moderación</h4><p>Revisión de anuncios y reportes antes de su publicación o tras denuncias.</p></div>
+        <div class="feature"><h4>Administración</h4><p>Gestión de usuarios, contenidos y paneles de control.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="arquitectura">
+    <div class="container">
+      <h2>Arquitectura técnica</h2>
+      <p class="subtitle">Frontend, backend y base de datos separados. El frontend nunca accede directamente a MySQL; la comunicación fluye siempre a través de la API REST.</p>
+      <div class="diagram">
+        <div class="boxes">
+          <div class="box">Usuario</div>
+          <span class="arrow">→</span>
+          <div class="box">Next.js 14</div>
+          <span class="arrow">→</span>
+          <div class="box">Express API</div>
+          <span class="arrow">→</span>
+          <div class="box">MySQL 8.0</div>
+        </div>
+      </div>
+      <div class="tech-grid" style="margin-top:30px;">
+        <span class="tech">Next.js / React</span>
+        <span class="tech">TypeScript</span>
+        <span class="tech">Node.js</span>
+        <span class="tech">Express</span>
+        <span class="tech">MySQL</span>
+        <span class="tech">Docker</span>
+        <span class="tech">JWT</span>
+        <span class="tech">Tailwind CSS</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="funcionalidades" style="background:var(--gris);">
+    <div class="container">
+      <h2>Funcionalidades principales</h2>
+      <p class="subtitle">Flujo real de registro, publicación, filtrado y moderación, conectado a una base de datos de demostración.</p>
+      <div class="screenshots">
+        <div class="shot">Home / listado de anuncios</div>
+        <div class="shot">Publicar anuncio</div>
+        <div class="shot">Comunidad por provincia</div>
+        <div class="shot">Panel de moderación</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="bbdd">
+    <div class="container">
+      <h2>Base de datos demo</h2>
+      <p class="subtitle">La aplicación incluye datos ficticios de demostración para probar funcionalidades sin utilizar información personal real.</p>
+      <div class="grid-3">
+        <div class="card"><h3>Datos ficticios</h3><p>Usuarios, anuncios, recursos, eventos y propuestas de prueba generados para la evaluación académica.</p></div>
+        <div class="card"><h3>Conexión segura</h3><p>El navegador nunca contiene credenciales de MySQL. El backend centraliza el acceso y la autenticación.</p></div>
+        <div class="card"><h3>Health check</h3><p>El endpoint <code>/health</code> confirma la conexión a la base de datos. <code>/api/demo/status</code> devuelve métricas básicas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="social" style="background:var(--gris);">
+    <div class="container">
+      <h2>Modelo social</h2>
+      <p class="subtitle">CityPAJ se concibe como un proyecto de finalidad social y sin ánimo de lucro. No incorpora pasarela de pago ni gestiona transacciones económicas.</p>
+      <div class="grid-3">
+        <div class="card"><h3>Sin ánimo de lucro</h3><p>El objetivo es facilitar el acceso a la información y la participación juvenil, no generar ventas.</p></div>
+        <div class="card"><h3>Sin pagos</h3><p>No se tratan datos bancarios ni se integra TPV, reduciendo riesgos legales y técnicos.</p></div>
+        <div class="card"><h3>Sostenibilidad</h3><p>El mantenimiento futuro puede apoyarse en entidades públicas, educativas o juveniles.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="instalacion">
+    <div class="container">
+      <h2>Instalación local</h2>
+      <p class="subtitle">Requisitos: Docker Desktop. No es necesario instalar Node.js ni MySQL manualmente.</p>
+      <div class="install">
+        <code>
+git clone https://github.com/carmendmv/citypaj.git
+cd citypaj
+docker compose up --build
+        </code>
+        <p>Una vez levantado: <a href="http://localhost:3001" target="_blank">http://localhost:3001</a> y backend <a href="http://localhost:3002/health" target="_blank">http://localhost:3002/health</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="autora" style="background:var(--gris);">
+    <div class="container">
+      <h2>Autora</h2>
+      <p class="subtitle">Carmen de Miguel Velázquez, alumna del Ciclo Formativo de Grado Superior en Desarrollo de Aplicaciones Web del CPIFP Los Enlaces. Curso 2025/2026.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>CityPAJ - Proyecto de fin de ciclo DAW 2025/2026</p>
+      <p><a href="https://github.com/carmendmv/citypaj" style="color:#9ecfff;" target="_blank">Repositorio en GitHub</a></p>
+    </div>
+  </footer>
+</body>
+</html>

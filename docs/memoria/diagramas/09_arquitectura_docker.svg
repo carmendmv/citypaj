@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+<defs>
+<marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+<polygon points="0 0, 10 3.5, 0 7" fill="#333333"/>
+</marker>
+</defs>
+<rect width="800" height="600" fill="#ffffff"/>
+<text x="400" y="30" font-family="Calibri,Arial,sans-serif" font-size="16" text-anchor="middle" font-weight="bold">Arquitectura Docker</text>
+<rect x="100" y="100" width="150" height="60" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="175.0" y="135.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">Docker Compose</text><line x1="250" y1="130" x2="300" y2="130" stroke="#333333" stroke-width="1.2" marker-end="url(#arrowhead)"/><rect x="300" y="100" width="120" height="60" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="360.0" y="135.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">mysql</text><rect x="300" y="200" width="120" height="60" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="360.0" y="235.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">backend (3002)</text><rect x="300" y="300" width="120" height="60" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="360.0" y="335.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">frontend (3001)</text><rect x="300" y="400" width="120" height="60" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="360.0" y="435.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">volumes</text></svg>

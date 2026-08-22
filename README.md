@@ -70,9 +70,10 @@ Una vez los contenedores estén saludables:
 Frontend:           http://localhost:3001
 Backend:            http://localhost:3002
 Health check:       http://localhost:3002/health
+Demo status:        http://localhost:3002/api/demo/status
 ```
 
-El health check sirve para comprobar que el backend ha conectado correctamente con MySQL.
+El health check sirve para comprobar que el backend ha conectado correctamente con MySQL. El endpoint `/api/demo/status` devuelve el estado de la base de datos demo, el número de anuncios y usuarios de prueba.
 
 ## 7. Credenciales de prueba
 

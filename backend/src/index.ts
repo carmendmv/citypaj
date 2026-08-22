@@ -40,13 +40,13 @@ async function seedDemoUsers() {
     for (const user of demoUsers) {
       const hash = await bcrypt.hash(user.password, 10);
       await pool.execute(
-        `INSERT INTO usuarios (id, email, password_hash, nombre, email_verificado, rol, creado, actualizado)
+        `INSERT INTO usuarios (id, email, password_hash, nombre, verificado, rol, creado_at, actualizado_at)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE
            password_hash = VALUES(password_hash),
            nombre = VALUES(nombre),
            rol = VALUES(rol),
-           actualizado = VALUES(actualizado)`,
+           actualizado_at = VALUES(actualizado_at)`,
         [randomUUID(), user.email, hash, user.nombre, 1, user.rol, new Date(), new Date()]
       );
       logger.info(`Usuario demo asegurado: ${user.email} (${user.rol})`);

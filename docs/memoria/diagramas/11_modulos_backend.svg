@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+<defs>
+<marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+<polygon points="0 0, 10 3.5, 0 7" fill="#333333"/>
+</marker>
+</defs>
+<rect width="800" height="600" fill="#ffffff"/>
+<text x="400" y="30" font-family="Calibri,Arial,sans-serif" font-size="16" text-anchor="middle" font-weight="bold">Módulos del backend</text>
+<rect x="80" y="80" width="180" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="170.0" y="105.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">src/index.ts</text><line x1="260" y1="100" x2="320" y2="100" stroke="#333333" stroke-width="1.2" marker-end="url(#arrowhead)"/><rect x="320" y="80" width="140" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="390.0" y="105.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">routes</text><rect x="320" y="160" width="140" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="390.0" y="185.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">controllers</text><rect x="320" y="240" width="140" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="390.0" y="265.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">middleware</text><rect x="320" y="320" width="140" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="390.0" y="345.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">config</text><rect x="320" y="400" width="140" height="40" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+<text x="390.0" y="425.0" font-family="Calibri,Arial,sans-serif" font-size="12" text-anchor="middle" fill="#000000">types</text></svg>

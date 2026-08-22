@@ -1,0 +1,79 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: citypaj-mysql
+    environment:
+      MYSQL_DATABASE: citypaj
+      MYSQL_USER: citypaj_user
+      MYSQL_PASSWORD: citypaj_password
+      MYSQL_ROOT_PASSWORD: citypaj_root
+      MYSQL_ALLOW_EMPTY_ROOT_PASSWORD: "no"
+    volumes:
+      - citypaj_mysql_data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -u citypaj_user -pcitypaj_password -D citypaj -e 'SELECT 1 FROM usuarios LIMIT 1' > /dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - citypaj-network
+
+  backend:
+    build:
+      context: ./backend
+      target: production
+    container_name: citypaj-backend
+    ports:
+      - "3002:3002"
+    environment:
+      NODE_ENV: production
+      PORT: 3002
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: citypaj
+      DB_USER: citypaj_user
+      DB_PASSWORD: citypaj_password
+      JWT_SECRET: citypaj_secret_demo
+      JWT_REFRESH_SECRET: citypaj_refresh_demo
+      CORS_ORIGINS: "http://localhost:3001"
+      DEMO_ADMIN_EMAIL: admin@citypaj.local
+      DEMO_ADMIN_PASSWORD: Admin1234
+      DEMO_MODERATOR_EMAIL: moderador@citypaj.local
+      DEMO_MODERATOR_PASSWORD: Moderador1234
+      DEMO_USUARIO_EMAIL: usuario@citypaj.local
+      DEMO_USUARIO_PASSWORD: Usuario1234
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - citypaj-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: citypaj-frontend
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      BACKEND_URL: http://backend:3002
+      NEXT_PUBLIC_API_URL: http://localhost:3002/api
+      API_URL_DOCKER: http://backend:3002
+      NEXT_PUBLIC_APP_URL: http://localhost:3001
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - citypaj-network
+
+volumes:
+  citypaj_mysql_data:
+    driver: local
+
+networks:
+  citypaj-network:
+    driver: bridge
