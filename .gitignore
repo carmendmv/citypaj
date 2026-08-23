@@ -76,6 +76,10 @@ tmp/
 temp/
 anuncios-juvenil/
 nohup.out
+__pycache__/
+*.pyc
+*.tmp
+~$*.docx
 
 # Test files
 test-results/
