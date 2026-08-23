@@ -3,6 +3,7 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Calendar, MapPin, Euro, User, Eye, Heart, Share2, Flag } from 'lucide-react';
 import { useGuardados } from '@/hooks/useGuardados';
+import { getCategoriaLabel } from '@/lib/categorias';
 import ReportModal from '@/components/ui/ReportModal';
 
 // Interface para tipado estricto de anuncios
@@ -108,7 +109,7 @@ const AnuncioItem = memo(({ anuncio, index }: { anuncio: Anuncio; index: number 
           {/* Metadatos superiores - estilo NY Times */}
           <div className="cp-mb-4 cp-flex cp-items-center cp-gap-4 cp-flex-wrap">
             <span className="cp-inline-block cp-bg-blue-100 cp-text-blue-800 cp-text-xs cp-px-3 cp-py-1 cp-font-medium cp-uppercase cp-tracking-wide cp-rounded">
-              {anuncio.categoria}
+              {getCategoriaLabel(anuncio.categoria)}
             </span>
             <div className="cp-flex cp-items-center cp-gap-2 cp-text-sm cp-text-gray-500">
               <Eye className="w-4 h-4" aria-hidden="true" />

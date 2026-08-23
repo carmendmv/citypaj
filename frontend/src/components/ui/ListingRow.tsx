@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Heart, MapPin, Calendar, Flag, Eye, Share2 } from 'lucide-react';
 import { useGuardados } from '@/hooks/useGuardados';
+import { getCategoriaLabel, normalizarCategoria } from '@/lib/categorias';
 import ReportModal from './ReportModal';
 
 interface ListingRowProps {
@@ -38,7 +39,7 @@ const categoriaColors: Record<string, string> = {
   comunidad: 'bg-indigo-100 text-indigo-800 border-indigo-200',
   transporte: 'bg-orange-100 text-orange-800 border-amber-200',
   salud: 'bg-teal-100 text-teal-800 border-teal-200',
-  tecnología: 'bg-sky-100 text-sky-800 border-sky-200',
+  tecnologia: 'bg-sky-100 text-sky-800 border-sky-200',
   otros: 'bg-gray-100 text-gray-800 border-gray-200',
 };
 
@@ -79,7 +80,7 @@ export default function ListingRow({
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [reportLoading, setReportLoading] = useState(false);
 
-  const badgeColor = categoriaColors[categoria?.toLowerCase()] || categoriaColors.otros;
+  const badgeColor = categoriaColors[normalizarCategoria(categoria)] || categoriaColors.otros;
   const idValido = id && id !== 'undefined' && id !== 'null' && String(id).trim() !== '';
   const anuncioId = String(id);
   const favorito = esFavorito ?? estaGuardado(anuncioId);
@@ -153,7 +154,7 @@ export default function ListingRow({
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${badgeColor}`}>
-                  {categoria}
+                  {getCategoriaLabel(categoria)}
                 </span>
                 {verificado && (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
