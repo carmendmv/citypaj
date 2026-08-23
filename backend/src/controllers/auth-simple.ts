@@ -40,8 +40,18 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         return;
       }
 
-      // Verificar contraseña
-      const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+      // Verificar contraseña (si la comparación falla, tratar como credenciales inválidas)
+      let isPasswordValid = false;
+      try {
+        isPasswordValid = await bcrypt.compare(password, user.password_hash);
+      } catch (compareError) {
+        logger.error({
+          message: 'bcrypt.compare falló en login',
+          userId: user.id,
+          error: (compareError as Error).message,
+          stack: (compareError as Error).stack,
+        });
+      }
 
       if (!isPasswordValid) {
         res.status(401).json({
@@ -94,7 +104,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }
 
   } catch (error) {
-    logger.error('Error en login:', error);
+    const err = error as Error;
+    console.error('Error en login:', err);
+    logger.error({
+      message: 'Error en login',
+      error: err.message,
+      stack: err.stack,
+    });
     res.status(500).json({
       success: false,
       error: 'Error interno del servidor'

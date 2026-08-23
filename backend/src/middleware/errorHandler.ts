@@ -15,6 +15,7 @@ export const errorHandler = (
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Error interno del servidor';
 
+  console.error('Error en errorHandler:', err);
   logger.error('Error:', {
     error: err,
     url: req.url,

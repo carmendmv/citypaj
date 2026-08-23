@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { getComunidades, getProvincias, getComunidadById, getComunidadByNombre, validarTerritorio } from '@/lib/territorios';
+import { getComunidades, getProvincias, getComunidadById, getComunidadByNombre, validarTerritorio } from '../lib/territorios';
 
 const router = Router();
 
