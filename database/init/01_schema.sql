@@ -87,7 +87,7 @@ DROP TABLE IF EXISTS `anuncios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `anuncios` (
-  `id` varchar(36) NOT NULL DEFAULT uuid(),
+  `id` varchar(36) NOT NULL DEFAULT (UUID()),
   `usuario_id` varchar(36) NOT NULL,
   `titulo` varchar(200) NOT NULL,
   `descripcion` text NOT NULL,
@@ -680,7 +680,7 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usuarios` (
-  `id` varchar(36) NOT NULL DEFAULT uuid(),
+  `id` varchar(36) NOT NULL DEFAULT (UUID()),
   `email` varchar(255) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
   `nombre` varchar(100) NOT NULL,

@@ -48,7 +48,7 @@ No hace falta tener Node.js o MySQL instalados, ya que todo corre dentro de los 
 Clonar el repositorio y entrar en la carpeta:
 
 ```bash
-git clone URL_DEL_REPOSITORIO
+git clone https://github.com/carmendmv/citypaj.git
 cd citypaj
 ```
 
@@ -128,14 +128,30 @@ citypaj/
 
 ## 11. Datos de prueba
 
-El repositorio incluye un seed territorial (`database/init/03_seed_territorial.sql`) que asegura que:
+El repositorio incluye los siguientes seeds y utilidades para poblar la base de datos:
+
+| Archivo | Descripción |
+|---|---|
+| `database/init/01_schema.sql` | Esquema de la base de datos. Compatible con MySQL 8.0/MariaDB (`DEFAULT (UUID())`). |
+| `database/init/02_seed_demo.sql` | Datos base: usuarios, comunidades, provincias, recursos y sugerencias. |
+| `database/init/03_seed_territorial.sql` | Anuncios aprobados de todas las provincias y categorías. |
+| `backend/scripts/seed-admin-moderacion.js` | Rellena datos para los paneles de moderación y administración en todas las provincias. |
+
+El seed territorial asegura que:
 
 - Todas las comunidades autónomas y provincias (incluidas Ceuta y Melilla) están representadas.
 - Toda categoría principal tiene anuncios.
 - Los anuncios culturales tienen fechas de creación anteriores al resto.
 - El seed es idempotente: no duplica anuncios si se ejecuta más de una vez.
 
-El generador del seed se encuentra en `backend/scripts/seed-anuncios-territoriales.js` y puede modificarse para ampliar los datos de prueba.
+Para ejecutar el seed de moderación y admin en un entorno ya levantado:
+
+```bash
+cd backend
+DB_USER=root DB_PASSWORD= DB_NAME=citypaj node scripts/seed-admin-moderacion.js
+```
+
+El informe completo de cobertura está en `docs/INFORME_COBERTURA_PROVINCIAS_ANUNCIOS.md`.
 
 ## 12. Decisiones técnicas y aprendizajes
 

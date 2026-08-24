@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { pool } from '../config/database';
-import { getComunidades } from '@/lib/territorios';
+import { getComunidades } from '../lib/territorios';
 
 const TEMAS = [
   'Empleo', 'Formación', 'Vivienda', 'Cultura', 'Ocio', 'Transporte',

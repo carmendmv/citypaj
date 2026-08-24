@@ -100,10 +100,10 @@ export const getAdminAnuncios = async (req: AuthRequest, res: Response): Promise
           a.id, a.usuario_id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
           a.provincia, a.estado_moderacion, a.motivo_rechazo, a.creado_at, a.actualizado_at, a.visible,
           a.ip_creador,
-          u.nombre as usuario_nombre, u.email as usuario_email, u.ultima_ip as usuario_ultima_ip,
+          MAX(u.nombre) as usuario_nombre, MAX(u.email) as usuario_email, MAX(u.ultima_ip) as usuario_ultima_ip,
           COUNT(r.id) as reportes,
-          ml.creado_at as moderado_at,
-          mu.nombre as moderado_por_nombre
+          MAX(ml.creado_at) as moderado_at,
+          MAX(mu.nombre) as moderado_por_nombre
         FROM anuncios a
         LEFT JOIN usuarios u ON a.usuario_id = u.id
         LEFT JOIN reportes_anuncios r ON a.id = r.anuncio_id
@@ -170,7 +170,11 @@ export const getAdminAnuncios = async (req: AuthRequest, res: Response): Promise
       connection.release();
     }
   } catch (error) {
-    logger.error('Error en getAdminAnuncios:', (error as Error).message);
+    logger.error({
+      message: 'Error en getAdminAnuncios',
+      error: (error as Error).message,
+      stack: (error as Error).stack,
+    });
     res.status(500).json({ success: false, error: 'Error interno del servidor' });
   }
 };

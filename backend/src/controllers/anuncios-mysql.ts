@@ -5,6 +5,7 @@ import { pool } from '../config/database';
 import { getClientIp } from '../utils/ip';
 import { logAdminActivity } from '../utils/audit';
 import { CATEGORIAS_CULTURA } from '../utils/categorias';
+import { logger } from '../utils/logger';
 
 const isValidId = (id: any): id is string =>
   typeof id === 'string' && id.trim() !== '' && id !== 'undefined' && id !== 'null';
@@ -186,7 +187,7 @@ export const getAnuncios = async (req: Request, res: Response): Promise<void> =>
     }
 
   } catch (error) {
-    console.error('Error obteniendo anuncios:', (error as Error).message);
+    logger.error('Error obteniendo anuncios:', { error: (error as Error).message });
     res.status(500).json({
       success: false,
       error: 'Error interno del servidor'
@@ -325,6 +326,7 @@ export const getAnuncioById = async (req: Request, res: Response): Promise<void>
       const [result] = await connection.query(query, [id]);
 
       if ((result as any[]).length === 0) {
+        logger.error('Anuncio no encontrado', { id, queryParams: [id] });
         res.status(404).json({
           success: false,
           error: 'Anuncio no encontrado'
@@ -354,7 +356,7 @@ export const getAnuncioById = async (req: Request, res: Response): Promise<void>
     }
 
   } catch (error) {
-    console.error('Error obteniendo anuncio:', (error as Error).message);
+    logger.error('Error obteniendo anuncio', { error: (error as Error).message });
     res.status(500).json({
       success: false,
       error: 'Error interno del servidor'

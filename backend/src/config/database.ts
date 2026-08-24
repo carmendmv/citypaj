@@ -17,6 +17,31 @@ const dbConfig = {
 // Crear el pool de conexiones
 const pool = mysql.createPool(dbConfig);
 
+// mysql2 prepared statements no aceptan ? en LIMIT/OFFSET;
+// para SELECTs usamos query() que escapa los valores directamente.
+const origPoolExecute = (pool as any).execute.bind(pool);
+(pool as any).execute = (sql: string, values?: any) => {
+  const s = String(sql).trim();
+  if (/^SELECT/i.test(s)) {
+    return (pool as any).query(sql, values);
+  }
+  return origPoolExecute(sql, values);
+};
+
+const origGetConnection = (pool as any).getConnection.bind(pool);
+(pool as any).getConnection = async () => {
+  const conn = await origGetConnection();
+  const origConnExecute = (conn as any).execute.bind(conn);
+  (conn as any).execute = (sql: string, values?: any) => {
+    const s = String(sql).trim();
+    if (/^SELECT/i.test(s)) {
+      return (conn as any).query(sql, values);
+    }
+    return origConnExecute(sql, values);
+  };
+  return conn;
+};
+
 // Función para probar la conexión
 export const testConnection = async (): Promise<boolean> => {
   try {

@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { getComunidadById, getComunidadByNombre } from '@/lib/territorios';
+import { getComunidadById, getComunidadByNombre } from '../lib/territorios';
 
 const router = Router();
 
