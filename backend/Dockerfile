@@ -31,9 +31,10 @@ RUN adduser --system --uid 1001 nodejs
 # Crear directorio de logs con permisos de escritura para el usuario no-root
 RUN mkdir -p /app/logs && chown -R nodejs:nodejs /app/logs
 
-# Copiar archivos de construcción y el script de registro de aliases
+# Copiar archivos de construcción, el script de registro de aliases y los seeds
 COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
 COPY --from=builder --chown=nodejs:nodejs /app/register.js ./register.js
+COPY --from=builder --chown=nodejs:nodejs /app/scripts ./scripts
 
 # Configurar permisos
 USER nodejs
@@ -43,4 +44,4 @@ EXPOSE 3002
 ENV NODE_ENV=production
 ENV PORT=3002
 
-CMD node -r ./register.js dist/index.js
+CMD node scripts/seed-admin-moderacion.js && node -r ./register.js dist/index.js

@@ -32,12 +32,57 @@ function escapar(str) {
   return String(str).replace(/'/g, "''");
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function main() {
   const pool = mysql.createPool(DB_CONFIG);
   let conn;
   try {
+    // Esperar a que MySQL acepte conexiones
+    let ready = false;
+    for (let i = 0; i < 15 && !ready; i++) {
+      try {
+        const test = await pool.getConnection();
+        await test.query('SELECT 1');
+        test.release();
+        ready = true;
+      } catch (err) {
+        await sleep(2000);
+      }
+    }
+    if (!ready) {
+      throw new Error('No se pudo conectar a MySQL tras 30 segundos');
+    }
+
     conn = await pool.getConnection();
     await conn.query('SET FOREIGN_KEY_CHECKS = 0');
+
+    const [[seedCheck]] = await conn.query(
+      "SELECT COUNT(*) AS total FROM anuncios WHERE id LIKE 'mod-p-%'"
+    );
+    if (seedCheck.total > 0) {
+      console.log('Seed de moderación/admin ya aplicado. Omitiendo.');
+      await conn.query('SET FOREIGN_KEY_CHECKS = 1');
+      conn.release();
+      await pool.end();
+      return;
+    }
+
+    // Asegurar usuarios demo necesarios para el seed
+    const demoUsers = [
+      { email: 'admin@citypaj.local', nombre: 'Administrador Demo', rol: 'admin' },
+      { email: 'moderador@citypaj.local', nombre: 'Moderador Demo', rol: 'moderador' },
+      { email: 'usuario@citypaj.local', nombre: 'Usuario Demo', rol: 'usuario' },
+    ];
+    for (const u of demoUsers) {
+      await conn.execute(
+        `INSERT IGNORE INTO usuarios (id, email, password_hash, nombre, verificado, rol, creado_at, actualizado_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [crypto.randomUUID(), u.email, 'placeholder_hash_will_be_updated', u.nombre, 1, u.rol, new Date(), new Date()]
+      );
+    }
 
     const [provincias] = await conn.query(`
       SELECT p.id, p.nombre, p.comunidad_id, c.nombre AS comunidad
