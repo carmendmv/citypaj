@@ -76,6 +76,7 @@ const Header: React.FC<HeaderProps> = memo(({
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isVisible] = useState(() => registerHeader());
+  const [today, setToday] = useState<Date | null>(null);
 
   useEffect(() => {
     if (pathname === '/buscar') {
@@ -92,6 +93,14 @@ const Header: React.FC<HeaderProps> = memo(({
       unregisterHeader();
     };
   }, [unregisterHeader]);
+
+  useEffect(() => {
+    setToday(new Date());
+    const intervalId = setInterval(() => {
+      setToday(new Date());
+    }, 60000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   const handleSearch = useCallback(() => {
     const term = searchCodigo.trim();
@@ -191,12 +200,14 @@ const Header: React.FC<HeaderProps> = memo(({
         <div className="hidden md:block py-2">
           <div className="flex justify-between items-center text-xs font-sans text-gray-600">
             <time suppressHydrationWarning={true}>
-              {new Date().toLocaleDateString('es-ES', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              }).toUpperCase()}
+              {today
+                ? today.toLocaleDateString('es-ES', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  }).toUpperCase()
+                : ''}
             </time>
             <span className="text-gray-600">LISTADO DE ANUNCIOS</span>
           </div>

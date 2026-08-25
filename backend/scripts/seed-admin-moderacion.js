@@ -65,8 +65,6 @@ async function main() {
     if (seedCheck.total > 0) {
       console.log('Seed de moderación/admin ya aplicado. Omitiendo.');
       await conn.query('SET FOREIGN_KEY_CHECKS = 1');
-      conn.release();
-      await pool.end();
       return;
     }
 
