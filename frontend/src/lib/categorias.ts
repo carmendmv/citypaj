@@ -62,3 +62,20 @@ export function esCategoriaCultura(categoria: string): boolean {
 
 }
 
+
+export function getCategoriaLabel(categoria: string): string {
+
+  if (!categoria) return 'Sin categoría';
+
+  return categoria
+
+    .toLowerCase()
+
+    .split(/[\s/]+/)
+
+    .map((palabra) => palabra.charAt(0).toUpperCase() + palabra.slice(1))
+
+    .join(' / ');
+
+}
+
