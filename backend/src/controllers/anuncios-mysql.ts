@@ -158,7 +158,7 @@ export const getAnuncios = async (req: Request, res: Response): Promise<void> =>
 
     // Construir ORDER BY basado en columnas reales
 
-    let orderBy = 'a.creado DESC';
+    let orderBy = 'a.creado_at DESC';
 
     if (ordenar) {
 
@@ -186,7 +186,7 @@ export const getAnuncios = async (req: Request, res: Response): Promise<void> =>
 
         default:
 
-          orderBy = `a.creado ${directionSQL}`;
+          orderBy = `a.creado_at ${directionSQL}`;
 
           break;
 
@@ -242,9 +242,9 @@ export const getAnuncios = async (req: Request, res: Response): Promise<void> =>
 
         a.precio,
 
-        a.creado,
+        a.creado_at,
 
-        a.actualizado,
+        a.actualizado_at,
 
         u.nombre as usuario_nombre,
 
@@ -608,9 +608,9 @@ export const getAnuncioById = async (req: Request, res: Response): Promise<void>
 
         a.vistas,
 
-        a.creado,
+        a.creado_at,
 
-        a.actualizado,
+        a.actualizado_at,
 
         u.nombre as usuario_nombre,
 
