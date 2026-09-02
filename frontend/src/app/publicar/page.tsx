@@ -10,7 +10,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
 import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD } from '@/lib/provinces';
 
-type Categoria = 'ocio' | 'servicios' | 'educacion' | 'empleo' | 'intercambios' | 'cultura' | 'vivienda';
+type Categoria = 'empleo' | 'formacion' | 'vivienda' | 'ocio' | 'servicios' | 'comunidad' | 'transporte' | 'salud' | 'tecnología' | 'otros' | 'cultura';
 
 export default function PublicarPage() {
   const router = useRouter();
@@ -245,12 +245,16 @@ export default function PublicarPage() {
                       error && !categoria ? 'border-red-500' : 'border-black focus:border-orange-500 hover:bg-gray-100'
                     }`}
                   >
+                    <option value="empleo">Empleo</option>
+                    <option value="formacion">Formación</option>
+                    <option value="vivienda">Vivienda</option>
                     <option value="ocio">Ocio</option>
                     <option value="servicios">Servicios</option>
-                    <option value="educacion">Formación</option>
-                    <option value="empleo">Empleo</option>
-                    <option value="intercambios">Comunidad</option>
-                    <option value="vivienda">Vivienda</option>
+                    <option value="comunidad">Comunidad</option>
+                    <option value="transporte">Transporte</option>
+                    <option value="salud">Salud</option>
+                    <option value="tecnología">Tecnología</option>
+                    <option value="otros">Otros</option>
                     <option value="cultura">Cultura / Evento</option>
                   </select>
                 </div>
