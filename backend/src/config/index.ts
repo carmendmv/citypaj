@@ -67,6 +67,8 @@ export const config = {
     },
   },
   
+  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3001',
+
   cors: {
     origins: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000', 'http://localhost:3001'],
   },
@@ -102,5 +104,6 @@ export const config = {
     sessionSecret: process.env.SESSION_SECRET || 'your-session-secret-change-in-production',
     maxLoginAttempts: parseInt(process.env.MAX_LOGIN_ATTEMPTS || '5'),
     lockoutTime: parseInt(process.env.LOCKOUT_TIME || '900000'), // 15 minutes
+    passwordResetTokenMinutes: parseInt(process.env.PASSWORD_RESET_TOKEN_MINUTES || '30'),
   },
 };

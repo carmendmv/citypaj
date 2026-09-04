@@ -8,6 +8,7 @@ import rateLimit from 'express-rate-limit';
 import { config } from './config';
 import { logger } from './utils/logger';
 import { errorHandler } from './middleware/errorHandler';
+import { getClientIpInfo } from './utils/getClientIp';
 import { authRoutes } from './routes/auth';
 import { anunciosRoutes } from './routes/anuncios';
 import { uploadRoutes } from './routes/upload';
@@ -26,6 +27,13 @@ import sugerenciasRoutes from './routes/sugerencias';
 import { pool } from './config/database';
 
 const app = express();
+
+// Configuración de trust proxy: nunca confiar por defecto. En producción
+// se debe indicar la lista de IPs/rangos de los reverse proxies de confianza.
+const trustProxyValue = process.env.TRUST_PROXY
+  ? process.env.TRUST_PROXY.split(',').map((s) => s.trim()).filter(Boolean)
+  : false;
+app.set('trust proxy', trustProxyValue);
 
 // Security middleware
 app.use(helmet({
@@ -161,6 +169,25 @@ async function testDbHandler(_req: Request, res: Response) {
 
 app.get('/test-db', testDbHandler);
 app.get('/api/test-db', testDbHandler);
+
+// Endpoint de diagnóstico de IP/red, solo en desarrollo y desactivado en producción
+if (config.env === 'development') {
+  app.get('/api/debug/ip', (req: Request, res: Response) => {
+    const info = getClientIpInfo(req);
+    res.status(200).json({
+      ip: info.clientIp,
+      ips: req.ips || [],
+      remoteAddress: info.rawRemoteAddress,
+      headers: {
+        'x-forwarded-for': info.xForwardedFor || null,
+        'x-real-ip': info.xRealIp || null,
+        forwarded: info.forwarded || null,
+      },
+      trustProxy: trustProxyValue,
+      environment: config.env,
+    });
+  });
+}
 
 // API routes
 app.use('/api/auth', authRoutes);

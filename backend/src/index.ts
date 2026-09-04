@@ -34,9 +34,9 @@ const demoUsers: DemoUser[] = [
 
   {
 
-    email: process.env.DEMO_ADMIN_EMAIL || 'admin@citypaj.local',
+    email: process.env.DEMO_ADMIN_EMAIL || '',
 
-    password: process.env.DEMO_ADMIN_PASSWORD || 'Admin1234',
+    password: process.env.DEMO_ADMIN_PASSWORD || '',
 
     nombre: 'Administrador Demo',
 
@@ -46,9 +46,9 @@ const demoUsers: DemoUser[] = [
 
   {
 
-    email: process.env.DEMO_MODERATOR_EMAIL || 'moderador@citypaj.local',
+    email: process.env.DEMO_MODERATOR_EMAIL || '',
 
-    password: process.env.DEMO_MODERATOR_PASSWORD || 'Moderador1234',
+    password: process.env.DEMO_MODERATOR_PASSWORD || '',
 
     nombre: 'Moderador Demo',
 
@@ -58,9 +58,9 @@ const demoUsers: DemoUser[] = [
 
   {
 
-    email: process.env.DEMO_USUARIO_EMAIL || 'usuario@citypaj.local',
+    email: process.env.DEMO_USUARIO_EMAIL || '',
 
-    password: process.env.DEMO_USUARIO_PASSWORD || 'Usuario1234',
+    password: process.env.DEMO_USUARIO_PASSWORD || '',
 
     nombre: 'Usuario Demo',
 
@@ -78,13 +78,15 @@ async function seedDemoUsers() {
 
     for (const user of demoUsers) {
 
-      const hash = await bcrypt.hash(user.password, 10);
+      if (!user.email || !user.password) continue;
+
+      const hash = await bcrypt.hash(user.password, config.security.bcryptRounds || 12);
 
       await pool.execute(
 
-        `INSERT INTO usuarios (id, email, password_hash, nombre, email_verificado, rol, creado, actualizado)
+        `INSERT INTO usuarios (id, email, password_hash, nombre, verificado, activo, rol, creado_at, actualizado_at)
 
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 
          ON DUPLICATE KEY UPDATE
 
@@ -94,9 +96,13 @@ async function seedDemoUsers() {
 
            rol = VALUES(rol),
 
-           actualizado = VALUES(actualizado)`,
+           verificado = VALUES(verificado),
 
-        [randomUUID(), user.email, hash, user.nombre, 1, user.rol, new Date(), new Date()]
+           activo = VALUES(activo),
+
+           actualizado_at = VALUES(actualizado_at)`,
+
+        [randomUUID(), user.email, hash, user.nombre, 1, 1, user.rol, new Date(), new Date()]
 
       );
 
