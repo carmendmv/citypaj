@@ -53,10 +53,10 @@ router.post('/moderar-bulk', auth, requireRole(['admin', 'moderador']), moderarA
 router.delete('/:id', auth, deleteAnuncio);
 
 // Guardar favorito
-router.post('/:id/guardar', guardarAnuncio);
+router.post('/:id/guardar', auth, guardarAnuncio);
 
 // Eliminar favorito
-router.delete('/:id/guardar', eliminarGuardado);
+router.delete('/:id/guardar', auth, eliminarGuardado);
 
 // Reportar anuncio
 router.post('/:id/reportar', reportarAnuncio);

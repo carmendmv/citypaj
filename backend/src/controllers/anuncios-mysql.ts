@@ -20,52 +20,6 @@ const isValidId = (id: any): id is string =>
 
 
 
-const PALABRAS_PROHIBIDAS = [
-
-  'porno', 'pornografía', 'sexo', 'prostituta', 'prostitución', 'droga', 'cocaína', 'heroína',
-
-  'marihuana', 'arma', 'pistola', 'rifle', 'explosivo', 'bomba', 'matar', 'asesinar', 'violencia',
-
-  'estafa', 'timar', 'suplantar', 'pishing', 'hackear', 'moneda falsa', 'dólar falso', 'euro falso'
-
-];
-
-
-
-interface ResultadoModeracion {
-
-  aprobado: boolean;
-
-  motivo?: string;
-
-}
-
-
-
-function moderarConFiltro(texto: string): ResultadoModeracion {
-
-  const lower = texto.toLowerCase();
-
-  const encontradas = PALABRAS_PROHIBIDAS.filter((palabra) => lower.includes(palabra));
-
-  if (encontradas.length > 0) {
-
-    return {
-
-      aprobado: false,
-
-      motivo: `Contenido potencialmente inapropiado detectado por el filtro automático: ${encontradas.join(', ')}`
-
-    };
-
-  }
-
-  return { aprobado: true };
-
-}
-
-
-
 export const getAnuncios = async (req: Request, res: Response): Promise<void> => {
 
   try {
@@ -612,11 +566,17 @@ export const getAnuncioById = async (req: Request, res: Response): Promise<void>
 
         a.actualizado_at,
 
+        a.ip_creador,
+
+        a.nombre_contacto,
+
+        a.email_contacto,
+
+        a.telefono_contacto,
+
         u.nombre as usuario_nombre,
 
-        u.email as usuario_email,
-
-        NULL AS telefono
+        u.email as usuario_email
 
       FROM anuncios a
 
@@ -740,7 +700,13 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
       cartel_url,
 
-      precio
+      precio,
+
+      nombre,
+
+      email,
+
+      telefono
 
     } = req.body;
 
@@ -828,19 +794,13 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
 
 
-      const textoCompleto = `${titulo} ${descripcion}`;
+      // Todo anuncio comienza en pending para revisión humana
 
-      const resultadoFiltro = moderarConFiltro(textoCompleto);
+      const estadoModeracion = 'pending';
 
-      // El filtro automático no rechaza; solo aprueba o marca para revisión humana
+      const motivoRechazo = null;
 
-      const estadoModeracion = resultadoFiltro.aprobado ? 'approved' : 'flagged';
-
-      const motivoRechazo = resultadoFiltro.aprobado ? null : resultadoFiltro.motivo;
-
-      const visible = resultadoFiltro.aprobado ? 1 : 0;
-
-
+      const visible = 0;
 
       const precioValor = precio !== undefined && precio !== '' ? Number(precio) : null;
 
@@ -852,9 +812,11 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
           id, usuario_id, titulo, descripcion, categoria, subcategoria, comunidad_autonoma,
 
-          comunidad_id, provincia, provincia_id, modalidad, visible, estado_moderacion, motivo_rechazo, ip_creador, cartel_url, precio, creado_at, actualizado_at, vistas
+          comunidad_id, provincia, provincia_id, modalidad, visible, estado_moderacion, motivo_rechazo, ip_creador, cartel_url, precio, creado_at, actualizado_at, vistas,
 
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          nombre_contacto, email_contacto, telefono_contacto
+
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 
         [
 
@@ -862,7 +824,9 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
           comunidad_autonoma, comunidadId, provinciaNombre, provinciaId, modalidad || 'servicio',
 
-          visible, estadoModeracion, motivoRechazo, ip_creador, cartel_url || null, precioValor, now, now, 0
+          visible, estadoModeracion, motivoRechazo, ip_creador, cartel_url || null, precioValor, now, now, 0,
+
+          nombre?.trim() || null, email?.trim() || null, telefono?.trim() || null
 
         ]
 
@@ -893,6 +857,8 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
           a.id, a.usuario_id, a.titulo, a.descripcion, a.categoria, a.comunidad_autonoma,
 
           a.provincia, a.modalidad, a.visible, a.estado_moderacion, a.motivo_rechazo, a.creado_at, a.actualizado_at, a.vistas,
+
+          a.ip_creador, a.nombre_contacto, a.email_contacto, a.telefono_contacto,
 
           u.nombre as usuario_nombre, u.email as usuario_email
 
