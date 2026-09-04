@@ -14,7 +14,7 @@ type Categoria = 'empleo' | 'formacion' | 'vivienda' | 'ocio' | 'servicios' | 'c
 
 export default function PublicarPage() {
   const router = useRouter();
-  const { user, accessToken } = useAuth();
+  const { user, accessToken, isLoading } = useAuth();
   const { t } = useCustomTranslation();
 
   const [titulo, setTitulo] = useState('');
@@ -48,6 +48,7 @@ export default function PublicarPage() {
     }
   }, [user]);
 
+  // Publicar anuncio disponible también para usuarios no autenticados
   const handleCartelUpload = async (file: File) => {
     setSubiendoCartel(true);
     try {
@@ -92,9 +93,10 @@ export default function PublicarPage() {
     }
 
     try {
-      const res = await fetch('/api/anuncios/publico', {
+      const res = await fetch('/api/anuncios', {
         method: 'POST',
         headers,
+        credentials: 'include',
         body: JSON.stringify({
           titulo,
           descripcion,
@@ -154,12 +156,12 @@ export default function PublicarPage() {
                 <Check className="w-6 h-6" />
               </div>
               <h2 className="font-serif text-2xl font-bold text-black mb-2">
-                {resultado.estado === 'approved' ? 'Anuncio publicado' : 'Anuncio en revisión'}
+                {resultado.estado === 'approved' ? 'Anuncio publicado' : 'Anuncio enviado a moderación'}
               </h2>
               <p className="font-sans text-sm text-gray-700 mb-4">
                 {resultado.estado === 'approved'
                   ? 'Tu anuncio ya está publicado y visible para la comunidad.'
-                  : 'Tu anuncio ha sido marcado para revisión humana. En breve lo revisaremos y, si cumple las normas, lo publicaremos.'}
+                  : 'Tu anuncio se ha enviado correctamente y queda pendiente de revisión. Te avisaremos cuando sea aprobado o si necesita cambios.'}
               </p>
               {resultado.motivo ? (
                 <p className="font-sans text-xs text-orange-600 mb-4 border border-orange-200 p-2 bg-orange-50">

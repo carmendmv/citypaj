@@ -1,91 +1,72 @@
 'use client';
 
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { API_URL } from '@/lib/api';
 
 export type AuthUser = {
   id: string;
   email: string;
   nombre: string;
-  rol?: string;
+  rol: 'usuario' | 'moderador' | 'admin' | string;
   verificado?: boolean;
-};
-
-type StoredAuth = {
-  user?: AuthUser;
-  accessToken?: string;
-  refreshToken?: string;
 };
 
 type AuthState = {
   user: AuthUser | null;
   accessToken: string | null;
-  login: (payload: { email: string; password: string; role?: string }) => Promise<void>;
-  register: (payload: { nombre: string; email: string; password: string; turnstileToken?: string }) => Promise<void>;
+  isLoading: boolean;
+  isAdmin: boolean;
+  isModerator: boolean;
+  login: (payload: { email: string; password: string }) => Promise<AuthUser>;
+  register: (payload: { nombre: string; email: string; password: string }) => Promise<AuthUser>;
   logout: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthState | null>(null);
 
-const STORAGE_KEY = 'citypaj_auth';
-
-function decodeJwtExp(token: string): number | null {
+function decodeJwtPayload(token: string): any {
   try {
     const payload = token.split('.')[1];
     if (!payload) return null;
     const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
-    const json = JSON.parse(atob(base64));
-    return json.exp ? json.exp * 1000 : null;
+    return JSON.parse(atob(base64));
   } catch {
     return null;
   }
 }
 
-function isTokenExpired(token: string): boolean {
-  const exp = decodeJwtExp(token);
-  if (!exp) return false;
-  return Date.now() >= exp - 60000;
+function tokenExpiresAt(token: string): number | null {
+  const payload = decodeJwtPayload(token);
+  return payload?.exp ? payload.exp * 1000 : null;
+}
+
+function tokenToUser(token: string): AuthUser | null {
+  const payload = decodeJwtPayload(token);
+  if (!payload?.id) return null;
+  return {
+    id: payload.id,
+    email: payload.email || '',
+    nombre: payload.nombre || '',
+    rol: payload.rol || 'usuario',
+    verificado: Boolean(payload.verificado),
+  };
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const persist = useCallback((nextUser: AuthUser | null, nextAccessToken: string | null, nextRefreshToken?: string | null) => {
-    try {
-      if (!nextUser || !nextAccessToken) {
-        localStorage.removeItem(STORAGE_KEY);
-        return;
-      }
-      const stored: StoredAuth = { user: nextUser, accessToken: nextAccessToken };
-      if (nextRefreshToken) stored.refreshToken = nextRefreshToken;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
-    } catch {
-      return;
-    }
-  }, []);
-
-  const logout = useCallback(async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-    } catch {
-      // ignorar errores de red
-    }
+  const handleLogout = useCallback(() => {
     setUser(null);
     setAccessToken(null);
-    persist(null, null, null);
-  }, [persist]);
+  }, []);
 
-  const refreshAccessToken = useCallback(async () => {
+  const refreshAccessToken = useCallback(async (): Promise<string | null> => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw) as StoredAuth;
-      if (!parsed.refreshToken || !parsed.user) return;
-
-      const res = await fetch('/api/auth/refresh', {
+      const res = await fetch(`${API_URL}/auth/refresh`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refreshToken: parsed.refreshToken }),
+        credentials: 'include',
       });
 
       if (!res.ok) throw new Error('refresh failed');
@@ -94,115 +75,124 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const nextAccessToken = json?.data?.accessToken as string | undefined;
       if (!nextAccessToken) throw new Error('no access token');
 
-      setUser(parsed.user);
+      const nextUser = tokenToUser(nextAccessToken);
       setAccessToken(nextAccessToken);
-      persist(parsed.user, nextAccessToken, parsed.refreshToken);
+      setUser(nextUser);
+      return nextAccessToken;
     } catch {
-      logout();
+      handleLogout();
+      return null;
     }
-  }, [logout, persist]);
+  }, [handleLogout]);
 
+  // Cargar sesión al montar la app
   useEffect(() => {
-    const init = async () => {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return;
-        const parsed = JSON.parse(raw) as StoredAuth;
-        if (!parsed.user) return;
-
-        if (parsed.refreshToken) {
-          try {
-            await refreshAccessToken();
-            return;
-          } catch {
-            // refreshAccessToken ya hace logout; no reutilizar accessToken viejo
-            return;
-          }
-        }
-
-        if (parsed.accessToken && !isTokenExpired(parsed.accessToken)) {
-          setUser(parsed.user);
-          setAccessToken(parsed.accessToken);
-        } else {
-          logout();
-        }
-      } catch {
-        localStorage.removeItem(STORAGE_KEY);
-      }
+    let cancelled = false;
+    setIsLoading(true);
+    refreshAccessToken().finally(() => {
+      if (!cancelled) setIsLoading(false);
+    });
+    return () => {
+      cancelled = true;
     };
-    init();
-  }, [logout, refreshAccessToken]);
+  }, [refreshAccessToken]);
 
+  // Renovación periódica del access token
   useEffect(() => {
     if (!accessToken) return;
-    const interval = setInterval(() => {
-      refreshAccessToken();
-    }, 14 * 60 * 1000);
-    return () => clearInterval(interval);
+    const exp = tokenExpiresAt(accessToken);
+    const timeoutMs = exp ? Math.max(exp - Date.now() - 60 * 1000, 60 * 1000) : 14 * 60 * 1000;
+
+    const timeout = setTimeout(() => {
+      void refreshAccessToken();
+    }, timeoutMs);
+
+    return () => clearTimeout(timeout);
   }, [accessToken, refreshAccessToken]);
 
-  const login = useCallback(async ({ email, password, role }: { email: string; password: string; role?: string }) => {
-    const res = await fetch('/api/auth/login', {
+  const login = useCallback(async ({ email, password }: { email: string; password: string }): Promise<AuthUser> => {
+    const res = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, role }),
+      credentials: 'include',
+      body: JSON.stringify({ email, password }),
     });
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.message || errorData.error || 'Login fallido');
+      throw new Error(errorData.error || 'Email o contraseña incorrectos');
     }
 
     const json = await res.json();
     const nextUser = json?.data?.user as AuthUser | undefined;
-    const nextAccessToken = (json?.data?.tokens?.accessToken || json?.data?.token) as string | undefined;
-    const nextRefreshToken = json?.data?.tokens?.refreshToken as string | undefined;
+    const nextAccessToken = json?.data?.accessToken as string | undefined;
 
-    if (!nextUser || !nextAccessToken || !nextRefreshToken) {
+    if (!nextUser || !nextAccessToken) {
       throw new Error('Login fallido');
     }
 
     setUser(nextUser);
     setAccessToken(nextAccessToken);
-    persist(nextUser, nextAccessToken, nextRefreshToken);
-  }, [persist]);
+    return nextUser;
+  }, []);
 
   const register = useCallback(async ({
     nombre,
     email,
     password,
-    turnstileToken,
   }: {
     nombre: string;
     email: string;
     password: string;
-    turnstileToken?: string;
-  }) => {
-    const res = await fetch('/api/auth/register', {
+  }): Promise<AuthUser> => {
+    const res = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        nombre,
-        email,
-        password,
-        turnstile_token: turnstileToken || undefined,
-      }),
+      credentials: 'include',
+      body: JSON.stringify({ nombre, email, password }),
     });
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.message || errorData.error || 'Registro fallido');
+      throw new Error(errorData.error || 'Registro fallido');
     }
 
-    await login({ email, password });
+    return login({ email, password });
   }, [login]);
 
-  const value = useMemo<AuthState>(() => ({ user, accessToken, login, register, logout }), [user, accessToken, login, register, logout]);
+  const logout = useCallback(async (): Promise<void> => {
+    try {
+      await fetch(`${API_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch {
+      // ignorar errores de red
+    }
+    handleLogout();
+  }, [handleLogout]);
+
+  const isAdmin = useMemo(() => user?.rol === 'admin', [user]);
+  const isModerator = useMemo(() => user?.rol === 'moderador' || user?.rol === 'admin', [user]);
+
+  const value = useMemo<AuthState>(
+    () => ({
+      user,
+      accessToken,
+      isLoading,
+      isAdmin,
+      isModerator,
+      login,
+      register,
+      logout,
+    }),
+    [user, accessToken, isLoading, isAdmin, isModerator, login, register, logout]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth() {
+export function useAuth(): AuthState {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('AuthProvider no está montado');
   return ctx;

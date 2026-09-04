@@ -48,7 +48,7 @@ function AnunciosContent() {
   const [reportandoLoading, setReportandoLoading] = useState(false);
 
   const { estaGuardado, toggleGuardado } = useGuardados();
-  const { user } = useAuth();
+  const { user, accessToken } = useAuth();
 
   const categoria = searchParams.get('categoria') || '';
   const comunidad = searchParams.get('comunidad') || '';
@@ -112,10 +112,15 @@ function AnunciosContent() {
 
   const guardar = async (id: string) => {
     toggleGuardado(id);
-    if (user) {
+    if (user && accessToken) {
       try {
         const method = estaGuardado(id) ? 'DELETE' : 'POST';
-        await fetch(`/api/anuncios/${id}/guardar`, { method });
+        await fetch(`/api/anuncios/${id}/guardar`, {
+          method,
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        });
       } catch (err) {
         console.error('Error sincronizando guardado:', err);
       }

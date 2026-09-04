@@ -6,13 +6,14 @@ import { useRouter } from 'next/navigation';
 import { User, Heart, FileText, Shield, LogOut } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { API_URL } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { useGuardados } from '@/hooks/useGuardados';
 import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
 
 export default function MiPerfilPage() {
   const router = useRouter();
-  const { user, accessToken, logout } = useAuth();
+  const { user, accessToken, isLoading, logout } = useAuth();
   const { t } = useCustomTranslation();
   const { numeroGuardados } = useGuardados();
   const [isEditing, setIsEditing] = useState(false);
@@ -23,13 +24,14 @@ export default function MiPerfilPage() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
+    if (isLoading) return;
     if (!user) {
       router.push('/acceder');
     } else {
       setEditNombre(user.nombre || '');
       setEditComunidad(''); // Por ahora vacío hasta que se implemente en el usuario
     }
-  }, [user, router]);
+  }, [isLoading, user, router]);
 
   const handleSave = async () => {
     setError(null);
@@ -37,7 +39,7 @@ export default function MiPerfilPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/auth/profile', {
+      const res = await fetch(`${API_URL}/auth/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

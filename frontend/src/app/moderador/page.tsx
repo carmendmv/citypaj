@@ -19,7 +19,7 @@ interface PanelStats {
 
 export default function ModeradorPanelPage() {
   const router = useRouter();
-  const { user, accessToken, logout } = useAuth();
+  const { user, accessToken, isLoading, logout } = useAuth();
 
   const [stats, setStats] = useState<PanelStats>({
     anunciosPendientes: 0,
@@ -32,8 +32,9 @@ export default function ModeradorPanelPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (isLoading) return;
     if (!user) {
-      router.replace('/moderador/login');
+      router.replace('/acceder');
       return;
     }
     if (!ROL_MODERADOR.includes(user.rol || '')) {
@@ -100,7 +101,7 @@ export default function ModeradorPanelPage() {
     };
 
     void cargar();
-  }, [user, accessToken, router]);
+  }, [isLoading, user, accessToken, router]);
 
   const handleLogout = () => {
     logout().then(() => router.push('/'));

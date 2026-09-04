@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { API_URL } from '@/lib/api';
 
 function RecuperarContrasenaContent() {
   const router = useRouter();
@@ -40,9 +41,10 @@ function RecuperarContrasenaContent() {
     setSuccess('');
 
     try {
-      const response = await fetch('/api/auth/forgot-password', {
+      const response = await fetch(`${API_URL}/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ email }),
       });
 
@@ -50,12 +52,6 @@ function RecuperarContrasenaContent() {
 
       if (response.ok) {
         setSuccess(data.message);
-        if (data.debugToken) {
-          // En desarrollo, mostrar el token para testing
-          setTimeout(() => {
-            router.push(`/recuperar-contrasena?token=${data.debugToken}`);
-          }, 2000);
-        }
       } else {
         setError(data.error || 'Error al procesar la solicitud');
       }
@@ -86,9 +82,10 @@ function RecuperarContrasenaContent() {
         return;
       }
 
-      const response = await fetch('/api/auth/reset-password', {
+      const response = await fetch(`${API_URL}/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ 
           token: token || '', 
           newPassword 

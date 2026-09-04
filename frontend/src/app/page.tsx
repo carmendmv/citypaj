@@ -9,6 +9,8 @@ import EmptyState from '@/components/ui/EmptyState';
 import LoadingRows from '@/components/ui/LoadingRows';
 import Pagination from '@/components/ui/Pagination';
 import { useCustomTranslation } from '@/contexts/CustomTranslationContext';
+import { useAuth } from '@/context/AuthContext';
+import { useGuardados } from '@/hooks/useGuardados';
 import { COMUNIDADES, PROVINCIAS_POR_COMUNIDAD, PROVINCIA_NORMALIZACION } from '@/lib/provinces';
 import { esCategoriaCultura } from '@/lib/categorias';
 import { ArrowRight, ChevronDown } from 'lucide-react';
@@ -53,6 +55,9 @@ export default function HomePage() {
   const [pagina, setPagina] = useState(1);
   const [totalAnuncios, setTotalAnuncios] = useState(0);
   const totalPaginas = Math.max(1, Math.ceil(totalAnuncios / 10));
+
+  const { accessToken } = useAuth();
+  const { estaGuardado, toggleGuardado } = useGuardados();
 
   const fetchAnuncios = useCallback(async (comunidadFiltro = '', provinciaFiltro = '', paginaFiltro = 1) => {
     try {
@@ -103,10 +108,19 @@ export default function HomePage() {
   }, [comunidad, provincia, pagina, fetchAnuncios]);
 
   const guardar = async (id: string) => {
-    try {
-      await fetch(`/api/anuncios/${id}/guardar`, { method: 'POST' });
-    } catch (err) {
-      console.error('Error guardando:', err);
+    toggleGuardado(id);
+    if (accessToken) {
+      try {
+        const method = estaGuardado(id) ? 'DELETE' : 'POST';
+        await fetch(`/api/anuncios/${id}/guardar`, {
+          method,
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        });
+      } catch (err) {
+        console.error('Error guardando:', err);
+      }
     }
   };
 
@@ -249,7 +263,7 @@ export default function HomePage() {
                   fecha={anuncio.creado_at}
                   autor={anuncio.usuario_nombre || anuncio.nombre || 'Anónimo'}
                   url={`/anuncios/${anuncio.id}`}
-                  esFavorito={anuncio.es_favorito}
+                  esFavorito={estaGuardado(anuncio.id)}
                   onFavorito={() => guardar(anuncio.id)}
                   onReportar={() => reportar(anuncio.id)}
                 />

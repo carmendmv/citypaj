@@ -30,8 +30,8 @@ export default function AccederPage() {
 
   
   const validatePassword = (password: string): { isValid: boolean; error?: string } => {
-    if (!password || password.length < 4) {
-      return { isValid: false, error: 'La contraseña debe tener al menos 4 caracteres' };
+    if (!password || password.length < 8) {
+      return { isValid: false, error: 'La contraseña debe tener al menos 8 caracteres' };
     }
     return { isValid: true };
   };
@@ -52,8 +52,10 @@ export default function AccederPage() {
     }
     setLoadingLogin(true);
     try {
-      await login({ email: loginEmail, password: loginPassword });
-      router.push('/mi-perfil');
+      const user = await login({ email: loginEmail, password: loginPassword });
+      if (user.rol === 'admin') router.push('/admin');
+      else if (user.rol === 'moderador') router.push('/moderador');
+      else router.push('/');
     } catch (err: any) {
       setErrorLogin(err?.message || 'Error al iniciar sesión');
     } finally {
@@ -94,12 +96,14 @@ export default function AccederPage() {
 
     setLoadingRegister(true);
     try {
-      await register({
+      const user = await register({
         nombre: regNombre,
         email: regEmail,
         password: regPassword,
       });
-      router.push('/mi-perfil');
+      if (user.rol === 'admin') router.push('/admin');
+      else if (user.rol === 'moderador') router.push('/moderador');
+      else router.push('/');
     } catch (err: any) {
       setErrorRegister(err?.message || 'Error al crear cuenta');
     } finally {
@@ -240,7 +244,7 @@ export default function AccederPage() {
                   }`}
                 />
                 <div className="mt-2 text-xs text-gray-600">
-                  <p>La contraseña debe tener al menos 4 caracteres.</p>
+                  <p>La contraseña debe tener al menos 8 caracteres.</p>
                 </div>
               </div>
 
