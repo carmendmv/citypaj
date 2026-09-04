@@ -378,10 +378,10 @@ export default function AdminAnunciosPage() {
               Esta área es solo para moderadores. Inicia sesión en el portal exclusivo de moderación.
             </p>
             <Link
-              href="/moderador/login"
+              href="/admin/acceder"
               className="inline-flex items-center justify-center bg-black text-white border border-black px-6 py-3 font-sans text-sm hover:bg-orange-500 hover:text-black transition-colors"
             >
-              Ir al login de moderadores
+              Ir al acceso de equipos de moderación
             </Link>
           </div>
         </main>

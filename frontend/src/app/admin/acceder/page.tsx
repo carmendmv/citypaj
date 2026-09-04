@@ -9,12 +9,12 @@ import { useAuth } from '@/context/AuthContext';
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const { user, login } = useAuth();
+  const { user, isLoading, login } = useAuth();
 
-  const [modEmail, setModEmail] = useState('moderador@citypaj.demo');
-  const [modPassword, setModPassword] = useState('demo123');
-  const [adminEmail, setAdminEmail] = useState('admin@citypaj.demo');
-  const [adminPassword, setAdminPassword] = useState('demo123');
+  const [modEmail, setModEmail] = useState('');
+  const [modPassword, setModPassword] = useState('');
+  const [adminEmail, setAdminEmail] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
   const [loading, setLoading] = useState<'moderador' | 'admin' | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,7 +29,14 @@ export default function AdminLoginPage() {
 
     setLoading(role);
     try {
-      await login({ email, password, role });
+      const loggedUser = await login({ email, password });
+      if (role === 'admin' && loggedUser.rol === 'admin') {
+        router.replace('/admin');
+      } else if (role === 'moderador' && (loggedUser.rol === 'moderador' || loggedUser.rol === 'admin')) {
+        router.replace('/moderador');
+      } else {
+        setError('No tienes permisos para acceder a este panel');
+      }
     } catch (err: any) {
       setError(err?.message || 'Credenciales incorrectas');
     } finally {
@@ -38,12 +45,13 @@ export default function AdminLoginPage() {
   };
 
   useEffect(() => {
+    if (isLoading) return;
     if (user && (user.rol === 'admin' || user.rol === 'moderador')) {
       router.replace('/admin');
     } else if (user) {
-      router.replace('/admin/acceder');
+      router.replace('/acceder');
     }
-  }, [user, router]);
+  }, [isLoading, user, router]);
 
   const LoginCard = ({
     role,
@@ -54,7 +62,6 @@ export default function AdminLoginPage() {
     setEmail,
     password,
     setPassword,
-    demo,
   }: {
     role: 'moderador' | 'admin';
     title: string;
@@ -64,14 +71,12 @@ export default function AdminLoginPage() {
     setEmail: (v: string) => void;
     password: string;
     setPassword: (v: string) => void;
-    demo: string;
   }) => (
     <div className={`border-2 p-6 ${role === 'admin' ? 'border-orange-500' : 'border-black'} bg-white`}>
       <div className="flex items-center gap-3 mb-4">
         <Icon className={`w-6 h-6 ${accent}`} />
         <div>
           <h2 className="font-serif text-xl font-bold text-black">{title}</h2>
-          <p className="text-xs text-gray-500">Credenciales demo: {demo}</p>
         </div>
       </div>
 
@@ -138,7 +143,6 @@ export default function AdminLoginPage() {
             setEmail={setModEmail}
             password={modPassword}
             setPassword={setModPassword}
-            demo="moderador@citypaj.demo / demo123"
           />
 
           <LoginCard
@@ -150,7 +154,6 @@ export default function AdminLoginPage() {
             setEmail={setAdminEmail}
             password={adminPassword}
             setPassword={setAdminPassword}
-            demo="admin@citypaj.demo / demo123"
           />
         </div>
 
@@ -161,6 +164,28 @@ export default function AdminLoginPage() {
           >
             Volver al acceso de usuarios
           </a>
+        </div>
+
+        <div className="mt-10 border-2 border-orange-500 bg-white p-6">
+          <h2 className="font-serif text-lg font-bold text-black mb-4 flex items-center gap-2">
+            <Shield className="w-5 h-5 text-orange-500" />
+            Cuentas de prueba
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div className="border border-black p-3">
+              <p className="font-medium text-black">Moderador</p>
+              <p className="text-gray-600 mt-1">Email: <span className="font-mono text-black">moderador@citypaj.local</span></p>
+              <p className="text-gray-600">Contraseña: <span className="font-mono text-black">Test1234!</span></p>
+            </div>
+            <div className="border border-black p-3">
+              <p className="font-medium text-black">Administrador</p>
+              <p className="text-gray-600 mt-1">Email: <span className="font-mono text-black">admin@citypaj.local</span></p>
+              <p className="text-gray-600">Contraseña: <span className="font-mono text-black">Test1234!</span></p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 mt-4">
+            Estas credenciales son exclusivas para probar el acceso a los paneles. Recomendamos cambiarlas en entornos de producción.
+          </p>
         </div>
       </main>
 

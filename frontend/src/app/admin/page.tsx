@@ -82,7 +82,7 @@ const backendModules = [
 
 export default function AdminDashboardPage() {
   const router = useRouter();
-  const { user, accessToken, logout } = useAuth();
+  const { user, accessToken, isLoading, logout } = useAuth();
   const [resumen, setResumen] = useState<ResumenData | null>(null);
   const [health, setHealth] = useState<HealthData | null>(null);
   const [db, setDb] = useState<DbData | null>(null);
@@ -129,15 +129,16 @@ export default function AdminDashboardPage() {
   };
 
   useEffect(() => {
+    if (isLoading) return;
     if (!user) {
-      router.replace('/admin/acceder');
+      router.replace('/acceder');
       return;
     }
     if (!isModerador) {
       return;
     }
     fetchData();
-  }, [user, router, isModerador, accessToken]);
+  }, [isLoading, user, router, isModerador, accessToken]);
 
   if (!user) return null;
 

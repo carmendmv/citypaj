@@ -224,7 +224,7 @@ export default function AdminUsuariosPage() {
                           )}
                         </td>
                         <td className="px-4 py-3">
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 flex-wrap">
                             <select
                               value={u.rol}
                               onChange={(e) => cambiarRol(u.id, e.target.value)}
@@ -235,12 +235,12 @@ export default function AdminUsuariosPage() {
                               ))}
                             </select>
                             {u.rol === 'admin' && <Shield className="w-4 h-4 text-orange-500" />}
-                          <button
-                            onClick={() => cambiarActivo(u.id, !u.activo)}
-                            className={`text-xs px-2 py-1 border ${u.activo ? 'border-green-500 text-green-700 bg-green-50' : 'border-gray-400 text-gray-600 bg-gray-50'}`}
-                          >
-                            {u.activo ? 'Activo' : 'Inactivo'}
-                          </button>
+                            <button
+                              onClick={() => cambiarActivo(u.id, !u.activo)}
+                              className={`text-xs px-2 py-1 border ${u.activo ? 'border-green-500 text-green-700 bg-green-50' : 'border-gray-400 text-gray-600 bg-gray-50'}`}
+                            >
+                              {u.activo ? 'Activo' : 'Inactivo'}
+                            </button>
                           </div>
                         </td>
                         <td className="px-4 py-3 text-gray-500">
