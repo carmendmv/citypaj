@@ -772,11 +772,13 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
         comunidadId = comunidadRow.id;
 
+        const nombreProvincia = provincia || comunidad_autonoma;
+
         const [provinciaRows] = await connection.query(
 
-          'SELECT id, nombre FROM provincias WHERE comunidad_id = ? LIMIT 1',
+          'SELECT id, nombre FROM provincias WHERE comunidad_id = ? AND nombre = ? LIMIT 1',
 
-          [comunidadId]
+          [comunidadId, nombreProvincia]
 
         );
 
@@ -786,7 +788,11 @@ export const createAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
           provinciaId = provinciaRow.id;
 
-          provinciaNombre = provincia || provinciaRow.nombre;
+          provinciaNombre = provinciaRow.nombre;
+
+        } else {
+
+          provinciaNombre = nombreProvincia;
 
         }
 
@@ -1018,6 +1024,56 @@ export const updateAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
 
 
+      // Resolver IDs de comunidad y provincia
+
+      let comunidadId = 0;
+
+      let provinciaId = 0;
+
+      let provinciaNombre = provincia || comunidad_autonoma;
+
+      let comunidadNombre = comunidad_autonoma;
+
+
+
+      const [comunidadRows] = await connection.query(
+
+        'SELECT id, nombre FROM comunidades WHERE nombre = ? LIMIT 1',
+
+        [comunidad_autonoma]
+
+      );
+
+      const comunidadRow = (comunidadRows as any[])[0];
+
+      if (comunidadRow) {
+
+        comunidadId = comunidadRow.id;
+
+        comunidadNombre = comunidadRow.nombre;
+
+        const [provinciaRows] = await connection.query(
+
+          'SELECT id, nombre FROM provincias WHERE comunidad_id = ? AND nombre = ? LIMIT 1',
+
+          [comunidadId, provinciaNombre]
+
+        );
+
+        const provinciaRow = (provinciaRows as any[])[0];
+
+        if (provinciaRow) {
+
+          provinciaId = provinciaRow.id;
+
+          provinciaNombre = provinciaRow.nombre;
+
+        }
+
+      }
+
+
+
       // Actualizar anuncio
 
       await connection.query(
@@ -1026,11 +1082,11 @@ export const updateAnuncio = async (req: AuthRequest, res: Response): Promise<vo
 
           titulo = ?, descripcion = ?, categoria = ?, comunidad_autonoma = ?,
 
-          provincia = ?, modalidad = ?, actualizado_at = ?
+          comunidad_id = ?, provincia = ?, provincia_id = ?, modalidad = ?, actualizado_at = ?
 
         WHERE id = ?`,
 
-        [titulo, descripcion, categoria, comunidad_autonoma, provincia, modalidad, new Date(), id]
+        [titulo, descripcion, categoria, comunidadNombre, comunidadId, provinciaNombre, provinciaId, modalidad, new Date(), id]
 
       );
 
