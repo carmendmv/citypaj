@@ -79,11 +79,11 @@ El health check sirve para comprobar que el backend ha conectado correctamente c
 
 Para probar los distintos roles he preparado tres usuarios de demostración que se crean automáticamente al arrancar el backend si no existen:
 
-| Rol        | Email                       | Contraseña    |
-|------------|-----------------------------|---------------|
-| Admin      | admin@citypaj.local         | Admin1234     |
-| Moderador  | moderador@citypaj.local     | Moderador1234 |
-| Usuario    | usuario@citypaj.local       | Usuario1234   |
+| Rol        | Email                       | Contraseña  |
+|------------|-----------------------------|-------------|
+| Admin      | admin@citypaj.local         | Test1234!   |
+| Moderador  | moderador@citypaj.local     | Test1234!   |
+| Usuario    | usuario@citypaj.local       | Test1234!   |
 
 ## 8. Cómo parar el proyecto
 
@@ -101,7 +101,7 @@ docker compose down -v
 
 ## 9. Cómo reiniciar la base de datos
 
-Los seeds se encuentran en `database/init/` y se ejecutan automáticamente en orden alfabético. Si se modifica alguno de los scripts y se quieren aplicar los cambios:
+Los seeds se encuentran en `database/init/` (`01_schema.sql`, `02_seed_demo.sql`, `03_seed_territorial.sql` y `04_auth_schema.sql`) y se ejecutan automaticamente en orden alfabetico al arrancar MySQL. Si se modifica alguno de los scripts y se quieren aplicar los cambios:
 
 ```bash
 docker compose down -v
