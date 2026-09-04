@@ -11,7 +11,7 @@ export const logAdminActivity = async (
 ): Promise<void> => {
   try {
     await pool.execute(
-      'INSERT INTO admin_activity_logs (usuario_id, accion, entidad, entidad_id, detalle, ip_address) VALUES (?, ?, ?, ?, ?, ?)',
+      'INSERT INTO admin_activity_logs (usuario_id, accion, entidad, entidad_id, detalles, ip) VALUES (?, ?, ?, ?, ?, ?)',
       [usuario_id, accion, entidad, entidad_id ?? null, detalle, ip_address ?? null]
     );
   } catch (err) {

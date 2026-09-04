@@ -324,15 +324,13 @@ export const marcarEnviado = async (
   next: NextFunction,
 ) => {
   try {
-    const usuario = (req as any).user;
     const id = req.params.id;
-    const modo = req.body.modo === 'smtp' ? 'smtp' : 'manual';
 
     await pool.execute(
       `UPDATE comunicaciones_institucionales
-       SET estado = 'enviado', enviado_at = NOW(), enviado_por = ?, modo_envio = ?
+       SET estado = 'enviado', actualizado_at = NOW()
        WHERE id = ?`,
-      [usuario?.id, modo, id],
+      [id],
     );
 
     const [rows] = await pool.execute(

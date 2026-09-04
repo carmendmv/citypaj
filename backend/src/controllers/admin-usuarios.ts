@@ -163,7 +163,7 @@ const logAdminActivity = async (
 ) => {
   try {
     await pool.execute(
-      'INSERT INTO admin_activity_logs (usuario_id, accion, entidad, entidad_id, detalle) VALUES (?, ?, ?, ?, ?)',
+      'INSERT INTO admin_activity_logs (usuario_id, accion, entidad, entidad_id, detalles) VALUES (?, ?, ?, ?, ?)',
       [usuario_id, accion, entidad, entidad_id, detalle]
     );
   } catch (err) {
